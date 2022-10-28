@@ -1,0 +1,440 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>搭建 code-server | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            搭建 code-server
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-07-23</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/gL0g0cUFeB/"> <span>#Linux </span></a>  
+              <a href="https://linna-cy.github.io/wza1j0xDyL/">
+                <span>#Ubuntu </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >1<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >181<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        
+                        <hr>
+                    </div> -->
+                    
+                    <ol>
+<li>
+<p>下载code-server：</p>
+<pre><code class="language-bash">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz
+</code></pre>
+<p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面">code-server GitHub 页面</a>获取下载连接。</p>
+</li>
+<li>
+<p>解压：</p>
+<pre><code class="language-bash">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz
+</code></pre>
+</li>
+<li>
+<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>
+<pre><code class="language-bash">mv code-server-4.5.1-linux-amd64 /opt/code-server
+</code></pre>
+</li>
+<li>
+<p>创建软链到<code>/usr/bin</code>目录下：</p>
+<pre><code class="language-bash">ln -s /opt/code-server/code-server /usr/bin/code-server
+</code></pre>
+</li>
+<li>
+<p>修改配置文件<code>~/.config/code-server/config.yaml</code>：</p>
+<pre><code class="language-bash">vim ~/.config/code-server/config.yaml
+</code></pre>
+</li>
+<li>
+<p>添加code-server服务：</p>
+<pre><code class="language-bash">vim /lib/systemd/system/codeweb.service
+</code></pre>
+<p>写入如下内容：</p>
+<pre><code class="language-bash">[Unit]
+Description=The nginx HTTP and reverse proxy server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/code-server
+KillSignal=SIGQUIT
+TimeoutStopSec=5
+KillMode=process
+PrivateTmp=true
+StandardOutput=syslog
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+</li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/搭建frp服务/" class="post-title gt-a-link">
+                    搭建 frp 服务
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

@@ -1,0 +1,797 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Ajax 前后端交互 | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            Ajax 前后端交互
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-09-25</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/T9BN3xwNV/"> <span>#Tomcat </span></a>  
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/">
+                <span>#JavaWeb </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >8<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >1804<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#ajax">Ajax</a>
+<ul>
+<li><a href="#ajax-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8">Ajax 简单使用</a></li>
+</ul>
+</li>
+<li><a href="#axios">Axios</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-axios-%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92">使用 Axios 进行交互</a></li>
+<li><a href="#%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E5%88%AB%E5%90%8D">请求方法别名</a>
+<ul>
+<li><a href="#this-%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%97%AE%E9%A2%98">this 作用域问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#json">JSON</a>
+<ul>
+<li><a href="#json-%E7%9A%84%E6%A0%BC%E5%BC%8F">JSON 的格式</a></li>
+<li><a href="#%E5%9C%A8-js-%E4%B8%AD%E4%BD%BF%E7%94%A8-josn">在 JS 中使用 JOSN</a>
+<ul>
+<li><a href="#%E6%90%BA%E5%B8%A6json%E5%8F%91%E9%80%81%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82">携带JSON发送异步请求</a></li>
+</ul>
+</li>
+<li><a href="#fastjson">Fastjson</a></li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#ajax">Ajax</a>
+<ul>
+<li><a href="#ajax-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8">Ajax 简单使用</a></li>
+</ul>
+</li>
+<li><a href="#axios">Axios</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-axios-%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92">使用 Axios 进行交互</a></li>
+<li><a href="#%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E5%88%AB%E5%90%8D">请求方法别名</a>
+<ul>
+<li><a href="#this-%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%97%AE%E9%A2%98">this 作用域问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#json">JSON</a>
+<ul>
+<li><a href="#json-%E7%9A%84%E6%A0%BC%E5%BC%8F">JSON 的格式</a></li>
+<li><a href="#%E5%9C%A8-js-%E4%B8%AD%E4%BD%BF%E7%94%A8-josn">在 JS 中使用 JOSN</a>
+<ul>
+<li><a href="#%E6%90%BA%E5%B8%A6json%E5%8F%91%E9%80%81%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82">携带JSON发送异步请求</a></li>
+</ul>
+</li>
+<li><a href="#fastjson">Fastjson</a></li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    
+                    <blockquote>
+<p>相关文章链接:</p>
+<ul>
+<li><a href="https://linna-cy.github.io/Maven/">Maven</a></li>
+<li><a href="https://linna-cy.github.io/Tomcat/">Tomcat</a></li>
+<li><a href="https://linna-cy.github.io/Servlet/">Servlet 与 Tomcat</a></li>
+<li><a href="https://linna-cy.github.io/HttpServlet/">HttpServlet 与 Tomcat</a></li>
+</ul>
+</blockquote>
+<h1 id="ajax">Ajax</h1>
+<p><code>AJAX</code> (Asynchronous JavaScript And XML)，其含义为异步的 JavaScript 和 XML。其中 <code>JavaScript</code> 表明该技术和前端相关；<code>XML</code> 是指以此进行数据交换。</p>
+<p>AJAX 作用有以下两方面：</p>
+<ol>
+<li><strong>与服务器进行数据交换</strong>：通过AJAX可以给服务器发送请求，服务器将数据直接响应回给浏览器。</li>
+<li><strong>异步交互</strong>：可以在不重新加载整个页面的情况下，与服务器交换数据并更新部分网页的技术，如：搜索联想、用户名是否可用校验等等。
+<ul>
+<li>同步：浏览器页面在发送请求给服务器，在服务器处理请求的过程中，浏览器页面不能做其他的操作。只能等到服务器响应结束后，浏览器页面才能继续做其他的操作。</li>
+<li>异步：浏览器页面发送请求给服务器，在服务器处理请求的过程中，浏览器页面还可以做其他的操作。</li>
+</ul>
+</li>
+</ol>
+<h2 id="ajax-简单使用">Ajax 简单使用</h2>
+<p>服务端：</p>
+<pre><code class="language-java">package web.servlet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/ajaxServlet&quot;)
+public class AjaxServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 返回给客户端响应数据
+        resp.getWriter().write(&quot;Hello Ajax!&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
+}
+</code></pre>
+<p>客户端：</p>
+<pre><code class="language-java">//1. 创建核心对象
+let xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+} else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+}
+
+//2. 发送请求
+xhttp.open(&quot;GET&quot;, &quot;http://localhost:8080/ajax-demo/ajaxServlet&quot;);
+xhttp.send();
+
+//3. 获取响应
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 &amp;&amp; this.status == 200) {
+        // 处理从服务端发送过来的响应数据
+        alert(this.responseText);
+    }
+};
+</code></pre>
+<hr>
+<h1 id="axios">Axios</h1>
+<p>Axios 是一个对原生的AJAX进行封装，简化书写的前端框架。</p>
+<h2 id="使用-axios-进行交互">使用 Axios 进行交互</h2>
+<p>Axios 的使用分为以下两步：</p>
+<ul>
+<li>
+<p>引入 Axios 的 js 文件</p>
+<pre><code class="language-html">&lt;script src=&quot;js/axios.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+</li>
+<li>
+<p>使用 Axios 发送请求，并获取响应结果：</p>
+<ul>
+<li>
+<p>发送 GET 请求的基本形式：</p>
+<pre><code class="language-js">axios({
+    method: &quot;get&quot;,
+    // 请求参数会传递给服务器，此处请求参数可以转义也可以不转义
+    url: &quot;http://localhost:8080/axios-demo/demo?message=Hello%20World&quot;
+}).then(function (resp){
+    // 对响应数据进行处理
+    alert(resp.data);
+})
+</code></pre>
+</li>
+<li>
+<p>发送 POST 请求的基本形式：</p>
+<pre><code class="language-js">axios({
+    method: &quot;post&quot;,
+    url: &quot;http://localhost:8080/axios-demo/demo&quot;,
+    data: &quot;message=Hello World&quot;
+}).then(function (resp){
+    alert(resp.data);
+});
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li><code>axios()</code> 是用来发送异步请求的，小括号中使用 js 对象传递请求相关的参数：
+<ul>
+<li><code>method</code> 属性：用来设置请求方式的。<br>
+取值为 <code>get</code> 或者 <code>post</code>。</li>
+<li><code>url</code> 属性：用来书写请求的资源路径。<br>
+如果是 <code>get</code> 请求，需要将请求参数拼接到路径的后面，格式为： <code>url?参数名=参数值&amp;参数名2=参数值2</code>。</li>
+<li><code>data</code> 属性：作为请求体被发送的数据。<br>
+即，如果是 <code>post</code> 请求的话，数据需要作为 <code>data</code> 属性的值。</li>
+</ul>
+</li>
+<li><code>then()</code> 需要传递一个匿名函数。<br>
+<code>then()</code> 中传递的匿名函数称为回调函数，意思是该匿名函数在发送请求时不会被调用，而是在成功响应后调用的函数。<br>
+而该回调函数中的 <code>resp</code> 参数是对响应的数据进行封装的对象，通过 <code>resp.data</code> 可以获取到响应的数据。</li>
+</ul>
+<h2 id="请求方法别名">请求方法别名</h2>
+<p>为了方便起见， Axios 已经为所有支持的请求方法提供了别名。如下：</p>
+<ul>
+<li>
+<p><code>get</code> 请求：</p>
+<pre><code class="language-javascript">axios.get(url[,config])
+</code></pre>
+</li>
+<li>
+<p><code>delete</code> 请求：</p>
+<pre><code class="language-javascript">axios.delete(url[,config])
+</code></pre>
+</li>
+<li>
+<p><code>head</code> 请求：</p>
+<pre><code class="language-javascript">axios.head(url[,config])
+</code></pre>
+</li>
+<li>
+<p><code>options</code> 请求：</p>
+<pre><code class="language-javascript">axios.option(url[,config])
+</code></pre>
+</li>
+<li>
+<p><code>post</code> 请求：</p>
+<pre><code class="language-javascript">axios.post(url[,data[,config])
+</code></pre>
+</li>
+<li>
+<p><code>put</code> 请求：</p>
+<pre><code class="language-javascript">axios.put(url[,data[,config])
+</code></pre>
+</li>
+<li>
+<p><code>patch</code> 请求：</p>
+<pre><code class="language-javascript">axios.patch(url[,data[,config])
+</code></pre>
+</li>
+</ul>
+<h3 id="this-作用域问题">this 作用域问题</h3>
+<p>使用请求方法别名和箭头函数可以解决this作用域问题，防止this指向错误：</p>
+<ul>
+<li>
+<p>GET请求：</p>
+<pre><code class="language-javascript">axios.get(
+    &quot;http://localhost:8080/axios-demo/demo?message=Hello World&quot;
+).then(resp =&gt; {
+    // 对响应数据进行处理
+    alert(resp.data);
+})
+</code></pre>
+</li>
+<li>
+<p>POST请求：</p>
+<pre><code class="language-java">axios.post(
+    &quot;http://localhost:8080/axios-demo/demo&quot;,
+    &quot;message=Hello World&quot;
+).then(resp =&gt; {
+    // 对响应数据进行处理
+    alert(resp.data);
+})
+</code></pre>
+</li>
+</ul>
+<h1 id="json">JSON</h1>
+<p>JSON（JavaScript Object Notation）是指 JavaScript 对象表示法。</p>
+<p>JSON的优点：数据格式简单，所占的字节数少等。</p>
+<h2 id="json-的格式">JSON 的格式</h2>
+<p><code>JSON</code> 本质就是一个字符串，但是该字符串内容是有一定的格式要求的：</p>
+<pre><code class="language-json">{
+	&quot;key_1&quot;: value_1,
+	&quot;key_2&quot;: value_2,
+	&quot;key_3&quot;: value_3,
+    ...,
+    &quot;key_n&quot;: value_n
+}
+</code></pre>
+<ul>
+<li><code>JSON</code> 格式中的键要求必须使用双引号括起来。</li>
+<li>Value 的数据类型分为如下：
+<ul>
+<li>数字（整数或浮点数）</li>
+<li>字符串（使用双引号括起来）</li>
+<li>逻辑值（<code>true</code>或者<code>false</code>）</li>
+<li>数组（在方括号<code>{}</code>中）</li>
+<li>对象（在花括号<code>[]</code>中）</li>
+<li>null</li>
+</ul>
+</li>
+</ul>
+<p>在 js 中定义 json：</p>
+<pre><code class="language-js">var 变量名 = `{
+        &quot;key1&quot;:value1,
+        &quot;key2&quot;:value2,
+        ...
+    }`;
+</code></pre>
+<h2 id="在-js-中使用-josn">在 JS 中使用 JOSN</h2>
+<p>JS 提供了一个对象 <code>JSON</code> ，该对象有如下两个方法：</p>
+<ul>
+<li>
+<p><code>parse(str)</code>：将 JSON串转换为 js 对象。<br>
+使用方式：</p>
+<pre><code class="language-js">var jsObject = JSON.parse(jsonStr);
+</code></pre>
+</li>
+<li>
+<p><code>stringify(obj)</code>：将 js 对象转换为 JSON 串。<br>
+使用方式：</p>
+<pre><code class="language-js">var jsonStr = JSON.stringify(jsObject)
+</code></pre>
+</li>
+</ul>
+<h3 id="携带json发送异步请求">携带JSON发送异步请求</h3>
+<p>可以使用 <code>JSON.stringify()</code> 将js对象转换为 <code>JSON</code> 串，再将该 <code>JSON</code> 串作为 <code>axios</code> 的 <code>data</code> 属性值进行请求参数的提交。</p>
+<p>但其实只需要将需要提交的参数封装成 js 对象，并将该 js 对象作为 <code>axios</code> 的 <code>data</code> 属性值。<code>axios</code> 会自动将 js 对象转换为 <code>JSON</code> 串进行提交。</p>
+<blockquote>
+<p>发送异步请求时，如果请求参数是 <code>JSON</code> 格式，那请求方式必须是 <code>POST</code>。因为 <code>JSON</code> 串需要放在请求体中。</p>
+</blockquote>
+<h2 id="fastjson">Fastjson</h2>
+<p><code>Fastjson</code> 是阿里巴巴提供的一个Java语言编写的高性能功能完善的 <code>JSON</code> 库，是目前Java语言中最快的 <code>JSON</code> 库，可以实现 <code>Java</code> 对象和 <code>JSON</code> 字符串的相互转换。</p>
+<p>依赖坐标：</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+    &lt;version&gt;1.2.62&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>JOSN 和 Java对象的相互转换包含：</p>
+<ul>
+<li>
+<p>请求数据（反序列化）：<br>
+JSON字符串转为Java对象。<br>
+将 json 转换为 Java 对象，只需要使用 <code>Fastjson</code> 提供的 <code>JSON</code> 类中的 <code>parseObject()</code> 静态方法即可。</p>
+<pre><code class="language-java">String toJSONString(Object object)
+</code></pre>
+</li>
+<li>
+<p>响应数据（序列化）：<br>
+Java对象转为JSON字符串。<br>
+将 Java 对象转换为 JSON 串，只需要使用 <code>Fastjson</code> 提供的 <code>JSON</code> 类中的 <code>toJSONString()</code> 静态方法即可。</p>
+<pre><code class="language-java">&lt;T&gt; T parseObject(String jsonStr, Class&lt;T&gt; clazz)
+</code></pre>
+</li>
+</ul>
+<p>Example：</p>
+<ul>
+<li>
+<p>导入坐标。</p>
+</li>
+<li>
+<p>编写<code>pojo</code>类：</p>
+<pre><code class="language-java">package pojo;
+
+public class User {
+    private Integer id;
+    private String username;
+    private String password;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;User{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, username='&quot; + username + '\'' +
+                &quot;, password='&quot; + password + '\'' +
+                '}';
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>编写<code>FastJsonDemo</code>：</p>
+<pre><code class="language-java">package web.servlet;
+
+import com.alibaba.fastjson.JSON;
+import pojo.User;
+
+public class FastJsonDemo {
+    public static void main(String[] args) {
+        // 1. Java对象转JSON字符串
+        User user = new User();
+        user.setId(1);
+        user.setUsername(&quot;zhangsan&quot;);
+        user.setPassword(&quot;123&quot;);
+
+        String jsonString = JSON.toJSONString(user);
+        System.out.println(jsonString);
+        // 输出：{&quot;id&quot;:1,&quot;password&quot;:&quot;123&quot;,&quot;username&quot;:&quot;zhangsan&quot;}
+
+        // 2. 将JSON字符串转为Java对象
+        User u = JSON.parseObject(
+                &quot;{\&quot;id\&quot;:1,\&quot;password\&quot;:\&quot;123\&quot;,\&quot;username\&quot;:\&quot;zhangsan\&quot;}&quot;,
+                User.class);
+        System.out.println(u);
+    }
+}
+</code></pre>
+</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/Filter/" class="post-title gt-a-link">
+                    Filter 过滤器
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

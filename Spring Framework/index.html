@@ -1,0 +1,2931 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Spring Framework | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            Spring Framework
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-10-16</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/boslKuyhk/"> <span>#Spring </span></a>  
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/"> <span>#JavaWeb </span></a>  
+              <a href="https://linna-cy.github.io/18uPZhlPeC/">
+                <span>#Maven </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >59<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >12863<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#spring-framewor-%E7%AE%80%E4%BB%8B">Spring Framewor 简介</a>
+<ul>
+<li><a href="#spring-framewor-%E6%9E%B6%E6%9E%84">Spring Framewor 架构</a></li>
+<li><a href="#spring-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5">Spring 核心概念</a></li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8iocdi">配置文件方法使用IOC/DI</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用 IOC 容器创建 Bean（bean 标签）</a>
+<ul>
+<li><a href="#bean-%E7%9A%84%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE">Bean 的基础配置</a></li>
+<li><a href="#%E5%88%AB%E5%90%8Dname-%E5%B1%9E%E6%80%A7">别名（name 属性）</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96-bean-%E7%9A%84%E6%96%B9%E5%BC%8Fgetbean-%E6%96%B9%E6%B3%95">获取 Bean 的方式（getBean() 方法）</a></li>
+<li><a href="#%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4scope-%E5%B1%9E%E6%80%A7">作用范围（scope 属性）</a></li>
+<li><a href="#bean-%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96">Bean 的实例化</a>
+<ul>
+<li><a href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E5%AE%9E%E4%BE%8B%E5%8C%96-bean%E9%BB%98%E8%AE%A4">构造方法实例化 Bean（默认）</a></li>
+<li><a href="#%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E5%AE%9E%E4%BE%8B%E5%8C%96-beanfactory-method-%E5%B1%9E%E6%80%A7">静态工厂实例化 Bean（factory-method 属性）</a></li>
+<li><a href="#%E5%AE%9E%E4%BE%8B%E5%B7%A5%E5%8E%82%E5%AE%9E%E4%BE%8B%E5%8C%96-bean">实例工厂实例化 Bean</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-bean-%E7%9A%84-factory-bean-%E5%B1%9E%E6%80%A7">使用 Bean 的 factory-bean 属性</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-factorybean-%E6%8E%A5%E5%8F%A3">使用 FactoryBean 接口</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Bean 的生命周期</a>
+<ul>
+<li><a href="#init-method-%E5%92%8C-destroy-method-%E5%B1%9E%E6%80%A7">init-method 和 destroy-method 属性</a></li>
+<li><a href="#%E6%B3%A8%E5%86%8C%E9%92%A9%E5%AD%90%E5%85%B3%E9%97%AD%E5%AE%B9%E5%99%A8">注册钩子关闭容器</a></li>
+<li><a href="#initializingbean-%E5%92%8C-disposablebean-%E6%8E%A5%E5%8F%A3">InitializingBean 和 DisposableBean 接口</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%BF%E7%94%A8-bean-%E6%A0%87%E7%AD%BE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">使用 Bean 标签的注意事项</a></li>
+</ul>
+</li>
+<li><a href="#di-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5">DI 依赖注入</a>
+<ul>
+<li><a href="#setter-%E6%B3%A8%E5%85%A5property-%E6%A0%87%E7%AD%BE">Setter 注入（property 标签）</a>
+<ul>
+<li><a href="#%E6%B3%A8%E5%85%A5%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">注入引用数据类型</a></li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">注入简单数据类型</a></li>
+<li><a href="#%E9%9B%86%E5%90%88%E6%B3%A8%E5%85%A5">集合注入</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9E%84%E9%80%A0%E5%99%A8%E6%B3%A8%E5%85%A5constructor-arg-%E6%A0%87%E7%AD%BE">构造器注入（constructor-arg 标签）</a>
+<ul>
+<li><a href="#%E6%B3%A8%E5%85%A5%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-2">注入引用数据类型</a></li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-2">注入简单数据类型</a></li>
+<li><a href="#%E9%9B%86%E5%90%88%E6%B3%A8%E5%85%A5-2">集合注入</a></li>
+</ul>
+</li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dbean-%E6%A0%87%E7%AD%BE%E7%9A%84-autowire-%E5%B1%9E%E6%80%A7">自动装配（bean 标签的 autowire 属性）</a>
+<ul>
+<li><a href="#%E6%8C%89%E7%B1%BB%E5%9E%8B%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">按类型自动装配</a></li>
+<li><a href="#%E6%8C%89%E5%90%8D%E7%A7%B0%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">按名称自动装配</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%89%E6%96%B9-beanproperties-%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD">配置文件管理第三方 Bean（properties 文件加载）</a>
+<ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E6%BA%90%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86dao%E5%B1%82">数据源对象管理（DAO层）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91">注解开发</a>
+<ul>
+<li><a href="#spring-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8C%85%E6%89%AB%E6%8F%8F">Spring 配置文件包扫描</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA-bean-%E5%AF%B9%E8%B1%A1component">创建 Bean 对象（@Component）</a></li>
+<li><a href="#%E7%BA%AF%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91%E9%85%8D%E7%BD%AE%E7%B1%BB-%E5%8C%85%E6%89%AB%E6%8F%8F">纯注解开发（配置类、包扫描）</a></li>
+<li><a href="#%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4scope">作用范围（@Scope）</a></li>
+<li><a href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%8E%A7%E5%88%B6postconstruct-%E5%92%8C-predestroy">生命周期控制（@PostConstruct 和 @PreDestroy）</a></li>
+<li><a href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5">依赖注入</a>
+<ul>
+<li><a href="#%E6%8C%89%E7%85%A7%E7%B1%BB%E5%9E%8B%E6%B3%A8%E5%85%A5">按照类型注入</a></li>
+<li><a href="#%E6%8C%89%E7%85%A7%E5%90%8D%E7%A7%B0%E6%B3%A8%E5%85%A5">按照名称注入</a></li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-3">注入简单数据类型</a>
+<ul>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E8%AF%BB%E5%8F%96-properties-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">注解读取 properties 配置文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%89%E6%96%B9-bean">注解管理第三方 Bean</a>
+<ul>
+<li><a href="#%E6%95%B4%E5%90%88-mybatis">整合 Mybatis</a></li>
+<li><a href="#%E6%95%B4%E5%90%88-junit">整合 Junit</a></li>
+</ul>
+</li>
+<li><a href="#aop">AOP</a>
+<ul>
+<li><a href="#aop-%E4%BB%8B%E7%BB%8D">AOP 介绍</a></li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-aop">注解开发 AOP</a></li>
+<li><a href="#aop-%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F">AOP 切入点表达式</a>
+<ul>
+<li><a href="#%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E9%80%9A%E9%85%8D%E7%AC%A6">切入点表达式通配符</a></li>
+<li><a href="#%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B">通知类型</a>
+<ul>
+<li><a href="#%E5%89%8D%E7%BD%AE%E9%80%9A%E7%9F%A5%E5%92%8C%E5%90%8E%E7%BD%AE%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%BF%E7%94%A8">前置通知和后置通知的使用</a></li>
+<li><a href="#%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%BF%E7%94%A8">环绕通知的使用</a></li>
+<li><a href="#%E8%BF%94%E5%9B%9E%E5%90%8E%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%BF%E7%94%A8">返回后通知的使用</a></li>
+<li><a href="#%E5%BC%82%E5%B8%B8%E5%90%8E%E9%80%9A%E7%9F%A5">异常后通知</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#spring-framewor-%E7%AE%80%E4%BB%8B">Spring Framewor 简介</a>
+<ul>
+<li><a href="#spring-framewor-%E6%9E%B6%E6%9E%84">Spring Framewor 架构</a></li>
+<li><a href="#spring-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5">Spring 核心概念</a></li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8iocdi">配置文件方法使用IOC/DI</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用 IOC 容器创建 Bean（bean 标签）</a>
+<ul>
+<li><a href="#bean-%E7%9A%84%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE">Bean 的基础配置</a></li>
+<li><a href="#%E5%88%AB%E5%90%8Dname-%E5%B1%9E%E6%80%A7">别名（name 属性）</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96-bean-%E7%9A%84%E6%96%B9%E5%BC%8Fgetbean-%E6%96%B9%E6%B3%95">获取 Bean 的方式（getBean() 方法）</a></li>
+<li><a href="#%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4scope-%E5%B1%9E%E6%80%A7">作用范围（scope 属性）</a></li>
+<li><a href="#bean-%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96">Bean 的实例化</a>
+<ul>
+<li><a href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E5%AE%9E%E4%BE%8B%E5%8C%96-bean%E9%BB%98%E8%AE%A4">构造方法实例化 Bean（默认）</a></li>
+<li><a href="#%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E5%AE%9E%E4%BE%8B%E5%8C%96-beanfactory-method-%E5%B1%9E%E6%80%A7">静态工厂实例化 Bean（factory-method 属性）</a></li>
+<li><a href="#%E5%AE%9E%E4%BE%8B%E5%B7%A5%E5%8E%82%E5%AE%9E%E4%BE%8B%E5%8C%96-bean">实例工厂实例化 Bean</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-bean-%E7%9A%84-factory-bean-%E5%B1%9E%E6%80%A7">使用 Bean 的 factory-bean 属性</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-factorybean-%E6%8E%A5%E5%8F%A3">使用 FactoryBean 接口</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Bean 的生命周期</a>
+<ul>
+<li><a href="#init-method-%E5%92%8C-destroy-method-%E5%B1%9E%E6%80%A7">init-method 和 destroy-method 属性</a></li>
+<li><a href="#%E6%B3%A8%E5%86%8C%E9%92%A9%E5%AD%90%E5%85%B3%E9%97%AD%E5%AE%B9%E5%99%A8">注册钩子关闭容器</a></li>
+<li><a href="#initializingbean-%E5%92%8C-disposablebean-%E6%8E%A5%E5%8F%A3">InitializingBean 和 DisposableBean 接口</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%BF%E7%94%A8-bean-%E6%A0%87%E7%AD%BE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">使用 Bean 标签的注意事项</a></li>
+</ul>
+</li>
+<li><a href="#di-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5">DI 依赖注入</a>
+<ul>
+<li><a href="#setter-%E6%B3%A8%E5%85%A5property-%E6%A0%87%E7%AD%BE">Setter 注入（property 标签）</a>
+<ul>
+<li><a href="#%E6%B3%A8%E5%85%A5%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">注入引用数据类型</a></li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">注入简单数据类型</a></li>
+<li><a href="#%E9%9B%86%E5%90%88%E6%B3%A8%E5%85%A5">集合注入</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9E%84%E9%80%A0%E5%99%A8%E6%B3%A8%E5%85%A5constructor-arg-%E6%A0%87%E7%AD%BE">构造器注入（constructor-arg 标签）</a>
+<ul>
+<li><a href="#%E6%B3%A8%E5%85%A5%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-2">注入引用数据类型</a></li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-2">注入简单数据类型</a></li>
+<li><a href="#%E9%9B%86%E5%90%88%E6%B3%A8%E5%85%A5-2">集合注入</a></li>
+</ul>
+</li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dbean-%E6%A0%87%E7%AD%BE%E7%9A%84-autowire-%E5%B1%9E%E6%80%A7">自动装配（bean 标签的 autowire 属性）</a>
+<ul>
+<li><a href="#%E6%8C%89%E7%B1%BB%E5%9E%8B%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">按类型自动装配</a></li>
+<li><a href="#%E6%8C%89%E5%90%8D%E7%A7%B0%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">按名称自动装配</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%89%E6%96%B9-beanproperties-%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD">配置文件管理第三方 Bean（properties 文件加载）</a>
+<ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E6%BA%90%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86dao%E5%B1%82">数据源对象管理（DAO层）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91">注解开发</a>
+<ul>
+<li><a href="#spring-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8C%85%E6%89%AB%E6%8F%8F">Spring 配置文件包扫描</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA-bean-%E5%AF%B9%E8%B1%A1component">创建 Bean 对象（@Component）</a></li>
+<li><a href="#%E7%BA%AF%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91%E9%85%8D%E7%BD%AE%E7%B1%BB-%E5%8C%85%E6%89%AB%E6%8F%8F">纯注解开发（配置类、包扫描）</a></li>
+<li><a href="#%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4scope">作用范围（@Scope）</a></li>
+<li><a href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%8E%A7%E5%88%B6postconstruct-%E5%92%8C-predestroy">生命周期控制（@PostConstruct 和 @PreDestroy）</a></li>
+<li><a href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5">依赖注入</a>
+<ul>
+<li><a href="#%E6%8C%89%E7%85%A7%E7%B1%BB%E5%9E%8B%E6%B3%A8%E5%85%A5">按照类型注入</a></li>
+<li><a href="#%E6%8C%89%E7%85%A7%E5%90%8D%E7%A7%B0%E6%B3%A8%E5%85%A5">按照名称注入</a></li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-3">注入简单数据类型</a>
+<ul>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E8%AF%BB%E5%8F%96-properties-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">注解读取 properties 配置文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%89%E6%96%B9-bean">注解管理第三方 Bean</a>
+<ul>
+<li><a href="#%E6%95%B4%E5%90%88-mybatis">整合 Mybatis</a></li>
+<li><a href="#%E6%95%B4%E5%90%88-junit">整合 Junit</a></li>
+</ul>
+</li>
+<li><a href="#aop">AOP</a>
+<ul>
+<li><a href="#aop-%E4%BB%8B%E7%BB%8D">AOP 介绍</a></li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-aop">注解开发 AOP</a></li>
+<li><a href="#aop-%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F">AOP 切入点表达式</a>
+<ul>
+<li><a href="#%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E9%80%9A%E9%85%8D%E7%AC%A6">切入点表达式通配符</a></li>
+<li><a href="#%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B">通知类型</a>
+<ul>
+<li><a href="#%E5%89%8D%E7%BD%AE%E9%80%9A%E7%9F%A5%E5%92%8C%E5%90%8E%E7%BD%AE%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%BF%E7%94%A8">前置通知和后置通知的使用</a></li>
+<li><a href="#%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%BF%E7%94%A8">环绕通知的使用</a></li>
+<li><a href="#%E8%BF%94%E5%9B%9E%E5%90%8E%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%BF%E7%94%A8">返回后通知的使用</a></li>
+<li><a href="#%E5%BC%82%E5%B8%B8%E5%90%8E%E9%80%9A%E7%9F%A5">异常后通知</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    
+                    <h1 id="spring-framewor-简介">Spring Framewor 简介</h1>
+<blockquote>
+<p>Spring5.0已经全面支持JDK8，建议JDK使用1.8版本。</p>
+</blockquote>
+<p>Spring Framework是Spring家族中其他框架的底层基础。</p>
+<h2 id="spring-framewor-架构">Spring Framewor 架构</h2>
+<p>Spring Framework的发展经历了很多版本的变更，每个版本都有相应的调整。</p>
+<p>Spring Framework 架构：</p>
+<ol>
+<li>核心层<br>
+Core Container：核心容器，这个模块是Spring最核心的模块，其他的都需要依赖该模块。</li>
+<li>AOP层
+<ul>
+<li>AOP：面向切面编程，它依赖核心层容器，目的是在<u>不改变原有代码</u>的前提下对其进行<u>功能增强</u>。</li>
+<li>Aspects：AOP是编程思想，Aspects是对AOP思想的具体实现。</li>
+</ul>
+</li>
+<li>数据层
+<ul>
+<li>Data Access：数据访问，Spring全家桶中有对数据访问的具体实现技术。</li>
+<li>Data Integration：数据集成，Spring支持整合其他的数据层解决方案，比如Mybatis。</li>
+<li>Transactions：事务，Spring中事务管理是Spring AOP的一个具体实现。</li>
+</ul>
+</li>
+<li>Web层</li>
+<li>Test层<br>
+Spring主要整合了Junit来完成单元测试和集成测试。</li>
+</ol>
+<blockquote>
+<p>从Spring Framework 5没有架构图，而最新的架构图是4版本，所以可以认为Spring Framework从4版本开始架构就已经趋于稳定，没有什么变动。</p>
+</blockquote>
+<h2 id="spring-核心概念">Spring 核心概念</h2>
+<p>在Spring核心概念主要包含：</p>
+<ul>
+<li><code>IOC</code>
+<ul>
+<li>IOC，Inversion of Control，即控制反转。</li>
+<li>控制反转：主动<code>new</code>产生对象转换为由<u>外部</u>提供对象，此过程中对象创建控制权由程序转移到外部的一种思想。</li>
+</ul>
+<blockquote>
+<p>例如，业务（Service）层要使用到数据（DAO）层的类对象。此时就可以使用IOC思想，由外部程序给业务层创建数据层对象。<br>
+这样可以降低业务层和数据层之间的耦合性。<br>
+如果数据层的实现更改的话，就无需在业务层中修改实现类。</p>
+</blockquote>
+<ul>
+<li><code>IOC容器</code>
+<ul>
+<li>Spring提供了一个容器，称为<u>IOC容器</u>，用来充当IOC思想中的&quot;外部&quot;。</li>
+<li>IOC容器负责对象的创建、初始化等一系列工作。</li>
+</ul>
+</li>
+<li><code>Bean</code>
+<ul>
+<li>在IOC容器中，被创建或被管理的对象统称为<code>Bean</code>。</li>
+<li>IOC容器中存放的就是一个个的Bean对象。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>DI</code>
+<ul>
+<li>依赖注入：在容器中建立Bean与Bean之间的依赖关系的整个过程。</li>
+</ul>
+<blockquote>
+<p>例如，业务层和数据层在IOC容器中创建Bean后，并不能直接工作，因为业务层需要依赖数据层才能正确工作。所以此时就需要使用依赖注入，在业务层和数据层之间建立依赖关系。</p>
+</blockquote>
+</li>
+</ul>
+<p>IOC和DI的最终目标就是充分解耦。在Spring Framewor中的实现依靠：</p>
+<ul>
+<li>使用IOC容器管理Bean（IOC）。</li>
+<li>在IOC容器内将有依赖关系的Bean进行关系绑定（DI）。</li>
+</ul>
+<p>最终，使用对象时不仅可以直接从IOC容器中获取，并且获取到的bean已经绑定了所有的依赖关系。</p>
+<hr>
+<h1 id="配置文件方法使用iocdi">配置文件方法使用IOC/DI</h1>
+<h2 id="使用-ioc-容器创建-beanbean-标签">使用 IOC 容器创建 Bean（bean 标签）</h2>
+<p>基础配置：</p>
+<ol>
+<li>
+<p>创建Maven项目，项目基础结构如下：</p>
+<ul>
+<li>📁<code>project-file-name</code>
+<ul>
+<li>📁<code>src</code>
+<ul>
+<li>📁<code>main</code>
+<ul>
+<li>📁<code>java</code>
+<ul>
+<li>📁<code>com.linner</code>
+<ul>
+<li>📁<code>dao</code></li>
+<li>📁<code>domain</code></li>
+<li>📁<code>service</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>📁<code>resourcs</code></li>
+</ul>
+</li>
+<li>📁<code>test</code>
+<ul>
+<li>📁<code>java</code>
+<ul>
+<li>📁<code>com.linner</code>
+<ul>
+<li>📁<code>service</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>📄<code>pom.xml</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>添加Spring Framework的依赖jar包：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;!--...--&gt;
+    &lt;!--springframework--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;5.2.10.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--junit--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;4.12&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!--...--&gt;
+&lt;/dependencies&gt;
+</code></pre>
+</li>
+<li>
+<p>添加业务层、数据层类：</p>
+<ul>
+<li>
+<p><code>User.java</code>:</p>
+<pre><code class="language-java">package com.linner.domain;
+
+public class User {
+    Integer id;
+    String username;
+    String password;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;User{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, username='&quot; + username + '\'' +
+                &quot;, password='&quot; + password + '\'' +
+                '}';
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>DAO(仅测试，无需查询数据库):<br>
+接口：</p>
+<pre><code class="language-java">package com.linner.dao;
+
+import com.linner.domain.User;
+
+import java.util.List;
+
+public interface UserDao {
+
+    List&lt;User&gt; findAll();
+
+    User findById(int id);
+
+    void delete(int id);
+
+    void save(User user);
+
+    void update(User user);
+}
+</code></pre>
+<p>实现类：</p>
+<pre><code class="language-java">package com.linner.dao.impl;
+
+import com.linner.dao.UserDao;
+import com.linner.domain.User;
+
+import java.util.List;
+
+public class UserDaoImpl implements UserDao {
+    @Override
+    public List&lt;User&gt; findAll() {
+        System.out.println(&quot;UserDao findAll...&quot;);
+        return null;
+    }
+
+    @Override
+    public User findById(int id) {
+        System.out.println(&quot;UserDao findById:&quot; + id);
+        return null;
+    }
+
+    @Override
+    public void delete(int id) {
+        System.out.println(&quot;UserDao delete:&quot; + id);
+    }
+
+    @Override
+    public void save(User user) {
+        System.out.println(&quot;UserDao save:&quot; + user);
+    }
+
+    @Override
+    public void update(User user) {
+        System.out.println(&quot;UserDao update:&quot; + user);
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>Service:<br>
+接口：</p>
+<pre><code class="language-java">package com.linner.service;
+
+import com.linner.domain.User;
+
+import java.util.List;
+
+public interface UserService {
+
+    List&lt;User&gt; findAll();
+
+    User findById(int id);
+
+    void delete(int id);
+
+    void save(User user);
+
+    void update(User user);
+}
+
+</code></pre>
+<p>实现类：</p>
+<pre><code class="language-java">package com.linner.service.impl;
+
+import com.linner.dao.UserDao;
+import com.linner.dao.impl.UserDaoImpl;
+import com.linner.domain.User;
+import com.linner.service.UserService;
+
+import java.util.List;
+
+public class UserServiceImpl implements UserService {
+    private UserDao userDao = new UserDaoImpl();
+
+    @Override
+    public List&lt;User&gt; findAll() {
+        System.out.println(&quot;UserService findAll...&quot;);
+        userDao.findAll();
+        return null;
+    }
+
+    @Override
+    public User findById(int id) {
+        System.out.println(&quot;UserService findById:&quot; + id);
+        userDao.findById(id);
+        return null;
+    }
+
+    @Override
+    public void delete(int id) {
+        System.out.println(&quot;UserService delete:&quot; + id);
+        userDao.delete(id);
+    }
+
+    @Override
+    public void save(User user) {
+        System.out.println(&quot;UserService save:&quot; + user);
+        userDao.save(user);
+    }
+
+    @Override
+    public void update(User user) {
+        System.out.println(&quot;UserService update:&quot; + user);
+        userDao.update(user);
+    }
+}
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>
+<p>测试方法：</p>
+<pre><code class="language-java">package com.linner.service;
+
+import com.linner.domain.User;
+import com.linner.service.UserService;
+import com.linner.service.impl.UserServiceImpl;
+import org.junit.Test;
+
+import java.util.List;
+
+public class UserServiceTest {
+    private UserService userService = new UserServiceImpl();
+
+    @Test
+    public void testFindAll() {
+        userService.findAll();
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testFindById() {
+        int id = 12;
+        userService.findById(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testDelete() {
+        int id = 12;
+        userService.delete(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userService.save(user);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userService.update(user);
+        System.out.println(&quot;------------&quot;);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<p>创建Bean</p>
+<ul>
+<li>
+<p>在📁<code>resourcs</code>目录下创建String配置文件<code>applicationContext.xml</code>，并使用<code>&lt;bean&gt;</code>标签配置Bean：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--添加UserService--&gt;
+    &lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+</li>
+<li>
+<p>接着在程序中使用Spring提供的方法获取IOC容器。然后从IOC容器中获取对象并调用其方法，修改Test类进行测试：</p>
+<pre><code class="language-java">public class UserServiceTest {
+
+    // private UserService userService = new UserServiceImpl();
+
+    // 使用IOC无需自己创建对象（对象由IOC容器分配
+    private static UserService userService;
+    // 这里使用静态代码块获取容器和Bean
+    static {
+        // 获取IOC容器
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        userService = (UserService) ctx.getBean(&quot;userService&quot;);
+    }
+
+    // ...
+}
+</code></pre>
+<p>IOC核心容器创建方式有：</p>
+<ul>
+<li>
+<p><code>ClassPathXmlApplicationContext</code>：类路径下的XML配置文件。</p>
+<pre><code class="language-java">ApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+</code></pre>
+<p><code>ClassPathXmlApplicationContext</code>的参数为XML配置文件在类路径下的相对路径。</p>
+</li>
+<li>
+<p><code>FileSystemXmlApplicationContext</code>：</p>
+<pre><code class="language-java">ApplicationContext ctx = new FileSystemXmlApplicationContext(&quot;/home/linner/IdeaProjects/my-springfw-demo/src/main/resources/applicationContext.xml&quot;);
+</code></pre>
+<p><code>FileSystemXmlApplicationContext</code>的参数为XML配置文件在文件系统下的绝对路径。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>UserServiceTest</code>执行成功说明配置成功。</p>
+<h3 id="bean-的基础配置">Bean 的基础配置</h3>
+<p><code>&lt;bean&gt;</code>标签是作为Spring配置Bean使用。其基本形式为：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;
+</code></pre>
+<ul>
+<li><code>id</code>：Bean标签的唯一标识。在同一个上下文中(配置文件)不能重复。</li>
+<li><code>class</code>：Bean的类型。包含包名和类名。</li>
+</ul>
+<h3 id="别名name-属性">别名（name 属性）</h3>
+<p><code>&lt;bean&gt;</code>的<code>name</code>属性可以为<code>&lt;bean&gt;</code>指定别名，别名可以有多个，使用<code>,</code>，<code>;</code>，空格进行分隔。如：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; name=&quot;service userEbi&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot;/&gt;
+</code></pre>
+<blockquote>
+<p>说明：EBI全称Enterprise Business Interface，译为企业业务接口。</p>
+</blockquote>
+<h3 id="获取-bean-的方式getbean-方法">获取 Bean 的方式（getBean() 方法）</h3>
+<p>使用<code>getBean()</code>获取Bean的方式有三种：</p>
+<ul>
+<li>
+<p>按照名称获取：<br>
+是指在<code>getBean()</code>方法中传递<code>String</code>类型的参数，参数的值为Bean的名称。</p>
+<pre><code class="language-java">Object getBean(String s)
+</code></pre>
+</li>
+<li>
+<p>按照类型获取：<br>
+需要保证该类型在IOC容器中有且仅有一个Bean（不能包含多个同类型的Bean）。<br>
+在参数中传递该类型的<code>class</code>。</p>
+<pre><code class="language-java">&lt;T&gt; T getBean(Class&lt;T&gt; aClass)
+</code></pre>
+</li>
+<li>
+<p>按照名称和类型获取：<br>
+在参数中传入Bean的名称和类型。</p>
+<pre><code class="language-java"> &lt;T&gt; T getBean(String s, Class&lt;T&gt; aClass)
+</code></pre>
+</li>
+</ul>
+<h3 id="作用范围scope-属性">作用范围（scope 属性）</h3>
+<p><code>&lt;bean&gt;</code>的<code>scope</code>属性可以为<code>&lt;bean&gt;</code>设置作用范围，可选值为：</p>
+<ul>
+<li>
+<p><code>singloton</code>：默认，表示创建的对象为单例（在整个IOC容器中所有获取到的该对象都为同一个对象）。如：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot; scope=&quot;singloton&quot;/&gt;
+</code></pre>
+<p>或：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot; /&gt;
+</code></pre>
+<blockquote>
+<p>实际上，单例对象在容器被获取的时候就已经被创建了。</p>
+</blockquote>
+</li>
+<li>
+<p><code>prototype</code>：表示创建的对象为非单例（每次在IOC容器中获取到的对象都是不同的对象）。如：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; name=&quot;service userEbi&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot; scope=&quot;prototype&quot;/&gt;
+</code></pre>
+</li>
+</ul>
+<p>Example：</p>
+<ul>
+<li>
+<p>将<code>UserService</code>设为单例：<br>
+String配置文件<code>applicationContext.xml</code>中<code>userService</code>的<code>&lt;bean&gt;</code>（由于Spring默认创建的是单例，所以这里可以选择不添加<code>scope=&quot;singloton&quot;</code>）：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot;&gt;
+&lt;/bean&gt;
+</code></pre>
+<p>创建新的测试类<code>TestForUserServiceScope</code>：</p>
+<pre><code class="language-java">package com.linner.service;
+
+import com.linner.domain.User;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestForUserServiceScope {
+    private static ApplicationContext ctx;
+    static {
+        ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+    }
+
+    @Test
+    public void testFindAll() {
+        UserService userService = (UserService) ctx.getBean(&quot;userService&quot;);
+        System.out.println(userService);
+        userService.findAll();
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testFindById() {
+        UserService userService = (UserService) ctx.getBean(&quot;userService&quot;);
+        System.out.println(userService);
+        int id = 12;
+        userService.findById(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testDelete() {
+        UserService userService = (UserService) ctx.getBean(&quot;userService&quot;);
+        System.out.println(userService);
+        int id = 12;
+        userService.delete(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testSave() {
+        UserService userService = (UserService) ctx.getBean(&quot;userService&quot;);
+        System.out.println(userService);
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userService.save(user);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    public void testUpdate() {
+        UserService userService = (UserService) ctx.getBean(&quot;userService&quot;);
+        System.out.println(userService);
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userService.update(user);
+        System.out.println(&quot;------------&quot;);
+    }
+}
+</code></pre>
+<p>执行<code>UserServiceTest1</code>后，在输出中可以发现：每个测试方法中使用<code>getBean()</code>获取到的<code>UserService</code>都是同个对象。</p>
+</li>
+<li>
+<p>将<code>UserService</code>设为非单例：<br>
+修改String配置文件<code>applicationContext.xml</code>：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot; scope=&quot;prototype&quot;&gt;
+</code></pre>
+<p>再次执行<code>UserServiceTest1</code>，可以发现：每个测试方法中使用<code>getBean()</code>获取到的<code>UserService</code>都是不同的对象。</p>
+</li>
+</ul>
+<h3 id="bean-的实例化">Bean 的实例化</h3>
+<p>实例化Bean分为三种方式：</p>
+<ul>
+<li>构造方法</li>
+<li>静态工厂</li>
+<li>实例工厂</li>
+</ul>
+<h4 id="构造方法实例化-bean默认">构造方法实例化 Bean（默认）</h4>
+<p><code>&lt;bean&gt;</code>默认是使用无参的构造方法实例化Bean。并且，Spring底层用的是反射（因为即使将构造方法设置为<code>private</code>依然可以使用）。</p>
+<h4 id="静态工厂实例化-beanfactory-method-属性">静态工厂实例化 Bean（factory-method 属性）</h4>
+<p>静态工厂实例化Bean指的是通过工厂类来创建对象。</p>
+<p>一般情况下是使用如下方法静态工厂实例化对象：</p>
+<ul>
+<li>
+<p>创建<code>com.linner.factory</code>包，并编写<code>UserDaoFactory</code>：</p>
+<pre><code class="language-java">package com.linner.factory;
+
+import com.linner.dao.UserDao;
+import com.linner.dao.impl.UserDaoImpl;
+
+public class UserDaoFactory {
+    public static UserDao getUserDao() {
+        return new UserDaoImpl();
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>编写<code>TestFroInstanceUserDao</code>测试类：</p>
+<pre><code class="language-java">package com.linner.dao;
+
+import com.linner.domain.User;
+import com.linner.factory.UserDaoFactory;
+import org.junit.Test;
+
+public class TestFroInstanceUserDao {
+    private UserDao userDao = UserDaoFactory.getUserDao();
+
+    @Test
+    public void testFindAll() {
+        userDao.findAll();
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testFindById() {
+        int id = 12;
+        userDao.findById(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testDelete() {
+        int id = 12;
+        userDao.delete(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userDao.save(user);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userDao.update(user);
+        System.out.println(&quot;------------&quot;);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<p>在IOC容器中使用静态工厂实例化：</p>
+<ul>
+<li>
+<p>在Spring配置文件中加入<code>UserDao</code>的配置：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.factory.UserDaoFactory&quot; factory-method=&quot;getUserDao&quot;/&gt;
+</code></pre>
+<ul>
+<li><code>class</code>：工厂类的类全名。这里指定的是创建<code>UserDao</code>的静态工厂类<code>UserDaoFactory</code>。</li>
+<li><code>factory-method</code>：<code>class</code>指定的工厂类中创建对象的方法名。这里指定的是工厂类中用来创建<code>UserDao</code>的方法。</li>
+</ul>
+</li>
+<li>
+<p>修改<code>TestFroInstanceUserDao</code>：</p>
+<pre><code class="language-java">import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestFroInstanceUserDao {
+    private static UserDao userDao;
+    static {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        userDao = (UserDao) ctx.getBean(&quot;userDao&quot;);
+    }
+    // ...
+}
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>注意：使用这种方法实例化，不能将该Bean注入到其他Bean中。</p>
+</blockquote>
+<h4 id="实例工厂实例化-bean">实例工厂实例化 Bean</h4>
+<h5 id="使用-bean-的-factory-bean-属性">使用 Bean 的 factory-bean 属性</h5>
+<p>实例化工厂实例化Bean是指，为工厂类添加一个单例的Bean（为区分则称为工厂Bean），然后在要实例化的Bean中指定使用这个工厂Bean作为实例化工厂。</p>
+<p>修改<code>UserDaoFactory</code>（不使用静态工厂）：</p>
+<pre><code class="language-java">public class UserDaoFactory {
+    public UserDao getUserDao() {
+        return new UserDaoImpl();
+    }
+}
+</code></pre>
+<p>在Spring的配置文件中添加<code>UserDaoFactory</code>的<code>&lt;bean&gt;</code>，并且修改<code>UserDao</code>的<code>&lt;bean&gt;</code>：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDaoFactory&quot; class=&quot;com.linner.factory.UserDaoFactory&quot;/&gt;
+&lt;bean id=&quot;userDao&quot; factory-bean=&quot;userDaoFactory&quot; factory-method=&quot;getUserDao&quot;/&gt;
+</code></pre>
+<ul>
+<li>添加了一个<code>userDaoFactory</code>工厂Bean。</li>
+<li><code>factory-bean</code>：工厂的实例对象，即工厂Bean的<code>id</code>或<code>name</code>。</li>
+<li><code>factory-method</code>：工厂对象中具体创建对象的方法名，即<code>factory-bean</code>指定对象中创建该对象的方法名。</li>
+</ul>
+<p>成功执行<code>TestFroInstanceUserDao</code>即配置成功。</p>
+<h5 id="使用-factorybean-接口">使用 FactoryBean 接口</h5>
+<p>创建一个<code>UserDaoFactoryBean</code>的类，实现<code>FactoryBean</code>接口，重写接口的方法：</p>
+<pre><code class="language-java">package com.linner.factory;
+
+import com.linner.dao.UserDao;
+import com.linner.dao.impl.UserDaoImpl;
+import org.springframework.beans.factory.FactoryBean;
+
+public class UserDaoFactoryBean implements FactoryBean {
+
+    @Override
+    public Object getObject() throws Exception {
+        return new UserDaoImpl();
+    }
+
+    @Override
+    public Class&lt;?&gt; getObjectType() {
+        return UserDao.class;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
+}
+</code></pre>
+<ul>
+<li><code>getObject()</code>：创建实例化对象并返回。代替原始实例工厂中创建对象的方法。</li>
+<li><code>getObjectType()</code>：返回所创建类的Class对象。</li>
+<li><code>isSingleton()</code>：设置对象是否为单例。默认<code>true</code>，可以不重写。</li>
+</ul>
+<p>修改Spring配置文件：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.factory.UserDaoFactoryBean&quot;/&gt;
+</code></pre>
+<p>成功执行<code>TestFroInstanceUserDao</code>即配置成功。</p>
+<h3 id="bean-的生命周期">Bean 的生命周期</h3>
+<p>Bean的生命周期是指Bean对象从创建到销毁的整个过程。对Bean的生命周期进行控制，可以在Bean创建后（如加载初始化需要用到资源）还有销毁前（如释放资源）执行一些操作。</p>
+<h4 id="init-method-和-destroy-method-属性">init-method 和 destroy-method 属性</h4>
+<p>Spring控制生命周期的第一个方法便是使用Spring配置文件中<code>&lt;bean&gt;</code>的 <code>init-method</code> 和 <code>destroy-method</code> 属性。</p>
+<p>在<code>UserDaoImpl</code>中创建初始化方法和销毁方法（方法名任意）：</p>
+<pre><code class="language-java">public class UserDaoImpl implements UserDao {
+
+    /**
+     * 初始化方法
+     */
+    public void init() {
+        System.out.println(&quot;UserDao init...&quot;);
+    }
+
+    /**
+     * 销毁方法
+     */
+    public void destroy() {
+        System.out.println(&quot;UserDao destroy...&quot;);
+    }
+
+    // ...
+}
+</code></pre>
+<p>修改Spring配置文件：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.dao.impl.UserDaoImpl&quot; init-method=&quot;init&quot; destroy-method=&quot;destroy&quot;/&gt;
+</code></pre>
+<ul>
+<li><code>init-method</code>：<code>class</code>指定的类中的初始化方法，在创建Bean对象后执行。</li>
+<li><code>destroy-method</code>：<code>class</code>指定的类中的销毁方法，在销毁Bean前执行。</li>
+</ul>
+<p>编写<code>TestForLifeCycle</code>测试类：</p>
+<pre><code class="language-java">package com.linner;
+
+import com.linner.dao.UserDao;
+import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestForLifeCycle {
+    @Test
+    public void testForLifeCycle() {
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        UserDao userDao = (UserDao) ctx.getBean(&quot;userDao&quot;);
+        userDao.findAll();
+        ctx.close();
+    }
+}
+</code></pre>
+<p>对比之前的<code>ctx</code>对象，这里<code>ctx</code>对象使用的类型从<code>ApplicationContext</code>变成了<code>ClassPathXmlApplicationContext</code>。这是因为<code>ApplicationContext</code>中并没有<code>close()</code>方法。而想要执行Bean对象中的<code>destroy()</code>，就必须在程序退出前关闭IOC容器（调用<code>ctx.close()</code>）。</p>
+<h4 id="注册钩子关闭容器">注册钩子关闭容器</h4>
+<p>在容器未关闭之前，提前设置好回调函数，让JVM在退出之前回调此函数来关闭容器。</p>
+<p>修改<code>TestForLifeCycle</code>：</p>
+<pre><code class="language-java">public class TestForLifeCycle {
+    @Test
+    public void testForLifeCycle() {
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        ctx.registerShutdownHook();
+        UserDao userDao = (UserDao) ctx.getBean(&quot;userDao&quot;);
+        userDao.findAll();
+    }
+}
+</code></pre>
+<blockquote>
+<p>注意：<code>ApplicationContext</code>中也没有<code>registerShutdownHook()</code>。所以这里使用的是<code>ClassPathXmlApplicationC</code>对象。</p>
+</blockquote>
+<h4 id="initializingbean-和-disposablebean-接口">InitializingBean 和 DisposableBean 接口</h4>
+<p>Spring 提供了<code>InitializingBean</code>和<code>DisposableBean</code>接口以更加方便地控制Bean生命周期。使用这两个接口则无需通过Sping配置文件中的<code>init-method</code>和<code>destroy-method</code> 属性来控制生命周期。</p>
+<p>实现<code>InitializingBean</code>接口的<code>afterPropertiesSet()</code>方法和<code>DisposableBean</code>接口的<code>destroy()</code>方法：</p>
+<pre><code class="language-java">import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
+public class UserDaoImpl implements UserDao, InitializingBean, DisposableBean {
+
+    /**
+     * InitializingBean接口的初始化方法
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println(&quot;UserDao init by afterPropertiesSet()...&quot;);
+    }
+
+    /**
+     * DisposableBean接口的销毁方法
+     */
+    @Override
+    public void destroy() {
+        System.out.println(&quot;UserDao destroyed by destroy()...&quot;);
+    }
+
+    // ...
+}
+</code></pre>
+<p>在Spring配置文件中删除<code>init-method</code>和<code>destroy-method</code>属性：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.dao.impl.UserDaoImpl&quot;/&gt;
+</code></pre>
+<h3 id="使用-bean-标签的注意事项">使用 Bean 标签的注意事项</h3>
+<ul>
+<li><code>class</code>属性不能使用接口。因为接口不能创建对象。</li>
+<li>获取Bean无论是通过<code>id</code>还是<code>name</code>获取，如果无法获取到，将抛出异常<code>NoSuchBeanDefinitionException</code>。</li>
+<li>Bean默认为单例，避免了对象的频繁创建与销毁，达到了对Bean对象的复用，性能高。</li>
+<li>如果对象是有状态对象（即该对象有成员变量可以用来存储数据）。因为所有请求线程共用一个Bean对象，所以会存在线程安全问题。</li>
+<li>如果对象是无状态对象（即该对象没有成员变量没有进行数据存储）。因方法中的局部变量在方法调用完成后会被销毁，所以不会存在线程安全问题。</li>
+<li>适合交给容器进行管理的Bean对象：
+<ul>
+<li>表现层对象</li>
+<li>业务层对象</li>
+<li>数据层对象</li>
+<li>工具对象</li>
+</ul>
+</li>
+<li>不适合交给容器进行管理的Bean对象：<br>
+封装实例的域对象。会引发线程安全问题。</li>
+</ul>
+<h2 id="di-依赖注入">DI 依赖注入</h2>
+<p>上面的程序，在<code>UserServiceImpl</code>中依然需要手动创建对象：</p>
+<pre><code class="language-java">public class UserServiceImpl implements UserService {
+    private UserDao userDao = new UserDaoImpl();
+    // ...
+}
+</code></pre>
+<p>当前业务层和数据层的耦合性还是很高。此时就需要使用依赖注入来降低耦合性。</p>
+<p>Spring依赖注入支持<u>简单数据类型</u>、<u>引用数据类型</u>还有<u>集合注入</u>，并且提供了两种注入方式：</p>
+<ul>
+<li>Setter注入</li>
+<li>构造器注入</li>
+</ul>
+<p>基础配置：</p>
+<ol>
+<li>创建Maven项目。</li>
+<li>添加Spring Framework和Junit的依赖jar包。</li>
+<li>添加业务层、数据层类：
+<ul>
+<li><code>User.java</code>: 同<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的<code>User.java</code>。</li>
+<li>DAO(仅测试，无需查询数据库): 同<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的DAO（<code>UserDao</code>）。</li>
+<li>Service: 同<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的Service（<code>UserService</code>）。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>
+<p>测试方法：</p>
+<pre><code class="language-java">package com.linner.service;
+
+import com.linner.domain.User;
+import com.linner.service.UserService;
+import com.linner.service.impl.UserServiceImpl;
+import org.junit.Test;
+
+import java.util.List;
+
+public class UserServiceTest {
+    private static UserService userService;
+    static {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        userService = (UserService) ctx.getBean(&quot;userService&quot;);
+    }
+
+    @Test
+    public void testFindAll() {
+        userService.findAll();
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testFindById() {
+        int id = 12;
+        userService.findById(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testDelete() {
+        int id = 12;
+        userService.delete(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userService.save(user);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userService.update(user);
+        System.out.println(&quot;------------&quot;);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="setter-注入property-标签">Setter 注入（property 标签）</h3>
+<p>Setter注入是指，在实现类中为需要注入的属性设置Setter方法，让Spring能够使用Setter方法自动给属性创建对象。</p>
+<h4 id="注入引用数据类型">注入引用数据类型</h4>
+<p>要在Bean中注入引用类型属性，注入的属性其实现类必须得是IOC容器中的Bean。</p>
+<p>在<code>UserServiceImpl</code>中，取消手动创建对象，并为<code>userDao</code>属性提供<code>setter</code>方法：</p>
+<pre><code class="language-java">public class UserServiceImpl implements UserService {
+    private UserDao userDao;
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+    // ...
+}
+</code></pre>
+<p>修改Spring配置文件<code>applicationContext.xml</code>：</p>
+<pre><code class="language-xml">&lt;!--...--&gt;
+&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.dao.impl.UserDaoImpl&quot;/&gt;
+&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot;&gt;
+    &lt;property name=&quot;userDao&quot; ref=&quot;userDao&quot;/&gt;
+&lt;/bean&gt;
+&lt;!--...--&gt;
+</code></pre>
+<p>为<code>UserService</code>注入<code>UserDao</code>要在<code>UserService</code>的<code>&lt;bean&gt;</code>标签中使用<code>&lt;property&gt;</code>标签。·</p>
+<p><code>&lt;property&gt;</code>表示配置当前<code>&lt;bean&gt;</code>的属性，其标签属性有：</p>
+<ul>
+<li><code>name</code>：<code>&lt;bean&gt;</code>所指的实现类的属性名，表示配置哪一个具体的属性。</li>
+<li><code>ref</code>：要配置的属性的Bean的<code>id</code>或<code>name</code>，表示参照哪一个<code>&lt;bean&gt;</code>（该注入的Bean必须在容器中存在）。</li>
+</ul>
+<p>成功运行<code>ServiceBeanTest</code>说明注入成功。</p>
+<p>如果要注入多个属性，则在实例类中加入多个属性，为其设置Setter并在Bean中配置多个<code>&lt;property&gt;</code>即可。</p>
+<h4 id="注入简单数据类型">注入简单数据类型</h4>
+<p>在Bean中注入简单类型属性，简单数据类型并不用在配置文件中为简单类型添加Bean标签配置。</p>
+<p>为<code>BookDao</code>添加简单类型属性：</p>
+<pre><code class="language-java">import org.springframework.beans.factory.InitializingBean;
+
+public class UserDaoImpl implements UserDao, InitializingBean {
+
+    private String databaseName;
+    private int connectionNum;
+
+    public void setConnectionNum(int connectionNum) {
+        this.connectionNum = connectionNum;
+    }
+
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println(&quot;UserDao init: DatabaseName=&quot; + this.databaseName
+                        + &quot;, ConnectionNum=&quot; + this.connectionNum);
+    }
+    // ...
+}
+</code></pre>
+<p>在Spring配置文件中为<code>UserDao</code>添加<code>&lt;property&gt;</code>标签：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.dao.impl.UserDaoImpl&quot;&gt;
+    &lt;property name=&quot;databaseName&quot; value=&quot;mysql&quot;/&gt;
+    &lt;property name=&quot;connectionNum&quot; value=&quot;10&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<ul>
+<li><code>name</code>：含义不变，与引用注入类型用法中的含义相同。</li>
+<li><code>value</code>: 要配置的属性的值，必须是简单数据类型。对于参数类型，Spring在注入的时候会自动转换，但是有可能会发生转换错误的情况。</li>
+</ul>
+<p>成功运行<code>ServiceBeanTest</code>说明注入成功。</p>
+<h4 id="集合注入">集合注入</h4>
+<p>修改<code>UserDao</code>，为其添加集合类型参数和对应Setter方法：</p>
+<pre><code class="language-java">import java.util.*;
+
+public class UserDaoImpl implements UserDao, InitializingBean {
+
+    private int[] array;
+    private List&lt;String&gt; list;
+    private Set&lt;String&gt; set;
+    private Map&lt;String,String&gt; map;
+    private Properties properties;
+
+    // ...此处省略setter方法
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println(&quot;UserDao init: &quot; +
+                        &quot;array=&quot; + Arrays.toString(array) +
+                        &quot;, list=&quot; + list +
+                        &quot;, set=&quot; + set +
+                        &quot;, map=&quot; + map +
+                        &quot;, properties=&quot; + properties);
+    }
+    // ...
+}
+</code></pre>
+<p>修改Spring配置文件：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.dao.impl.UserDaoImpl&quot;&gt;
+    &lt;property name=&quot;array&quot;&gt;
+        &lt;array&gt;
+            &lt;value&gt;1&lt;/value&gt;
+            &lt;value&gt;2&lt;/value&gt;
+            &lt;value&gt;3&lt;/value&gt;
+        &lt;/array&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;list&quot;&gt;
+        &lt;list&gt;
+            &lt;value&gt;a&lt;/value&gt;
+            &lt;value&gt;b&lt;/value&gt;
+            &lt;value&gt;c&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;set&quot;&gt;
+        &lt;set&gt;
+            &lt;value&gt;a&lt;/value&gt;
+            &lt;value&gt;a&lt;/value&gt;
+            &lt;value&gt;b&lt;/value&gt;
+            &lt;value&gt;c&lt;/value&gt;
+        &lt;/set&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;map&quot;&gt;
+        &lt;map&gt;
+            &lt;entry key=&quot;a&quot; value=&quot;1&quot;/&gt;
+            &lt;entry key=&quot;b&quot; value=&quot;2&quot;/&gt;
+            &lt;entry key=&quot;c&quot; value=&quot;3&quot;/&gt;
+        &lt;/map&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;properties&quot;&gt;
+        &lt;props&gt;
+            &lt;prop key=&quot;a&quot;&gt;1&lt;/prop&gt;
+            &lt;prop key=&quot;b&quot;&gt;2&lt;/prop&gt;
+            &lt;prop key=&quot;c&quot;&gt;3&lt;/prop&gt;
+        &lt;/props&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre>
+<ul>
+<li>
+<p><code>&lt;property&gt;</code>：Setter注入依然使用该标签。其<code>name</code>属性含义不变。<br>
+集合类型的值在其标签下定义。</p>
+</li>
+<li>
+<p><code>&lt;array&gt;</code>：定义数组类型的值。</p>
+<ul>
+<li>数组元素中的值使用<code>&lt;value&gt;</code>标签定义。</li>
+<li><code>&lt;value&gt;</code>标签中的值要与数组的类型一致。<br>
+一般形式如下：</li>
+</ul>
+<pre><code class="language-xml">&lt;property name=&quot;...&quot;&gt;
+    &lt;array&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;!--...--&gt;
+    &lt;/array&gt;
+&lt;/property&gt;
+</code></pre>
+</li>
+<li>
+<p><code>&lt;list&gt;</code>：定义<code>List</code>类型的值。<br>
+其用法与<code>&lt;array&gt;</code>类似。</p>
+<pre><code class="language-xml">&lt;property name=&quot;...&quot;&gt;
+    &lt;list&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;!--...--&gt;
+    &lt;/list&gt;
+&lt;/property&gt;
+</code></pre>
+</li>
+<li>
+<p><code>&lt;set&gt;</code>：定义<code>Set</code>类型的值。<br>
+其用法与<code>&lt;array&gt;</code>类似。</p>
+<pre><code class="language-xml">&lt;property name=&quot;...&quot;&gt;
+    &lt;set&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;value&gt;...&lt;/value&gt;
+        &lt;!--...--&gt;
+    &lt;/set&gt;
+&lt;/property&gt;
+</code></pre>
+</li>
+<li>
+<p><code>&lt;map&gt;</code>：定义<code>Map</code>类型的值。</p>
+<ul>
+<li>其元素使用<code>&lt;entry&gt;</code>标签定义。并且元素的<code>key</code>使用<code>key</code>属性定义，元素的<code>value</code>使用<code>value</code>属性定义。</li>
+<li><code>key</code>和<code>value</code>属性的值要和<code>Map</code>的类型对应。</li>
+</ul>
+<pre><code class="language-xml">&lt;property name=&quot;...&quot;&gt;
+    &lt;map&gt;
+        &lt;entry key=&quot;...&quot; value=&quot;...&quot;/&gt;
+        &lt;entry key=&quot;...&quot; value=&quot;...&quot;/&gt;
+        &lt;entry key=&quot;...&quot; value=&quot;...&quot;/&gt;
+        &lt;!--...--&gt;
+    &lt;/map&gt;
+&lt;/property&gt;
+</code></pre>
+</li>
+<li>
+<p><code>&lt;props&gt;</code>：定义<code>Properties</code>的值。<br>
+其元素使用<code>&lt;prop&gt;</code>标签定义。<code>key</code>使用<code>key</code>属性定义，<code>value</code>在标签中定义。</p>
+<pre><code class="language-xml">&lt;property name=&quot;...&quot;&gt;
+    &lt;props&gt;
+        &lt;prop key=&quot;...&quot;&gt;...&lt;/prop&gt;
+        &lt;prop key=&quot;...&quot;&gt;...&lt;/prop&gt;
+        &lt;prop key=&quot;...&quot;&gt;...&lt;/prop&gt;
+        &lt;!--...--&gt;
+    &lt;/props&gt;
+&lt;/property&gt;
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>List的底层也是通过数组实现的，所以<code>&lt;list&gt;</code>和<code>&lt;array&gt;</code>标签是可以混用。</li>
+<li>集合中要添加引用类型，只需要把<code>&lt;value&gt;</code>标签改成<code>&lt;ref&gt;</code>标签。</li>
+</ul>
+</blockquote>
+<h3 id="构造器注入constructor-arg-标签">构造器注入（constructor-arg 标签）</h3>
+<p>构造器注入是指Spring通过Bean的实例类中，带参的构造方法将其他Bean进行注入。</p>
+<h4 id="注入引用数据类型-2">注入引用数据类型</h4>
+<p>在<code>UserServices</code>中删除Setter方法（此处删除Setter方法是为了证明使用的是构造器注入而非Setter注入）并添加带参的构造方法：</p>
+<pre><code class="language-java">public class UserServiceImpl implements UserService {
+
+    private UserDao userDao;
+
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
+    // ...
+}
+</code></pre>
+<p>修改Spring配置文件：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot;&gt;
+    &lt;constructor-arg name=&quot;userDao&quot; ref=&quot;userDao&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<p><code>&lt;constructor-arg&gt;</code>中<code>name</code>和<code>ref</code>属性的含义与<code>&lt;property&gt;</code>的含义类似。只不过<code>name</code>属性指的是Bean实例类型中构造方法的参数名（名称必须要一致）。</p>
+<p>成功运行<code>ServiceBeanTest</code>说明注入成功。</p>
+<p>如果要注入多个类型数据，则在构造方法中加入多个参数并在Bean中配置多个<code>&lt;constructor-arg&gt;</code>即可。</p>
+<h4 id="注入简单数据类型-2">注入简单数据类型</h4>
+<p>在<code>UserDao</code>中删除Setter方法，并为其添加带参的构造方法：</p>
+<pre><code class="language-java">public class UserDaoImpl implements UserDao, InitializingBean {
+
+    private String databaseName;
+    private int connectionNum;
+
+    public UserDaoImpl(String databaseName, int connectionNum) {
+        this.databaseName = databaseName;
+        this.connectionNum = connectionNum;
+    }
+    // ...
+}
+</code></pre>
+<p>修改Spring配置文件：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userDao&quot; class=&quot;com.linner.dao.impl.UserDaoImpl&quot;&gt;
+    &lt;constructor-arg name=&quot;databaseName&quot; value=&quot;mysql&quot;/&gt;
+    &lt;constructor-arg name=&quot;connectionNum&quot; value=&quot;10&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<p>成功运行<code>ServiceBeanTest</code>说明注入成功。</p>
+<h4 id="集合注入-2">集合注入</h4>
+<p>构造器注入集合数据类型的方式与Setter注入集合数据类型的方式类似。</p>
+<p>只不构造器注入要定义相应的带参方法，并且将<code>&lt;property&gt;</code>标签改为<code>&lt;constructor-arg&gt;</code>。</p>
+<h3 id="自动装配bean-标签的-autowire-属性">自动装配（bean 标签的 autowire 属性）</h3>
+<p>自动装配只适用于引用类型依赖注入，不能对简单类型进行操作。</p>
+<p>自动装配的方式有：</p>
+<ul>
+<li>按类型（常用）</li>
+<li>按名称</li>
+<li>按构造方法（的参数）</li>
+</ul>
+<h4 id="按类型自动装配">按类型自动装配</h4>
+<p>为<code>UserService</code>中的属性（如<code>userDao</code>）提供Setter方法。接着在Spring中为<code>UserService</code>删除其<code>&lt;bean&gt;</code>标签下的所有<code>&lt;proerty&gt;</code>或<code>&lt;constructor-arg&gt;</code>。然后给<code>&lt;bean&gt;</code>添加<code>autowire=&quot;byType&quot;</code>：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot; autowire=&quot;byType&quot;/&gt;
+</code></pre>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>类中对应属性的Setter方法不能省略。</li>
+<li>被注入的对象必须要被Spring的IOC容器管理。</li>
+<li>按照类型自动装配如果Spring在IOC中找到多个类型相同的Bean则会报<code>NoUniqueBeanDefinitionException</code>错误。</li>
+</ul>
+</blockquote>
+<h4 id="按名称自动装配">按名称自动装配</h4>
+<p>一个类型在IOC中有多个对象，还想要注入成功，这个时候就需要按照名称注入。</p>
+<p>修改Spring配置文件（添加<code>autowire=&quot;byName&quot;</code>）：</p>
+<pre><code class="language-xml">&lt;bean id=&quot;userService&quot; class=&quot;com.linner.service.impl.UserServiceImpl&quot; autowire=&quot;byName&quot;/&gt;
+</code></pre>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>按名称自动装配是根据Setter方法的名称在IOC容器中寻找名称对应的Bean（Bean的<code>id</code>或<code>name</code>）。如<code>setUserDao()</code>则需要寻找名称为<code>userDao</code>的Bean。</li>
+<li>如果按照名称找不到对应的Bean，则注入<code>null</code>（不会报错！）。</li>
+<li>按名称自动装配中，实例类成员变量名与配置耦合，不推荐使用。</li>
+</ul>
+</blockquote>
+<h2 id="配置文件管理第三方-beanproperties-文件加载">配置文件管理第三方 Bean（properties 文件加载）</h2>
+<h3 id="数据源对象管理dao层">数据源对象管理（DAO层）</h3>
+<p>以Druid为例：</p>
+<ul>
+<li>
+<p><code>pom.xml</code>依赖：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;!--Spring Framework--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;5.2.10.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--MySQL JDBC--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;version&gt;8.0.29&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--Druid--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+        &lt;artifactId&gt;druid&lt;/artifactId&gt;
+        &lt;version&gt;1.2.11&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+</li>
+<li>
+<p>JDBC配置（<code>jdbc.properties</code>）：</p>
+<pre><code class="language-properties">jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:33061/spring_db
+jdbc.username=root
+jdbc.password=n546,Lin0
+</code></pre>
+</li>
+<li>
+<p>Spring配置（<code>applicationContext.xml</code>）：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!--需要开启context命名空间--&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;!--加载jdbc配置文件--&gt;
+    &lt;context:property-placeholder location=&quot;classpath*:jdbc.properties&quot;/&gt;
+
+    &lt;!--Druid Bean--&gt;
+    &lt;bean class=&quot;com.alibaba.druid.pool.DruidDataSource&quot;&gt;
+        &lt;property name=&quot;driverClassName&quot; value=&quot;${jdbc.driver}&quot;/&gt;
+        &lt;property name=&quot;url&quot; value=&quot;${jdbc.url}&quot;/&gt;
+        &lt;property name=&quot;username&quot; value=&quot;${jdbc.username}&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;${jdbc.password}&quot;/&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</li>
+<li>
+<p>编写<code>App.java</code>：</p>
+<pre><code class="language-java">package com.linner;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        DruidDataSource dataSource = ctx.getBean(DruidDataSource.class);
+        System.out.println(dataSource);
+    }
+}
+</code></pre>
+<p>如果终端成功输出<code>dataSource</code>，说明配置成功。</p>
+</li>
+</ul>
+<hr>
+<h1 id="注解开发">注解开发</h1>
+<p>Spring对注解支持的版本历程:</p>
+<ul>
+<li>2.0版开始支持注解</li>
+<li>2.5版注解功能趋于完善</li>
+<li>3.0版支持纯注解开发</li>
+</ul>
+<p>基础配置：</p>
+<ol>
+<li>创建Maven项目。</li>
+<li>添加Spring Framework和Junit的依赖jar包。</li>
+<li>添加业务层、数据层类：
+<ul>
+<li><code>User.java</code>: 同<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的<code>User.java</code>。</li>
+<li>DAO(仅测试，无需查询数据库): 同<a href="#setter-%E6%B3%A8%E5%85%A5property-%E6%A0%87%E7%AD%BE">Setter 注入</a>中的DAO（<code>UserDao</code>）。</li>
+<li>Service: 同<a href="#setter-%E6%B3%A8%E5%85%A5property-%E6%A0%87%E7%AD%BE">Setter 注入</a>中的Service（<code>UserService</code>）。</li>
+</ul>
+</li>
+</ol>
+<h2 id="spring-配置文件包扫描">Spring 配置文件包扫描</h2>
+<p>为了能够获取到使用注解定义的Bean，需要在Spring配置文件中使用包扫描来识别出指定包下的所有Bean。</p>
+<p>创建Spring配置文件。在Spring配置文件中加入包扫描：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.linner&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<blockquote>
+<p>注意：<br>
+使用<code>&lt;context:component-scan&gt;</code>包扫描，需要在<code>&lt;beans&gt;</code>标签中加入属性：</p>
+<pre><code>xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+</code></pre>
+<p>接着在<code>&lt;context:component-scan&gt;</code>的<code>xsi:schemaLocation</code>属性中加入值：</p>
+<pre><code>http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+</code></pre>
+</blockquote>
+<p><code>&lt;context:component-scan&gt;</code>：</p>
+<ul>
+<li><code>component</code>：组件，Spring将管理的Bean视作自己的一个组件。</li>
+<li><code>scan</code>：扫描。</li>
+<li><code>base-package</code>：该属性指定Spring框架扫描的包路径，它会扫描指定包及其子包中的所有类上的注解。
+<ul>
+<li>包路径越精确，如：<code>com.linner.dao.impl</code>，扫描的范围越小速度越快。</li>
+<li>包路径越广泛，如：<code>com.linner</code>，扫描的范围越大速度越慢。</li>
+</ul>
+<blockquote>
+<p>一般扫描到项目的组织名称即Maven的<code>&lt;groupId&gt;</code>下（如：<code>com.linner</code>）即可。<br>
+包扫描不仅能扫描当前包，还能扫描当前包下的子包。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="创建-bean-对象component">创建 Bean 对象（@Component）</h2>
+<p>在<code>UserDao</code>中添加<code>@Component</code>注解：</p>
+<pre><code class="language-java">import org.springframework.stereotype.Component;
+
+@Component(&quot;userDao&quot;)
+public class UserDaoImpl implements UserDao {
+    // ...
+}
+</code></pre>
+<p>编写新的测试类<code>UserDaoTest</code>：</p>
+<pre><code class="language-java">package com.linner.dao;
+
+import com.linner.domain.User;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class UserDaoTest {
+    private static UserDao userDao;
+    static {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        userDao = (UserDao) ctx.getBean(&quot;userDao&quot;);
+    }
+
+    @Test
+    public void testFindAll() {
+        userDao.findAll();
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testFindById() {
+        int id = 12;
+        userDao.findById(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testDelete() {
+        int id = 12;
+        userDao.delete(id);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userDao.save(user);
+        System.out.println(&quot;------------&quot;);
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setId(12);
+        user.setUsername(&quot;abc&quot;);
+        user.setPassword(&quot;abc123&quot;);
+        userDao.update(user);
+        System.out.println(&quot;------------&quot;);
+    }
+}
+</code></pre>
+<ul>
+<li>
+<p><code>@Component</code>可以传递一个<code>String</code>类型的值。用于制定Bean的名称。</p>
+</li>
+<li>
+<p><code>@Component</code>可以直接使用而不指定名称。即，使用按类型获取Bean。但必须保证该类型在IOC中有且仅有一个Bean。如：</p>
+<pre><code class="language-java">@Component(&quot;userDao&quot;)
+public class UserDaoImpl implements UserDao {
+    // ...
+}
+</code></pre>
+<pre><code class="language-java">UserDao userDao = ctx.getBean(UserDao.class);
+</code></pre>
+</li>
+<li>
+<p><code>@Component</code>注解如果不起名称，会有一个默认值，就是将<u>当前类名首字母转为小写后的值</u>。所以也可以按照名称获取。</p>
+</li>
+<li>
+<p><code>@Component</code>还有其他三个衍生注解。</p>
+<ul>
+<li><code>@Controller</code>：表现层</li>
+<li><code>@Service</code>：业务层</li>
+<li><code>@Repository</code>：数据层<br>
+它们的作用和<code>@Component</code>是一样的，仅作为对表现层、业务层和数据层的类进行区分。如：</li>
+</ul>
+<pre><code class="language-java">import org.springframework.stereotype.Repository;
+
+@Repository(&quot;userDao&quot;)
+public class UserDaoImpl implements UserDao {
+    // ...
+}
+</code></pre>
+<pre><code class="language-java">import org.springframework.stereotype.Repository;
+
+@Repository
+public class UserDaoImpl implements UserDao {
+    // ...
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="纯注解开发配置类-包扫描">纯注解开发（配置类、包扫描）</h2>
+<p>Spring3.0开启了纯注解开发模式，使用Java类替代配置文件。</p>
+<p>删除Spring配置文件并创建配置类：</p>
+<pre><code class="language-java">package com.linner.config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(&quot;com.linner&quot;)
+public class SpringConfig {
+}
+</code></pre>
+<ul>
+<li>
+<p><code>@Configuration</code>：设定该类为Spring配置类。</p>
+</li>
+<li>
+<p><code>@ComponentScan</code>：包扫描，用来替换配置文件中的<code>&lt;context:component-scan&gt;</code>。在一个配置类中仅能使用一次。多个扫描路径使用数据格式，如：</p>
+<pre><code class="language-java">@ComponentScan({&quot;com.linner.dao&quot;, &quot;com.linner.service&quot;})
+</code></pre>
+<blockquote>
+<p>包扫描不仅能扫描当前包，还能扫描当前包下的子包</p>
+</blockquote>
+</li>
+</ul>
+<p>修改<code>UserDaoTest</code>：</p>
+<pre><code class="language-java">import com.linner.config.SpringConfig;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class UserDaoTest {
+    private static UserDao userDao;
+    static {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+        userDao = (UserDao) ctx.getBean(&quot;userDao&quot;);
+    }
+    // ...
+}
+</code></pre>
+<p>使用Spring配置类，获取IOC容器应该使用<code>AnnotationConfigApplicationContext</code>对象：</p>
+<pre><code class="language-java">public AnnotationConfigApplicationContext(Class&lt;?&gt;... componentClasses)
+</code></pre>
+<h2 id="作用范围scope">作用范围（@Scope）</h2>
+<p>注解开发控制Bean的作用范围使用<code>@Scope</code>。它的值有两个：</p>
+<ul>
+<li>
+<p><code>&quot;singleton&quot;</code>：默认值，将当前类设置为单例。</p>
+</li>
+<li>
+<p><code>&quot;prototype&quot;</code>：将当前类设置为多例。如：</p>
+<pre><code class="language-java">import org.springframework.context.annotation.Scope;
+
+@Repository
+@Scope(&quot;prototype&quot;)
+public class UserDaoImpl implements UserDao {
+    // ...
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="生命周期控制postconstruct-和-predestroy">生命周期控制（@PostConstruct 和 @PreDestroy）</h2>
+<p>注解控制Bean生命周期使用：</p>
+<ul>
+<li><code>@PostConstruct</code>：初始化。</li>
+<li><code>@PreDestroy</code>：销毁。</li>
+</ul>
+<p>给<code>UserDao</code>加入初始化和销毁方法（方法名任意）：</p>
+<pre><code class="language-java">import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+@Repository
+public class UserDaoImpl implements UserDao {
+
+    /**
+     * 初始化方法
+     */
+    @PostConstruct
+    public void init() {
+        System.out.println(this + &quot;init...&quot;);
+    }
+
+    /**
+     * 销毁方法
+     */
+    @PreDestroy
+    public void destroy() {
+        System.out.println(this + &quot;destroy...&quot;);
+    }
+    // ...
+}
+</code></pre>
+<blockquote>
+<p>与使用注解开发的情况一样，要想执行<code>destroy()</code>需要在程序执行的时候关闭容器：</p>
+<pre><code class="language-java">ctx.close();
+</code></pre>
+<p>或：</p>
+<pre><code class="language-java">ctx.registerShutdownHook();
+</code></pre>
+<p>注意:<code>@PostConstruct</code>和@<code>PreDestroy</code>注解如果找不到，需要导入下面的jar包==</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+&lt;groupId&gt;javax.annotation&lt;/groupId&gt;
+&lt;artifactId&gt;javax.annotation-api&lt;/artifactId&gt;
+&lt;version&gt;1.3.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>原因是，从JDK9以后jdk中的<code>javax.annotation</code>包被移除了，这两个注解刚好就在这个包中。</p>
+</blockquote>
+<h2 id="依赖注入">依赖注入</h2>
+<p>给<code>UserService</code>配置Bean：</p>
+<pre><code class="language-java">import org.springframework.stereotype.Service;
+
+@Service
+public class UserServiceImpl implements UserService {
+    // ...
+}
+</code></pre>
+<h3 id="按照类型注入">按照类型注入</h3>
+<p>注解开发按照类型注入使用<code>@Autowired</code>注解。</p>
+<p>给<code>UserService</code>注入<code>UserDao</code>：</p>
+<pre><code class="language-java">import org.springframework.beans.factory.annotation.Autowired;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDao userDao;
+    
+    // ...
+}
+</code></pre>
+<blockquote>
+<p><code>@Autowired</code>可以在实例类的成员变量上使用，也可以在Setter方法上使用，如：</p>
+<pre><code class="language-java">@Service
+public class UserServiceImpl implements UserService {
+
+    private UserDao userDao;
+
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+    // ...
+}
+</code></pre>
+<p>在实例类的成员变量上使用<code>@Autowired</code>，即使将Setter方法注释掉依然可以注入成功。因为自动装配基于反射设计创建对象并通过暴力反射为属性进行设值（即使是私有属性也能设值）。<br>
+使用<code>@Autowired</code>需要保证该类型在IOC容器中有且仅有一个同类型的Bean。<br>
+如果IOC容器中有对个同类型的Bean。那么<code>@Autowired</code>就会按照变量名和Bean的名称进行匹配。如：</p>
+<pre><code class="language-java">@Repository(&quot;userDao&quot;)
+public class UserDaoImpl implements UserDao { /*...*/ }
+</code></pre>
+<pre><code class="language-java">@Service
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserDao userDao;
+    // ...
+}
+</code></pre>
+<p>也能注入成功。<br>
+如果有多个同类型Bean，并且<code>@Autowired</code>名称匹配不上，那么会报<code>NoUniqueBeanDefinitionException</code>错误。</p>
+</blockquote>
+<p>使用<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的<code>UserServiceTest</code>，成功执行说明配置成功。</p>
+<h3 id="按照名称注入">按照名称注入</h3>
+<p>注解开发名称注入使用<code>@Qualifier</code>注解来完成。</p>
+<pre><code class="language-java">import org.springframework.beans.factory.annotation.Qualifier;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    @Qualifier(&quot;userDao&quot;)
+    private UserDao userDao;
+    
+    // ...
+}
+</code></pre>
+<p>在<code>@Qualifier</code>中指定Bean的名称。并且，<code>@Qualifier</code>必须和<code>@Autowired</code>一起使用才能起到按照名称注入的效果。</p>
+<blockquote>
+<p>经过测试单独使用<code>@Qualifier</code>（不加<code>@Autowired</code>）的效果和按照类型注入的效果一样（可能会有其他细微的区别）。</p>
+</blockquote>
+<h3 id="注入简单数据类型-3">注入简单数据类型</h3>
+<p>注解开发注入简单类型数据使用<code>@Value</code>注解。</p>
+<pre><code class="language-java">import org.springframework.beans.factory.annotation.Value;
+
+@Repository
+public class UserDaoImpl implements UserDao {
+
+    @Value(&quot;mysql&quot;)
+    private String databaseName;
+    @Value(&quot;10&quot;)
+    private int connectionNum;
+
+    // ...
+}
+</code></pre>
+<p><code>@Value</code>中的值使用<code>String</code>类型。如果要注入的是其他类型数据，需要按照其类型数据的格式编写。</p>
+<h4 id="注解读取-properties-配置文件">注解读取 properties 配置文件</h4>
+<p>使用<code>@Value</code>的意义之一在于：读取properties配置文件的信息。</p>
+<p>在<code>resource</code>目录下新建<code>jdbc.properties</code>：</p>
+<pre><code class="language-properties">databaseName=mysql
+connectionNum=10
+</code></pre>
+<p>在配置类上添加<code>@PropertySource</code>注解：</p>
+<pre><code class="language-java">import org.springframework.context.annotation.PropertySource;
+
+@Configuration
+@ComponentScan(&quot;com.linner&quot;)
+@PropertySource(&quot;jdbc.properties&quot;)
+public class SpringConfig {
+}
+</code></pre>
+<p>修改<code>UserDao</code>：</p>
+<pre><code class="language-java">@Repository
+public class UserDaoImpl implements UserDao {
+
+    @Value(&quot;${databaseName}&quot;)
+    private String databaseName;
+    @Value(&quot;${connectionNum}&quot;)
+    private int connectionNum;
+    
+    // ...
+}
+</code></pre>
+<ul>
+<li>
+<p>读取多个配置文件，使用数组形式给<code>@PropertySource</code>传递字符串数组。如：</p>
+<pre><code class="language-java">@PropertySource({&quot;jdbc.properties&quot;, &quot;xxx.properties&quot;})
+</code></pre>
+</li>
+<li>
+<p><code>@PropertySource</code>注解属性中不支持使用通配符<code>*</code>，运行会报错。</p>
+</li>
+<li>
+<p><code>@PropertySource</code>注解属性中可以加入<code>classpath:</code>，代表从当前项目的根路径找文件：</p>
+<pre><code class="language-java">@PropertySource({&quot;classpath:jdbc.properties&quot;})
+</code></pre>
+</li>
+</ul>
+<h2 id="注解管理第三方-bean">注解管理第三方 Bean</h2>
+<p>基础配置：</p>
+<ul>
+<li>
+<p><code>User.java</code>: 同<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的<code>User.java</code>。</p>
+</li>
+<li>
+<p><code>UserDao</code>：</p>
+<pre><code class="language-java">package com.linner.dao;
+
+import com.linner.domain.User;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+
+public interface UserDao {
+
+    @Select(&quot;SELECT * FROM user_tb&quot;)
+    List&lt;User&gt; findAll();
+
+    @Select((&quot;SELECT * FROM user_tb WHERE id = #{id}&quot;))
+    User findById(int id);
+
+    @Delete(&quot;DELETE FROM user_tb WHERE id = #{id}&quot;)
+    void delete(int id);
+
+    @Insert(&quot;INSERT INTO user_tb(username, password) VALUES (#{username}, #{password})&quot;)
+    void save(User user);
+
+    @Update(&quot;UPDATE user_tb SET username = #{username}, password = #{password} WHERE id = #{id}&quot;)
+    void update(User user);
+}
+</code></pre>
+</li>
+<li>
+<p><code>UserService</code>：</p>
+<p><code>UserService</code>接口同<a href="#%E4%BD%BF%E7%94%A8-ioc-%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA-beanbean-%E6%A0%87%E7%AD%BE">使用IOC容器创建Bean</a>中的<code>UserService.java</code>。<br>
+<code>UserService</code>实现类<code>UserServiceImpl.java</code>：</p>
+<pre><code class="language-java">package com.linner.service.impl;
+
+import com.linner.dao.UserDao;
+import com.linner.domain.User;
+import com.linner.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDao userDao;
+
+    @Override
+    public List&lt;User&gt; findAll() {
+        return userDao.findAll();
+    }
+
+    @Override
+    public User findById(int id) {
+        return userDao.findById(id);
+    }
+
+    @Override
+    public void delete(int id) {
+        userDao.delete(id);
+    }
+
+    @Override
+    public void save(User user) {
+        userDao.save(user);
+    }
+
+    @Override
+    public void update(User user) {
+        userDao.update(user);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="整合-mybatis">整合 Mybatis</h3>
+<ul>
+<li>
+<p><code>pom.xml</code>依赖：</p>
+<pre><code class="language-xml">&lt;!--Spring Framework--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+    &lt;version&gt;5.2.10.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--MySQL JDBC--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+    &lt;version&gt;8.0.29&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--Druid--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+    &lt;artifactId&gt;druid&lt;/artifactId&gt;
+    &lt;version&gt;1.2.11&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--MyBatis--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+    &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+    &lt;version&gt;3.5.10&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--Spring JDBC--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;5.2.10.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--MyBatis Spring 整合包--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+    &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+    &lt;version&gt;1.3.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--Junit 单元测试--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;junit&lt;/groupId&gt;
+    &lt;artifactId&gt;junit&lt;/artifactId&gt;
+    &lt;version&gt;4.13&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li>
+<p>建立User表：</p>
+<pre><code class="language-sql">DROP TABLE IF EXISTS `user_tb`;
+CREATE TABLE `user_tb`  (
+`id` int(10) PRIMARY KEY AUTO_INCREMENT COMMENT '用户id',
+`username` varchar(10) NOT NULL COMMENT '用户名',
+`password` varchar(10) NOT NULL COMMENT '密码'
+) CHARACTER SET = utf8;
+</code></pre>
+</li>
+<li>
+<p>JDBC配置文件<code>jdbc.properties</code>：</p>
+<pre><code class="language-properties">jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/spring_db?useSSL=false&amp;useServerPrepStmts=true
+jdbc.username=root
+jdbc.password=root
+</code></pre>
+</li>
+<li>
+<p>JDBC配置类<code>JdbcConfig.java</code>：</p>
+<pre><code class="language-java">package com.linner.config;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+
+import javax.sql.DataSource;
+
+public class JdbcConfig {
+    // 驱动信息：
+    @Value(&quot;${jdbc.driver}&quot;)
+    private String driver;
+    @Value(&quot;${jdbc.url}&quot;)
+    private String url;
+    @Value(&quot;${jdbc.username}&quot;)
+    private String username;
+    @Value(&quot;${jdbc.password}&quot;)
+    private String password;
+
+    /**
+     * 获取DataSource对象
+     */
+    @Bean
+    public DataSource dataSource() {
+        DruidDataSource ds = new DruidDataSource();
+        // 设置驱动信息
+        ds.setDriverClassName(this.driver);
+        ds.setUrl(this.url);
+        ds.setUsername(this.username);
+        ds.setPassword(this.password);
+        return ds;
+    }
+}
+</code></pre>
+<ul>
+<li><code>@Bean</code>：用于方法上，根据返回值类型自动产生Bean，并且方法的参数会按照类型自动装配。</li>
+</ul>
+</li>
+<li>
+<p>Mybatis配置类<code>MybatisConfig.java</code>：</p>
+<pre><code class="language-java">package com.linner.config;
+
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.context.annotation.Bean;
+
+import javax.sql.DataSource;
+
+public class MybatisConfig {
+
+    @Bean
+    public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
+        SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
+        // 设置模型类的别名扫描
+        ssfb.setTypeAliasesPackage(&quot;com.linner.domain&quot;);
+        // 设置数据源
+        ssfb.setDataSource(dataSource);
+        return ssfb;
+    }
+
+    /**
+    * 获取MapperScannerConfigurer对象
+    */
+    @Bean
+    public MapperScannerConfigurer mapperScannerConfigurer() {
+        MapperScannerConfigurer msc = new MapperScannerConfigurer();
+        msc.setBasePackage(&quot;com.linner.dao&quot;);
+        return msc;
+    }
+}
+</code></pre>
+<ul>
+<li><code>SqlSessionFactoryBean</code>：用于封装<code>SqlSessionFactory</code>需要的环境信息（原先的信息是在Mybatis配置文件中定义，如今可以在Java中用代码定义）。用于产生<code>SqlSessionFactory</code>对象。
+<ul>
+<li><code>setTypeAliasesPackage()</code>：设置模型类的别名扫描</li>
+<li><code>setDataSource()</code>：设置<code>DataSource</code>。这里设置的<code>DataSource</code>通过方法的参数和<code>@Bean</code>注解实现了自动装配。并且自动装配的对像是Druid的<code>DataSource</code>。</li>
+</ul>
+</li>
+<li><code>MapperScannerConfigurer</code>：用于加载Dao接口，创建代理对象保存到IOC容器中。此处设置的是<code>dao</code>包下的所有接口。这些接口都会被Mybatis创建成对象并且作为Bean保存在IOC容器中。即，使用<code>ctx.getBean(UserDao.class)</code>能获取到<code>UserDao</code>。</li>
+</ul>
+</li>
+<li>
+<p>Spring配置类<code>SpringConfig.java</code>：</p>
+<pre><code class="language-java">package com.linner.config;
+
+import org.springframework.context.annotation.*;
+
+@Configuration
+@ComponentScan(&quot;com.linner&quot;)
+@PropertySource(&quot;classpath:jdbc.properties&quot;)
+@Import({JdbcConfig.class, MybatisConfig.class})
+public class SpringConfig {
+}
+</code></pre>
+<ul>
+<li><code>@Import</code>：用于引入其他配置类。如果要引入多个配置类则需要使用数组形式。</li>
+</ul>
+</li>
+<li>
+<p>测试类<code>UserServiceTest</code>：</p>
+<pre><code class="language-java">package com.linner;
+
+import com.linner.config.SpringConfig;
+import com.linner.domain.User;
+import com.linner.service.UserService;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.List;
+
+public class UserServiceTest {
+    private static UserService userService;
+    static {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+        userService = ctx.getBean(UserService.class);
+    }
+
+    @Test
+    public void testFindAll() {
+        List&lt;User&gt; users = userService.findAll();
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testFindById() {
+        int id = 10;
+        User user = userService.findById(id);
+        System.out.println(user);
+    }
+
+    @Test
+    public void testDelete() {
+        int id = 10;
+        userService.delete(id);
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User();
+        user.setUsername(&quot;张三&quot;);
+        user.setPassword(&quot;abc&quot;);
+        userService.save(user);
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setId(21);
+        user.setUsername(&quot;张三&quot;);
+        user.setPassword(&quot;abc&quot;);
+        userService.update(user);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="整合-junit">整合 Junit</h3>
+<ul>
+<li>
+<p>引入Spring与测试有关的整合包：</p>
+<pre><code class="language-xml">&lt;!--Spring 测试整合包--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+    &lt;version&gt;5.2.10.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li>
+<p>修改测试类<code>UserServiceTest</code>：</p>
+<pre><code class="language-java">import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+
+// 设置类运行器
+@RunWith(SpringJUnit4ClassRunner.class)
+// 设置Spring环境对应的配置
+// 加载配置类
+@ContextConfiguration(classes = {SpringConfig.class})
+// 加载配置文件
+//@ContextConfiguration(locations={&quot;classpath:applicationContext.xml&quot;})
+public class UserServiceTest {
+
+    // 自动装配UserService，删除static静态代码块
+    @Autowired
+    private UserService userService;
+
+    
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="aop">AOP</h2>
+<h3 id="aop-介绍">AOP 介绍</h3>
+<p>一般常用的编程思想是OOP（面向对象编程，Object Oriented Programming）。</p>
+<p>而AOP（面向切面编程，Aspect Oriented Programming），是一种编程范式，指导开发者如何组织程序结构。</p>
+<p>编程思想主要的内容就是指导程序员该如何编写程序，所以AOP和OOP是两种不同的编程范式。</p>
+<p>AOP的作用是在不改变原始设计的基础上为其进行功能增强。类似于Filter代理模式。</p>
+<p>AOP术语：</p>
+<ul>
+<li>连接点（JoinPoint）：程序执行过程中的任意位置，粒度为执行方法、抛出异常、设置变量等。<br>
+在SpringAOP中，理解为方法的执行。<br>
+例如要对项目中<code>UserDao</code>的功能在不进行任何修改的前提下实现增强。那么<code>UserDao</code>中要增强的方法即为<u>连接点</u>。</li>
+<li>切入点（Pointcut）：匹配连接点的式子。<br>
+在SpringAOP中，一个切入点可以描述一个具体方法，也可也匹配多个方法。
+<blockquote>
+<p>连接点范围要比切入点范围大，是切入点的方法也一定是连接点，但是是连接点的方法就不一定要被增强，所以可能不是切入点。</p>
+</blockquote>
+</li>
+<li>通知（Advice）：在切入点处执行的操作，也就是共性功能。<br>
+在SpringAOP中，功能最终以方法的形式呈现。</li>
+<li>通知类：定义通知的类。</li>
+<li>切面（Aspect）：描述通知与切入点的对应关系。<br>
+通知是要增强的内容，会有多个；切入点是需要被增强的方法，也会有多个。通知和切入点的关系通过切面来描述。</li>
+<li>目标对象（Target）：也叫原始对象。原始功能去掉共性功能对应的类产生的对象。即，配置AOP之前原设计的对象（要增强的对象）。</li>
+<li>代理（Proxy）：通过通知类把目标对象增强后产生的对象。<br>
+目标对象无法直接完成工作，需要对其进行功能回填，通过原始对象的代理对象实现。</li>
+</ul>
+<h3 id="注解开发-aop">注解开发 AOP</h3>
+<p>基础配置：使用<a href="#%E6%95%B4%E5%90%88-junit">整合 Junit</a>中的配置。</p>
+<ul>
+<li>
+<p><code>pom.xml</code>导入坐标：</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+    &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;
+    &lt;version&gt;1.9.4&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ul>
+<li><code>spring-context</code>中已经包含了<code>spring-aop</code>，所以不需要再单独导入<code>spring-aop</code>。</li>
+<li>AspectJ是AOP思想的一个具体实现，AspectJ比起Spring的AOP实现来说，更加好用。</li>
+</ul>
+</li>
+<li>
+<p>创建通知类<code>UserDaoAdvice</code>：</p>
+<pre><code class="language-java">package com.linner.aop;
+
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class UserDaoAdvice {
+
+    @Pointcut(&quot;execution(* com.linner.dao.UserDao.*(..))&quot;)
+    private void pt() {}
+
+    @Before(&quot;pt()&quot;)
+    public void method() {
+        System.out.println(&quot;Before...&quot;);
+    }
+
+}
+</code></pre>
+<ul>
+<li><code>@Aspect</code>：设置当前类为AOP切面类。</li>
+<li><code>@Pointcut</code>：设置切入点方法。切入点定义需要一个不具有实际意义的方法（无参、无返回值、空方法体）。即<code>UserDaoAdvice</code>中的<code>pt()</code>。<br>
+<code>@Pointcut</code>中的<code>execution()</code>用来定义切入点。</li>
+<li><code>@Before</code>：设置切面。即设置当前通知方法在原始切入点方法前运行。<br>
+切入点定义作为<code>@Before</code>的参数。</li>
+</ul>
+</li>
+<li>
+<p>在<code>SpringConfig</code>加入<code>@EnableAspectJAutoProxy</code>注解：</p>
+<pre><code class="language-java">import org.springframework.context.annotation.*;
+
+@Configuration
+@ComponentScan(&quot;com.linner&quot;)
+@EnableAspectJAutoProxy
+@PropertySource(&quot;classpath:jdbc.properties&quot;)
+@Import({JdbcConfig.class, MybatisConfig.class})
+public class SpringConfig {
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="aop-切入点表达式">AOP 切入点表达式</h3>
+<p>切入点表达式是对要进行增强的方法的描述方式。切入点表达式的一般形式如下：</p>
+<pre><code class="language-java">动作关键字(访问修饰符 返回值类型 包名.类名.方法名(参数类型列表) 异常名)
+</code></pre>
+<ul>
+<li>由于通常都是对<code>public</code>方法进行定义，而<code>public</code>是默认的，所以可以省略。</li>
+<li>切入点表达式定义的类可以是接口，也可以是其实现类。</li>
+<li>AOP是在Spring中运行的，很显然切入点表达式定义的类必须存在IOC容器中。</li>
+<li>如果匹配无参方法，直接省略参数。</li>
+</ul>
+<p>Example：</p>
+<pre><code class="language-java">execution(void com.linner.dao.UserDao.delete(int))
+</code></pre>
+<h4 id="切入点表达式通配符">切入点表达式通配符</h4>
+<ul>
+<li>
+<p><code>*</code>：匹配任意单个独立的任意符号。<br>
+可以独立出现，匹配任意返回值类型、单个包名（不能用做匹配完整包名）、类名、方法名或单个参数类型（即匹配单个单词）；<br>
+也可以作为前缀或者后缀的匹配符出现。</p>
+<p>如：</p>
+<pre><code class="language-java">execution（* com.linner.*.UserService.find*(*))
+</code></pre>
+<p>匹配<code>com.linner</code>包下的任意包中的<code>UserService</code>类或接口中，所有以<code>find</code>开头的、带有一个参数的、任意返回值类型的方法。</p>
+</li>
+<li>
+<p><code>..</code>：匹配多个连续的任意符号。<br>
+可以独立出现，常用于简化包名与参数的书写。</p>
+<pre><code class="language-java">execution（* com..UserService.findById(..))
+</code></pre>
+<p>匹配<code>com</code>包下的任意包中的<code>UserService</code>类或接口中所有名称为<code>findById</code>的（参数的数量、类型任意，返回值任意）方法。</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>+</code>：专用于匹配子类类型。</p>
+<pre><code class="language-java">execution(* *..*Service+.*(..))
+</code></pre>
+<p>这个使用率较低。<code>*Service+</code>，表示所有以Service结尾的接口的子类。</p>
+</li>
+</ul>
+<p>书写技巧（所有代码按照标准规范开发，否则以下技巧全部失效）：</p>
+<ul>
+<li>描述切入点通常<u>描述接口</u>，而不描述实现类，如果描述到实现类，就出现耦合了。</li>
+<li>访问控制修饰符针对接口开发均采用<code>public</code>描述（简化书写）。</li>
+<li>返回值类型对于<u>增删改方法使用精准类型</u>加速匹配，对于查询类使用<code>*</code>通配快速描述。</li>
+<li>包名书写尽量不使用<code>..</code>匹配，效率过低，常用<code>*</code>做单个包描述匹配，或精准匹配。</li>
+<li>接口名/类名书写名称与模块相关的采用<code>*</code>匹配，例如<code>UserService</code>书写成<code>*Service</code>，绑定业务层接口名。</li>
+<li>方法名书写以动词进行精准匹配，名词采用<code>*</code>匹配，例如<code>getById</code>书写成<code>getBy*</code>，<code>selectAll</code>书写成<code>selectAll</code>。</li>
+<li>参数规则较为复杂，根据业务方法灵活调整。</li>
+<li>通常不使用异常作为匹配规则。</li>
+</ul>
+<h4 id="通知类型">通知类型</h4>
+<p>AOP通知描述了抽取的共性功能，根据共性功能抽取的位置不同，最终运行代码时要将其加入到合理的位置。</p>
+<p>AspactJ提供了5种通知类型：</p>
+<ul>
+<li>前置通知</li>
+<li>后置通知</li>
+<li>环绕通知</li>
+<li>返回后通知</li>
+<li>抛出异常后通知</li>
+</ul>
+<pre><code class="language-java">// 代码1
+try {
+    // 代码2
+    // 原始的业务操作
+    // 代码3
+} catch (Exception e) {
+    // 代码4
+}
+// 代码5
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>前置通知：代码1和代码2</li>
+<li>返回后通知：代码3</li>
+<li>抛出异常后通知：代码4</li>
+<li>后置通知:代码5</li>
+<li>环绕通知：上述整个代码块</li>
+</ul>
+<p>通知方法的方法名称没有限制，只需在方法的上端使用注解定义即可。各通知类型的注解如下：</p>
+<ul>
+<li>前置通知：<code>@Before</code></li>
+<li>后置通知：<code>@After</code></li>
+<li>环绕通知：<code>@Around</code></li>
+<li>返回后通知：<code>@AfterReturning</code></li>
+<li>抛出异常后通知：<code>@AfterThrowing</code></li>
+</ul>
+<p>这些注解的使用方式都是一样的。在对应的方法上定义，并且传入切入点（函数形式）。如：<code>@Around(&quot;pt()&quot;)</code>。</p>
+<h5 id="前置通知和后置通知的使用">前置通知和后置通知的使用</h5>
+<p>前置通知和后置通知的使用方式一样：</p>
+<pre><code class="language-java">@Component
+@Aspect
+public class UserDaoAdvice {
+    @Pointcut(&quot;execution(* com.linner.dao.UserDao.*(..))&quot;)
+    private void pt() {}
+
+    @Before(&quot;pt()&quot;)
+    public void before() {
+        System.out.println(&quot;Before...&quot;);
+    }
+
+    @After(&quot;pt()&quot;)
+    public void after() {
+        System.out.println(&quot;After...&quot;);
+    }
+}
+</code></pre>
+<h5 id="环绕通知的使用">环绕通知的使用</h5>
+<pre><code class="language-java">import org.aspectj.lang.ProceedingJoinPoint;
+
+@Component
+@Aspect
+public class UserDaoAdvice {
+    @Pointcut(&quot;execution(* com.linner.dao.UserDao.findById(int))&quot;)
+    private void pt() {}
+
+    @Around(&quot;pt()&quot;)
+    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println(&quot;Before...&quot;);
+        Object ret = pjp.proceed();
+        System.out.println(&quot;After....&quot;);
+        return ret;
+    }
+}
+</code></pre>
+<p>环绕通知必须传入一个<code>ProceedingJoinPoint</code>参数。使用<code>pjp.proceed()</code>才可以在环绕通知中掉用原始方法。并且<code>proceed()</code>可以获取到原始方法的返回值。</p>
+<p>如果也想让代理后的方法返回跟原始方法一样的值。那么必须定义环绕方法的返回值类型，并且使用<code>proceed()</code>获取原始方法的返回值并返回。</p>
+<p>环绕通知比较灵活，可以将其定义成其他类型的通知，并且可以做到其他通知做不到的事情。例如循环调用原始方法等。</p>
+<p>环绕通知需要抛出异常是因为。原始方法有可能会出现异常，并且原始方法的异常并不确定。所以为了提高通用性，环绕通知默认抛出异常。</p>
+<p>如果环绕方法定义的是<code>void</code>类型，并且原始方法有返回值。如果此时在环绕通知中没有返回值，那么在掉用代理后的方法后，返回的是<code>null</code>。</p>
+<h5 id="返回后通知的使用">返回后通知的使用</h5>
+<pre><code class="language-java">@Component
+@Aspect
+public class UserDaoAdvice {
+    @Pointcut(&quot;execution(* com.linner.dao.UserDao.findById(int))&quot;)
+    private void pt() {}
+
+    @AfterReturning(&quot;pt()&quot;)
+    public void afterReturning() {
+        System.out.println(&quot;After Returning...&quot;);
+    }
+}
+</code></pre>
+<blockquote>
+<p>注意：返回后通知是需要在原始方法正常执行后才会被执行，如果原始方法执行的过程中出现了异常，那么返回后通知不会被执行。<br>
+后置通知是不管原始方法有没有抛出异常都会被执行。</p>
+</blockquote>
+<h5 id="异常后通知">异常后通知</h5>
+<pre><code class="language-java">@Component
+@Aspect
+public class UserDaoAdvice {
+    @Pointcut(&quot;execution(* com.linner.service.UserService.findAll())&quot;)
+    private void pt() {}
+
+    @AfterThrowing(&quot;pt()&quot;)
+    public void afterThrowing() {
+        System.out.println(&quot;After Throwing...&quot;);
+    }
+}
+</code></pre>
+<p>在<code>UserServiceImpl.findAll()</code>中模拟错误即可触发。例如使用<code>int a = 1/0;</code>模拟错误。</p>
+<blockquote>
+<p>注意：异常后通知是需要原始方法抛出异常。如果没有抛异常，异常后通知将不会被执行。</p>
+</blockquote>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/Ajax 前后端交互/" class="post-title gt-a-link">
+                    Ajax 前后端交互
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

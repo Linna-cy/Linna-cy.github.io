@@ -1,0 +1,1721 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>HttpServlet 与 Tomcat | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            HttpServlet 与 Tomcat
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-09-12</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/T9BN3xwNV/"> <span>#Tomcat </span></a>  
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/">
+                <span>#JavaWeb </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >30<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >6334<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#httpservlet-%E7%AE%80%E4%BB%8B">HttpServlet 简介</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8servlet%E5%AE%9E%E7%8E%B0httpservlet">使用Servlet实现HttpServlet</a></li>
+</ul>
+</li>
+<li><a href="#httpservletrequest-%E5%92%8C-httpservletresponse">HttpServletRequest 和 HttpServletResponse</a>
+<ul>
+<li><a href="#request-%E5%92%8C-response-%E6%A6%82%E8%BF%B0">Request 和 Response 概述</a></li>
+<li><a href="#request-%E5%92%8C-response-%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB">Request 和 Response 继承体系</a></li>
+</ul>
+</li>
+<li><a href="#httpservletrequest">HttpServletRequest</a>
+<ul>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E8%A1%8C%E6%95%B0%E6%8D%AE">获取请求行数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%A4%B4%E6%95%B0%E6%8D%AE">获取请求头数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E4%BD%93%E6%95%B0%E6%8D%AE">获取请求体数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0">获取请求参数</a></li>
+<li><a href="#%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91">请求转发</a></li>
+<li><a href="#tomcat7-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98">Tomcat7 请求参数中文乱码问题</a></li>
+</ul>
+</li>
+<li><a href="#httpservletresponse">HttpServletResponse</a>
+<ul>
+<li><a href="#respones%E9%87%8D%E5%AE%9A%E5%90%91">Respones重定向</a></li>
+<li><a href="#%E5%93%8D%E5%BA%94%E5%AD%97%E7%AC%A6%E6%95%B0%E6%8D%AE">响应字符数据</a></li>
+<li><a href="#%E5%93%8D%E5%BA%94%E5%AD%97%E8%8A%82%E6%95%B0%E6%8D%AE">响应字节数据</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a>
+<ul>
+<li><a href="#httpservletrequest-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">HttpServletRequest 常用方法</a></li>
+<li><a href="#httpservletresponse-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">HttpServletResponse 常用方法</a></li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#httpservlet-%E7%AE%80%E4%BB%8B">HttpServlet 简介</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8servlet%E5%AE%9E%E7%8E%B0httpservlet">使用Servlet实现HttpServlet</a></li>
+</ul>
+</li>
+<li><a href="#httpservletrequest-%E5%92%8C-httpservletresponse">HttpServletRequest 和 HttpServletResponse</a>
+<ul>
+<li><a href="#request-%E5%92%8C-response-%E6%A6%82%E8%BF%B0">Request 和 Response 概述</a></li>
+<li><a href="#request-%E5%92%8C-response-%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB">Request 和 Response 继承体系</a></li>
+</ul>
+</li>
+<li><a href="#httpservletrequest">HttpServletRequest</a>
+<ul>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E8%A1%8C%E6%95%B0%E6%8D%AE">获取请求行数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%A4%B4%E6%95%B0%E6%8D%AE">获取请求头数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E4%BD%93%E6%95%B0%E6%8D%AE">获取请求体数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0">获取请求参数</a></li>
+<li><a href="#%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91">请求转发</a></li>
+<li><a href="#tomcat7-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98">Tomcat7 请求参数中文乱码问题</a></li>
+</ul>
+</li>
+<li><a href="#httpservletresponse">HttpServletResponse</a>
+<ul>
+<li><a href="#respones%E9%87%8D%E5%AE%9A%E5%90%91">Respones重定向</a></li>
+<li><a href="#%E5%93%8D%E5%BA%94%E5%AD%97%E7%AC%A6%E6%95%B0%E6%8D%AE">响应字符数据</a></li>
+<li><a href="#%E5%93%8D%E5%BA%94%E5%AD%97%E8%8A%82%E6%95%B0%E6%8D%AE">响应字节数据</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a>
+<ul>
+<li><a href="#httpservletrequest-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">HttpServletRequest 常用方法</a></li>
+<li><a href="#httpservletresponse-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">HttpServletResponse 常用方法</a></li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    
+                    <blockquote>
+<p>相关文章链接:</p>
+<ul>
+<li><a href="https://linna-cy.github.io/Maven/">Maven</a></li>
+<li><a href="https://linna-cy.github.io/Tomcat/">Tomcat</a></li>
+<li><a href="https://linna-cy.github.io/Servlet/">Servlet 与 Tomcat</a></li>
+</ul>
+</blockquote>
+<h1 id="httpservlet-简介">HttpServlet 简介</h1>
+<p>HttpServlet是对HTTP协议封装的Servlet实现类。</p>
+<p>Servlet的体系结构：</p>
+<figure data-type="image" tabindex="1"><img src="https://linna-cy.github.io/post-images/1627240593506.png" alt="" loading="lazy"></figure>
+<p>在开发中，关注更多的是<code>Servlet.service()</code>方法。而每实现一个Servlet就必须实现Servlet接口，重写接口中的5个方法。</p>
+<p>但其实可以通过继承HttpServlet来编写Servlet，简化Servlet的开发流程。并且，如果是开发B/S架构的Web项目，针对的都是HTTP协议。</p>
+<p>使用HttpServlet的格式如下：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+
+@WebServlet(&quot;/demo&quot;)
+public class ServletDemo extends HttpServlet {
+
+    // 需要复写以下两个方法:
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(&quot;Get...&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(&quot;Post...&quot;);
+    }
+}
+</code></pre>
+<ul>
+<li>
+<p>启动Tomcat，使用浏览器访问<a href="http://localhost:8080/web-demo/demo">http://localhost:8080/web-demo/demo</a>可以在控制台看到<code>doGet()</code>方法被执行。</p>
+</li>
+<li>
+<p>在项目的<code>webapp</code>目录下新建<code>index.html</code>，写入：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;TestPost&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form action=&quot;/web-demo/demo&quot; method=&quot;post&quot;&gt;
+        &lt;input name=&quot;username&quot;/&gt;&lt;input type=&quot;submit&quot;/&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>启动Tomcat，访问<a href="http://localhost:8080/web-demo/">http://localhost:8080/web-demo/</a>，在表单输入内容后提交。即可在控制台看到<code>doPost()</code>被执行。</p>
+</li>
+</ul>
+<h2 id="使用servlet实现httpservlet">使用Servlet实现HttpServlet</h2>
+<p>既然HttpServlet继承自Servlet，那么也可以通过编写Servlet类来实现HttpServlet：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+public class MyHttpServlet implements Servlet {
+
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+
+    }
+
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        // 根据请求方式的不同,分别进行处理
+
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        // 1. 获取请求方式
+        String method = request.getMethod();
+
+        // 2. 判断
+        if (&quot;GET&quot;.equals(method)) {
+            // GET 方式的处理逻辑
+            doGet(servletRequest, servletResponse);
+        } else if (&quot;POST&quot;.equals(method)) {
+            // POST 方式的处理逻辑
+            doPost(servletRequest, servletResponse);
+        }
+    }
+
+    protected void doPost(ServletRequest servletRequest, ServletResponse servletResponse) {
+    }
+
+    protected void doGet(ServletRequest servletRequest, ServletResponse servletResponse) {
+    }
+
+    @Override
+    public String getServletInfo() {
+        return null;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+</code></pre>
+<blockquote>
+<p>翻阅<code>HttpServlet.service()</code>方法源码，可以发现HttpServlet不仅仅可以对GET和POST进行处理，还能处理其它五种请求：<code>doHead()</code>、<code>doPut()</code>、<code>doDelete()</code>、<code>doOptions()</code>和<code>doTrace()</code>。</p>
+</blockquote>
+<hr>
+<h1 id="httpservletrequest-和-httpservletresponse">HttpServletRequest 和 HttpServletResponse</h1>
+<h2 id="request-和-response-概述">Request 和 Response 概述</h2>
+<p><code>Request</code>是请求对象，<code>Response</code>是响应对象。在Servlet中也存在这样的两个对象：</p>
+<pre><code class="language-java">public class ServletDemo implements Servlet {
+
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        // ...
+    }
+
+    // ......
+
+}
+</code></pre>
+<p><code>Request</code>作用：获取请求数据</p>
+<ul>
+<li>浏览器会发送HTTP请求到后台服务器（如，Tomcat）</li>
+<li>HTTP的请求中会包含很多请求数据<br>
+如，HTTP协议请求：
+<ul>
+<li>请求行</li>
+<li>请求头</li>
+<li>请求体</li>
+</ul>
+</li>
+<li>后台服务器会对HTTP请求中的数据进行解析并把解析结果存入到一个对象中<br>
+所存入的对象即为<code>Request</code>对象，所以我们可以从<code>Request</code>对象中获取请求的相关参数</li>
+<li>获取到数据后就可以继续后续的业务<br>
+如，获取用户名和密码就可以实现登录操作的相关业务</li>
+</ul>
+<p><code>Response</code>作用：设置响应数据</p>
+<ul>
+<li>业务处理完后，后台就需要给前端返回业务处理的结果（即，响应数据）</li>
+<li>把响应数据封装到<code>Response</code>对象中</li>
+<li>后台服务器会解析<code>Response</code>对象，按照格式（响应行+响应头+响应体）拼接结果</li>
+<li>浏览器最终解析结果，把内容展示在浏览器给用户浏览</li>
+</ul>
+<p>而HttpServlet使用的 <code>Request</code> 和 <code>Response</code> 对象与Servlet有所不同。HttpServlet使用的是 <code>HttpServletRequest</code> 和 <code>HttpServletResponse</code>。</p>
+<p>Example：</p>
+<pre><code class="language-java">@WebServlet(&quot;/demo&quot;)
+public class HttpServletDemo extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 使用request对象 获取请求数据
+        String name = request.getParameter(&quot;name&quot;); 
+        // Parameter在地址中以 ? 开始：url?name=zhangsan
+
+        // 使用response对象 设置响应数据
+        response.setHeader(&quot;content-type&quot;,&quot;text/html;charset=utf-8&quot;);
+        response.getWriter().write(&quot;&lt;h1&gt;&quot;+name+&quot;,欢迎您！&lt;/h1&gt;&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<h2 id="request-和-response-继承体系">Request 和 Response 继承体系</h2>
+<p><code>HttpServletRequest</code>和<code>ServletRequest</code>之间是继承关系，<code>HttpServletResponse</code>和<code>ServletResponse</code>是继承关系。</p>
+<p><code>Request</code>之间的继承关系如下：</p>
+<figure data-type="image" tabindex="2"><img src="https://linna-cy.github.io/post-images/1628740441008.png" alt="" loading="lazy"></figure>
+<p><code>Response</code>之间的继承关系如下：</p>
+<figure data-type="image" tabindex="3"><img src="https://linna-cy.github.io/post-images/1628857761317.png" alt="" loading="lazy"></figure>
+<hr>
+<h1 id="httpservletrequest">HttpServletRequest</h1>
+<p>HTTP常用的请求方式为：</p>
+<ul>
+<li>GET</li>
+<li>POST</li>
+</ul>
+<p>HTTP请求数据总共分为三部分内容：</p>
+<ul>
+<li>请求行</li>
+<li>请求头</li>
+<li>请求体</li>
+</ul>
+<p>在请求数据中，还包含着请求参数：</p>
+<ul>
+<li>对于GET：请求参数包含在请求头中。</li>
+<li>对于POST：请求参数一般包含在请求体中。</li>
+</ul>
+<h2 id="获取请求行数据">获取请求行数据</h2>
+<p>如打开以下链接：</p>
+<pre><code>http://localhost:8080/HttpServlet/httpservlet.html?username=linner
+</code></pre>
+<p>其请求行大致内容如下：</p>
+<pre><code>GET /HttpServlet/httpservlet.html?username=linner HTTP/1.1
+</code></pre>
+<p>包含以下三部分内容：</p>
+<ul>
+<li><strong>请求方式</strong>：<code>GET</code></li>
+<li><strong>请求资源路径</strong>：<code>/HttpServlet/httpservlet.html?username=linner</code><br>
+请求资源路径包含：
+<ul>
+<li>虚拟目录（项目访问路径）：<code>/HttpServlet</code></li>
+<li>URI（统一资源标识符）：<code>/HttpServlet/httpservlet.html</code></li>
+<li>请求参数：<code>username=linner</code></li>
+</ul>
+</li>
+<li><strong>HTTP协议及版本</strong>：<code>HTTP/1.1</code></li>
+</ul>
+<p>这三部分内容，<code>HttpServletRequest</code>对象都提供了对应的API方法来获取：</p>
+<ul>
+<li>
+<p>获取请求方式：</p>
+<pre><code class="language-java">String getMethod()
+</code></pre>
+<p>返回：<code>GET</code></p>
+</li>
+<li>
+<p>获取虚拟目录（项目访问路径）:</p>
+<pre><code class="language-java">String getContextPath()
+</code></pre>
+<p>返回：<code>/HttpServlet</code></p>
+</li>
+<li>
+<p>获取URL（统一资源定位符）:</p>
+<pre><code class="language-java">StringBuffer getRequestURL()
+</code></pre>
+<p>返回：<code>http://localhost:8080/HttpServlet/httpservlet.htm</code></p>
+</li>
+<li>
+<p>获取URI（统一资源标识符）:</p>
+<pre><code class="language-java">String getRequestURI()
+</code></pre>
+<p>返回：<code>/HttpServlet/httpservlet.html</code></p>
+</li>
+<li>
+<p>获取请求参数（GET方式）:</p>
+<pre><code class="language-java">String getQueryString()
+</code></pre>
+<p>返回：<code>username=linner</code>（多个参数也一并返回）</p>
+</li>
+</ul>
+<p>Example：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+
+@WebServlet(&quot;/test&quot;)
+public class TestHttpServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(&quot;---------------------------------------&quot;);
+        System.out.println(&quot;请求行：&quot;);
+        System.out.println(&quot;请求方式：&quot; + request.getMethod());
+        System.out.println(&quot;虚拟目录：&quot; + request.getContextPath());
+        System.out.println(&quot;URL：&quot; + request.getRequestURL());
+        System.out.println(&quot;URI：&quot; + request.getRequestURI());
+        System.out.println(&quot;请求参数：&quot; + request.getQueryString());
+        System.out.println(&quot;---------------------------------------&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<h2 id="获取请求头数据">获取请求头数据</h2>
+<p>请求头数据由多个 <code>key: value</code> 组成，如客户端浏览器的版本信息：</p>
+<pre><code>User-Agent: Mozila/5.0 Chrome/105.0.0.0 Edg/105.0.1343.42
+</code></pre>
+<p><code>HttpServletRequest</code> 获取请求头的方法为：</p>
+<pre><code>String getHeader(String name)
+</code></pre>
+<ul>
+<li><code>name</code>：是请求头中的<code>key</code>。</li>
+<li>返回值：返回<code>name</code>对应<code>key</code>的<code>value</code>。</li>
+</ul>
+<p>使用<code>getHeader()</code>获取客户端浏览器的版本信息：</p>
+<pre><code class="language-java">package com.linner.web.request;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo7 extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String agent = request.getHeader(&quot;user-agent&quot;); // name 不区分大小写
+        System.out.println(agent);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<p>输出：</p>
+<pre><code>Mozila/5.0 Chrome/105.0.0.0 Edg/105.0.1343.42
+</code></pre>
+<h2 id="获取请求体数据">获取请求体数据</h2>
+<p>浏览器发送的GET请求，是没有请求体的。只有在发送POST请求时才带有请求体。</p>
+<p>请求体中的数据格式如：</p>
+<pre><code>username=linner&amp;password=123456
+</code></pre>
+<p>与资源路径中，请求参数的格式一样。</p>
+<p><code>HttpServletRequest</code>提供了两种方式来获取请求体中的数据：</p>
+<ul>
+<li>
+<p>获取字节输入流：<br>
+当前端发送的是字节数据，如传递的是文件数据时使用。</p>
+<pre><code class="language-java">ServletInputStream getInputStream()
+</code></pre>
+</li>
+<li>
+<p>获取字符输入流：<br>
+当前端发送的是纯文本数据时使用。</p>
+<pre><code class="language-java">BufferedReader getReader()
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>如果要在客户端浏览器发送POST请求，需要编写一个<code>&lt;form&gt;</code>表单。</p>
+</blockquote>
+<p>Example：</p>
+<ol>
+<li>
+<p>在项目的<code>webapp</code>目录下添加<code>index.html</code>：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 
+        action: 表单提交的请求地址
+        method: 请求方式，指定为post
+    --&gt;
+    &lt;form action=&quot;/request-demo/test&quot; method=&quot;post&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;
+        &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;
+        &lt;input type=&quot;submit&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+<li>
+<p>在<code>doPost</code>方法中获取数据：</p>
+<blockquote>
+<p>由于<code>index.html</code>提交的是纯文本数据，所以要使用<code>getReader()</code>方法获取。</p>
+</blockquote>
+<pre><code class="language-java">package com.linner.web.request;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo8 extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. 获取字符输入流
+        BufferedReader br = request.getReader();
+        // 2. 读取数据
+        String line = br.readLine();
+        System.out.println(line);
+    }
+}
+</code></pre>
+<blockquote>
+<p><code>BufferedReader</code>流是通过<code>HttpServletRequest</code>对象来获取的，当请求完成后<code>HttpServletRequest</code>对象就会被销毁，<code>HttpServletRequest</code>对象被销毁后，<code>BufferedReader</code>流就会自动关闭，所以就不需要手动关闭流了。<br>
+<code>getReader()</code>获取请求参数后，还需要使用<code>readLine()</code>读取参数数据。</p>
+</blockquote>
+</li>
+<li>
+<p>通过浏览器访问：<a href="http://localhost:8080/request-demo/">http://localhost:8080/request-demo/</a>。在表单中输入内容，然后提交，就可以在控制台看到前端所发送的请求数据：</p>
+<pre><code>username=linner&amp;password=123456
+</code></pre>
+</li>
+</ol>
+<h2 id="获取请求参数">获取请求参数</h2>
+<p>使用<code>getQueryString()</code>方法和<code>getReader()</code>分别获取GET和POST的请求参数：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String result = req.getQueryString();
+        System.out.println(result);
+
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader br = req.getReader();
+        String result = br.readLine();
+        System.out.println(result);
+    }
+}
+</code></pre>
+<p>上述代码存在的问题：</p>
+<ul>
+<li><code>doGet()</code>和<code>doPost</code>中出现了重复代码。<br>
+在实际业务中，可能会出现很多相同的业务代码，</li>
+<li><code>doGet()</code>和<code>doPost</code>都必须存在。</li>
+<li>GET请求和POST请求获取请求参数的方式不一样。</li>
+</ul>
+<ol>
+<li>
+<p>在<code>doPost()</code>中调用<code>doGet()</code>，然后在<code>doGet()</code>判断请求的方式，并分别做处理：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 1. 获取请求方式
+        String method = req.getMethod();
+        // 2. 获取请求参数
+        String params = &quot;&quot;;
+        if(&quot;GET&quot;.equals(method)){
+            params = req.getQueryString();
+        }else if(&quot;POST&quot;.equals(method)){
+            BufferedReader reader = req.getReader();
+            params = reader.readLine();
+        }
+        // 3. 处理请求
+        System.out.println(params);
+    
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req,resp);
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><code>HttpServletRequest</code>已经对获取请求参数的方式进行了封装：</p>
+<ul>
+<li>
+<p>获取所有参数Map集合</p>
+<pre><code class="language-java">Map&lt;String, String[]&gt; getParameterMap()
+</code></pre>
+</li>
+<li>
+<p>根据名称获取参数值（返回值为数组，返回多个参数）</p>
+<pre><code class="language-java">String[] getParameterValues(String name)
+</code></pre>
+</li>
+<li>
+<p>根据名称获取参数值（单个值）</p>
+<pre><code class="language-java">String getParameter(String name)
+</code></pre>
+</li>
+</ul>
+<p>同样是在<code>doPost()</code>中调用<code>doGet()</code>，然后在<code>doGet()</code>处理参数，但是在获取参数时不用对请求方式进行判断。</p>
+<p>Example：</p>
+<ol>
+<li>
+<p><code>webapp/index.html</code>：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    test:get
+    &lt;form action=&quot;/request-demo/test&quot; method=&quot;get&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;checkbox&quot; name=&quot;hobby&quot; value=&quot;1&quot;&gt; get-1
+        &lt;input type=&quot;checkbox&quot; name=&quot;hobby&quot; value=&quot;2&quot;&gt; get-2 &lt;br&gt;
+        &lt;input type=&quot;submit&quot;&gt;
+    &lt;/form&gt;
+    test:post
+    &lt;form action=&quot;/request-demo/test&quot; method=&quot;post&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;checkbox&quot; name=&quot;hobby&quot; value=&quot;1&quot;&gt; post-1
+        &lt;input type=&quot;checkbox&quot; name=&quot;hobby&quot; value=&quot;2&quot;&gt; post-2 &lt;br&gt;
+        &lt;input type=&quot;submit&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+<li>
+<p>使用<code>getParameterValues()</code>和<code>getParameter()</code>获取请求参数：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/test1&quot;)
+public class RequestDemo1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(&quot;---------------&quot;);
+        // 验证请求的方式：
+        String method = req.getMethod();
+        System.out.println(method);
+        
+        // 获取多个 value：
+        System.out.print(&quot;hobby: &quot;);
+        String[] hobbies = request.getParameterValues(&quot;hobby&quot;);
+        for (String hobby : hobbies) {
+            System.out.print(hobby + &quot;, &quot;);
+        }
+        System.out.println(&quot;\b\b  &quot;);
+        
+        // 获取单个 value：
+        String username = request.getParameter(&quot;username&quot;);
+        String password = request.getParameter(&quot;password&quot;);
+        System.out.println(&quot;username: &quot; + username);
+        System.out.println(&quot;password: &quot; + password);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>使用<code>getParameterMap()</code>一次性获取所有参数：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Map;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(&quot;-------------------------------------------&quot;);
+        // 验证请求的方式：
+        String method = request.getMethod();
+        System.out.println(method);
+
+        // 获取所有参数的Map集合
+        Map&lt;String, String[]&gt; map = request.getParameterMap();
+        for (String key : map.keySet()) {
+            System.out.print(key + &quot;:&quot;);
+
+            // 获取key对应的所有values
+            String[] values = map.get(key);
+            for (String value : values) {
+                System.out.print(value + &quot;, &quot;);
+            }
+            System.out.println(&quot;\b\b  &quot;);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="请求转发">请求转发</h2>
+<p>请求转发（forward）是一种在服务器内部的资源跳转方式。如：</p>
+<ol>
+<li>服务器内资源A获取请求。</li>
+<li>资源A（处理一部分数据后）将请求转发给资源B去处理。</li>
+<li>资源B处理完成后将将结果响应给浏览器。</li>
+</ol>
+<p>请求从资源A到资源B的过程即为请求转发。</p>
+<p>请求转发的特点：</p>
+<ul>
+<li>浏览器地址栏路径不变。</li>
+<li>只能转发到当前服务器的内部资源。</li>
+<li>一次请求，可以在转发的资源间使用request共享数据。</li>
+</ul>
+<p>使用<code>request.getRequestDispatcher(&quot;/path&quot;).forward(request, response)</code>进行请求转发：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/demo1&quot;)
+public class RequestDemo1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(&quot;demo1...&quot;);
+
+        // 存储数据
+        request.setAttribute(&quot;msg&quot;, &quot;Hello&quot;);
+
+        // 请求转发（资源转发到demo2）
+        request.getRequestDispatcher(&quot;/demo2&quot;).forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/demo2&quot;)
+public class RequestDemo2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(&quot;demo2...&quot;);
+
+        // 获取数据
+        Object msg = request.getAttribute(&quot;msg&quot;);
+        System.out.println(msg);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<p>通过<a href="http://localhost:8080/request-demo/demo1">http://localhost:8080/request-demo/demo1</a>访问。</p>
+<blockquote>
+<p>由于请求转发是在服务器内部的资源转发，所以<code>getRequestDispatcher()</code>中的路径不需要包含虚拟目录。</p>
+</blockquote>
+<p>请求转发使用<code>HttpServletRequest</code>（<code>Request</code>）对象进行资源的传递。这个用来存储资源的空间被称为Request域。</p>
+<p><code>HttpServletRequest</code>对象提供了对于Request中的域属性操作的方法有：</p>
+<ol>
+<li>
+<p>在 Request 域属性空间中放入数据：</p>
+<pre><code class="language-java">void setAttribute(String name, Object object)
+</code></pre>
+<p>其生命周期与 Request 的生命周期相同。</p>
+</li>
+<li>
+<p>从 Request 的域属性空间中获取指定名称的数据：</p>
+<pre><code class="language-java">Object getAttribute(String name)
+</code></pre>
+</li>
+<li>
+<p>从 Request 的域属性空间中删除指定名称的数据：</p>
+<pre><code class="language-java">void removeAttribute(String name)
+</code></pre>
+</li>
+<li>
+<p>创建请求转发器：</p>
+<pre><code class="language-java">RequestDispatcher getRequestDispatcher(String path)
+</code></pre>
+<p>请求转发器中有一个方法，用于完成将请求对象转发给下一个资源：</p>
+<pre><code class="language-java">void forward(HttpServletRequest request, HttpServletResponse response)
+</code></pre>
+</li>
+</ol>
+<h2 id="tomcat7-请求参数中文乱码问题">Tomcat7 请求参数中文乱码问题</h2>
+<blockquote>
+<p>Tomcat8.0 之后，已经将默认编码设置为UTF-8。</p>
+</blockquote>
+<p>POST请求参数是通过流的方式获取数据：</p>
+<ul>
+<li>Tomcat在获取流的时候采用的编码是<code>ISO-8859-1</code>。</li>
+<li>页面设置的编码格式一般为<code>UTF-8</code>。</li>
+<li><code>ISO-8859-1</code>编码是不支持中文的，所以会出现乱码。</li>
+</ul>
+<p>解决方案：通过<code>HttpServletRequest</code>提供的<code>setCharacterEncoding()</code>，在Tomcat在获取流数据之前的编码设置为UTF-8。</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo4Copy extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. 设置字符输入流的编码
+        request.setCharacterEncoding(&quot;UTF-8&quot;);
+
+        // 2. 获取请求参数
+        BufferedReader br = request.getReader();
+        String line = br.readLine();
+        // getReader()获取的是编码后的URL，如果要显示中文，需要对URL按照UTF-8进行解码
+        String decode = URLDecoder.decode(line, StandardCharsets.UTF_8);
+        System.out.println(&quot;解决乱码后: &quot; + decode);
+    }
+}
+</code></pre>
+<p>GET请求参数包含在URL中：</p>
+<blockquote>
+<p><code>getQueryString()</code>获取的并不是字符输入流，所以<code>setCharacterEncoding()</code>并不适用。</p>
+</blockquote>
+<ul>
+<li>浏览器在发送HTTP的过程中会根据页面<code>&lt;meta&gt;</code>标签指定的<code>charset</code>的方式（一般为UTF-8）对URL进行编码。<br>
+URL编码：
+<ol>
+<li>将字符串按照编码方式转为二进制。</li>
+<li>每个字节（8位）转为2个16进制数（一个16进制数代表4位）并在前边加上<code>%</code>。</li>
+</ol>
+</li>
+<li>Tomcat在接收编码后的URL后，会默认按照<code>ISO-8859-1</code>进行URL解码。<br>
+可以使用以下两个函数可以模拟URL编码、解码的过程：
+<ol>
+<li>
+<p>编码：</p>
+<pre><code class="language-java">java.net.URLEncoder.encode(string, charset)
+</code></pre>
+</li>
+<li>
+<p>解码：</p>
+<pre><code class="language-java">java.net.URLDecoder.decode(string, charset)
+</code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<p>解决方案：</p>
+<ol>
+<li>把字符数据（URL编码）按照ISO-8859-1编码转换成字节。</li>
+<li>字节按照浏览器对应的URL编码（UTF-8）转换成对应的字符。</li>
+</ol>
+<p>这样在转换的过程中保持编码一致，就可以解决中文乱码问题：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo4Copy extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String qs = request.getQueryString();
+        // 把字符数据（URL编码）按照ISO-8859-1编码转换成字节
+        byte[] bytes = qs.getBytes(StandardCharsets.ISO_8859_1);
+        // 按照UTF-8编码转换成对应的字符
+        String s = new String(bytes, StandardCharsets.UTF_8);
+        // 转换后的字符是URL编码后的字符，需要再次解码
+        qs = URLDecoder.decode(s, StandardCharsets.UTF_8);
+        System.out.println(&quot;解决乱码后: &quot; + qs);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+}
+</code></pre>
+<p>通用方式解决乱码问题：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+@WebServlet(&quot;/test&quot;)
+public class RequestDemo4Copy extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. 获取username
+        String username = request.getParameter(&quot;username&quot;);
+        // 2. 解决乱码
+        username = new String(username.getBytes(StandardCharsets.ISO_8859_1),
+                            StandardCharsets.UTF_8);
+        System.out.println(&quot;解决乱码后: &quot; + username);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<hr>
+<h1 id="httpservletresponse">HttpServletResponse</h1>
+<p>HTTP响应数据总共分为三部分内容，分别是：</p>
+<ul>
+<li>
+<p>响应行<br>
+如，<code>HTTP/1.1 200 OK</code>，从左到右分别为：</p>
+<ul>
+<li>
+<p>HTTP协议及版本</p>
+</li>
+<li>
+<p>响应状态码<br>
+设置响应状态码，<code>HttpServletResponse</code>对象提供了以下方法设置：</p>
+<pre><code class="language-java">void setStatus(int sc)
+</code></pre>
+</li>
+<li>
+<p>状态码描述</p>
+</li>
+</ul>
+</li>
+<li>
+<p>响应头<br>
+由多个 <code>key: value</code> 组成。<code>HttpServletResponse</code>对象提供了以下方法设置键值对：</p>
+<pre><code class="language-java">void setHeader(String name, String value)
+</code></pre>
+</li>
+<li>
+<p>响应体</p>
+<ul>
+<li>
+<p>获取字符输出流：</p>
+<pre><code class="language-java">PrintWriter getWriter()
+</code></pre>
+</li>
+<li>
+<p>获取字节输出流：</p>
+<pre><code class="language-java">ServletOutputStream getOutputStream()
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="respones重定向">Respones重定向</h2>
+<p>Response重定向（redirect）是一种资源跳转方式。如：</p>
+<ol>
+<li>浏览器发送请求给服务器，服务器中对应的资源A接收到请求。</li>
+<li>资源A现在无法处理该请求，就会给浏览器响应一个302的状态码和location（一个访问资源B的路径）。</li>
+<li>浏览器接收到响应状态码为302就会重新发送请求到location对应的访问地址去访问资源B。</li>
+</ol>
+<p>重定向的特点:</p>
+<ul>
+<li>浏览器地址栏路径发送变化（由资源A的路径变化为资源B的路径）。<br>
+进行重定向访问时，由浏览器发送两次请求，所以地址发生了变化。</li>
+<li>可以重定向到任意位置的资源（服务器内部、外部均可）。<br>
+资源由浏览器来访问，所以可以重定向到任意位置资源。</li>
+<li>不能在多个资源使用Request重定向共享数据。<br>
+重定向是由浏览器来发送新的请求，每次请求中的Request对象都是不同的。</li>
+</ul>
+<p>重定向需要两个步骤：</p>
+<ol>
+<li>
+<p>设置302状态码：</p>
+<pre><code class="language-java">response.setStatus(302)
+</code></pre>
+</li>
+<li>
+<p>设置响应头中，<code>location</code>的值：</p>
+<pre><code class="language-java">response.setHeader(&quot;location&quot;, &quot;/path_b&quot;)
+</code></pre>
+</li>
+</ol>
+<p>Example：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/demo1&quot;)
+public class ResponseDemo1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(&quot;demo1...&quot;);
+
+        // 重定向
+        // 1. 设置相应状态码
+        resp.setStatus(302);
+        // 2. 设置相应头 Location (不区分大小写)
+        resp.setHeader(&quot;Location&quot;, &quot;/request-demo/demo2&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
+}
+</code></pre>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/demo2&quot;)
+public class ResponseDemo2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(&quot;demo2...&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
+}
+</code></pre>
+<blockquote>
+<p>由于重定向是将重定向后的资源路径告知浏览器，所以<code>location</code>需要添加虚拟目录（如<code>/response-demo/demo2</code>）。<br>
+如果是重定向到服务器外部资源，<code>location</code>的值为外部资源的URL。</p>
+</blockquote>
+<p><code>HttpServletResponse</code>提供了<code>sendRedirect()</code>方法来简化重定向流程。修改<code>ResponseDemo1</code>：</p>
+<pre><code class="language-java">package com.linner.web.response;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(&quot;/resp1&quot;)
+public class ResponseDemo1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(&quot;resp1...&quot;);
+
+        // 简化方式完成重定向
+        // 动态获取虚拟目录
+        String contextPath = req.getContextPath();
+        resp.sendRedirect(contextPath + &quot;/resp2&quot;);
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
+}
+</code></pre>
+<h2 id="响应字符数据">响应字符数据</h2>
+<p>将字符数据写回到浏览器，需要：</p>
+<ol>
+<li>
+<p>通过<code>HttpServletResponse</code>对象获取字符输出流：</p>
+<pre><code class="language-java">PrintWriter writer = response.getWriter()
+</code></pre>
+</li>
+<li>
+<p>通过字符输出流写数据：</p>
+<pre><code class="language-java">writer.write(&quot;你好&quot;)
+</code></pre>
+</li>
+</ol>
+<p>Example：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet(&quot;/demo&quot;)
+public class ResponseDemo extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 设置content-type（响应的数据格式）和字符集（编码）
+        resp.setContentType(&quot;text/html;charset=utf-8&quot;);
+        // content-type也可以使用setHeader()手动设置
+        // resp.setHeader(&quot;content-type&quot;, &quot;text/html&quot;);
+
+        // 获取字符输出流
+        PrintWriter writer = resp.getWriter();
+        writer.write(&quot;你好&quot;);
+        writer.write(&quot;&lt;h1&gt;Hello World!&lt;/h1&gt;&quot;);
+        // 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
+}
+</code></pre>
+<blockquote>
+<p><code>write()</code>不仅能写入文本数据，还能写入HTML数据。<br>
+<code>PrintWriter</code> 对象会在 <code>HttpServletRequest</code> 被销毁时一并销毁，无需手动关闭。</p>
+</blockquote>
+<h2 id="响应字节数据">响应字节数据</h2>
+<p>将字节数据写回到浏览器，需要：</p>
+<ol>
+<li>
+<p>通过<code>HttpServletResponse</code>对象获取字节输出流：</p>
+<pre><code class="language-java">ServletOutputStream os = response.getOutputStream()
+</code></pre>
+</li>
+<li>
+<p>通过字节输出流写数据：</p>
+<pre><code class="language-java">os.write(buff)
+</code></pre>
+</li>
+</ol>
+<p>Example：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet(&quot;/demo&quot;)
+public class ResponseDemo extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 1. 读取文件
+        FileInputStream fis = new FileInputStream(&quot;src/main/webapp/imgs/bg.jpg&quot;);
+
+        // 2. 获取response字节输出流
+        ServletOutputStream os = resp.getOutputStream();
+
+        // 3. 完成流的copy
+        byte[] buff = new byte[1024];
+        int len = 0;
+        while ((len = fis.read(buff)) != -1) {
+            os.write(buff, 0, len);
+        }
+
+        fis.close();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
+}
+</code></pre>
+<p>其中，流的copy可以使用<code>IOUtils</code>工具类的<code>copy()</code>来简化操作：</p>
+<ul>
+<li>
+<p>导入配置：</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;commons-io&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+    &lt;version&gt;2.6&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li>
+<p>修改<code>ResponseDemo</code>：</p>
+<pre><code class="language-java">@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    // 1. 读取文件
+    FileInputStream fis = new FileInputStream(&quot;src/main/webapp/imgs/reg_bg_min.jpg&quot;);0
+
+    // 2. 获取response字节输出流
+    ServletOutputStream os = resp.getOutputStream();
+
+    // 3. 完成流的copy
+    IOUtils.copy(fis, os);
+
+    fis.close();
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<h1 id="总结">总结</h1>
+<h2 id="httpservletrequest-常用方法">HttpServletRequest 常用方法</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法名</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>String getMethod()</code></td>
+<td style="text-align:center">获取请求方式</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getContextPath()</code></td>
+<td style="text-align:center">获取虚拟目录（项目访问路径）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>StringBuffer getRequestURL()</code></td>
+<td style="text-align:center">获取URL（统一资源定位符）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getRequestURI()</code></td>
+<td style="text-align:center">获取URI（统一资源标识符）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getQueryString()</code></td>
+<td style="text-align:center">获取请求参数（GET方式）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getHeader(String name)</code></td>
+<td style="text-align:center">获取<code>name</code>指定<code>key</code>对应的请求头的<code>value</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ServletInputStream getInputStream()</code></td>
+<td style="text-align:center">获取请求体字节输入流（POST方式获取请求参数）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>BufferedReader getReader()</code></td>
+<td style="text-align:center">获取请求体字符输入流<br><code>getReader()</code>获取请求参数后，还需要使用<code>readLine()</code>读取参数数据<br>即，<br><code>BufferedReader br = request.getReader();</code><br><code>String line = br.readLine();</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Map&lt;String, String[]&gt; getParameterMap()</code></td>
+<td style="text-align:center">获取所有请求参数Map集合</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String[] getParameterValues(String name)</code></td>
+<td style="text-align:center">根据名称获取请求参数值<br>返回值为数组<br>返回多个参数</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getParameter(String name)</code></td>
+<td style="text-align:center">根据名称获取请求参数值<br>返回单个参数值</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void setAttribute(String name, Object object)</code></td>
+<td style="text-align:center">在 Request 域属性空间中放入数据</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Object getAttribute(String name)</code></td>
+<td style="text-align:center">从 Request 的域属性空间中获取指定名称的数据</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void removeAttribute(String name)</code></td>
+<td style="text-align:center">从 Request 的域属性空间中删除指定名称的数据</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>RequestDispatcher getRequestDispatcher(String path)</code></td>
+<td style="text-align:center">创建请求转发器<br>请求转发器中有一个方法，用于完成将请求对象转发给下一个资源：<br><code>void forward(HttpServletRequest request, HttpServletResponse response)</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void setCharacterEncoding(String charset)</code></td>
+<td style="text-align:center">设置请求体字符输入流的编码</td>
+</tr>
+</tbody>
+</table>
+<h2 id="httpservletresponse-常用方法">HttpServletResponse 常用方法</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法名</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>void setStatus(int sc)</code></td>
+<td style="text-align:center">设置响应状态码</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void setHeader(String name, String value)</code></td>
+<td style="text-align:center">设置响应头键值对</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>PrintWriter getWriter()</code></td>
+<td style="text-align:center">获取响应体字符输出流获取字符输出流后还需要使用<code>write()</code>方法来写入字符数据：<br><code>PrintWriter writer = response.getWriter();</code><br><code>writer.write(&quot;Hello World!&quot;);</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ServletOutputStream getOutputStream()</code></td>
+<td style="text-align:center">获取响应体字节输出流<br>获取字节输出流前需要先使用<code>FileInputStream</code>对象来读取文件<br>然后使用<code>IOUtils</code>工具类的<code>copy()</code>来copy流<br>获取字节输出流后还需要使用<code>write()</code>方法来写入字符数据<br><a href="#%E5%93%8D%E5%BA%94%E5%AD%97%E8%8A%82%E6%95%B0%E6%8D%AE">响应字节数据</a></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void sendRedirect(String path)</code></td>
+<td style="text-align:center">Respones重定向</td>
+</tr>
+</tbody>
+</table>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/Servlet/" class="post-title gt-a-link">
+                    Servlet 与 Tomcat
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

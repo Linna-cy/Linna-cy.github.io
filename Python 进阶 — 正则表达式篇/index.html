@@ -1,0 +1,1437 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Python 进阶 — 正则表达式篇 | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            Python 进阶 — 正则表达式篇
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-01-12</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/G0NSJyfWTt/"> <span>#Python </span></a>  
+              <a href="https://linna-cy.github.io/6BXSMo5kigH/">
+                <span>#正则表达式 </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >27<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >6714<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%AD%E6%B3%95-python">正则表达式语法 —— Python</a>
+<ul>
+<li><a href="#%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6">特殊字符</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%BD%8D%E7%AC%A6">定位符</a></li>
+<li><a href="#%E9%87%8D%E5%A4%8D%E4%BF%AE%E9%A5%B0%E7%AC%A6%E9%99%90%E5%AE%9A%E7%AC%A6">重复修饰符（限定符）</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95%E6%A0%87%E8%AE%B0%E6%B3%95">扩展标记法</a></li>
+<li><a href="#%E6%99%AE%E9%80%9A%E5%AD%97%E7%AC%A6">\+普通字符</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#re-%E6%A8%A1%E5%9D%97">re 模块</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0">函数</a>
+<ul>
+<li><a href="#%E5%8C%B9%E9%85%8D%E4%B8%80%E9%A1%B9">匹配一项</a>
+<ul>
+<li><a href="#match-%E5%87%BD%E6%95%B0">match() 函数</a></li>
+<li><a href="#search-%E5%87%BD%E6%95%B0">search() 函数</a></li>
+<li><a href="#fullmatch-%E5%87%BD%E6%95%B0">fullmatch() 函数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%A4%9A%E9%A1%B9">匹配多项</a>
+<ul>
+<li><a href="#finall">finall()</a></li>
+<li><a href="#finditer">finditer()</a></li>
+</ul>
+</li>
+<li><a href="#split-%E6%AD%A3%E5%88%99%E5%88%86%E5%89%B2">split() 正则分割</a></li>
+<li><a href="#%E6%9B%BF%E6%8D%A2">替换</a></li>
+<li><a href="#excape-%E8%BD%AC%E4%B9%89%E5%87%BD%E6%95%B0">excape() 转义函数</a></li>
+<li><a href="#purge-%E6%B8%85%E9%99%A4%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%BC%93%E5%AD%98">purge() 清除正则表达式缓存</a></li>
+</ul>
+</li>
+<li><a href="#regexflag-%E6%A0%87%E5%BF%97%E5%B8%B8%E9%87%8F">RegexFlag 标志常量</a></li>
+<li><a href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1-pattern">正则对象 Pattern</a>
+<ul>
+<li><a href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95">正则对象方法</a></li>
+<li><a href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7">正则对象属性</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1">匹配对象</a>
+<ul>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95">匹配对象方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%AD%E6%B3%95-python">正则表达式语法 —— Python</a>
+<ul>
+<li><a href="#%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6">特殊字符</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%BD%8D%E7%AC%A6">定位符</a></li>
+<li><a href="#%E9%87%8D%E5%A4%8D%E4%BF%AE%E9%A5%B0%E7%AC%A6%E9%99%90%E5%AE%9A%E7%AC%A6">重复修饰符（限定符）</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95%E6%A0%87%E8%AE%B0%E6%B3%95">扩展标记法</a></li>
+<li><a href="#%E6%99%AE%E9%80%9A%E5%AD%97%E7%AC%A6">\+普通字符</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#re-%E6%A8%A1%E5%9D%97">re 模块</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0">函数</a>
+<ul>
+<li><a href="#%E5%8C%B9%E9%85%8D%E4%B8%80%E9%A1%B9">匹配一项</a>
+<ul>
+<li><a href="#match-%E5%87%BD%E6%95%B0">match() 函数</a></li>
+<li><a href="#search-%E5%87%BD%E6%95%B0">search() 函数</a></li>
+<li><a href="#fullmatch-%E5%87%BD%E6%95%B0">fullmatch() 函数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%A4%9A%E9%A1%B9">匹配多项</a>
+<ul>
+<li><a href="#finall">finall()</a></li>
+<li><a href="#finditer">finditer()</a></li>
+</ul>
+</li>
+<li><a href="#split-%E6%AD%A3%E5%88%99%E5%88%86%E5%89%B2">split() 正则分割</a></li>
+<li><a href="#%E6%9B%BF%E6%8D%A2">替换</a></li>
+<li><a href="#excape-%E8%BD%AC%E4%B9%89%E5%87%BD%E6%95%B0">excape() 转义函数</a></li>
+<li><a href="#purge-%E6%B8%85%E9%99%A4%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%BC%93%E5%AD%98">purge() 清除正则表达式缓存</a></li>
+</ul>
+</li>
+<li><a href="#regexflag-%E6%A0%87%E5%BF%97%E5%B8%B8%E9%87%8F">RegexFlag 标志常量</a></li>
+<li><a href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1-pattern">正则对象 Pattern</a>
+<ul>
+<li><a href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95">正则对象方法</a></li>
+<li><a href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7">正则对象属性</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1">匹配对象</a>
+<ul>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95">匹配对象方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    
+                    <h1 id="正则表达式语法-python">正则表达式语法 —— Python</h1>
+<p>正则表达式是一个特殊的字符序列，能方便地检查一个字符串是否与某种模式匹配。</p>
+<ul>
+<li>
+<p>正则表达式可以拼接。</p>
+</li>
+<li>
+<p>正则表达式可以包含普通或者特殊字符。</p>
+<ul>
+<li>
+<p>绝大部分普通字符，是最简单的正则表达式。它们就匹配自身。</p>
+</li>
+<li>
+<p>特殊字符既可以表示它的普通含义， 也可以影响它旁边的正则表达式的解释。</p>
+</li>
+<li>
+<p>重复修饰符（<code>*</code>、<code>+</code>、<code>?</code>、<code>{m,n}</code>, 等）不能直接嵌套。避免了非贪婪后缀 <code>?</code> 修饰符，和其他实现中的修饰符产生的多义性。要应用一个内层重复嵌套，可以使用括号。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="特殊字符">特殊字符</h2>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>（点）在默认模式，匹配除了换行的任意字符。                                                                                                                                                                                                                                <br>如果指定了标签 <code>DOTALL</code>，它将匹配包括换行符的任意字符。</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td>转义特殊字符（允许你匹配 <code>'*'</code>、<code>'?'</code>，或者其他正则表达式中使用的特殊字符），或者表示一个特殊序列。</td>
+</tr>
+<tr>
+<td><code>[…]</code></td>
+<td>用于表示一个字符集合。<br> 字符可以单独列出：<code>[abc]</code>，匹配 <code>'a'</code>、<code>'b'</code>、<code>'c'</code>。<br>可以表示字符范围，通过用 <code>'-'</code> 将两个字符连起来：<code>[a-z]</code> 将匹配任何小写 ASCII 字符； 可以指定多个范围：<code>[a-zA-Z]</code> 将匹配所有英文字符。 如果 <code>-</code> 进行了转义 （比如 <code>[a-z]</code>）或者它的位置在首位或者末尾（如 <code>[-a]</code> 或 <code>[a-]</code>），它就只表示普通字符 <code>'-'</code>。  <br>特殊字符在集合中，失去它的特殊含义：<code>[(+*)]</code> 只会匹配这几个文法字符 <code>'('</code>、<code>'+'</code>、<code>'*'</code> 或 <code>')'</code>。 <br>字符类如 <code>\w</code> 或者 <code>\S</code> 在集合内可以接受，它们可以匹配的字符由 <code>ASCII</code> 或者 <code>LOCALE</code> 模式决定。<br> 不在集合范围内的字符可以通过取反（<code>'^'</code> 作为首字符）来进行匹配：<code>[^a]</code> 将匹配除了 <code>'a'</code> 之外的所有字符。 <code>'^'</code> 如果不在集合首位，就没有特殊含义。<br>在集合内要匹配一个字符 <code>']'</code>，有两种方法，要么将它进行转义，要么就把它放到集合首位（如 <code>[()[]{}]</code> 和 <code>[]()[{}]</code>）。                                                                                      <br>嵌套集合和集合操作支持可能在未来添加。如果有多以的情况发生，将会抛出 <code>FutureWarning</code>。</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td><code>A|B</code>， <code>A</code> 和 <code>B</code> 可以是任意正则表达式，创建一个正则表达式，匹配 <code>A</code> 或者 <code>B</code>。任意个正则表达式可以用 <code>'|'</code> 连接。它可以在集合或组合内使用。 <code>'|'</code> 操作符绝不贪婪：扫描目标字符串时，由 <code>'|'</code> 分隔开的正则样式从左到右进行匹配。当一个样式完全匹配时，这个分支就被接受。即，一旦 <code>A</code> 匹配成功， <code>B</code> 就不再进行匹配，即便它能产生一个更好的匹配。 如果要匹配 <code>'|'</code> 字符，使用 <code>|</code>， 或者把它包含在字符集里 <code>[|]</code>。</td>
+</tr>
+<tr>
+<td><code>(…)</code></td>
+<td>（组合），匹配括号内的任意正则表达式，并标识出组合的开始和结尾。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="定位符">定位符</h3>
+<p>定位符用来描述字符串或单词的边界。</p>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td>（插入符号）匹配字符串的开头， 并且在 <code>MULTILINE</code> 模式也匹配换行后的首个符号。</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配字符串尾或者在字符串尾的换行符的前一个字符，在 <code>MULTILINE</code> 模式下也会匹配换行符之前的文本。<br>在 <code>'foo1\nfoo2\n'</code> 中搜索 <code>foo.$</code>，通常匹配 <code>'foo2'</code>，但在 <code>MULTILINE</code> 模式下可以匹配到 <code>'foo1'</code>。<br> 在 <code>'foo\n'</code> 中搜索 <code>$</code> 会找到两个（空的）匹配：一个在换行符之前，一个在字符串的末尾。</td>
+</tr>
+<tr>
+<td><code>\A</code></td>
+<td>只匹配字符串的开始。相当于默认模式下的 <code>^</code>。</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>匹配一个单词边界。即，匹配空字符串，但只在单词开始或结尾的位置。<br>通常 <code>\b</code> 定义为 <code>\w</code> 和 <code>\W</code> 字符之间，或者 <code>\w</code> 和字符串开始/结尾的边界。<br>如果使用了 <code>LOCALE</code> 标志，则词的边界由当前语言区域设置。<br> 在字符集合内表示退格（如 <code>[\b]</code>）。</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>非单词边界匹配。即，匹配除了单词边界外的任何其他位置。<code>\B</code> 是 <code>\b</code> 的取非。<br>如果使用了 <code>LOCALE</code> 标志，则词的边界由当前语言区域设置。</td>
+</tr>
+<tr>
+<td><code>\Z</code></td>
+<td>只匹配字符串尾。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="重复修饰符限定符">重复修饰符（限定符）</h3>
+<ul>
+<li><code>{m}</code><br>
+对其之前的正则式指定匹配 m 个重复；少于 m 的话就会导致匹配失败。</li>
+</ul>
+<p>贪婪修饰符：</p>
+<ul>
+<li>
+<p><code>*</code><br>
+对它前面的正则式匹配 0 到任意次重复， 尽量多地匹配字符串。<br>
+等价于：<code>{0,}</code>。</p>
+</li>
+<li>
+<p><code>+</code><br>
+对它前面的子表达式匹配 1 到任意次重复， 尽量多地匹配字符串。<br>
+等价于：<code>{1,}</code>。</p>
+</li>
+<li>
+<p><code>?</code><br>
+对它前面的子表达式匹配 0 到 1 次重复， 尽量多地匹配字符串。<br>
+等价于：<code>{0,1}</code>。</p>
+</li>
+<li>
+<p><code>{m,}</code><br>
+对它前面的子表达式进行 m 到任意次重复， 尽量多地匹配字符串。</p>
+</li>
+<li>
+<p><code>{m,n}</code>（中间不要有空白字符）<br>
+对它前面的子表达式进行 m 到 n 次匹配，在 m 和 n 之间取尽量多。</p>
+</li>
+</ul>
+<p>非贪婪修饰符：</p>
+<ul>
+<li><code>*?</code>、<code>+?</code>、<code>??</code>、<code>{m,}?</code>、<code>{m,n}?</code>：<br>
+在修饰符之后添加 <code>?</code> 将使样式以非贪婪方式，或者 :dfn: 最小方式进行匹配； 尽量少的字符将会被匹配。</li>
+</ul>
+<hr>
+<h3 id="扩展标记法">扩展标记法</h3>
+<ul>
+<li>
+<p><code>(?…)``'?'</code> 仅跟随 <code>'('</code> 并无含义。<code>'?'</code> 后面的第一个字符决定了这个构建采用什么样的语法。这种扩展通常并不创建新的组合； <code>(?P&lt;name&gt;...)</code> 是唯一的例外。</p>
+</li>
+<li>
+<p><code>(?aiLmsux)</code><br>
+在 <code>(?</code> 后带 <code>'a'</code>、 <code>'i'</code>、<code>'L'</code>、<code>'m'</code>、<code>'s'</code>、<code>'u'</code>、<code>'x'</code> 中的一个或多个。<code>(?aimsx)</code> 将会匹配空字符串。<br>
+这些字符代表内联标记（与 <code>re</code> 模块中的 RegexFlag 标志常量对应）。</p>
+<ul>
+<li>
+<p><code>'a'</code> —— <code>re.A</code> 模式；</p>
+</li>
+<li>
+<p><code>'i'</code> —— <code>re.I</code> 模式；</p>
+</li>
+<li>
+<p><code>'L'</code> —— <code>re.L</code> 模式；</p>
+</li>
+<li>
+<p><code>'m'</code> —— <code>re.M</code> 模式；</p>
+</li>
+<li>
+<p><code>'s'</code> —— <code>re.S</code> 模式；</p>
+</li>
+<li>
+<p><code>'u'</code> —— <code>re.U</code> 模式；</p>
+</li>
+<li>
+<p><code>'x'</code> —— <code>re.X</code> 模式。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>(?:…)</code><br>
+正则括号的非捕获版本。 匹配在括号内的任何正则表达式，但该分组所匹配的子字符串不能在执行匹配后被获取或是之后在模式中被引用。</p>
+</li>
+<li>
+<p><code>(?aiLmsux-imsx:…)``'?'</code> 后面 <code>'-'</code> 前面带 <code>'a'</code>、 <code>'i'</code>、<code>'L'</code>、<code>'m'</code>、<code>'s'</code>、<code>'u'</code>、<code>'x'</code> 中的 0 个或多个。<code>'-'</code> 后面 <code>':'</code> 前面带 <code>'i'</code>、<code>'m'</code>、<code>'s'</code>、<code>'x'</code> 中的一到多个。表示设置或者去除（<code>'-'</code> 后指定去除的标记）相应标记。<br>
+与 <code>(?aiLmsux)</code> 一样，这些字符分别代表了不同的内联标记。<br>
+<code>'a'</code>、<code>'L'</code> 和 <code>'u'</code> 作为内联标记是相互排斥的， 所以它们不能结合在一起，或者跟随 <code>'-'</code> 。 当他们中的某个出现在内联组中，它就覆盖了括号组内的匹配模式。Python3.7 接受 <code>'a'</code>、<code>'L'</code> 和 <code>'u'</code> 存在于一个组合。<br>
+这种方式只覆盖组合内匹配，括号外的匹配模式不受影响。</p>
+</li>
+<li>
+<p><code>(?P&lt;name&gt;…)</code><br>
+（命名组合）类似正则组合，但是匹配到的子串组在外部可以通过定义的 <code>name</code> 来获取的（也可以通过数字获取）。组合名必须是有效的 Python 标识符，并且每个组合名只能用一个正则表达式定义，只能定义一次。<br>
+命名组合可以在三种上下文中引用：</p>
+<table>
+<thead>
+<tr>
+<th><strong>引用组合 &quot;quote&quot; 的上下文</strong></th>
+<th><strong>引用方法</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在正则式自身内</td>
+<td><code>(?P=quote)</code> 或 <code>\1</code></td>
+</tr>
+<tr>
+<td>处理匹配对象 <code>m</code></td>
+<td><code>m.group('quote')</code> 或 <code>m.end('quote')</code>（等）</td>
+</tr>
+<tr>
+<td>传递到 <code>re.sub()</code> 里的 <code>repl</code> 参数中</td>
+<td><code>\g&lt;quote&gt;</code> 或 <code>\g&lt;1&gt;</code> 或 <code>\1</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><code>(?P=name)</code><br>
+反向引用一个命名组合；它匹配前面名为 <code>name</code> 的命名组中匹配到的串同样的字串（如上所示）。</p>
+</li>
+<li>
+<p><code>(?#…)</code><br>
+注释，里面的内容会被忽略。</p>
+</li>
+<li>
+<p><code>(?=…)</code><br>
+lookahead assertion，匹配 <code>…</code> 的内容，但是并不消费样式的内容。如，<code>abc(?=def)</code> 当 <code>'abc'</code> 后面是 <code>'def'</code> 的时候，才匹配 <code>'abc'</code>。</p>
+</li>
+<li>
+<p><code>(?!…)</code><br>
+negative lookahead assertion（前视取反），匹配 <code>…</code> 不符合的情况。如，<code>abc(?!def)</code> 当 <code>'abc'</code> 后面不是 <code>'def'</code> 的时候，才匹配 <code>'abc'</code>。</p>
+</li>
+<li>
+<p><code>(?&lt;=…)</code><br>
+:dfn:positive lookbehind assertion（正向后视断定），匹配字符串的当前位置，它的前面匹配 <code>…</code> 的内容到当前位置。如，<code>(?&lt;=abc)def</code> 当 <code>'def'</code> 前面是 <code>'abc'</code> 时匹配 <code>'def'</code>，该样式是从 <code>'d'</code> 开始往回搜索的。<br>
+包含的匹配样式必须是定长的（ <code>abc</code> 或 <code>a|b</code> 是允许的，但是 <code>a*</code> 和 <code>a{3,4}</code> 不可以）。</p>
+</li>
+<li>
+<p><code>(?&lt;!…)</code><br>
+negative lookbehind assertion （后视断定取非），匹配当前位置之前不是 <code>…</code> 的样式。<br>
+包含的样式匹配必须是定长的。<br>
+由 negative lookbehind assertion 开始的样式可以从字符串搜索开始的位置进行匹配。</p>
+</li>
+<li>
+<p><code>(?(id/name)yes-pattern|no-pattern)</code><br>
+如果给定的 <code>id</code> 或 <code>name</code> 存在，将会尝试匹配 <code>yes-pattern</code> ，否则就尝试匹配 <code>no-pattern</code>（<code>no-pattern</code> 可选，可以被忽略）。</p>
+</li>
+</ul>
+<hr>
+<h3 id="普通字符">\+普通字符</h3>
+<p><code>\</code> + （ASCII 数字或字母）：</p>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\number</code></td>
+<td>匹配数字代表的组合。每个正则表达式中的括号是一个组合，组合从 <code>1</code> 开始编号。<br> 如：<code>(.+) \1</code> 匹配 <code>'the the'</code> 或者 <code>'55 55'</code>。<br> 这个特殊序列只能用于匹配前面 99 个组合。<br> 如果 <code>number</code> 的第一个数位是 0， 或者 <code>number</code> 是三个八进制数，它将不会被看作是一个组合，而是八进制的数字值。</td>
+</tr>
+<tr>
+<td><code>\A</code></td>
+<td>只匹配字符串开始。</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>（单词边界定位符）匹配空字符串，但只在单词开始或结尾的位置。<br> 在字符集合内表示退格（如 <code>[\b]</code>）。</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>（非单词边界定位符）匹配空字符串，但不能在词的开头或者结尾。</td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td>对于 Unicode（str）样式：<br> 匹配任何 Unicode 十进制数（就是在 Unicode 字符目录 [Nd] 里的字符，包括了 <code>[0-9]</code> ，和很多其他的数字字符）。如果设置了 <code>ASCII</code> 标志，就只匹配 <code>[0-9]</code> 。<br> 对于8位（bytes）样式：<br> 匹配任何十进制数（<code>[0-9]</code>）。</td>
+</tr>
+<tr>
+<td><code>\D</code></td>
+<td>匹配任何非十进制数字的字符（<code>\d</code> 取非）。<br> 如果设置了 <code>ASCII</code> 标志，就相当于 <code>[^0-9]</code> 。</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>对于 Unicode（str）样式：<br> 匹配任何 Unicode 空白字符（包括 <code>[ \t\n\r\f\v]</code> ，还有很多其他字符，比如不同语言排版规则约定的不换行空格）。如果 <code>ASCII</code> 被设置，就只匹配 <code>[ \t\n\r\f\v]</code> 。<br>对于8位（bytes）样式：<br> 匹配ASCII中的空白字符（<code>[ \t\n\r\f\v]</code>） 。</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>匹配任何非空白字符（<code>\s</code> 取非）。<br> 如果设置了 <code>ASCII</code> 标志，就相当于 <code>[^ \t\n\r\f\v]</code> 。</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>对于 Unicode（str）样式：<br> 匹配 Unicode 词语的字符，包含了可以构成词语的绝大部分字符，也包括数字和下划线。如果设置了 <code>ASCII</code> 标志，就只匹配 <code>[a-zA-Z0-9_]</code> 。<br>对于8位（bytes）样式：<br> 匹配 ASCII 字符中的数字和字母和下划线，就是 <code>[a-zA-Z0-9_]</code> 。如果设置了 <code>LOCALE</code> 标记，就匹配当前语言区域的数字和字母和下划线。</td>
+</tr>
+<tr>
+<td><code>\W</code></td>
+<td>匹配非单词字符的字符（与 <code>\w</code> 正相反）。<br> 如果使用了 <code>ASCII</code> 标志，就等价于 <code>[^a-zA-Z0-9_]</code>。<br>如果使用了 <code>LOCALE</code> 标志，则会匹配当前区域中既非字母数字也非下划线的字符。</td>
+</tr>
+<tr>
+<td><code>\Z</code></td>
+<td>只匹配字符串尾。<br>如果普通字符不是 ASCII 数位或者 ASCII 字母，那么正则样式将匹配第二个字符（如，<code>\$</code> 匹配字符 <code>'$'</code>）。</td>
+</tr>
+</tbody>
+</table>
+<p>绝大部分 Python 的标准转义字符也被正则表达式分析器支持：</p>
+<pre><code class="language-纯文本">\a      \b      \f      \n
+\N      \r      \t      \u
+\U      \v      \x      \\
+</code></pre>
+<p><code>'\u'</code>、<code>'\U'</code> 和 <code>'\N'</code> 转义序列只在 Unicode 模式中可被识别。 在 bytes 模式中它们会导致错误。未知的 ASCII 字母转义序列保留在未来使用，会被当作错误来处理。</p>
+<p>八进制转义包含为一个有限形式。如果首位数字是 0， 或者有三个八进制数位，那么就认为它是八进制转义。其他的情况，就看作是组引用。对于字符串文本，八进制转义最多有三个数位长。</p>
+<hr>
+<h1 id="re-模块">re 模块</h1>
+<p>Python 的 <code>re</code> 模块提供了与 Perl 语言类似的正则表达式匹配操作。</p>
+<hr>
+<h2 id="函数">函数</h2>
+<h3 id="匹配一项">匹配一项</h3>
+<p>在 <code>re</code> 模块中，有三个函数用于查找并返回一个匹配对象：</p>
+<ol>
+<li>
+<p><code>re.match()</code> —— 返回一个从字符串的起始位置匹配的对象。</p>
+</li>
+<li>
+<p><code>re.search()</code> —— 返回整个字符串中任意位置第一个成功的匹配。</p>
+</li>
+<li>
+<p><code>re.fullmatch()</code> —— 整个字符串与正则表达式完全匹配。</p>
+</li>
+</ol>
+<hr>
+<h4 id="match-函数">match() 函数</h4>
+<p><code>re.match()</code> 尝试从字符串的起始位置匹配一个模式，其语法如下：</p>
+<pre><code class="language-python">re.match(pattern, string, flags=0)
+</code></pre>
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p>返回值：</p>
+<p>匹配成功，<code>re.match()</code> 函数返回一个匹配对象（<code>Match</code>）；否则返回 <code>None</code>。</p>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import re
+&gt;&gt;&gt; re.match('abc', 'abcdefg')  # 在起始位置匹配
+&lt;_sre.SRE_Match object; span=(0, 3), match='abc'&gt;
+&gt;&gt;&gt; re.match('efg', 'abcdefg')  # 不在起始位置匹配
+None
+</code></pre>
+<hr>
+<h4 id="search-函数">search() 函数</h4>
+<p><code>re.search()</code> 扫描整个字符串并返回第一个成功的匹配，其语法如下：</p>
+<pre><code class="language-python">re.search(pattern, string, flags=0)
+</code></pre>
+<p>参数用法与 <code>re.match()</code> 类似。匹配成功，<code>re.search()</code> 方法返回一个匹配对象（<code>Match</code>）；否则返回 <code>None</code>。</p>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import re
+&gt;&gt;&gt; re.search('abc', 'abcdefg')  # 在起始位置匹配
+&lt;_sre.SRE_Match object; span=(0, 3), match='abc'&gt;
+&gt;&gt;&gt; re.search('efg', 'abcdefg')  # 不在起始位置匹配
+&lt;_sre.SRE_Match object; span=(4, 7), match='efg'&gt;
+</code></pre>
+<hr>
+<h4 id="fullmatch-函数">fullmatch() 函数</h4>
+<p><code>fullmatch()</code> 将整个字符串与正则表达式匹配，其语法如下：</p>
+<pre><code class="language-python">re.fullmatch(pattern, string, flags=0)
+</code></pre>
+<p>参数用法与 <code>re.match()</code> 类似。如果 <code>string</code> 与 <code>pattern</code> 完全匹配，那么返回一个匹配对象（<code>Match</code>）；否则返回 <code>None</code>。</p>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import re
+&gt;&gt;&gt; re.fullmatch('abc', 'abcdefg')    # 在起始位置匹配
+None
+&gt;&gt;&gt; re.fullmatch('abcdefg', 'abcdefg')  # 匹配整个字符串
+&lt;_sre.SRE_Match object; span=(0, 7), match='abcdefg'&gt;
+</code></pre>
+<hr>
+<h3 id="匹配多项">匹配多项</h3>
+<p>有两个函数用于查找并返回匹配的多个匹配对象：</p>
+<ol>
+<li>
+<p><code>re.findall</code> —— 在字符串的任意位置匹配，并返回一个包含了所有匹配对象的列表。</p>
+</li>
+<li>
+<p><code>re.finditer</code> —— 在字符串的任意位置匹配，并返回一个包含了所有匹配对象的迭代器。</p>
+</li>
+</ol>
+<hr>
+<h4 id="finall">finall()</h4>
+<p><code>finall()</code> 在字符串中找到正则表达式所匹配的所有子串，其语法如下：</p>
+<pre><code class="language-python">re.findall(pattern, string, flags=0)
+</code></pre>
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p>返回值：</p>
+<p>返回一个列表，包含了所有匹配对象；如果没有任何匹配项，则返回空列表。</p>
+<hr>
+<h4 id="finditer">finditer()</h4>
+<p>与 <code>finall()</code> 类似，其语法如下：</p>
+<pre><code class="language-python">re.finditer(pattern, string, flags=0)
+</code></pre>
+<p>该函数返回的是迭代器。</p>
+<p>如果可能存在大量的匹配项的话，建议使用 <code>finditer()</code>。</p>
+<hr>
+<h3 id="split-正则分割">split() 正则分割</h3>
+<p><code>re.split()</code> 按照能够匹配的子串对字符串进行分割，其语法如下：</p>
+<pre><code class="language-python">re.split(pattern, string[, maxsplit=0, flags=0])
+</code></pre>
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>maxsplit</code></td>
+<td>最大分割次数，<code>maxsplit=1</code> 分割一次，默认为 <code>0</code>，不限制次数。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p>返回值：</p>
+<p>返回一个用 <code>patterm</code> 模式匹配的字符分割的字符串列表。如果查找不到任何匹配，则返回一个仅包含 <code>string</code> 的列表。</p>
+<p><code>str</code> 模块下也有一个 <code>split()</code> 函数，但它并不支持正则分割。</p>
+<hr>
+<h3 id="替换">替换</h3>
+<p>有两个替换函数：<code>re.sub()</code> 和 <code>re.subn()</code>。</p>
+<pre><code class="language-python">re.sub(pattern, repl, string, count=0, flags=0)
+re.subn(pattern, repl, string, count=0, flags=0)
+</code></pre>
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>repl</code></td>
+<td>替换内容，可以是字符串，也可以是函数。如果 <code>repl</code> 为函数，只能有一个匹配对象作为参数。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td>最大替换次数。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p><code>repl</code> 替换掉 <code>string</code> 中被 <code>pattern</code> 匹配的字符。</p>
+<p>返回值：</p>
+<p><code>re.sub()</code> 返回一个替换后的字符串。如果 <code>string</code> 中没有任何匹配项，则返回 <code>string</code>。</p>
+<p><code>re.subn()</code> 返回一个元组，包含了替换后的字符串和替换次数：<code>(str, n)</code>。</p>
+<hr>
+<h3 id="excape-转义函数">excape() 转义函数</h3>
+<p><code>re.exvape()</code> 函数可以转义参数 <code>pattern</code> 中的特殊字符。</p>
+<pre><code class="language-python">re.exvape(pattern)
+</code></pre>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print(re.escape('http://www.python.org'))
+http://www\.python\.org
+</code></pre>
+<p>Python3.3：<code>_</code> 不再被转义。</p>
+<p>Python3.7：只有在正则表达式中具有特殊含义的字符才会被转义。 因此， <code>!</code>、<code>&quot;</code>、<code>%</code>、<code>'</code>、<code>,</code>、<code>/</code>、<code>:</code>、<code>;</code>&lt;'、<code>=</code>&gt;'、<code>@</code> 和 ` 将不再会被转义。</p>
+<p>使用 <code>re.exvape()</code> 函数很容易出现转义错误的问题，所以并不建议使用它转义。</p>
+<hr>
+<h3 id="purge-清除正则表达式缓存">purge() 清除正则表达式缓存</h3>
+<p><code>re.purge()</code> 用于清除正则表达式的缓存。它没有参数，没有返回值。</p>
+<hr>
+<h2 id="regexflag-标志常量">RegexFlag 标志常量</h2>
+<ul>
+<li>
+<p>re.ASCII：</p>
+<ul>
+<li>
+<p>简写：<code>re.A</code>。</p>
+</li>
+<li>
+<p>让 <code>\w</code>, <code>\W</code>, <code>\b</code>, <code>\B</code>, <code>\d</code>, <code>\D</code>, <code>\s</code> 和 <code>\S</code> 只匹配 ASCII 编码支持的字符，而不是 Unicode。这只对 Unicode 样式（Python3 默认）有效，会被 byte 样式忽略。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; re.search(r'\w+', '中文字符和ASCII', re.A)
+&lt;_sre.SRE_Match object; span=(5, 10), match='ASCII'&gt;
+</code></pre>
+</li>
+<li>
+<p>对应内联标记：<code>(?a)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.DEBUG：</p>
+<ul>
+<li>
+<p>显示编译时的 debug 信息，没有内联标记。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; re.search(r'.*', '显示debug信息', re.DEBUG)
+MAX_REPEAT 0 MAXREPEAT
+  ANY None
+&lt;_sre.SRE_Match object; span=(0, 9), match='显示debug信息'&gt;
+</code></pre>
+</li>
+<li>
+<p>对应内联标记：<code>(?i)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.IGNORECASE：</p>
+<ul>
+<li>
+<p>简写：<code>re.I</code>。</p>
+</li>
+<li>
+<p>进行忽略大小写匹配。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; re.findall(r'[a-z]', '大写字母：ABCDE 小写字母：abcde', re.I)
+['A', 'B', 'C', 'D', 'E', 'a', 'b', 'c', 'd', 'e']
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>re.LOCALE：</p>
+<ul>
+<li>
+<p>简写：<code>re.L</code>。</p>
+</li>
+<li>
+<p>语言依赖，由当前语言区域决定 <code>\w</code>, <code>\W</code>, <code>\b</code>, <code>\B</code> 和大小写敏感匹配。这个标记只能对 byte 样式有效。这个标记官方并不推荐使用，因为语言区域机制很不可靠，它一次只能处理一个 “习惯”，而且只对 8 位字节有效。</p>
+</li>
+<li>
+<p>对应内联标记：<code>(?L)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.MULTILINE：</p>
+<ul>
+<li>
+<p>简写：<code>re.M</code>。</p>
+</li>
+<li>
+<p>多行模式，样式字符 <code>'^'</code> 匹配每一个行开始（字符串的开始和换行符后紧跟的符号）；样式字符 <code>'$'</code> 匹配每一个行结尾（字符串结尾和换行符前面的符号）。<br>
+默认情况下不支持换行符特性，<code>'^'</code> 匹配字符串开始，<code>'$'</code> 匹配字符串结尾。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; re.findall(r'^.*$', '第1行\n第2行\n第3行', re.M)
+['第1行', '第2行', '第3行']
+</code></pre>
+</li>
+<li>
+<p>对应内联标记：<code>(?m)</code>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.DOTALL：</p>
+<ul>
+<li>
+<p>简写：<code>re.S</code>。</p>
+</li>
+<li>
+<p>让 <code>'.'</code> 特殊字符匹配全部字符，包括换行符。<br>
+默认情况下，<code>'.'</code> 仅匹配除了换行符的其他任意字符。</p>
+</li>
+<li>
+<p>对应内联标记：<code>(?s)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.VERBOSE：</p>
+<ul>
+<li>
+<p>简写：<code>re.X</code>。</p>
+</li>
+<li>
+<p>冗长模式，允许在正则表达式中换行和添加注释。<br>
+该模式下空白符号会被忽略，除非在一个字符集合中或者由反斜杠转义，或者在 <code>*?</code>、<code>(?:</code>、<code>(?P&lt;…&gt;</code> 分组之内。<br>
+当一个行内有 <code>#</code> 不在字符集和转义序列，那么它之后的所有字符都是注释。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; re.search(r'''\d +  # the integral part
+...               \.    # the decimal point
+...               \d *  # some fractional digits''',
+...           '圆周率：3.14', re.X)
+&lt;_sre.SRE_Match object; span=(4, 8), match='3.14'&gt;
+</code></pre>
+</li>
+<li>
+<p>对应内联标记：<code>(?x)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.UNICODE：</p>
+<ul>
+<li>
+<p>简写：<code>re.U</code>。</p>
+</li>
+<li>
+<p>匹配 Unicode 编码支持的字符，是 Python3 默认的字符串模式。虽然保留着，但对 Python3 来说是个冗余的常量。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.TEMPLATE：</p>
+<ul>
+<li>
+<p>简写：<code>re.T</code>。</p>
+</li>
+<li>
+<p><code>re</code> 模块的源码是这样描述该常量的（官方文档中并没有具体的描述）：</p>
+<pre><code class="language-python">TEMPLATE = T = sre_compile.SRE_FLAG_TEMPLATE # disable backtracking
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="正则对象-pattern">正则对象 Pattern</h2>
+<p>使用 <code>compile()</code> 和 <code>template()</code> 可以将正则表达式编译为正则表达式对象（Pattern，正则对象）。</p>
+<p><code>re.compile()</code> 的语法如下：</p>
+<pre><code class="language-python">re.compile(pattern, flags=0)
+
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>要转化为正则对象的正则表达式。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。 可以通过位的 OR（<code>'|'</code>）操作来结合多个模式。</td>
+</tr>
+</tbody>
+</table>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; pattern_obj = re.compile(r'abc')
+&gt;&gt;&gt; pattern_obj.search('abcdefg')
+&lt;_sre.SRE_Match object; span=(0, 3), match='abc'&gt;
+</code></pre>
+<p>使用正则对象和函数：</p>
+<ol>
+<li>
+<p>正则对象和函数是一致的。<br>
+模块的底层实现中，<code>re.compile()</code> 与其他 <code>re</code> 函数内部调用的是同一个函数 <code>re._compile()</code>。</p>
+</li>
+<li>
+<p>如果需要多次使用某个正则表达式的话，使用 <code>re.compile()</code> 和保存这个正则对象以便复用，可以让程序更加高效。通过 <code>re.compile()</code> 编译后的样式，和模块级的函数会被缓存。</p>
+</li>
+</ol>
+<hr>
+<h3 id="正则对象方法">正则对象方法</h3>
+<p>正则对象支持以下方法：</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pattern.search(string[, pos[, endpos]])</code></td>
+<td>扫描整个 <code>string</code> 寻找第一个匹配的位置， 并返回一个相应的匹配对象（<code>Match</code>）。如果没有匹配，就返回 <code>None</code>。<br><code>pos</code> —— 字符串中开始搜索的位置索引，默认为 <code>0</code>，它不完全等价于字符串切片。<code>^</code> 样式字符匹配行开头，但不会匹配索引规定开始的位置。<br><code>endpos</code> —— 字符串搜索的结束。只有从 <code>pos</code> 到 <code>endpos - 1</code> 的字符会被匹配。<br>如果 <code>endpos</code> 小于 <code>pos</code>，就不会有匹配产生。<br>pattern_obj.search(string, 0, 50)<code>等价于</code>pattern_obj.search(string[:50], 0)`。</td>
+</tr>
+<tr>
+<td><code>Pattern.match(string[, pos[, endpos]])</code></td>
+<td>如果 <code>string</code> 的开始位置能够找到这个正则样式 <code>Pattern</code> 的任意个匹配，就返回一个相应的匹配对象（<code>Match</code>）。如果不匹配，就返回 <code>None</code>。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围，与 <code>Pattern.search()</code> 含义相同。</td>
+</tr>
+<tr>
+<td><code>Pattern.fullmatch(string[, pos[, endpos]])</code></td>
+<td>如果整个 <code>string</code> 匹配这个正则表达式，就返回一个相应的匹配对象（<code>Match</code>）。如果不匹配，就返回 <code>None</code>。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围。</td>
+</tr>
+<tr>
+<td><code>Pattern.findall(string[, pos[, endpos]])</code></td>
+<td>类似 <code>re.findall()</code>，使用了编译后样式，在 <code>string</code> 中找到 <code>Pattern</code> 所匹配的所有子串，以列表形式返回所有匹配项。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围。</td>
+</tr>
+<tr>
+<td><code>Pattern.finditer(string[, pos[, endpos]])</code></td>
+<td>类似函数 <code>finiter()</code> ， 使用了编译后样式，在 <code>string</code> 中找到 <code>Pattern</code> 所匹配的所有子串，以迭代器形式返回所有匹配项。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围。</td>
+</tr>
+<tr>
+<td><code>Pattern.split(string, maxsplit=0)</code></td>
+<td>等价于 <code>split()</code> 函数，使用了编译后的样式，按照能够匹配的子串对字符串进行分割。<br> <code>maxsplit</code> —— 最大分割次数。</td>
+</tr>
+<tr>
+<td><code>Pattern.sub(repl, string, count=0)</code></td>
+<td>等价于 <code>sub()</code> 函数，使用了编译后的样式，使用 <code>repl</code> 替换掉 <code>string</code> 中被 <code>Pattern</code> 匹配的字符。<br><code>count</code> —— 最大替换次数。<br>返回一个替换后的字符串。如果 <code>string</code> 中没有任何匹配项，则返回 <code>string</code>。</td>
+</tr>
+<tr>
+<td><code>Pattern.subn(repl, string, count=0)</code></td>
+<td>等价于 <code>subn()</code> 函数，使用了编译后的样式，使用 <code>repl</code> 替换掉 <code>string</code> 中被 <code>Pattern</code> 匹配的字符。<br><code>count</code> —— 最大替换次数。<br>返回一个元组，包含了替换后的字符串和替换次数。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="正则对象属性">正则对象属性</h3>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pattern.flags</code></td>
+<td>正则匹配标记。<br>可以传递给 <code>compile()</code> 的参数。任何 <code>(?…)</code> 内联标记，隐性标记（<code>re.U</code>）的结合。</td>
+</tr>
+<tr>
+<td><code>Pattern.groups</code></td>
+<td>捕获到的模式串中组的数量。</td>
+</tr>
+<tr>
+<td><code>Pattern.groupindex</code></td>
+<td>映射由 <code>(?P&lt;id&gt;)</code> 定义的命名符号组合和数字组合的字典。如果没有符号组，那字典就是空的。</td>
+</tr>
+<tr>
+<td><code>Pattern.pattern</code></td>
+<td>编译对象的原始样式字符串。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="匹配对象">匹配对象</h2>
+<p>匹配对象（Match）是调用 <code>re</code> 模块中的函数或方法匹配后返回的对象。</p>
+<p>匹配对象总是有一个布尔值 <code>True</code>。如果没有匹配的话 <code>re.match()</code> 和 <code>re.search()</code> 返回 <code>None</code>。可以简单的用 <code>if</code> 语句来判断是否匹配：</p>
+<pre><code class="language-python">&gt;&gt;&gt; if re.search(r'a', 'abc'):
+...     print(True)
+...
+True
+&gt;&gt;&gt; if re.search(r'd', 'abc'):
+...     print(True)
+... else:
+...     print(False)
+...
+False
+</code></pre>
+<hr>
+<h3 id="匹配对象方法">匹配对象方法</h3>
+<p>匹配对象支持以下方法：</p>
+<ul>
+<li>
+<p>：</p>
+<ul>
+<li>对 <code>template</code> 进行反斜杠（<code>'\'</code>）转义替换并且返回。</li>
+</ul>
+</li>
+<li>
+<p>：</p>
+<ul>
+<li>
+<p>返回一个或者多个匹配的子组。</p>
+</li>
+<li>
+<p>如果只有一个参数，结果就是一个字符串；<br>
+如果有多个参数，结果就是一个元组（每个参数对应一个项）；<br>
+如果没有参数，<code>group1</code> 默认为 <code>0</code>（整个匹配都被返回）。</p>
+</li>
+<li>
+<p>如果一个 <code>groupN</code> 参数值为 <code>0</code>，相应的返回值就是整个匹配字符串；<br>
+如果它是一个范围 [1..99]，结果就是相应的括号组字符串。</p>
+</li>
+<li>
+<p>如果一个组号是负数，或者大于样式中定义的组数，会抛出一个 <code>IndexError</code>。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r'(\w+) (\w+)', 'Python PHP Java C++')
+&gt;&gt;&gt; m.group()    # 返回整个匹配
+'Python PHP'
+&gt;&gt;&gt; m.group(1)    # 返回第一个括号组
+'Python'
+&gt;&gt;&gt; m.group(2)    # 返回第二个括号组
+'PHP'
+&gt;&gt;&gt; m.group(1, 2)  # 多个参数返回一个元组
+('Python', 'PHP')
+</code></pre>
+</li>
+<li>
+<p>如果正则表达式使用了 <code>(?P&lt;name&gt;…)</code> 语法， <code>groupN</code> 参数可以是索引值，也可以是组名。</p>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r'(?P&lt;name_1&gt;\w+) (?P&lt;name_2&gt;\w+)', 'Python PHP')
+&gt;&gt;&gt; m.group('name_1', 'name_2')
+('Python', 'PHP')
+&gt;&gt;&gt; m.group(1, 2)
+('Python', 'PHP')
+</code></pre>
+</li>
+<li>
+<p>如果一个组包含在样式的一部分，并被匹配多次，就返回最后一个匹配。</p>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r'(..)+', 'a1b2c3')
+&gt;&gt;&gt; m.group(1)
+'c3'
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>：</p>
+<ul>
+<li>
+<p>Python3.6 新增功能。</p>
+</li>
+<li>
+<p>等价于 <code>m.group(g)</code>，允许更方便地引用一个匹配。</p>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r'(?P&lt;name_1&gt;\w+) (?P&lt;name_2&gt;\w+)', 'Python PHP')
+&gt;&gt;&gt; m[0]
+'Python PHP'
+&gt;&gt;&gt; m[1]
+'Python'
+&gt;&gt;&gt; m[2]
+'PHP'
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>：</p>
+<ul>
+<li>
+<p>返回一个元组，包含所有匹配的子组，在样式中出现的从 1 到任意多的组合。<code>default</code> 参数用于不参与匹配的情况，默认为 <code>None</code>。</p>
+</li>
+<li>
+<p>Example：<br>
+使小数部分可选，那么不是所有的组都会参与到匹配当中。这些组合默认会返回一个 <code>None</code> ，除非指定了 <code>default</code> 参数。</p>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r'(\d+)\.(\d+)', '3.14')
+&gt;&gt;&gt; m.groups()
+('3', '14')
+</code></pre>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r&quot;(\d+)\.?(\d+)?&quot;, '3')
+&gt;&gt;&gt; m.groups()    # 第二个子组默认为 None
+('3', None)
+&gt;&gt;&gt; m.groups('0')  # 第二个子组被设置为指定的默认值 '0'
+('3', '0')
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>：</p>
+<ul>
+<li>
+<p>返回一个字典，包含了所有的命名子组。key 就是组名。 <code>default</code> 参数用于不参与匹配的组合；默认为 <code>None</code>。</p>
+</li>
+<li>
+<p>Example：</p>
+<pre><code class="language-python">&gt;&gt;&gt; m = re.match(r'(?P&lt;name_1&gt;\w+) (?P&lt;name_2&gt;\w+)', 'Python PHP')
+&gt;&gt;&gt; m.groupdict()
+{'name_1': 'Python', 'name_2': 'PHP'}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>：</p>
+<ul>
+<li>
+<p>返回 <code>group</code> 匹配到的字串在原字符串的开始和结束索引。<code>group</code> 默认为 <code>0</code>（意思是整个匹配的子串）。如果 <code>group</code> 存在，但未产生匹配，就返回 <code>-1</code> 。</p>
+</li>
+<li>
+<p>从 email 地址中移除掉 <code>remove_this</code>：</p>
+<pre><code class="language-python">&gt;&gt;&gt; email = &quot;tony@tiremove_thisger.net&quot;
+&gt;&gt;&gt; m = re.search(&quot;remove_this&quot;, email)
+&gt;&gt;&gt; email[:m.start()] + email[m.end():]
+'tony@tiger.net'
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>：</p>
+<ul>
+<li>对于一个匹配 <code>m</code> ， 返回一个二元组 <code>(m.start(group), m.end(group))</code> 。<br>
+如果 <code>group</code> 没有在这个匹配中，就返回 <code>(-1, -1)</code> 。<br>
+<code>group</code> 默认为 <code>0</code>，就是整个匹配。</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/vbs 后台运行 bat/" class="post-title gt-a-link">
+                    vbs 后台运行 bat
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

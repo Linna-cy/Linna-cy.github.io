@@ -1,0 +1,742 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Maven | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            Maven
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-08-14</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/"> <span>#JavaWeb </span></a>  
+              <a href="https://linna-cy.github.io/ZhrhUf52Mi/"> <span>#项目管理 </span></a>  
+              <a href="https://linna-cy.github.io/18uPZhlPeC/">
+                <span>#Maven </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >10<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >2277<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#maven-%E7%AE%80%E4%BB%8B">Maven 简介</a>
+<ul>
+<li><a href="#maven-%E6%A8%A1%E5%9E%8B">Maven 模型</a></li>
+<li><a href="#%E4%BB%93%E5%BA%93">仓库</a>
+<ul>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93">本地仓库</a></li>
+<li><a href="#%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93">中央仓库</a></li>
+<li><a href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">远程仓库</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#maven%E6%A0%87%E5%87%86%E5%8C%96%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84">Maven标准化项目结构</a></li>
+<li><a href="#%E9%A1%B9%E7%9B%AE%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-pomxml">项目核心配置文件 pom.xml</a>
+<ul>
+<li><a href="#maven%E5%9D%90%E6%A0%87">Maven坐标</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE">其他基本配置</a></li>
+</ul>
+</li>
+<li><a href="#maven%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">Maven依赖管理</a></li>
+<li><a href="#maven%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Maven常用命令</a>
+<ul>
+<li><a href="#%E7%BC%96%E8%AF%91">编译</a></li>
+<li><a href="#%E6%B8%85%E7%90%86">清理</a></li>
+<li><a href="#%E6%89%93%E5%8C%85">打包</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95">测试</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+</ul>
+</li>
+<li><a href="#maven%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Maven生命周期</a></li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#maven-%E7%AE%80%E4%BB%8B">Maven 简介</a>
+<ul>
+<li><a href="#maven-%E6%A8%A1%E5%9E%8B">Maven 模型</a></li>
+<li><a href="#%E4%BB%93%E5%BA%93">仓库</a>
+<ul>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93">本地仓库</a></li>
+<li><a href="#%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93">中央仓库</a></li>
+<li><a href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">远程仓库</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#maven%E6%A0%87%E5%87%86%E5%8C%96%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84">Maven标准化项目结构</a></li>
+<li><a href="#%E9%A1%B9%E7%9B%AE%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-pomxml">项目核心配置文件 pom.xml</a>
+<ul>
+<li><a href="#maven%E5%9D%90%E6%A0%87">Maven坐标</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE">其他基本配置</a></li>
+</ul>
+</li>
+<li><a href="#maven%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">Maven依赖管理</a></li>
+<li><a href="#maven%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Maven常用命令</a>
+<ul>
+<li><a href="#%E7%BC%96%E8%AF%91">编译</a></li>
+<li><a href="#%E6%B8%85%E7%90%86">清理</a></li>
+<li><a href="#%E6%89%93%E5%8C%85">打包</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95">测试</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+</ul>
+</li>
+<li><a href="#maven%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Maven生命周期</a></li>
+</ul>
+
+                        <hr>
+                    
+                    <h1 id="maven-简介">Maven 简介</h1>
+<p>Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档.</p>
+<p>Maven的主要功能有:</p>
+<ul>
+<li>提供了一套标准化的项目结构.</li>
+<li>提供了一套标准化的构建流程 (编译, 测试, 打包, 发布...).</li>
+<li>提供了一套依赖管理机制.</li>
+</ul>
+<h2 id="maven-模型">Maven 模型</h2>
+<p>Maven模型包含:</p>
+<ul>
+<li>项目对象模型 (Project Object Model)</li>
+<li>依赖管理模型 (Dependency)</li>
+<li>插件 (Plugin)</li>
+</ul>
+<p>Maven模型图示:</p>
+<figure data-type="image" tabindex="1"><img src="https://linna-cy.github.io/post-images/1662167147568.png" alt="" loading="lazy"></figure>
+<p>其中紫色框框起来的部分, 就是用来完成标准化构建流程.</p>
+<h2 id="仓库">仓库</h2>
+<p>Maven仓库是项目中依赖的第三方库, 这个库所在的位置叫做仓库 (在Maven的术语中，仓库是一个位置, place).</p>
+<p>Maven中, 任何一个依赖、插件或者项目构建的输出，都可以称之为构件.<br>
+Maven仓库能帮助我们管理构件 (主要是JAR), 它就是放置所有JAR文件 (WAR, ZIP, POM等等) 的地方.</p>
+<p>仓库有三种类型:</p>
+<ul>
+<li>本地 (local)</li>
+<li>中央 (central)</li>
+<li>远程 (remote)</li>
+</ul>
+<p>在项目中使用坐标引入对应依赖jar包后, Maven会按照本地仓库 --&gt; 远程仓库--&gt; 中央仓库的顺序去查找相应的jar包. 只要jar包存在, 如果是在本地仓库则直接使用, 而如果在远程仓库或中央仓库, Maven则将jar包自动下载到本地仓库.</p>
+<h3 id="本地仓库">本地仓库</h3>
+<p>本地仓库在第一次执行maven命令的时候才被创建.</p>
+<p>运行 Maven 的时候, Maven 所需要的任何构件都是直接从本地仓库获取的. 如果本地仓库没有, 它会首先尝试从远程仓库下载构件至本地仓库, 然后再使用本地仓库的构件.</p>
+<p>Maven 本地仓库默认为用户主目录 (USER HOME) 中的 <code>.m2/repository</code>.</p>
+<h3 id="中央仓库">中央仓库</h3>
+<p>Maven 中央仓库是由 Maven 社区提供的仓库, 其中包含了大量常用的库.</p>
+<p>中央仓库包含了绝大多数流行的开源Java构件, 以及源码、作者信息、SCM、信息、许可证信息等. 一般来说，简单的Java项目依赖的构件都可以在这里下载到.</p>
+<p>Maven 社区提供了一个 URL: <a href="http://search.maven.org/#browse">search.maven.org/#browse</a>, 来浏览中央仓库的内容.</p>
+<h3 id="远程仓库">远程仓库</h3>
+<p>远程仓库是开发人员自己定制的仓库, 包含了所需要的代码库或者其他工程中用到的 jar 文件. 一般是由公司团队搭建的私有仓库.</p>
+<hr>
+<h1 id="maven标准化项目结构">Maven标准化项目结构</h1>
+<p>Maven提供了一套标准化的项目结构, 所有的IDE使用Maven构建的项目完全一样. 所以, 使用Maven创建的项目在所有IDE中可以通用.</p>
+<p>使用Maven构建的项目结构示例:</p>
+<ul>
+<li>📁<code>project_name</code> --- 项目主目录
+<ul>
+<li>📁<code>src</code> --- 源代码和测试代码文件目录
+<ul>
+<li>📁<code>main</code> --- 源代码文件目录
+<ul>
+<li>📁<code>java</code> --- 源代码Java文件目录</li>
+<li>📁<code>resourcs</code> --- 源代码配置文件目录</li>
+</ul>
+</li>
+<li>📁<code>test</code> --- 测试代码文件目录
+<ul>
+<li>📁<code>java</code> --- 测试代码Java文件目录</li>
+<li>📁<code>resource</code> --- 测试代码配置</li>
+</ul>
+</li>
+<li>📄<code>pom.xml</code> --- 项目核心配置文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="项目核心配置文件-pomxml">项目核心配置文件 pom.xml</h1>
+<pre><code class="language-xml">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+  &lt;!-- 模型版本 --&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;!-- The Basics --&gt;
+  &lt;!-- 公司或者组织的唯一标志 --&gt;
+  &lt;groupId&gt;...&lt;/groupId&gt;
+  &lt;!-- 当前项目唯一ID --&gt;
+  &lt;artifactId&gt;...&lt;/artifactId&gt;
+  &lt;!-- 本项目目前所处的版本号 --&gt;
+  &lt;version&gt;...&lt;/version&gt;
+  &lt;!-- 打包的机制 --&gt;
+  &lt;packaging&gt;...&lt;/packaging&gt;
+  &lt;!-- 项目依赖关系 --&gt;
+  &lt;dependencies&gt;...&lt;/dependencies&gt;
+  &lt;parent&gt;...&lt;/parent&gt;
+  &lt;dependencyManagement&gt;...&lt;/dependencyManagement&gt;
+  &lt;modules&gt;...&lt;/modules&gt;
+  &lt;!-- pom常量 --&gt;
+  &lt;properties&gt;...&lt;/properties&gt;
+
+  &lt;!-- Build Settings --&gt;
+  &lt;build&gt;...&lt;/build&gt;
+  &lt;reporting&gt;...&lt;/reporting&gt;
+
+  &lt;!-- More Project Information --&gt;
+  &lt;!-- 项目的名称 --&gt;  
+  &lt;name&gt;...&lt;/name&gt;
+  &lt;!-- 项目的详细描述 --&gt;
+  &lt;description&gt;...&lt;/description&gt;
+  &lt;!-- 项目主页的URL --&gt;
+  &lt;url&gt;...&lt;/url&gt;
+  &lt;inceptionYear&gt;...&lt;/inceptionYear&gt;
+  &lt;licenses&gt;...&lt;/licenses&gt;
+  &lt;organization&gt;...&lt;/organization&gt;
+  &lt;developers&gt;...&lt;/developers&gt;
+  &lt;contributors&gt;...&lt;/contributors&gt;
+
+  &lt;!-- Environment Settings --&gt;
+  &lt;issueManagement&gt;...&lt;/issueManagement&gt;
+  &lt;ciManagement&gt;...&lt;/ciManagement&gt;
+  &lt;mailingLists&gt;...&lt;/mailingLists&gt;
+  &lt;scm&gt;...&lt;/scm&gt;
+  &lt;prerequisites&gt;...&lt;/prerequisites&gt;
+  &lt;!-- 发现依赖和扩展的远程仓库列表 --&gt;
+  &lt;repositories&gt;...&lt;/repositories&gt;
+  &lt;pluginRepositories&gt;...&lt;/pluginRepositories&gt;
+  &lt;distributionManagement&gt;...&lt;/distributionManagement&gt;
+  &lt;profiles&gt;...&lt;/profiles&gt;
+&lt;/project&gt;
+</code></pre>
+<p>pom.xml中描述符的根为<code>&lt;project&gt;</code>.</p>
+<h2 id="maven坐标">Maven坐标</h2>
+<ul>
+<li>Maven 中的坐标是资源的唯一标识.</li>
+<li>使用坐标来<u>定义项目</u>或<u>引入项目中需要的依赖</u>.</li>
+</ul>
+<p>Maven坐标的主要组成 (在pom.xml文件中):</p>
+<ul>
+<li><code>&lt;groupId&gt;</code>: 公司或者组织的唯一标志. 配置时生成的路径也是由此生成. 如<code>com.linner.blog</code> (通常是域名反写), Maven会将该项目打成的jar包放本地路径：<code>/com/linner/blog</code>.</li>
+<li><code>&lt;artifactId&gt;</code>: 当前项目的唯一ID (通常是模块名称). 一个groupId下面可能多个项目, 就是靠<code>&lt;artifactId&gt;</code>来区分.</li>
+<li><code>&lt;version&gt;</code>: 本项目目前所处的版本号.</li>
+</ul>
+<p>Maven 中, 根据 <code>groupId</code>、<code>artifactId</code>、<code>version</code> 组合成 <code>groupId:artifactId:version</code> 来唯一识别一个 jar 包. 这三个标签构成了Maven坐标.</p>
+<h2 id="其他基本配置">其他基本配置</h2>
+<ul>
+<li><code>&lt;modelVersion&gt;</code>: 指定pom.xml符合哪个版本的描述符. Maven2和3只能为<code>4.0.0</code>.</li>
+<li><code>&lt;packaging&gt;</code>: 打包的机制. 有以下几种:
+<ul>
+<li>pom</li>
+<li>jar --- 默认值</li>
+<li>maven-plugin</li>
+<li>ejb</li>
+<li>war</li>
+<li>ear</li>
+<li>rar</li>
+<li>par</li>
+</ul>
+</li>
+<li><code>&lt;dependencies&gt;</code>: 定义本项目的依赖关系.</li>
+</ul>
+<hr>
+<h1 id="maven依赖管理">Maven依赖管理</h1>
+<p>依赖管理是指管理项目中所依赖的第三方资源 (jar包, 插件). 而Maven使用标准的<mark>坐标</mark>配置来管理各种依赖, 只需要简单的配置就可以完成依赖管理.</p>
+<p>Maven的依赖资源是在pom.xml配置文件中的<code>&lt;dependencies&gt;</code>描述的. 其结构如下:</p>
+<ul>
+<li><code>&lt;project&gt;</code>
+<ul>
+<li>...</li>
+<li><code>&lt;dependencies&gt;</code>
+<ul>
+<li><code>&lt;dependency&gt;</code>: 一个<code>&lt;dependency&gt;</code>代表一个依赖项.<br>
+<code>&lt;groupId&gt;</code>, <code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>的含义与<code>&lt;project&gt;</code>的子标签<code>&lt;groupId&gt;</code>, <code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>的含义相同.
+<ul>
+<li><code>&lt;groupId&gt;</code></li>
+<li><code>&lt;artifactId&gt;</code></li>
+<li><code>&lt;version&gt;</code></li>
+<li><code>&lt;type&gt;</code>: 依赖的打包机制. 对应<code>&lt;packaging&gt;</code>的类型, 有pom, jar(默认), maven-plugin, ejb, war, ear, rar, par.</li>
+<li><code>&lt;scope&gt;</code>: 任务的类路径 (编译和运行时, 测试等) 以及如何限制依赖关系的传递性.
+<table>
+<thead>
+<tr>
+<th style="text-align:center">scope取值</th>
+<th style="text-align:center">有效范围(compile, runtime, test)</th>
+<th style="text-align:center">依赖传递</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>compile</code></td>
+<td style="text-align:center">all</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>provided</code></td>
+<td style="text-align:center">compile, test</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>runtime</code></td>
+<td style="text-align:center">runtime, test</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>test</code></td>
+<td style="text-align:center">test</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>system</code></td>
+<td style="text-align:center">compile, test</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><code>&lt;optional&gt;</code></li>
+<li><code>&lt;exclusions&gt;</code>
+<ul>
+<li><code>&lt;exclusion&gt;</code>
+<ul>
+<li><code>&lt;groupId&gt;</code></li>
+<li><code>&lt;artifactId&gt;</code></li>
+</ul>
+</li>
+<li><code>&lt;exclusion&gt;</code>
+<ul>
+<li>...</li>
+</ul>
+</li>
+<li>多个<code>&lt;exclusion&gt;</code>...</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>多个<code>&lt;dependency&gt;</code>...</li>
+</ul>
+</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<p><code>&lt;scope&gt;</code>取值说明:</p>
+<hr>
+<h1 id="maven常用命令">Maven常用命令</h1>
+<ul>
+<li><code>compile</code>: 编译</li>
+<li><code>clean</code>: 清理</li>
+<li><code>test</code>: 测试</li>
+<li><code>package</code>: 打包</li>
+<li><code>install</code>: 安装</li>
+</ul>
+<p>使用Maven命令需要先配置PATH, 然后在项目目录下执行.</p>
+<p>例如项目路径为<code>~/project</code>:</p>
+<pre><code class="language-bash">cd ~/project
+</code></pre>
+<h2 id="编译">编译</h2>
+<pre><code class="language-bash">mvn compile
+</code></pre>
+<p>第一次执行该命令, Maven会自动从仓库 (中央仓库或远程仓库, 介绍常用命令时, 如无特别指出, 仓库均指中央仓库或远程仓库) 下载编译所需的jar插件包. 然后在项目下会生成一个 <code>target</code> 目录. 编译后的字节码文件就放在该目录下.</p>
+<h2 id="清理">清理</h2>
+<pre><code class="language-bash">mvn clean
+</code></pre>
+<p>第一次执行该命令, Maven会从仓库下载清理所需要的jar插件包. 接着便使用插件清除项目下的<code>target</code>目录.</p>
+<h2 id="打包">打包</h2>
+<pre><code class="language-bash">mvn package
+</code></pre>
+<p>第一次执行该命令, Maven会从仓库下载打包所需要的jar插件包. 然后在项目的 <code>terget</code> 目录下生成一个jar包 (将当前项目打成的jar包).</p>
+<h2 id="测试">测试</h2>
+<pre><code class="language-bash">mvn test
+</code></pre>
+<p>该命令会执行所有的测试代码, 即<code>project/scr/text</code>下的代码.</p>
+<h2 id="安装">安装</h2>
+<pre><code class="language-bash">mvn install
+</code></pre>
+<p>该命令会将当前项目打成jar包, 并安装到本地仓库. 执行完上述命令后可以到本地仓库查看结果. 仓库中的路径为pom.xml文件中<code>&lt;groupId&gt;</code>相应的路径, 生成的jar包名为<code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>组成的内容.</p>
+<hr>
+<h1 id="maven生命周期">Maven生命周期</h1>
+<p>Maven 构建项目生命周期描述的是一次构建过程经历经历了多少个事件.</p>
+<p>Maven对项目构建的生命周期划分为3套:</p>
+<ul>
+<li>clean: 清理工作.</li>
+<li>default: 核心工作, 例如编译, 测试, 打包, 安装等.</li>
+<li>site:  产生报告, 发布站点等. 这套声明周期一般不会使用.</li>
+</ul>
+<p>同一套生命周期内, 执行后边的命令, 前面的所有命令会自动执行.</p>
+<p>default 生命周期如下:</p>
+<figure data-type="image" tabindex="2"><img src="https://linna-cy.github.io/post-images/1662167229604.png" alt="" loading="lazy"></figure>
+<p>如执行<code>install</code>命令, maven会按照上图中从左到右的顺序先执行<code>compile</code>, 再执行<code>test</code>, <code>package</code>, 最后执行<code>install</code>; 如果执行<code>package</code>, 除了<code>install</code>命令, 其它命令按照上图左到右顺序执行.</p>
+<blockquote>
+<p>默认的生命周期其实有对应的很多命令, 上图中只展示了常用的.</p>
+</blockquote>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/SSH 公钥配置/" class="post-title gt-a-link">
+                    SSH 公钥配置
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

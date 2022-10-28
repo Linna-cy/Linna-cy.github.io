@@ -1,0 +1,1273 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>MyBatis | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            MyBatis
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-09-06</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/"> <span>#JavaWeb </span></a>  
+              <a href="https://linna-cy.github.io/GJn_jw5rNJ/">
+                <span>#数据库 </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >24<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >5148<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#mybatis-%E4%BB%8B%E7%BB%8D">MyBatis 介绍</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE-mybatis">配置 Mybatis</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-mybatis">使用 Mybatis</a>
+<ul>
+<li><a href="#%E5%AE%9E%E4%BE%8B">实例</a></li>
+</ul>
+</li>
+<li><a href="#xml-%E6%98%A0%E5%B0%84%E5%99%A8">XML 映射器</a>
+<ul>
+<li><a href="#select">Select</a>
+<ul>
+<li><a href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE">查询所有数据</a></li>
+<li><a href="#%E6%A0%B9%E6%8D%AEid%E5%AD%97%E6%AE%B5%E6%9F%A5%E8%AF%A2">根据id字段查询</a></li>
+<li><a href="#%E5%A4%9A%E6%9D%A1%E4%BB%B6%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2">多条件动态查询</a></li>
+<li><a href="#%E5%8D%95%E6%9D%A1%E4%BB%B6%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2">单条件动态查询</a></li>
+</ul>
+</li>
+<li><a href="#insert">Insert</a></li>
+<li><a href="#update">Update</a></li>
+<li><a href="#delete">Delete</a>
+<ul>
+<li><a href="#%E5%88%A0%E9%99%A4%E5%8D%95%E8%A1%8C%E6%95%B0%E6%8D%AE">删除单行数据</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E5%A4%9A%E8%A1%8C%E6%95%B0%E6%8D%AE">删除多行数据</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E6%9E%9C%E6%98%A0%E5%B0%84">结果映射</a>
+<ul>
+<li><a href="#resultmap">resultMap</a></li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E6%98%A0%E5%B0%84">自动映射</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E6%95%B0">参数</a></li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0crud">注解实现CRUD</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E6%80%81sql">动态SQL</a></li>
+<li><a href="#sqlsessionfactory%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%8A%BD%E5%8F%96">SqlSessionFactory工具类抽取</a></li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#mybatis-%E4%BB%8B%E7%BB%8D">MyBatis 介绍</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE-mybatis">配置 Mybatis</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-mybatis">使用 Mybatis</a>
+<ul>
+<li><a href="#%E5%AE%9E%E4%BE%8B">实例</a></li>
+</ul>
+</li>
+<li><a href="#xml-%E6%98%A0%E5%B0%84%E5%99%A8">XML 映射器</a>
+<ul>
+<li><a href="#select">Select</a>
+<ul>
+<li><a href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE">查询所有数据</a></li>
+<li><a href="#%E6%A0%B9%E6%8D%AEid%E5%AD%97%E6%AE%B5%E6%9F%A5%E8%AF%A2">根据id字段查询</a></li>
+<li><a href="#%E5%A4%9A%E6%9D%A1%E4%BB%B6%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2">多条件动态查询</a></li>
+<li><a href="#%E5%8D%95%E6%9D%A1%E4%BB%B6%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2">单条件动态查询</a></li>
+</ul>
+</li>
+<li><a href="#insert">Insert</a></li>
+<li><a href="#update">Update</a></li>
+<li><a href="#delete">Delete</a>
+<ul>
+<li><a href="#%E5%88%A0%E9%99%A4%E5%8D%95%E8%A1%8C%E6%95%B0%E6%8D%AE">删除单行数据</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E5%A4%9A%E8%A1%8C%E6%95%B0%E6%8D%AE">删除多行数据</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E6%9E%9C%E6%98%A0%E5%B0%84">结果映射</a>
+<ul>
+<li><a href="#resultmap">resultMap</a></li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E6%98%A0%E5%B0%84">自动映射</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E6%95%B0">参数</a></li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0crud">注解实现CRUD</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E6%80%81sql">动态SQL</a></li>
+<li><a href="#sqlsessionfactory%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%8A%BD%E5%8F%96">SqlSessionFactory工具类抽取</a></li>
+</ul>
+
+                        <hr>
+                    
+                    <blockquote>
+<p>在阅读该文章前, 最好先学会使用数据库 (如MySQL)、数据库驱动和Maven.</p>
+<p>相关文章链接:</p>
+<ul>
+<li><a href="https://linna-cy.github.io/SQL%E8%AF%AD%E5%8F%A5/">SQL语句</a></li>
+<li><a href="https://linna-cy.github.io/MySQL%20%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">MySQL 环境配置</a></li>
+<li><a href="https://linna-cy.github.io/jdbc/">JDBC</a></li>
+<li><a href="https://linna-cy.github.io/Druid/">Druid</a></li>
+<li><a href="https://linna-cy.github.io/Maven/">Maven</a></li>
+</ul>
+</blockquote>
+<h1 id="mybatis-介绍">MyBatis 介绍</h1>
+<p>MyBatis 是一款优秀的持久层框架，用于简化 JDBC 开发。</p>
+<blockquote>
+<p><strong>持久层：</strong></p>
+<ul>
+<li>是负责将数据到保存到数据库的那一层代码。即，操作数据库的Java代码为持久层。<br>
+而Mybatis就是对JDBC代码进行了封装。</li>
+<li>持久层是JavaEE三层架构中的一层。<br>
+JavaEE三层架构：表现层、业务层、持久层。</li>
+</ul>
+<p><strong>框架：</strong></p>
+<ul>
+<li>框架就是一个半成品软件，是一套可重用的、通用的、软件基础代码模型。</li>
+<li>使用框架的好处：在框架的基础之上构建软件编写更加高效、规范、通用、可扩展。</li>
+</ul>
+</blockquote>
+<p>使用JDBC存在以下问题:</p>
+<ul>
+<li>硬编码<br>
+手动注册驱动、获取连接、SQL语句等。</li>
+<li>操作繁琐<br>
+手动设置参数、封装结果集等。</li>
+</ul>
+<p>使用Mybatis：</p>
+<ul>
+<li>硬编码可以配置到配置文件。</li>
+<li>操作繁琐的地方Mybatis都自动完成。</li>
+</ul>
+<hr>
+<h1 id="配置-mybatis">配置 Mybatis</h1>
+<p>使用Maven导入Mybatis。</p>
+<ol>
+<li>
+<p>在 <code>pom.xml</code> 配置文件中导入坐标：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;!--mybatis 依赖--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+        &lt;version&gt;3.5.5&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!--mysql 驱动--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;version&gt;5.1.46&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+</li>
+<li>
+<p>编写 <code>mybatis-config.xml</code> 文件：<br>
+在模块下的 <code>resources</code> 目录下创建Mybatis的配置文件 <code>mybatis-config.xml</code>：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+  &lt;!-- 需要注意配置标签的前后顺序(按照MyBatis官方文档目录中的顺序去定义) --&gt;
+  &lt;!-- 别名或包扫描 --&gt;
+  &lt;typeAliases&gt;
+    &lt;!-- name属性的值是实体类所在包 --&gt;
+    &lt;!-- 包扫描后,别名默认为类名(不区分大小写) --&gt;
+    &lt;!-- 使用别名可以简化映射配置文件中 resultType 属性值的编写 --&gt;
+    &lt;package name=&quot;package.name.pojo&quot;/&gt;
+  &lt;/typeAliases&gt;
+
+  &lt;!--
+    environments:配置数据库的连接环境信息,
+      可以配置多个environment信息,
+      通过对应的default属性切换不同的environment
+  --&gt;
+  &lt;environments default=&quot;development&quot;&gt;
+    &lt;!-- 可以配置多个&lt;environment&gt; --&gt;
+    &lt;!-- 使用 id 给每段环境起名 --&gt;
+    &lt;!-- 在 &lt;environments&gt; 中使用 default='environment-id' 来指定使用哪儿段配置 --&gt;
+    &lt;environment id=&quot;development&quot;&gt;
+      &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+      &lt;dataSource type=&quot;POOLED&quot;&gt;
+        &lt;!-- 
+          数据库连接信息
+          注意url、username和password
+        --&gt;
+        &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+        &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql:///mybatis1?useSSL=false&quot;/&gt;
+        &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;1234&quot;/&gt;
+      &lt;/dataSource&gt;
+    &lt;/environment&gt;
+
+    &lt;environment id=&quot;test&quot;&gt;
+      &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+      &lt;dataSource type=&quot;POOLED&quot;&gt;
+        &lt;!-- 数据库连接信息 --&gt;
+        &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+        &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql:///mybatis2?useSSL=false&quot;/&gt;
+        &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;1234&quot;/&gt;
+      &lt;/dataSource&gt;
+    &lt;/environment&gt;
+  &lt;/environments&gt;
+  &lt;mappers&gt;
+    &lt;!-- 加载映射文件 --&gt;
+    &lt;!-- ...... --&gt;
+    &lt;!-- 在下节中讲解 --&gt;
+  &lt;/mappers&gt;
+&lt;/configuration&gt;
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>更多MyBatis配置请查看官方文档：<a href="https://mybatis.net.cn/configuration.html">MyBatis文档——配置</a></p>
+</blockquote>
+<hr>
+<h1 id="使用-mybatis">使用 Mybatis</h1>
+<ul>
+<li>
+<p>编写 <code>Mapper</code>类<br>
+在 <code>java</code> 目录下创建与 <code>pojo</code> 对应的 <code>Mapper</code>接口 <code>ClassNameMapper.java</code>：</p>
+<pre><code class="language-java">public interface ClassNameMapper {
+    // 方法
+}
+</code></pre>
+</li>
+<li>
+<p>编写 SQL 映射文件<br>
+在模块的 <code>resources</code> 目录下创建与 <code>pojo</code> 对应的映射配置文件 <code>ClassNameMapper.xml</code>：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;!-- namespace:名称空间 --&gt;
+&lt;mapper namespace=&quot;package.name.mapper&quot;&gt;
+  &lt;!-- 相应的SQL语句（XML映射） --&gt;
+&lt;/mapper&gt;
+</code></pre>
+</li>
+<li>
+<p>在Mybatis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
+<ol>
+<li>直接加载映射文件：</li>
+</ol>
+<pre><code class="language-xml">&lt;mappers&gt;
+  &lt;mapper resource=&quot;com/abc/mapper/ClassNameMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<p>使用这种方式加载映射文件，多个映射文件需要定义多个 <code>&lt;mapper&gt;</code>，过于繁琐。<br>
+2. Mapper代理方式（推荐）：<br>
+如果 <code>Mapper</code>接口名称和SQL映射文件名称相同，并在同一目录下，则可以使用包扫描的方式简化SQL映射文件的加载。</p>
+<pre><code class="language-xml">&lt;mappers&gt;
+  &lt;package name=&quot;com.abc.mapper&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>注意：使用Mapper代理方式加载映射文件，<code>Mapper</code>接口与其对应的配置文件，它们的路径（包名）要相同。<br>
+即，在java目录下的 <code>Mapper</code>接口的包名，要和映射配置文件在 <code>resources</code>下的路径要一致。<br>
+如 <code>Mapper</code>接口的包名为 <code>com.abc.mapper</code>，那么其映射配置文件的路径则为 <code>com/abc/mapper</code>。<br>
+了解 <code>Maven</code>项目结构，请查看：<a href="https://linna-cy.github.io/Maven/#maven%E6%A0%87%E5%87%86%E5%8C%96%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84">Maven标准化项目结构</a></p>
+</blockquote>
+<h2 id="实例">实例</h2>
+<p>在 Mapper 接口中定义方法，方法名就是SQL映射文件中SQL语句的id，并保持参数类型和返回值类型一致。</p>
+<p>例如，为 <code>User</code>对象定义 <code>selectAll()</code>和 <code>selectById()</code>方法：</p>
+<ul>
+<li>
+<p>创建 <code>User</code>表:</p>
+<pre><code class="language-sql">CREATE DATABASE mybatis;
+USE mybatis;
+
+DROP table IF EXISTS tb_user;
+
+CREATE table tb_user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(20),
+    password VARCHAR(20),
+    gender CHAR(1),
+    addr VARCHAR(30)
+);
+
+INSERT INTO tb_user VALUES (NULL, 'zhangsan', '123', '男', '北京');
+INSERT INTO tb_user VALUES (NULL, '李四', '234', '女', '天津');
+INSERT INTO tb_user VALUES (NULL, '王五', '11', '男', '西安');
+</code></pre>
+</li>
+<li>
+<p><code>pojo</code>包下定义 <code>User</code>实体类:</p>
+<pre><code class="language-java">package com.linner.pojo;
+
+public class User {
+    private Integer id;
+    private String username;
+    private String password;
+    private String gender;
+    private String addr;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;User{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, username='&quot; + username + '\'' +
+                &quot;, password='&quot; + password + '\'' +
+                &quot;, gender='&quot; + gender + '\'' +
+                &quot;, addr='&quot; + addr + '\'' +
+                '}';
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><code>mapper</code>包下定义 <code>UserMapper</code>:</p>
+<pre><code class="language-java">package com.linner.pojo;
+
+import com.linner.pojo.User;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
+
+public interface UserMapper {
+    List&lt;User&gt; selectAll();
+    User selectById(int id);
+    // 更多操作接口
+}
+</code></pre>
+</li>
+<li>
+<p>在 <code>resources</code>目录下创建与 <code>UserMapper</code>包名对应的路径，并添加 <code>UserMapper.xml</code>映射配置文件:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;mapper namespace=&quot;com.linner.mapper.UserMapper&quot;&gt;
+    &lt;!-- 
+      select语句使用&lt;select&gt;
+        id          为对应Mapper类中的方法名
+        resultType  为对应的实体类, 使用了&lt;typeAliases&gt;包扫描, 省略了包名
+     --&gt;
+    &lt;select id=&quot;selectAll&quot; resultType=&quot;user&quot;&gt;
+        SELECT *
+        FROM tb_user;
+    &lt;/select&gt;
+
+    &lt;select id=&quot;selectById&quot; resultType=&quot;user&quot;&gt;
+        SELECT *
+        FROM tb_user
+        WHERE id = #{id};
+    &lt;/select&gt;
+
+    &lt;!-- 更多XML映射 --&gt;
+&lt;/mapper&gt;
+</code></pre>
+</li>
+<li>
+<p><code>resources</code>目录下，配置 <code>mybatis-config.xml</code>文件:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;!-- 别名或包扫描 --&gt;
+    &lt;!-- 使用别名可以简化映射配置文件中 resultType 属性值的编写 --&gt;
+    &lt;typeAliases&gt;
+        &lt;package name=&quot;com.linner.pojo&quot;/&gt;
+    &lt;/typeAliases&gt;
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;!-- 数据库连接信息 --&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql:///mybatis?useSSL=false&amp;useServerPerpStmts=true&amp;characterEncoding=UTF-8&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;1234&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    &lt;mappers&gt;
+        &lt;!-- Mapper代理方式--&gt;
+        &lt;package name=&quot;com.linner.mapper&quot;/&gt;
+    &lt;/mappers&gt;
+&lt;/configuration&gt;
+</code></pre>
+</li>
+<li>
+<p>编写测试类:</p>
+<pre><code class="language-java">package com.linner.test;
+
+import com.linner.mapper.UserMapper;
+import com.linner.pojo.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+public class UserMapperTest {
+
+    @Test
+    public void testSelectAll() throws IOException {
+        // 1. 加载mybatis的核心配置文件,获取SqlSessionFactory
+        String resource = &quot;./mybatis-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 2. 获取SqlSession对象,用它来执行SQL
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        // 3. 执行sql语句
+        // 3.1 方式一:
+        // List&lt;User&gt; users = sqlSession.selectList(&quot;com.linner.mapper.UserMapper.selectAll&quot;);
+        // 3.2 方式二:
+        // 3.2.1 获取UserMapper接口的代理对象
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        // 3.2.2 执行对应Mapper对象的方法
+        List&lt;User&gt; users = userMapper.selectAll();
+
+        // 4. 处理数据(模拟)
+        System.out.println(users);
+
+        // 5. 释放资源(仅需释放SqlSession对象)
+        sqlSession.close();
+    }
+
+    @Test
+    public void testSelectById() throws IOException {
+        // 模拟接收参数
+        int id = 1;
+
+        // 1. 获取sqlSessionFactory
+        String resource = &quot;./mybatis-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 2. 获取SqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        // 3. 获取Mapper接口的代理对象
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        // 4. 执行方法
+        User user = userMapper.selectById(id);
+        // 5. 处理数据(模拟)
+        System.out.println(user);
+
+        // 6. 释放资源
+        sqlSession.close();
+    }
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<h1 id="xml-映射器">XML 映射器</h1>
+<p>通过在 <code>XxxMapper.xml</code> 中使用元素来定义各种CRUD操作。</p>
+<p>常用的元素如下（按照定义的顺序给出）：</p>
+<ul>
+<li><code>&lt;sql&gt;</code> – 可被其它语句引用的可重用语句块。</li>
+<li><code>&lt;insert&gt;</code> – 映射插入语句。</li>
+<li><code>&lt;update&gt;</code> – 映射更新语句。</li>
+<li><code>&lt;delete&gt;</code> – 映射删除语句。</li>
+<li><code>&lt;select&gt;</code> – 映射查询语句。</li>
+</ul>
+<h2 id="select">Select</h2>
+<h3 id="查询所有数据">查询所有数据</h3>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;select id=&quot;selectAll&quot; resultType=&quot;user&quot;&gt;
+    SELECT *
+    FROM tb_user
+&lt;/select&gt;
+</code></pre>
+<p><code>Mapper</code> 接口方法：</p>
+<pre><code class="language-java">List&lt;User&gt; selectAll();
+</code></pre>
+<ul>
+<li><code>id</code>：相应 <code>Mapper</code> 接口中的方法名。</li>
+<li><code>resultType</code>：相应 <code>Mapper</code> 接口中的返回值类型（可自动封装为对象，不区分大小写）。</li>
+<li><code>Mapper</code> 接口返回值：返回一个<code>List&lt;User&gt;</code>。这个返回值可以是<code>User</code>、<code>List&lt;User&gt;</code>或<code>ArrayList&lt;User&gt;</code>等，MyBatis会根据返回值自动封装。</li>
+</ul>
+<h3 id="根据id字段查询">根据id字段查询</h3>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;select id=&quot;selectById&quot; resultType=&quot;user&quot;&gt;
+    SELECT * FROM tb_user WHERE id = #{id};
+&lt;/select&gt;
+</code></pre>
+<p><code>Mapper</code> 接口方法：</p>
+<pre><code class="language-java">User selectById(int id);
+</code></pre>
+<p><code>&lt;select&gt;</code>中，<code>#{id}</code>为相应 <code>Mapper</code> 接口中的参数 <code>id</code>。<code>#{id}</code>被称为参数占位符，相当于JDBC中的<code>?</code>占位符。</p>
+<h3 id="多条件动态查询">多条件动态查询</h3>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;select id=&quot;selectByCondition&quot; resultType=&quot;user&quot;&gt;
+    SELECT *
+    FROM tb_user
+    &lt;where&gt;
+        &lt;if test=&quot;username != null and username != '' &quot;&gt;
+            username = #{username}
+        &lt;/if&gt;
+        &lt;if test=&quot;password != null and password != '' &quot;&gt;
+            AND password = #{password}
+        &lt;/if&gt;
+        &lt;if test=&quot;gender != null and gender != '' &quot;&gt;
+            AND gender = #{gender}
+        &lt;/if&gt;
+        &lt;if test=&quot;addr != null and addr != '' &quot;&gt;
+            AND addr = #{addr}
+        &lt;/if&gt;
+    &lt;/where&gt;
+&lt;/select&gt;
+</code></pre>
+<p>多条件查询使用了动态SQL<code>&lt;where&gt;</code>和<code>&lt;if&gt;</code>。如果仅需查询某部分字段，仅仅使用SQL语句在实现上有难度。而Mybatis就提供了<u>动态SQL</u>方便了我们的实现。</p>
+<ul>
+<li><code>&lt;if&gt;</code>：能根据<code>User</code>对象的值来决定是否在SQL语句中加入其包含的语句。</li>
+<li><code>&lt;where&gt;</code>：只会在子元素返回任何内容的情况下才插入<code>WHERE</code>子句。<br>
+而且，若子句的开头为<code>AND</code>或<code>OR</code>，<code>&lt;where&gt;</code>元素也会将它们去除。</li>
+</ul>
+<h3 id="单条件动态查询">单条件动态查询</h3>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;select id=&quot;selectByConditionSingle&quot; resultMap=&quot;brandResultMap&quot;&gt;
+    SELECT *
+    FROM tb_brand
+    &lt;where&gt;&lt;!--使用where标签确保不会出错--&gt;
+        &lt;choose&gt;&lt;!--相当于switch--&gt;
+            &lt;when test=&quot;status != null&quot;&gt;&lt;!--相当于case--&gt;
+                status = #{status}
+            &lt;/when&gt;
+            &lt;when test=&quot;companyName != null and companyName != '' &quot;&gt;&lt;!--相当于case--&gt;
+                company_name like #{companyName}
+            &lt;/when&gt;
+            &lt;when test=&quot;brandName != null and brandName != '' &quot;&gt;&lt;!--相当于case--&gt;
+                brand_name like #{brandName}
+            &lt;/when&gt;
+            &lt;!--没有条件输入很可能会报错,使用&lt;otherwise&gt;保底--&gt;
+            &lt;!--如果没有使用&lt;where&gt;，则必须使用&lt;otherwise&gt;--&gt;
+            &lt;!--&lt;otherwise&gt;
+                1 = 1
+            &lt;/otherwise&gt;--&gt;
+        &lt;/choose&gt;
+    &lt;/where&gt;
+&lt;/select&gt;
+</code></pre>
+<p>单条件动态查询使用了<code>&lt;where&gt;</code>、<code>&lt;choose&gt;</code>、<code>&lt;when&gt;</code>和<code>&lt;otherwise&gt;</code>，它们都是MyBatis提供的动态SQL元素。</p>
+<p><code>&lt;choose&gt;</code>与<code>&lt;when&gt;</code>（必须）和<code>&lt;otherwise&gt;</code>元素配合使用。它会根据子元素<code>&lt;when&gt;</code>的<code>test</code>属性来判断要选择哪个<code>&lt;when&gt;</code>或<code>&lt;otherwise&gt;</code>元素。</p>
+<p>如果<code>&lt;choose&gt;</code>外没有被<code>&lt;where&gt;</code>包裹则必须使用<code>&lt;otherwise&gt;</code>来包裹一个永真的条件SQL语句，以确保SQL语句不会出错。如果被<code>&lt;where&gt;</code>包裹了，<code>&lt;where&gt;</code>会根据需要判断是否要添加<code>WHERE</code>子句。</p>
+<p><code>&lt;choose&gt;</code>、<code>&lt;when&gt;</code>和<code>&lt;otherwise&gt;</code>与<code>switch</code>语句的作用十分相似。</p>
+<h2 id="insert">Insert</h2>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;insert id=&quot;add&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;
+    INSERT INTO tb_user (username, password, ordered, gender,
+                          addr)
+    VALUES (#{username}, #{password}, #{ordered}, #{gender},
+            #{addr});
+&lt;/insert&gt;
+</code></pre>
+<p><code>Mapper</code> 接口方法：</p>
+<pre><code class="language-java">boolean add(User user);
+</code></pre>
+<p>接口方法直接传入对象即可，对象成员要与 <code>VALUES</code> 子句中的参数一一对应（参数符号中的名称要与对象的成员名称相同）。</p>
+<blockquote>
+<p>如果XML映射中只有一个参数，那么这个参数的名称不必与接口的参数名称相同。</p>
+</blockquote>
+<ul>
+<li><code>id</code>：含义与 <code>&lt;insert&gt;</code> 的含义相同，为相应 <code>Mapper</code> 接口中的方法名（以下 <code>id</code>均为此含义，省略）。</li>
+<li><code>useGeneratedKeys</code>：
+<ul>
+<li>值为 <code>true</code> 时，Mybatis 会使用 JDBC 的 <code>getGeneratedKeys</code> 方法来取出由数据库内部生成的主键（如自增的主键）。</li>
+<li>默认为 <code>false</code>。</li>
+</ul>
+</li>
+<li><code>keyProperty</code>：<code>getGeneratedKeys</code> 获取到的主键值所要赋予的对象成员名。MyBatis 会使用 <code>getGeneratedKeys</code> 的返回值来设置它的值。<br>
+如，<code>keyProperty=&quot;id&quot;</code>——直接将获取到的主键值赋值给 <code>user.id</code>。<br>
+如果生成列不止一个，可以用逗号分隔多个属性名称。</li>
+<li><code>Mapper</code> 接口返回值：<code>boolean</code>，插入成功返回 <code>true</code>，插入失败返回 <code>false</code>。<br>
+返回值也可以选择忽略，将<code>add()</code>接口的返回值设置为<code>void</code>即可。</li>
+</ul>
+<h2 id="update">Update</h2>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;update id=&quot;update&quot;&gt;
+    UPDATE tb_user
+    &lt;set&gt;
+        &lt;if test=&quot;username != null and username != '' &quot;&gt;
+            username = #{username},
+        &lt;/if&gt;
+        &lt;if test=&quot;password != null and password != '' &quot;&gt;
+            password = #{password},
+        &lt;/if&gt;
+        &lt;if test=&quot;ordered != null&quot;&gt;
+            ordered = #{ordered},
+        &lt;/if&gt;
+        &lt;if test=&quot;gender != null and (gender == '男' or gender == '女')&quot;&gt;
+            gender = #{gender},
+        &lt;/if&gt;
+        &lt;if test=&quot;addr != null and addr != ''&quot;&gt;
+            addr = #{addr}
+        &lt;/if&gt;
+    &lt;/set&gt;
+    WHERE id = #{id};
+&lt;/update&gt;
+</code></pre>
+<p><code>Mapper</code> 接口方法：</p>
+<pre><code class="language-java">int update(User user);
+</code></pre>
+<p>在 <code>&lt;update&gt;</code> 中有一些用 <code>&lt;set&gt;</code> 包裹起来的 <code>&lt;if&gt;</code>。这是因为需要使用 <code>&lt;set&gt;</code> 动态包含需要更新的列，忽略其它不更新的列。从而能根据<code>User</code>对象的值来决定要更新哪些数据，并且动态地改变SQL语句。</p>
+<p>Update的Mapper接口返回值是<code>int</code>类型，返回更新的行数。同样可以将接口的返回值设置为<code>void</code>来忽略它。</p>
+<h2 id="delete">Delete</h2>
+<h3 id="删除单行数据">删除单行数据</h3>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;delete id=&quot;deleteById&quot;&gt;
+    DELETE
+    FROM tb_user
+    WHERE id = #{id};
+&lt;/delete&gt;
+</code></pre>
+<p><code>Mapper</code> 接口方法：</p>
+<pre><code class="language-java">int deleteById(int id);
+</code></pre>
+<h3 id="删除多行数据">删除多行数据</h3>
+<p><code>xml</code> 配置文件：</p>
+<pre><code class="language-xml">&lt;delete id=&quot;deleteByIds&quot;&gt;
+    DELETE
+    FROM tb_brand
+    WHERE id
+    IN
+    &lt;!--
+        &lt;foreach&gt;参数:
+            - item: 代表数组参数中的每个元素
+            - separator: 分隔符
+            - open: 插入开始符
+            - close: 插入结束符
+    --&gt;
+    &lt;foreach collection=&quot;ids&quot; item=&quot;id&quot; separator=&quot;,&quot; open=&quot;(&quot; close=&quot;)&quot;&gt;
+        #{id}
+    &lt;/foreach&gt;
+&lt;/delete&gt;
+</code></pre>
+<p><code>Mapper</code> 接口方法：</p>
+<pre><code class="language-java">int deleteByIds(@Param(&quot;ids&quot;) int[] ids);
+</code></pre>
+<p>Mybatis提供了 <code>&lt;foreach&gt;</code> 标签遍历数组，拼接SQL语句。<code>&lt;foreach&gt;</code> 同样也是<u>动态SQL</u>。</p>
+<blockquote>
+<p>更多XML映射器请查看官方文档：<a href="https://mybatis.net.cn/sqlmap-xml.html">MyBatis文档——XML映射器</a></p>
+</blockquote>
+<h2 id="结果映射">结果映射</h2>
+<h3 id="resultmap">resultMap</h3>
+<p>假设SQL表中的字段与实体类的成员变量名无法一一对应，会导致SQL语句的传参出现问题。例如：</p>
+<pre><code class="language-sql">CREATE table tb_user (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_name VARCHAR(20),
+    user_password VARCHAR(20),
+    user_gender CHAR(1),
+    user_addr VARCHAR(30)
+);
+</code></pre>
+<pre><code class="language-java">public class User {
+    private Integer id;
+    private String username;
+    private String password;
+    private String gender;
+    private String addr;
+
+    // setter 和 getter
+    // ...
+}
+</code></pre>
+<p>那么可以使用<code>&lt;resultMap&gt;</code>元素来对表字段和成员名做一个映射（结果映射）：</p>
+<pre><code class="language-xml">&lt;!--
+    &lt;resultMap&gt;:
+        - id: 唯一标识
+        - type: 映射的类型,支持别名
+--&gt;
+&lt;resultMap id=&quot;userResultMap&quot; type=&quot;user&quot;&gt;
+    &lt;!--
+        两种标签:
+            - &lt;id&gt;: 完成主键字段的映射
+                - column: 表的列名
+                - property: 实体类的属性名
+            - &lt;result&gt;: 完成一般字段的映射
+                - column: 表的列名
+                - property: 实体类的属性名
+    --&gt;
+    &lt;id column=&quot;user_id&quot; property=&quot;id&quot;&gt;
+    &lt;result column=&quot;user_name&quot; property=&quot;userame&quot;/&gt;
+    &lt;result column=&quot;user_password&quot; property=&quot;password&quot;/&gt;
+    &lt;result column=&quot;user_gender&quot; property=&quot;gender&quot;/&gt;
+    &lt;result column=&quot;user_addr&quot; property=&quot;addr&quot;/&gt;
+&lt;/resultMap&gt;
+
+&lt;select id=&quot;selectAll&quot; resultMap=&quot;userResultMap&quot;&gt;
+    SELECT *
+    FROM tb_user
+&lt;/select&gt;
+</code></pre>
+<blockquote>
+<p>要使用结果映射，需要把<code>&lt;select&gt;</code>中的<code>resultType</code>属性替换为<code>resultMap</code>，并且其属性值为<code>&lt;resultMap&gt;</code>的<code>id</code>值。</p>
+</blockquote>
+<h3 id="自动映射">自动映射</h3>
+<p>当自动映射查询结果时，MyBatis 会获取结果中返回的列名并在 Java 类中查找相同名字的属性（忽略大小写）。</p>
+<p>接上节例子，使用SQL语句的 <code>AS</code> 来实现：</p>
+<pre><code class="language-xml">&lt;select id=&quot;selectAll&quot; resultType=&quot;user&quot;&gt;
+    SELECT 
+        user_id AS &quot;id&quot;,
+        user_name AS &quot;username&quot;,
+        user_password AS &quot;password&quot;,
+        user_gender AS gender,
+        user_addr AS &quot;addr&quot;
+    FROM tb_user
+&lt;/select&gt;
+</code></pre>
+<blockquote>
+<ul>
+<li>通常数据库列使用大写字母组成的单词命名，单词间用下划线分隔；而 Java 属性一般遵循驼峰命名法约定。为了在这两种命名方式之间启用自动映射，需要将 <code>mapUnderscoreToCamelCase</code> 设置为 <code>true</code>。<pre><code class="language-xml">&lt;!-- 配置mybatis自动转换为驼峰式命名 --&gt;
+  &lt;settings&gt;
+    &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot;/&gt;
+&lt;/settings&gt;
+</code></pre>
+</li>
+<li><code>&lt;resultMap&gt;</code>和自动映射可以混用。</li>
+</ul>
+</blockquote>
+<h2 id="参数">参数</h2>
+<p>MyBatis有两种参数：</p>
+<ul>
+<li><code>#{p}</code> —— 会自动转义。</li>
+<li><code>${p}</code> —— 不会自动转义。</li>
+</ul>
+<blockquote>
+<p>官方文档：<a href="https://mybatis.net.cn/sqlmap-xml.html#Parameters">MyBatis——XML映射器参数</a></p>
+</blockquote>
+<p><strong>MyBatis 参数封装</strong>:</p>
+<ul>
+<li>单个参数:
+<ol>
+<li>POJO类型: 直接使用,保证 <strong>属性名</strong> 和 <strong>参数占位符名称</strong> 一致</li>
+<li>Map类型: 直接使用,保证 <strong>键名</strong> 和 <strong>参数占位符名称</strong> 一致</li>
+<li>Collection: 封装为Map集合<br>
+相当于：<br>
+map.put(&quot;arg0&quot;, collection集合)<br>
+map.put(&quot;collection&quot;, collection集合)
+<ul>
+<li>使用@Param注解,替换Map集合中默认的arg键名</li>
+</ul>
+</li>
+<li>List: 封装为Map集合<br>
+相当于：<br>
+map.put(&quot;arg0&quot;, list集合)<br>
+map.put(&quot;collection&quot;, list集合)<br>
+map.put(&quot;list&quot;, list集合)
+<ul>
+<li>使用@Param注解,替换Map集合中默认的arg键名</li>
+</ul>
+</li>
+<li>Array: 封装为Map集合<br>
+相当于：<br>
+map.put(&quot;arg0&quot;, 数组)<br>
+map.put(&quot;array&quot;, 数组)
+<ul>
+<li>使用@Param注解,替换Map集合中默认的arg键名</li>
+</ul>
+</li>
+<li>其他类型: 直接使用,且占位符名称和参数名称可以不相同</li>
+</ol>
+</li>
+<li>多个参数: 封装为Map集合
+<ul>
+<li>每个参数有两个键:<br>
+相当于：<br>
+map.put(&quot;arg0&quot;, 参数值1)<br>
+map.put(&quot;param1&quot;, 参数值1)<br>
+map.put(&quot;arg1&quot;, 参数值2)<br>
+map.put(&quot;param2&quot;, 参数值2)</li>
+<li>使用@Param注解,替换Map集合中默认的arg键名:<br>
+相当于：<br>
+@Param(&quot;username&quot;) 参数类型 参数名<br>
+map.put(&quot;username&quot;, 参数值1)<br>
+map.put(&quot;param1&quot;, 参数值1)</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-java">public interface UserMapper {
+    User selectById(int id);
+    List&lt;User&gt; selectByCondition(
+            @Param(&quot;username&quot;) String username,
+            @Param(&quot;password&quot;) String password);
+}
+</code></pre>
+<h2 id="注解实现crud">注解实现CRUD</h2>
+<p>对于简单的SQL语句来说，使用注解开发会比配置文件开发更加方便。</p>
+<pre><code class="language-java">@Select(value = &quot;SELECT * FROM tb_user WHERE id = #{id}&quot;)
+User selectById(int id);
+</code></pre>
+<blockquote>
+<p>注意：注解是用来替换映射配置文件方式配置的，所以使用了注解，就不需要再映射配置文件中书写对应的 <code>statement</code>。</p>
+</blockquote>
+<p>Mybatis 针对 CURD 操作都提供了对应的注解：</p>
+<ul>
+<li>查询 ：<code>@Select</code></li>
+<li>添加 ：<code>@Insert</code></li>
+<li>修改 ：<code>@Update</code></li>
+<li>删除 ：<code>@Delete</code></li>
+</ul>
+<p>注解适合用于完成简单功能，而使用配置文件来完成复杂功能。如果使用注解来完成动态SQL之类的复杂功能，就需要使用到MyBatis提供的SQL构建器来完成。详情请阅读官方SQL构建器文档：<a href="https://mybatis.net.cn/statement-builders.html">MyBatis文档——SQL语句构建器</a>。</p>
+<hr>
+<h1 id="动态sql">动态SQL</h1>
+<p>动态 SQL 是 MyBatis 的强大特性之一。</p>
+<p>MyBatis提供的动态SQL元素有：</p>
+<ul>
+<li><code>&lt;if&gt;</code></li>
+<li><code>&lt;choose&gt;</code> (<code>&lt;when&gt;</code>, <code>&lt;otherwise&gt;</code>)</li>
+<li><code>&lt;trim&gt;</code> (<code>&lt;where&gt;</code>, <code>&lt;set&gt;</code>)</li>
+<li><code>&lt;foreach&gt;</code></li>
+</ul>
+<blockquote>
+<p>更多与动态SQL请查看官方文档：<a href="https://mybatis.net.cn/dynamic-sql.html">MyBatis文档——动态SQL</a></p>
+</blockquote>
+<hr>
+<h1 id="sqlsessionfactory工具类抽取">SqlSessionFactory工具类抽取</h1>
+<p>MyBatis重复代码会造成一些问题:</p>
+<ul>
+<li>不利于后期的维护。</li>
+<li>SqlSessionFactory工厂类进行重复创建。</li>
+</ul>
+<p>对于Mybatis的基础操作出现的重复代码，可以使用一个静态代码块来自动加载：</p>
+<pre><code class="language-java">public class SqlSessionFactoryUtils {
+
+    private static SqlSessionFactory sqlSessionFactory;
+
+    static {
+        // 静态代码块会随着类的加载而自动执行，且只执行一次
+        try {
+            String resource = &quot;mybatis-config.xml&quot;;
+            InputStream inputStream = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static SqlSessionFactory getSqlSessionFactory(){
+        return sqlSessionFactory;
+    }
+}
+</code></pre>
+<p>工具类抽取以后，以后在对Mybatis的SqlSession进行操作的时候，就可以直接使用：</p>
+<pre><code class="language-java">SqlSessionFactory sf = SqlSessionFactoryUtils.getSqlSessionFactory();
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/Druid/" class="post-title gt-a-link">
+                    Druid 数据库连接池
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

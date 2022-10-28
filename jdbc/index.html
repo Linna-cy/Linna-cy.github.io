@@ -1,0 +1,974 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>JDBC | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            JDBC
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-08-12</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/"> <span>#JavaWeb </span></a>  
+              <a href="https://linna-cy.github.io/GJn_jw5rNJ/">
+                <span>#数据库 </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >14<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >2986<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#jdbc-%E7%AE%80%E4%BB%8B">JDBC 简介</a></li>
+<li><a href="#jdbc-%E4%BD%BF%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4">JDBC 使用的基本步骤</a></li>
+<li><a href="#preparedstatement-%E5%AF%B9%E8%B1%A1">PreparedStatement 对象</a>
+<ul>
+<li><a href="#statement-%E5%92%8C-preparedstatement">Statement 和 PreparedStatement</a></li>
+<li><a href="#%E9%A2%84%E7%BC%96%E8%AF%91">预编译</a></li>
+<li><a href="#sql%E6%B3%A8%E5%85%A5">SQL注入</a></li>
+</ul>
+</li>
+<li><a href="#resultset-%E5%AF%B9%E8%B1%A1">ResultSet 对象</a></li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B">操作实例</a>
+<ul>
+<li><a href="#%E5%A2%9E%E5%88%A0%E6%94%B9%E6%93%8D%E4%BD%9C">增删改操作</a></li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#jdbc-%E7%AE%80%E4%BB%8B">JDBC 简介</a></li>
+<li><a href="#jdbc-%E4%BD%BF%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4">JDBC 使用的基本步骤</a></li>
+<li><a href="#preparedstatement-%E5%AF%B9%E8%B1%A1">PreparedStatement 对象</a>
+<ul>
+<li><a href="#statement-%E5%92%8C-preparedstatement">Statement 和 PreparedStatement</a></li>
+<li><a href="#%E9%A2%84%E7%BC%96%E8%AF%91">预编译</a></li>
+<li><a href="#sql%E6%B3%A8%E5%85%A5">SQL注入</a></li>
+</ul>
+</li>
+<li><a href="#resultset-%E5%AF%B9%E8%B1%A1">ResultSet 对象</a></li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B">操作实例</a>
+<ul>
+<li><a href="#%E5%A2%9E%E5%88%A0%E6%94%B9%E6%93%8D%E4%BD%9C">增删改操作</a></li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    
+                    <blockquote>
+<p>在阅读该文章前, 最好先学会使用数据库 (如MySQL).<br>
+相关文章链接:</p>
+<ul>
+<li><a href="https://linna-cy.github.io/SQL%E8%AF%AD%E5%8F%A5/">SQL语句</a></li>
+<li><a href="https://linna-cy.github.io/MySQL%20%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">MySQL 环境配</a></li>
+</ul>
+</blockquote>
+<h1 id="jdbc-简介">JDBC 简介</h1>
+<p>JDBC (Java DataBase Connectivity, Java 数据库连接) 是使用Java语言操作关系型数据库的一套 API.</p>
+<p>JDBC其实是SUN公司制订的一套操作数据库的标准接口. JDBC中定义了所有操作关系型数据库的规则. 由各自的数据库厂商给出实现类 (驱动jar包).</p>
+<p>Java, JDBC和各种数据库的关系如下图:</p>
+<figure data-type="image" tabindex="1"><img src="https://linna-cy.github.io/post-images/1662106467207.png" alt="" loading="lazy"></figure>
+<p>使用JDBC的好处:</p>
+<ul>
+<li>不需要针对不同数据库分别开发.</li>
+<li>可随时替换底层数据库, 访问数据库的Java代码基本不变.</li>
+</ul>
+<hr>
+<h1 id="jdbc-使用的基本步骤">JDBC 使用的基本步骤</h1>
+<ol>
+<li>
+<p>导入JDBC驱动jar包:</p>
+<ul>
+<li>下载MySQL jar驱动包, <a href="https://www.runoob.com/java/java-mysql-connect.html#:~:text=Java%20%E8%BF%9E%E6%8E%A5%20MySQL%20%E9%9C%80%E8%A6%81%E9%A9%B1%E5%8A%A8%E5%8C%85%EF%BC%8C%E6%9C%80%E6%96%B0%E7%89%88%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80%E4%B8%BA%EF%BC%9A%20http%3A%2F%2Fdev.mysql.com%2Fdownloads%2Fconnector%2Fj%2F%20%EF%BC%8C%E8%A7%A3%E5%8E%8B%E5%90%8E%E5%BE%97%E5%88%B0%20jar%20%E5%BA%93%E6%96%87%E4%BB%B6%EF%BC%8C%E7%84%B6%E5%90%8E%E5%9C%A8%E5%AF%B9%E5%BA%94%E7%9A%84%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%AF%BC%E5%85%A5%E8%AF%A5%E5%BA%93%E6%96%87%E4%BB%B6%E3%80%82,%E4%BD%A0%E5%8F%AF%E4%BB%A5%E4%B8%8B%E8%BD%BD%E6%9C%AC%E7%AB%99%E6%8F%90%E4%BE%9B%E7%9A%84%20jar%20%E5%8C%85%EF%BC%9A%20mysql-connector-java-5.1.39-bin.jar%20%E6%9C%AC%E5%AE%9E%E4%BE%8B%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AF%20Eclipse%EF%BC%8C%E5%AF%BC%E5%85%A5%20jar%20%E5%8C%85%EF%BC%9A">菜鸟教程 Java MySQL 连接</a>.</li>
+<li>在项目中, 将下载好的jar包放入项目的 <code>lib</code>目录中.</li>
+<li>然后点击鼠标右键--&gt;Add as Library (添加为库).</li>
+<li>在添加为库文件的时候，有如下三个选项:
+<ul>
+<li>Global Library: 全局有效</li>
+<li>Project Library: 项目有效</li>
+<li>Module Library: 模块有效<br>
+选择Global Library.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>注册驱动:</p>
+<pre><code class="language-java">Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+</code></pre>
+<blockquote>
+<p>MySQL提供的 <code>Driver</code>的静态代码块会自动执行 <code>DriverManager.registerDriver()</code> 方法来注册驱动. 所以我们只需加载 <code>Driver</code>即可.<br>
+MySQL5之后的驱动包, 可以省略注册驱动的步骤.</p>
+</blockquote>
+</li>
+<li>
+<p>获取数据库连接:</p>
+<pre><code class="language-java">Connection conn = DriverManager.getConnection(url, username, password);
+</code></pre>
+<ul>
+<li>
+<p>其中, <code>url</code>, <code>username</code>和 <code>password</code>都是 <code>String</code>类型.</p>
+</li>
+<li>
+<p><code>url</code>格式:</p>
+<pre><code class="language-text">jdbc:数据库软件名称://ip地址或域名:端口/数据库名称?参数键值对1&amp;参数键值对2...
+</code></pre>
+<p>例如, 连接本地mysql中名为test的数据库:</p>
+<pre><code class="language-text">jdbc:mysql://127.0.0.1:3306/test
+</code></pre>
+<p>本地mysql, 且端口为3306, url可简写为:</p>
+<pre><code class="language-text">jdbc:mysql:///数据库名称?参数键值对
+</code></pre>
+<p>常用的参数键值对有:</p>
+<pre><code>useSSL=false            // 禁用安全连接方式, 解决警告提示
+useServerPrepStmts=true // 开启预编译(默认为false)
+serverTimezone=GMT%2B8  // 设置时区, 东八区(即GMT+8)
+serverTimezone=Asia/Shanghai    // 设置时区东八区
+useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>获取执行SQL对象:</p>
+<p>执行SQL语句需要SQL执行对象 (<code>Statement</code>对象):</p>
+<pre><code class="language-java">Statement stmt = conn.createStatement();
+</code></pre>
+<p><code>Statement</code>对象存在安全问题 (SQL注入等问题), 而使用 <code>PreparedStatement</code>不仅可以提升查询速度, 而且还能防止SQL注入问题.</p>
+<pre><code class="language-java">String sql = &quot;...SQL语句...&quot;;
+PreparedStatement pstmt = conn.prepareStatement(sql);
+</code></pre>
+</li>
+<li>
+<p>执行SQL语句:</p>
+<pre><code class="language-java">int count = pstmt.executeUpdate(sql);
+</code></pre>
+<p>用于执行DML, DDL语句.</p>
+<p>或者:</p>
+<pre><code class="language-java">ResultSet rs = pstmt.executeQuery(sql);
+</code></pre>
+<p>用于执行DQL语句.</p>
+</li>
+<li>
+<p>处理返回结果</p>
+</li>
+<li>
+<p>释放资源:</p>
+<p><code>ResultSet</code>、<code>Statement</code>和 <code>Connection</code>对象都要 <code>&lt;i&gt;</code>按照顺序 <code>&lt;/i&gt;</code>释放资源.</p>
+<pre><code class="language-java">rs.close();
+stmt.close();
+conn.close();
+</code></pre>
+</li>
+</ol>
+<p>大致代码如下:</p>
+<pre><code class="language-java">import java.sql.*;
+
+public class JDBCDemo {
+  
+    public static void main(String[] args) throws Exception {
+
+        // - 接收用户输入的用户名和密码
+        String name = &quot;...&quot;;
+        String pwd = &quot;...&quot;;
+    
+        // 1. 注册驱动（装载类，并实例化）
+        Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+    
+        // 2. 获取连接
+        String url = &quot;jdbc:mysql://127.0.0.1:3306/test&quot; + 
+                &quot;?useServerPrepStmts=true&quot;;
+        String username = &quot;root&quot;;
+        String password = &quot;1234&quot;;
+        Connection conn = DriverManager.getConnection(url, username, password);
+    
+        // 3. 定义SQL语句 (用?作占位符)
+        String sql = &quot;SELECT id,username,password&quot; +
+                &quot; FROM tb_user&quot; +
+                &quot; WHERE username = ?&quot; +
+                &quot; AND password = ?&quot;;
+    
+        // 4. 获取执行SQL的PreparedStatement对象
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        // 设置参数（?）的值 pstmt.setXxx(index, value)
+        pstmt.setString(1, name);
+        pstmt.setString(2, pwd);
+    
+        // 5. 执行SQL
+        ResultSet rs = pstmt.executeQuery();
+    
+        // 6. 处理结果
+        while (rs.next) {
+            /*
+                ...
+            */
+        }
+
+        // 7. 释放资源
+        rs.close();
+        pstmt.close();
+        conn.close();
+    }
+}
+</code></pre>
+<hr>
+<h1 id="preparedstatement-对象">PreparedStatement 对象</h1>
+<p>PreparedStatement 对象可以:</p>
+<ul>
+<li>预编译SQL语句并执行</li>
+<li>预防SQL注入问题</li>
+</ul>
+<p>获取 <code>PreparedStatement</code>需要先传入SQL语句:</p>
+<pre><code class="language-java">// SQL语句中的参数值,使用 ? 占位符替代
+String sql = &quot;SELECT id,username,password&quot; +
+        &quot; FROM tb_user&quot; +
+        &quot; WHERE username = ?&quot; +
+        &quot; AND password = ?&quot;;
+
+// 通过Connection对象获取PreparedStatement, 并传入对应的SQL语句
+PreparedStatement pstmt = conn.prepareStatement(sql);
+</code></pre>
+<p>接着我们需要设置SQL对象中的参数值:</p>
+<p>使用 <code>pstmt.setXxx(index, value)</code>, 给 <code>?</code> 赋值. 其中, <code>index</code>的值从 <code>1</code>开始, <code>value</code>的类型为 <code>Xxx</code>或 <code>xxx</code>.</p>
+<p>例如, 给 <code>int</code>类型的 <code>value</code>赋值使用 <code>setInt()</code>, <code>String</code>类型使用 <code>setString()</code>. 除此之外还有 <code>setFloat()</code>, <code>setDouble()</code>, <code>setArray()</code>, <code>setByte()</code>等.</p>
+<p>如果 <code>prepareStatement()</code>方法传入的是DML, DDL语句, 则使用 <code>executeUpdate()</code> 方法:</p>
+<pre><code class="language-java">int executeUpdate() 
+            throws SQLException
+</code></pre>
+<p>如果该方法执行的是DML语句 (<code>INSERT</code>, <code>UPDATE</code>和 <code>DELETE</code>), 则返回DML语句操作的行数; 如果是DDL语句则返回 0.</p>
+<blockquote>
+<p>需要注意, 在开发中很少使用java代码操作DDL语句.</p>
+</blockquote>
+<p>如果 <code>prepareStatement()</code>方法传入的是DQL语句 (<code>SELECT</code>), 使用的是 <code>executeQuery()</code> 方法:</p>
+<pre><code class="language-java">ResultSet executeQuery()
+                throws SQLException
+</code></pre>
+<p>该方法返回的是DQL语句查询后的结果集.</p>
+<p>在使用 <code>PreparedStatement</code>对象后, 需要使用 <code>close()</code>方法释放资源.</p>
+<h2 id="statement-和-preparedstatement">Statement 和 PreparedStatement</h2>
+<p><code>Statement</code> 对象的一般用法如下:</p>
+<pre><code class="language-java">String sql = &quot;UPDATE tb_user SET password = \&quot;abc\&quot; WHERE id = 1&quot;;
+Statement stmt = conn.createStatement();
+int count = stmt.executeUpdate(sql);
+</code></pre>
+<p><code>Statement</code>的SQL语句是作为 <code>executeUpdate()</code>和 <code>executeQuery()</code>的参数传入, 而 <code>PreparedStatement</code>则是在创建对象就已经作为 <code>prepareStatement()</code>方法的参数传入.</p>
+<p>这是因为 <code>PreparedStatement</code>需要预先传入SQL语句, 来起到预编译SQL语句和预防SQL注入问题.</p>
+<h2 id="预编译">预编译</h2>
+<p>一般情况下, java执行SQL语句的过程如下:</p>
+<p>java程序请求数据库执行SQL语句后:</p>
+<ul>
+<li>检查: 数据库接收指令, 检查SQL语法</li>
+<li>编译: 如果SQL语句无语法错误, 则将该语句编译成可执行的函数</li>
+<li>执行: 编译完成后执行SQL语句</li>
+</ul>
+<p>而检查SQL和编译SQL花费的时间比执行SQL的时间还要长, 如果需要一次性执行多条SQL语句, 那会浪费大量时间和资源. 所以, <code>PreparedStatement</code>的出现解决了这个问题.</p>
+<p>通过使用 <code>PreparedStatement</code>对象, 并且在连接数据库的 <code>url</code>中添加 <code>useServerPrepStmts=true</code>参数来开启SQL语句预编译功能. 预编译功能会将我们设置的SQL语句 (如 <code>&quot;SELECT id,username,password FROM tb_user WHERE username = ? AND password = ?&quot;</code>) 预先传给数据库, 让其先完成检查和编译的工作 (先完成耗时的工作), 然后再一次性执行所有SQL语句 (这些SQL语句都是相同的, 只是占位符处设置的值不同).</p>
+<h2 id="sql注入">SQL注入</h2>
+<p>SQL注入是指通过把SQL命令插入到Web表单提交, 或输入域名或页面请求的查询字符串, 最终达到欺骗服务器执行恶意的SQL命令.</p>
+<p>而 <code>PreparedStatement</code>通过在SQL语句中使用 <code>?</code>占位符, 并且使用相应的 <code>setXxx()</code>方法来设置值 (设置的值如果含有特殊字符, 如 <code>&quot;</code> 和 <code>'</code> 等, 则会进行转义), 防止了SQL注入的发生.</p>
+<p>下面代码说明了 <code>PreparedStatement</code>如何防止SQL注入:</p>
+<pre><code class="language-java">class Demo {
+    public static void main(String[] args) {
+        // useServerPrepStmts=true开启预编译
+        String url = &quot;jdbc:mysql:///test?useSSL=false&amp;useServerPrepStmts=true&quot;;
+        String username = &quot;root&quot;;
+        String password = &quot;n546,Lin0&quot;;
+        Connection conn = DriverManager.getConnection(url, username, password);
+
+        // - 接收用户输入的用户名和密码
+        String name = &quot;zhangsan&quot;;
+        String pwd = &quot;' OR '1' = '1&quot;;
+
+        // - 定义SQL（用?作占位符）
+        String sql = &quot;SELECT id,username,password&quot; +
+                &quot; FROM tb_user&quot; +
+                &quot; WHERE username = ?&quot; +
+                &quot; AND password = ?&quot;;
+
+        // - 获取PreparedStatement对象
+        //   - 预编译SQL，性能更高
+        //     默认关闭，在url加上参数useServerPrepStmts=true开启
+        //   - 防止SQL注入
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        // - 设置参数（?）的值
+        //   - 防注入原理：
+        //     字符串参数在setString中会被转义，
+        //     即整个参数被当成sql里面的字符串，而不是java的字符串
+        pstmt.setString(1, name);
+        // 从mysql日志文件可以发现：
+        // ' OR '1' = '1 转义成了 \' OR \'1\' = \'1
+        pstmt.setString(2, pwd);
+
+        // - 执行SQL
+        ResultSet rs = pstmt.executeQuery();
+
+        // - 判读登录是否成功
+        if (rs.next()) {
+            System.out.println(&quot;登录成功！&quot;);
+        }
+        else {
+            System.out.println(&quot;登陆失败！&quot;);
+        }
+
+        rs.close();
+        pstmt.close();
+        conn.close();
+    }
+}
+</code></pre>
+<p>下面代码演示了把SQL代码片段插入到SQL命令, 来进行免密登录:</p>
+<pre><code class="language-java">class LoginInject {
+    public static void main(String[] args) throws Exception {
+        String url = &quot;jdbc:mysql:///test&quot;;
+        String username = &quot;root&quot;;
+        String password = &quot;1234&quot;;
+        Connection conn = DriverManager.getConnection(url, username, password);
+
+        // 接收用户输入的用户名和密码
+        String name = &quot;abcdefg&quot;; // 用户名随意
+        String pwd = &quot;' OR '1' = '1&quot;; // 密码传入SQL代码片段
+
+        String sql = &quot;SELECT id,username,password&quot; +
+                &quot; FROM tb_user&quot; +
+                &quot; WHERE username = '&quot; + name +
+                &quot;' AND password = '&quot;+ pwd + &quot;'&quot;;
+        // 将sql语句where部分展开：
+        // WHERE username = 'abcdefg' AND password = '' OR '1' = '1'
+        // 发现where语句条件始终为真
+        System.out.println(sql);
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        // 判读登录是否成功
+        if (rs.next()) {
+            System.out.println(&quot;登录成功！&quot;);
+        }
+        else {
+            System.out.println(&quot;登陆失败！&quot;);
+        }
+        // 返回的是登录成功
+
+        rs.close();
+        stmt.close();
+        conn.close();
+    }
+}
+</code></pre>
+<hr>
+<h1 id="resultset-对象">ResultSet 对象</h1>
+<p><code>ResultSet</code> (结果集对象) 作用: 封装了SQL查询语句的结果, 是 <code>executeQuery()</code>方法的返回值类型.</p>
+<p><code>ResultSet</code>对象有三个方法:</p>
+<ul>
+<li>
+<p><code>next()</code>:</p>
+<pre><code class="language-java">boolean next()
+        throws SQLException
+</code></pre>
+<p>每次执行时, 将光标从当前位置向前移动一行 (光标从第0行开始), 并且判断当前行是否为有效行 (返回 <code>true</code>则代表为有效行).</p>
+</li>
+<li>
+<p><code>getXxx()</code>:</p>
+<pre><code class="language-java">xxx getXxx(arg)
+        throws SQLException
+</code></pre>
+<p>arg类型:</p>
+<ul>
+<li><code>int</code>: 代表列的编号 (按照 <code>SELECT</code>语句中的查询顺序), 从1开始</li>
+<li><code>String</code>: 列的名称</li>
+</ul>
+</li>
+<li>
+<p><code>close()</code>:</p>
+<pre><code class="language-java">void close()
+        throws SQLException
+</code></pre>
+<p>释放 <code>ResultSet</code>对象.</p>
+</li>
+</ul>
+<p>下面演示了 <code>ResultSet</code>的使用:</p>
+<pre><code class="language-java">class Demo {
+    public static void main(String[] args) {
+        // ...
+
+        String sql = &quot;SELECT id,username,password FROM tb_user&quot;;
+        Statement stmt = conn.createStatement();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        // - 处理结果，遍历rs中的所有数据
+        //   - rs.next()：光标向下移动一行，并判断当前行是否有效
+        while (rs.next()) {
+            // - 获取数据 getXxx()
+            int id = rs.getInt(1);
+            // getXxx()方法可以使用列索引（从1开始）也可以使用列名
+            String usrname = rs.getString(&quot;username&quot;);
+            String passwd = rs.getString(3);
+
+            System.out.println(&quot;id: &quot; + id);
+            System.out.println(&quot;username: &quot; + usrname);
+            System.out.println(&quot;passwd: &quot; + passwd);
+            System.out.println(&quot;-----------------------&quot;);
+        }
+        // - 释放资源
+        // ResultSet、Statement和Connection都要按照顺序释放资源
+        // 先释放ResultSet, 再释放Statement, 最后是Connection
+        rs.close();
+        stmt.close();
+        conn.close();
+    }
+}
+</code></pre>
+<hr>
+<h1 id="操作实例">操作实例</h1>
+<p>用户账号密码增删改操作.</p>
+<p>在编写JDBC代码之前需要先完成创建数据库, 创建 <code>pojo</code>包并编写 <code>User</code>实体类的工作:</p>
+<ol>
+<li>
+<p>创建数据库并运行下方SQL代码:</p>
+<pre><code class="language-mysql">-- 删除tb_user表
+DROP TABLE IF EXISTS tb_user;
+-- 创建tb_user表
+CREATE TABLE tb_user(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(20),
+    password VARCHAR(32)
+);
+
+-- 添加数据
+INSERT INTO tb_user VALUES(NULL, 'zhangsan', '123'), (NULL, 'lisi', '234');
+</code></pre>
+</li>
+<li>
+<p>创建 <code>pojo</code>包, 并在包中添加 <code>User</code>实体类:</p>
+<pre><code class="language-java">package pojo; // pojo包存放实体类
+
+public class User {
+
+    private Integer id;
+    private String username;
+    private String password;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Account{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, username='&quot; + username + '\'' +
+                &quot;, password='&quot; + password + '\'' +
+                '}';
+    }
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="增删改操作">增删改操作</h2>
+<p>JDBC数据访问层的代码放在 <code>DAO</code>包下:</p>
+<pre><code class="language-java">package dao;
+
+import pojo.User;
+
+import java.sql.*;
+
+public class UserDAO {
+
+    private static String URL = &quot;jdbc:mysql:///test&quot; +
+                &quot;?useSSL=false&amp;useServerPrepStmts=true&quot;;
+    private static String USERNAME = &quot;root&quot;;
+    private static String PASSWORD = &quot;1234&quot;;
+
+    /**
+     * 根据用户名和密码查询
+     * @param username
+     * @param password
+     * @return User
+     * @throws SQLException
+     */
+    public User select(String username, String password) throws SQLException {
+
+        // 参数有null值时
+        if (username == null || password == null) {
+            return null;
+        }
+
+        // 连接数据库
+        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+        // 获取PreparedStatement对象, 并设置SQL语句
+        String sql = &quot;SELECT id, username, password&quot; +
+                &quot; FROM tb_user&quot; +
+                &quot; WHERE username = ?&quot; +
+                &quot; AND password = ?&quot;;
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+
+        // 获取ResultSet
+        ResultSet rs = pstmt.executeQuery();
+
+        User user = null;
+        if (rs.next()) {
+            user = new User();
+
+            Integer id = rs.getInt(&quot;id&quot;);
+            String name = rs.getString(&quot;username&quot;);
+            String pw = rs.getString(&quot;password&quot;);
+
+            user.setId(id);
+            user.setUsername(name);
+            user.setPassword(pw);
+        }
+
+        rs.close();
+        pstmt.close();
+        conn.close();
+
+        return user;
+    }
+
+    /**
+     * 根据用户名和密码添加数据
+     * @param username
+     * @param password
+     * @return boolean
+     * @throws SQLException
+     */
+    public boolean add(String username, String password) throws SQLException {
+
+        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+        String sql = &quot;INSERT INTO tb_user&quot; +
+                &quot; VALUE(null, ?, ?)&quot;;
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+
+        int count = pstmt.executeUpdate();
+
+        pstmt.close();
+        conn.close();
+
+        return count &gt; 0;
+    }
+
+    /**
+     * 根据用户名和密码删除数据
+     * @param username
+     * @param password
+     * @return boolean
+     * @throws SQLException
+     */
+    public boolean delete(String username, String password) throws SQLException {
+
+        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+        String sql = &quot;DELETE FROM tb_user&quot; +
+                &quot; WHERE username = ?&quot; +
+                &quot; AND password = ?&quot;;
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+
+        int count = pstmt.executeUpdate();
+
+        pstmt.close();
+        conn.close();
+
+        return count &gt; 0;
+    }
+}
+
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/搭建code-server/" class="post-title gt-a-link">
+                    搭建 code-server
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

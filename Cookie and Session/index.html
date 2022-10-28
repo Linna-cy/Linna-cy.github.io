@@ -1,0 +1,823 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>会话跟踪技术 —— Cookie 和 Session | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            会话跟踪技术 —— Cookie 和 Session
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-09-23</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/T9BN3xwNV/"> <span>#Tomcat </span></a>  
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/">
+                <span>#JavaWeb </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >12<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >2590<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF">会话跟踪技术</a></li>
+<li><a href="#cookie">Cookie</a>
+<ul>
+<li><a href="#%E5%8F%91%E9%80%81-cookie">发送 Cookie</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96-cookie">获取 Cookie</a></li>
+<li><a href="#cookie-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">Cookie 常用方法</a></li>
+</ul>
+</li>
+<li><a href="#session">Session</a>
+<ul>
+<li><a href="#%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE">存储数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE">获取数据</a></li>
+<li><a href="#session-%E7%9A%84%E9%92%9D%E5%8C%96%E4%B8%8E%E6%B4%BB%E5%8C%96">Session 的钝化与活化</a></li>
+<li><a href="#session-%E7%9A%84%E9%94%80%E6%AF%81">Session 的销毁</a></li>
+<li><a href="#session-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">Session 常用方法</a></li>
+</ul>
+</li>
+<li><a href="#cookie-%E5%92%8C-session">Cookie 和 Session</a></li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF">会话跟踪技术</a></li>
+<li><a href="#cookie">Cookie</a>
+<ul>
+<li><a href="#%E5%8F%91%E9%80%81-cookie">发送 Cookie</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96-cookie">获取 Cookie</a></li>
+<li><a href="#cookie-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">Cookie 常用方法</a></li>
+</ul>
+</li>
+<li><a href="#session">Session</a>
+<ul>
+<li><a href="#%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE">存储数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE">获取数据</a></li>
+<li><a href="#session-%E7%9A%84%E9%92%9D%E5%8C%96%E4%B8%8E%E6%B4%BB%E5%8C%96">Session 的钝化与活化</a></li>
+<li><a href="#session-%E7%9A%84%E9%94%80%E6%AF%81">Session 的销毁</a></li>
+<li><a href="#session-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">Session 常用方法</a></li>
+</ul>
+</li>
+<li><a href="#cookie-%E5%92%8C-session">Cookie 和 Session</a></li>
+</ul>
+
+                        <hr>
+                    
+                    <blockquote>
+<p>相关文章链接:</p>
+<ul>
+<li><a href="https://linna-cy.github.io/Maven/">Maven</a></li>
+<li><a href="https://linna-cy.github.io/Tomcat/">Tomcat</a></li>
+<li><a href="https://linna-cy.github.io/Servlet/">Servlet 与 Tomcat</a></li>
+<li><a href="https://linna-cy.github.io/HttpServlet/">HttpServlet 与 Tomcat</a></li>
+</ul>
+</blockquote>
+<h1 id="会话跟踪技术">会话跟踪技术</h1>
+<p>会话是指一个终端用户与交互系统进行通讯的过程，例如从浏览器发出请求到服务端响应数据给前端这个过程即为一个会话。</p>
+<p>会话跟踪指的是一种维护浏览器状态的方法。服务器会收到多个请求，这多个请求可能来自多个浏览器。服务器需要识别多次请求是否来自于同一浏览器，以便在同一次会话的多次请求间共享数据。</p>
+<p>浏览器和服务器不支持数据共享的原因：</p>
+<ul>
+<li>HTTP协议是无状态的，每次浏览器向服务器请求时，服务器都会将该请求视为新的请求。</li>
+<li>HTTP协议设计成无状态的目的是让每次请求之间相互独立，互不影响。</li>
+<li>请求与请求之间独立后，就无法实现多次请求之间的数据共享。</li>
+</ul>
+<p>实现会话跟踪技术的方式有：</p>
+<ul>
+<li>客户端会话跟踪技术：<code>Cookie</code>。<br>
+Cookie是存储在浏览器端。</li>
+<li>服务端会话跟踪技术：<code>Session</code>。<br>
+Session是存储在服务器端。</li>
+</ul>
+<hr>
+<h1 id="cookie">Cookie</h1>
+<p>Cookie是一种客户端会话技术，将数据保存到客户端，在以后的每次请求中都携带Cookie数据进行访问。</p>
+<p>服务器将Cookie发送给浏览器，是通过在响应头中添加<code>Set-Cookie</code>键值对实现的，如<code>Set-Cookie: message=&quot;Hello Wrold&quot;</code>。在多个Cookie之间使用<code>;</code>分割。</p>
+<p>浏览器在接收了服务器发送来的Cookie后，会将数据存储在浏览器的内存中。在接下来的每次请求中，浏览器都会将获取到的Cookie发送到服务器（同一次会话中或在Cookie存活时间内）。浏览器将Cookie发送到服务器，是通过在请求头中设置<code>Cookie</code>键值对实现的，如<code>Cookie: message=&quot;Hello Wrold&quot;</code>。同样的，在多个Cookie之间使用<code>;</code>分割。</p>
+<ul>
+<li>
+<p>创建Cookie对象：</p>
+<pre><code class="language-java">Cookie cookie = new Cookie(&quot;key&quot;,&quot;value&quot;)
+</code></pre>
+</li>
+<li>
+<p>发送Cookie到客户端（使用Response对象）：</p>
+<pre><code class="language-java">response.addCookie(cookie)
+</code></pre>
+</li>
+<li>
+<p>从客户端获取Cookie（使用Request对象）：</p>
+<pre><code class="language-java">request.getCookies()
+</code></pre>
+</li>
+</ul>
+<p><a href="https://linna-cy.github.io/Tomcat/#%E5%88%9B%E5%BB%BA-maven-web-%E9%A1%B9%E7%9B%AE">创建Maven web项目。</a></p>
+<p>项目依赖：</p>
+<pre><code class="language-xml">&lt;packaging&gt;war&lt;/packaging&gt;
+
+&lt;dependencies&gt;
+    &lt;!--servlet--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+        &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+        &lt;version&gt;3.1.0&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+
+&lt;build&gt;
+    &lt;pluginManagement&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.2&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/pluginManagement&gt;
+&lt;/build&gt;
+</code></pre>
+<h2 id="发送-cookie">发送 Cookie</h2>
+<p>发送Cookie使用的是HttpServletResponse对象提供的<code>addCookie()</code>：</p>
+<pre><code class="language-java">response.addCookie(cookie)
+</code></pre>
+<pre><code class="language-java">package web.cookie;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+@WebServlet(&quot;/cookieServlet&quot;)
+public class CookieServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. 创建Cookie对象
+        String value = &quot;Hello World&quot;;
+        System.out.println(&quot;存储数据: &quot; + value);
+        Cookie cookie = new Cookie(&quot;message&quot;, value);
+
+        // 设置存活时间, 7天
+        cookie.setMaxAge(60*60*24*7);
+
+        // 2. 发送Cookie, response
+        response.addCookie(cookie);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<p>在发送Cookie时，可以使用<code>setMaxAge()</code>方法设置Cookie存活的时间（单位：秒）。</p>
+<p>如果要在Cookie中存储中文数据，需要将中文数据使用<code>URLEncoder.encode()</code>按照UTF-8（与前端页面的编码保持一致）编码。</p>
+<pre><code class="language-java">package web.cookie;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+@WebServlet(&quot;/cookieServlet&quot;)
+public class CookieServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. 创建Cookie对象
+        // 存储中文
+        String value = &quot;你好&quot;;
+        // URL编码
+        value = URLEncoder.encode(value, StandardCharsets.UTF_8);
+        // System.out.println(&quot;存储数据: &quot; + value);
+        Cookie cookie = new Cookie(&quot;message&quot;, value);
+
+        // 设置存活时间, 7天
+        cookie.setMaxAge(60*60*24*7);
+
+        // 2. 发送Cookie, response
+        response.addCookie(cookie);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<h2 id="获取-cookie">获取 Cookie</h2>
+<p>从客户端获取Cookie使用的是HttpServletRequest对象提供的<code>getCookies()</code>：</p>
+<pre><code class="language-java">request.getCookies()
+</code></pre>
+<p>它返回一个Cookie数组（Cookie[]）。</p>
+<pre><code class="language-java">package web.cookie;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+@WebServlet(&quot;/cookieServlet&quot;)
+public class CookieServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. 获取Cookie数组
+        Cookie[] cookies = request.getCookies();
+
+        // 2. 遍历数组
+        for (Cookie cookie : cookies) {
+            // 3. 获取数据
+            String name = cookie.getName();
+            if (&quot;message&quot;.equals(name)) {
+                String value = cookie.getValue();
+                // URL解码
+                value = URLDecoder.decode(value, StandardCharsets.UTF_8);
+
+                System.out.println(name + &quot;:&quot; + value);
+                break;
+            }
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<p>Cookie对象提供的<code>getName()</code>和<code>getValue()</code>可以分别获取Cookie的名称和值。</p>
+<blockquote>
+<p>获取Cookie后应该使用<code>URLDecoder.decode</code>进行解码，这样确保Cookie里出现中文数据时不会乱码。</p>
+</blockquote>
+<h2 id="cookie-常用方法">Cookie 常用方法</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>Cookie[] getCookies()</code></td>
+<td style="text-align:center"><code>HttpServletRequest</code>提供的获取客户端Cookie的方法</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void addCookie(Cookie cookie)</code></td>
+<td style="text-align:center"><code>HttpServletResponse</code>提供的，将Cookie发送到客户端的方法</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Cookie(String name, String value)</code></td>
+<td style="text-align:center"><code>Cookie</code>类的构造函数，用于创建Cookie，需要指定名称<code>name</code>和值<code>value</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void setMaxAge(int expiry)</code></td>
+<td style="text-align:center">设置Cookie过期的时间（单位：秒）。值为<code>-1</code>（默认情况下）或其它负数，Cookie只会在当前Session会话中持续有效。值为<code>0</code>表示删除对应Cookie</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>int getMaxAge()</code></td>
+<td style="text-align:center">返回Cookie的最大生存周期（单位：秒）。默认情况下（不设置过期时间），<code>-1</code> 表示 Cookie 将持续到浏览器关闭。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getName()</code></td>
+<td style="text-align:center">返回Cookie的名称（名称在创建后不能改变）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void setValue(String newValue)</code></td>
+<td style="text-align:center">设置与Cookie关联的值</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getValue()</code></td>
+<td style="text-align:center">获取与Cookie关联的值</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="session">Session</h1>
+<p>Session是一种服务端会话跟踪技术，其数据保存在服务端。Session因为是存储在服务端所以比起Cookie，Session要更加安全。但与之相对的，Session不适合长期保存数据。</p>
+<p>Session是基于Cookie实现的。Session要想实现一次会话多次请求之间的数据共享，就必须要保证多次请求获取Session的对象是同一个。在第一次获取Session对象时，Session对象会有一个唯一的标识，如<code>id:123</code>。Tomcat服务器发现业务处理中使用了Session对象，就会把Session的唯一标识<code>id:123</code>当做一个Cookie，添加<code>Set-Cookie:JESSIONID=123</code>到响应头中，并响应给浏览器。所以，浏览器通过Cookie告诉服务器Session的<code>id</code>，服务器也通过Cookie获取相应的Session，从而实现一次会话多次请求之间的数据共享。</p>
+<p>JavaEE中提供了HttpSession接口，来实现一次会话的多次请求之间数据共享功能：</p>
+<ul>
+<li>
+<p>获取Session对象（使用Request对象）：</p>
+<pre><code class="language-java">HttpSession session = request.getSession();
+</code></pre>
+</li>
+<li>
+<p>Session对象提供的功能:</p>
+<ul>
+<li>
+<p>存储数据到 session 域中：</p>
+<pre><code class="language-java">void setAttribute(String name, Object o)
+</code></pre>
+</li>
+<li>
+<p>根据 key，获取值：</p>
+<pre><code class="language-java">Object getAttribute(String name)
+</code></pre>
+</li>
+<li>
+<p>根据 key，删除该键值对：</p>
+<pre><code class="language-java">void removeAttribute(String name)
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="存储数据">存储数据</h2>
+<pre><code class="language-java">package web.session;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+
+@WebServlet(&quot;/sessionServlet&quot;)
+public class SessionServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 存储数据到Session中
+        // 1. 获取Session对象
+        HttpSession session = request.getSession();
+        // 2. 存储数据
+        session.setAttribute(&quot;message&quot;, &quot;Hello World!&quot;);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<blockquote>
+<p>由于Session中的数据是存储在服务器，所以在Session中存储和读取中文数据不需要进行编码和解码。</p>
+</blockquote>
+<h2 id="获取数据">获取数据</h2>
+<pre><code class="language-java">package web.session;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+
+@WebServlet(&quot;/sessionServlet&quot;)
+public class SessionServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 从Session中获取数据
+        // 1. 获取Session对象
+        HttpSession session = request.getSession();
+        // 2. 获取数据
+        Object message = session.getAttribute(&quot;message&quot;);
+        System.out.println(message);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+</code></pre>
+<h2 id="session-的钝化与活化">Session 的钝化与活化</h2>
+<p>正常来说，Session是存储在内存中的，只要服务器关闭，那么所有会话的Session都会失效。但是Tomcat在正常关闭的情况下，Session并不会失效，这是因为Session的钝化：在服务器正常关闭后，Tomcat会自动将Session数据写入硬盘的文件中。钝化的数据路径为：<code>项目目录\target\tomcat\work\Tomcat\localhost\项目名称\SESSIONS.ser</code>。</p>
+<p>再次启动服务器后，从文件中加载数据到Session中，这就是Session的活化。而数据加载到Session中后，路径中的SESSIONS.ser文件会被删除掉。</p>
+<h2 id="session-的销毁">Session 的销毁</h2>
+<p>默认情况下，无操作，30分钟后自动销毁Session。对于这个失效时间，是可以通过在项目的<code>web.xml</code>中配置进行修改：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;
+         version=&quot;3.1&quot;&gt;
+
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;100&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+&lt;/web-app&gt;
+</code></pre>
+<p>如果没有配置，默认是30分钟，默认值是在Tomcat的<code>web.xml</code>配置文件中写死的。通过在Tomcat的<code>web.xml</code>中搜索<code>&lt;session-timeout&gt;</code>即可找到对应设置。</p>
+<p>也可以通过调用<code>HTTPSession</code>的<code>invalidate()</code>方法进行手动销毁。</p>
+<h2 id="session-常用方法">Session 常用方法</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>HttpSession getSession()</code></td>
+<td style="text-align:center"><code>HttpServletRequest</code>提供的方法，用于获取当前会话的<code>HttpSession</code>对象</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Object getAttribute(String name)</code></td>
+<td style="text-align:center">返回在该 session 会话中具有指定名称（<code>name</code>）的对象；如果没有指定名称的对象，则返回 <code>null</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void setAttribute(String name, Object value)</code></td>
+<td style="text-align:center">使用指定的名称绑定一个对象到该 session 会话</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void removeAttribute(String name)</code></td>
+<td style="text-align:center">将从该 session 会话移除指定名称的对象</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Enumeration getAttributeNames()</code></td>
+<td style="text-align:center">返回 String 对象的枚举，String 对象包含所有绑定到该 session 会话的对象的名称</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>String getId()</code></td>
+<td style="text-align:center">返回一个包含分配给该 session 会话的唯一标识符的字符串</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>void invalidate()</code></td>
+<td style="text-align:center">销毁当前Session对象。该方法指示该 session 会话无效，并解除绑定到它上面的任何对象</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="cookie-和-session">Cookie 和 Session</h1>
+<p>Cookie 和 Session 的区别：</p>
+<ul>
+<li>存储位置：Cookie 是将数据存储在客户端，Session 将数据存储在服务端。</li>
+<li>安全性：Cookie不安全，Session安全。</li>
+<li>数据大小：Cookie最大3KB，Session无大小限制。</li>
+<li>存储时间：Cookie可以通过setMaxAge()长期存储，Session默认30分钟。</li>
+<li>服务器性能：Cookie不占服务器资源，Session占用服务器资源。</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/Ubuntu zsh 中文/" class="post-title gt-a-link">
+                    Ubuntu zsh 中文支持
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

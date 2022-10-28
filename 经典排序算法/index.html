@@ -1,0 +1,1974 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>经典排序算法 | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            经典排序算法
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-01-12</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/wc-xb3h6h2/"> <span>#C </span></a>  
+              <a href="https://linna-cy.github.io/G0NSJyfWTt/"> <span>#Python </span></a>  
+              <a href="https://linna-cy.github.io/qE36GGmlwNA/">
+                <span>#排序算法 </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >37<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >7700<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0">C实现</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95">优化算法</a>
+<ul>
+<li><a href="#%E6%9C%89%E5%BA%8F%E6%A0%87%E5%BF%97">有序标志</a></li>
+<li><a href="#%E6%95%B0%E5%88%97%E6%9C%89%E5%BA%8F%E5%8C%BA">数列有序区</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">选择排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-2">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-2">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-2">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">插入排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-3">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-3">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-3">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-3">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-4">算法步骤</a></li>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-5">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-4">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-4">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-4">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">归并排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-6">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-5">代码实现</a>
+<ul>
+<li><a href="#python-%E5%AE%9E%E7%8E%B0">Python 实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-5">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F">快速排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-7">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-6">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-5">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-6">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%A0%86%E6%8E%92%E5%BA%8F">堆排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-8">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-7">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-6">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-7">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F">计数排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-9">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-8">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-7">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-8">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%A1%B6%E6%8E%92%E5%BA%8F">桶排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-10">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-9">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-8">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-9">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F">基数排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-11">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-10">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-9">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-10">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0">C实现</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95">优化算法</a>
+<ul>
+<li><a href="#%E6%9C%89%E5%BA%8F%E6%A0%87%E5%BF%97">有序标志</a></li>
+<li><a href="#%E6%95%B0%E5%88%97%E6%9C%89%E5%BA%8F%E5%8C%BA">数列有序区</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">选择排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-2">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-2">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-2">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">插入排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-3">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-3">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-3">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-3">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-4">算法步骤</a></li>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-5">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-4">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-4">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-4">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">归并排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-6">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-5">代码实现</a>
+<ul>
+<li><a href="#python-%E5%AE%9E%E7%8E%B0">Python 实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-5">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F">快速排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-7">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-6">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-5">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-6">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%A0%86%E6%8E%92%E5%BA%8F">堆排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-8">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-7">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-6">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-7">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F">计数排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-9">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-8">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-7">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-8">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%A1%B6%E6%8E%92%E5%BA%8F">桶排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-10">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-9">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-8">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-9">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F">基数排序</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4-11">算法步骤</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-10">代码实现</a>
+<ul>
+<li><a href="#python%E5%AE%9E%E7%8E%B0-9">Python实现</a></li>
+<li><a href="#c%E5%AE%9E%E7%8E%B0-10">C实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        <hr>
+                    
+                    <h1 id="冒泡排序">冒泡排序</h1>
+<p>冒泡排序（Bubble Sort）是一种简单直观的排序算法。</p>
+<p>这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。</p>
+<p>时间复杂度：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+<h2 id="算法步骤">算法步骤</h2>
+<p>假设一个序列长度为n，m（m≤n）是已排序完成的在末尾的数。</p>
+<ol>
+<li>
+<p>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</p>
+</li>
+<li>
+<p>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。对比结束后，最后的元素会是最大的数。</p>
+</li>
+<li>
+<p>对接下来n-m个未排序的数重复步骤1和2，直到没有任何一对数字需要比较。</p>
+<p>第一趟对序列中所有n个数进行比对，第二趟对序列中n-1个未排序完成的数进行比对，以此类推。每次比对的数为n-m。</p>
+</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="1"><img src="https://linna-cy.github.io/post-images/1662172310783.gif" alt="" loading="lazy"></figure>
+<h2 id="代码实现">代码实现</h2>
+<h3 id="python实现">Python实现</h3>
+<pre><code class="language-python">def bubbleSort(arr):
+    for i in range(len(arr)-1):
+        for j in range(len(arr)-1-i):
+            if arr[j] &gt; arr[j+1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    bubbleSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void bubbleSort(int arr[], int len)
+{
+    for (int i = 0; i &lt; len - 1; i++)
+        for (int j = 0; j &lt; len - 1 - i; j++)
+            if (arr[j] &gt; arr[j + 1])
+            {
+                int tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    bubbleSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+</code></pre>
+<h2 id="优化算法">优化算法</h2>
+<h3 id="有序标志">有序标志</h3>
+<p>冒泡排序还有一种优化算法，就是立一个 flag，当在一趟序列遍历中元素没有发生交换，则证明该序列已经有序。但这种改进对于提升性能来说并没有什么太大作用。</p>
+<ul>
+<li>
+<p>Python实现：</p>
+<pre><code class="language-python">def bubbleSort(arr):
+    for i in range(len(arr)-1):
+        # 有序flag，初始为True
+        isSorted = True
+        for j in range(len(arr)-1-i):
+            if arr[j] &gt; arr[j+1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                # 发生交换，序列定为无序
+                isSorted = False
+        # 序列有序，停止循环
+        if isSorted:
+            break
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    bubbleSort(arr)
+    print(arr)
+</code></pre>
+</li>
+<li>
+<p>C实现：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+void bubbleSort(int arr[], int len)
+{
+    for (int i = 0; i &lt; len - 1; i++)
+    {
+        // 有序flag，初始为True
+        bool isSorted = true;
+        for (int j = 0; j &lt; len - 1 - i; j++)
+            if (arr[j] &gt; arr[j + 1])
+            {
+                arr[j] = arr[j] ^ arr[j+1];
+                arr[j+1] = arr[j] ^ arr[j+1];
+                arr[j] = arr[j] ^ arr[j+1];
+                // 发生交换，序列定为无序
+                isSorted = false;
+            }
+        // 序列有序，停止循环
+        if (isSorted)
+            break;
+    }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    bubbleSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="数列有序区">数列有序区</h3>
+<p>通常，有序区的长度和排序的轮数是相等的。如，第一轮排序后的有序区长度是1，第二轮排序后是2 ……</p>
+<p>但实际上，数列的有序区长度可能会大于这个长度，并且每轮增加的有序区长度也不一定仅为1。</p>
+<p>该优化算法解决了这个问题，通过在每一轮排序的最后，记录下最后一次元素交换的位置（该位置也就是无序数列的边界，再往后就是有序区），而每轮的交换只要交换到无序区边界。</p>
+<ul>
+<li>
+<p>Python实现：</p>
+<pre><code class="language-python">def bubbleSort(arr):
+    # 无序数列的边界
+    sortBorder = len(arr) - 1
+    for i in range(len(arr)-1):
+        # 有序flag，初始为True
+        isSorted = True
+        # 每次仅需交换到无序区边界
+        for j in range(sortBorder):
+            if arr[j] &gt; arr[j+1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                # 把无序数列的边界更新为最后一次交换元素的位置
+                sortBorder = j
+                # 发生交换，序列定为无序
+                isSorted = False
+        # 序列有序，停止循环
+        if isSorted:
+            break
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 5, 50, 3, 32, 37, 34, 35, 9, 55, 64, 70, 82, 89 ]
+    bubbleSort(arr)
+    print(arr)
+</code></pre>
+</li>
+<li>
+<p>C实现：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+void bubbleSort(int arr[], int len)
+{
+    int sortBorder = len - 1;
+    for (int i = 0; i &lt; len - 1; i++)
+    {
+        // 有序flag，初始为True
+        bool isSorted = true;
+        for (int j = 0; j &lt; len - 1 - i; j++)
+            if (arr[j] &gt; arr[j + 1])
+            {
+                arr[j] = arr[j] ^ arr[j+1];
+                arr[j+1] = arr[j] ^ arr[j+1];
+                arr[j] = arr[j] ^ arr[j+1];
+                // 把无序数列的边界更新为最后一次交换元素的位置
+                sortBorder = j;
+                // 发生交换，序列定为无序
+                isSorted = false;
+            }
+        // 序列有序，停止循环
+        if (isSorted)
+            break;
+    }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    bubbleSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<h1 id="选择排序">选择排序</h1>
+<p>选择排序（Selection Sort）是一种简单直观的排序算法，无论什么数据进去都是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi mathvariant="normal">²</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n²)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord">²</span><span class="mclose">)</span></span></span></span> 的时间复杂度。</p>
+<h2 id="算法步骤-2">算法步骤</h2>
+<ol>
+<li>在未排序序列中找到最小（大）元素，存放到排序序列的起始位置。</li>
+<li>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。</li>
+<li>重复步骤2，直到所有元素均排序完毕。</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="2"><img src="https://linna-cy.github.io/post-images/1662172350447.gif" alt="" loading="lazy"></figure>
+<h2 id="代码实现-2">代码实现</h2>
+<h3 id="python实现-2">Python实现</h3>
+<pre><code class="language-python">def selectionSort(arr):
+    for i in range(len(arr) - 1):
+        # 记录最小数的索引
+        minIndex = i
+        for j in range(i + 1, len(arr)):
+            if arr[j] &lt; arr[minIndex]:
+                minIndex = j
+        # i 不是最小数时，将 i 和最小数进行交换
+        if i != minIndex:
+            arr[i], arr[minIndex] = arr[minIndex], arr[i]
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    arr = selectionSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-2">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void selectionSort(int arr[], int len)
+{
+    for (int i = 0 ; i &lt; len - 1 ; i++)
+    {
+        int min = i;
+        for (int j = i + 1; j &lt; len; j++)     // 走访未排序的元素
+            // 找到最小值
+            if (arr[j] &lt; arr[min])
+                min = j;
+        // i 不是最小数时，将 i 和最小数进行交换
+        if (i != min)
+        {
+            int tmp = arr[i];
+            arr[i] = arr[min];
+            arr[min] = tmp; 
+        }
+    }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    selectionSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+<h1 id="插入排序">插入排序</h1>
+<p>插入排序（Insertion Sort）是一种最简单直观的排序算法，它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+<p>插入排序的有一种优化算法，叫做拆半插入。</p>
+<h2 id="算法步骤-3">算法步骤</h2>
+<p>假设序列的长度为n，其待排序序列第一个元素的位置为m（1≤m≤n，元素位置从0开始）。</p>
+<ol>
+<li>
+<p>将元素m与已排序序列中的每个元素进行比较。如果已排序元素比元素m大（小），将其往后移，直到前面没有比元素m大（小）的元素（或前面已经没有元素）。将元素m插入。</p>
+<p>如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。</p>
+</li>
+<li>
+<p>从头到尾依次扫描未排序序列，直到没有未排序元素。</p>
+</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="3"><img src="https://linna-cy.github.io/post-images/1662172376035.gif" alt="" loading="lazy"></figure>
+<h2 id="代码实现-3">代码实现</h2>
+<h3 id="python实现-3">Python实现</h3>
+<pre><code class="language-python">def insertionSort(arr):
+    for i in range(len(arr) - 1):
+        preIndex = i
+        current = arr[i + 1]
+        # 找出要插入的位置
+        while preIndex &gt;= 0 and arr[preIndex] &gt; current:
+            # 将比current大的元素往后移
+            arr[preIndex + 1] = arr[preIndex]
+            preIndex -= 1
+        # 将current插入到适当的位置
+        arr[preIndex + 1] = current
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    insertionSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-3">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void insertionSort(int arr[], int len)
+{
+    for (int i = 0 ; i &lt; len - 1 ; i++)
+    {
+        int current = arr[i + 1];
+        int j = i;
+        while (j &gt;= 0 &amp;&amp; arr[j] &gt; current)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = current;
+    }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    insertionSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+<h1 id="希尔排序">希尔排序</h1>
+<h2 id="算法步骤-4">算法步骤</h2>
+<p>希尔排序（Shell Sort），也称递减增量排序算法，是插入排序的一种更高效的改进版本。但希尔排序是非稳定排序算法。</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<ul>
+<li>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；</li>
+<li>但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位。</li>
+</ul>
+<p>希尔排序的基本思想是：先将整个待排序的增量序列根据增量分割成为若干子序列分别进行直接插入排序，待整个序列中的记录“基本有序”时，再对全体记录进行依次直接插入排序。</p>
+<h2 id="算法步骤-5">算法步骤</h2>
+<ol>
+<li>选择一个增量序列<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>t</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>t</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>t</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">t_1,t_2,...,t_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80952em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>t</mi><mi>i</mi></msub><mo>&gt;</mo><msub><mi>t</mi><mi>j</mi></msub><mo separator="true">,</mo><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t_i &gt; t_j,t_k = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.9011879999999999em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>；</li>
+<li>按增量序列个数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span>，对序列进行<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span>趟排序；</li>
+<li>每趟排序，根据对应的增量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">t_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，将待排序列分割成若干长度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span>的子序列，分别对各子表进行直接插入排序。仅增量因子为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>时，整个序列作为一个表来处理，表长度即为整个序列的长度。</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="4"><img src="https://linna-cy.github.io/post-images/1662172408969.gif" alt="" loading="lazy"></figure>
+<p>详细过程（引用自博客：<a href="https://blog.csdn.net/weixin_43715360/article/details/120140579" title="一个很懒的人">一个很懒的人</a>）：</p>
+<figure data-type="image" tabindex="5"><img src="./%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/img_mDAuk8ZUt4.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://img-blog.csdnimg.cn/ff8014a4eddb45289d60ec4552cf2ea8.png?x-oss-process=img/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5Liq5b6I5oeS55qE5Lq6,size_20,color_FFFFFF,t_70,g_se,x_16" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="https://img-blog.csdnimg.cn/9ad210308fdd44f9931f5717561db7aa.png?x-oss-process=img/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5Liq5b6I5oeS55qE5Lq6,size_20,color_FFFFFF,t_70,g_se,x_16" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="https://img-blog.csdnimg.cn/82e279c4fccb459ca4119d6385657eb6.png?x-oss-process=img/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5Liq5b6I5oeS55qE5Lq6,size_20,color_FFFFFF,t_70,g_se,x_16" alt="" loading="lazy"></figure>
+<h2 id="代码实现-4">代码实现</h2>
+<h3 id="python实现-4">Python实现</h3>
+<pre><code class="language-python">def shellSort(arr):
+    # 将增量d初始化为len(arr)//2
+    d = len(arr) // 2
+    while d &gt; 0:
+        # 分别用插入排序排序每个以d为增量的分组
+        for i in range(d, len(arr)):
+            tmp = arr[i]
+            j = i - d
+            while j &gt;= 0 and tmp &lt; arr[j]:
+                arr[j + d] = arr[j]
+                j -= d
+            arr[j + d] = tmp
+        # 每次将增量d缩小1/2
+        d //= 2
+
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    shellSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-4">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void shellSort(int arr[], int len)
+{
+    // 将增量d初始化为len/2，每次将增量d缩小1/2
+    for (int d = len &gt;&gt; 1; d &gt; 0; d &gt;&gt;= 1)
+    {
+        // 分别用插入排序排序每个以d为增量的分组
+        for (int i = d; i &lt; len; i++)
+        {
+            int tmp = arr[i];
+            int j;
+            for (j = i - d; j &gt;= 0 &amp;&amp; tmp &lt; arr[j]; j -= d)
+                arr[j + d] = arr[j];
+            arr[j + d] = tmp;
+        }
+    }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    shellSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+<h1 id="归并排序">归并排序</h1>
+<p>归并排序（Merge sort）是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。</p>
+<p>作为一种典型的分而治之思想的算法应用，归并排序的实现由两种方法：</p>
+<ol>
+<li>自上而下的递归；</li>
+<li>自下而上的迭代。</li>
+</ol>
+<h2 id="算法步骤-6">算法步骤</h2>
+<ol>
+<li>申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列；</li>
+<li>设定两个指针，最初位置分别为两个已经排序序列的起始位置；</li>
+<li>比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；</li>
+<li>重复步骤 3 直到某一指针达到序列尾；将另一序列剩下的所有元素直接复制到合并序列尾。</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="9"><img src="https://linna-cy.github.io/post-images/1662172440073.gif" alt="" loading="lazy"></figure>
+<p>图片演示：</p>
+<ol>
+<li>
+<p>递归演示：</p>
+<figure data-type="image" tabindex="10"><img src="https://www.runoob.com/wp-content/uploads/2019/05/1557906108-5066-20161218163120151-452283750.png" alt="" loading="lazy"></figure>
+</li>
+<li>
+<p>合并演示：</p>
+<figure data-type="image" tabindex="11"><img src="https://www.runoob.com/wp-content/uploads/2019/05/1557906108-2034-20161218194508761-468169540.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://www.runoob.com/wp-content/uploads/2019/05/1557906108-7614-20161218194621308-588010220.png" alt="" loading="lazy"></figure>
+</li>
+</ol>
+<h2 id="代码实现-5">代码实现</h2>
+<h3 id="python-实现">Python 实现</h3>
+<pre><code class="language-python">def mergeSort(arr):
+    # 结束递归
+    if(len(arr) &lt; 2):
+        return arr
+    # 计算中间位置下标
+    middle = len(arr) // 2
+    # 将序列切分为两半
+    left, right = arr[:middle], arr[middle:]
+    # 进行归并排序
+    return merge(mergeSort(left), mergeSort(right))
+
+def merge(left, right):
+    result = []
+    while left and right:
+          # 将较小的元素放在前面
+        if left[0] &lt;= right[0]:
+            result.append(left.pop(0))
+        else:
+            result.append(right.pop(0))
+    # 将某一序列中剩下的元素全部放入
+    while left:
+        result.append(left.pop(0))
+    while right:
+        result.append(right.pop(0))
+    return result
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    arr = mergeSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-5">C实现</h3>
+<p>非递归实现：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int min(int x, int y)
+{
+    return x &lt; y ? x : y;
+}
+
+void mergeSort(int arr[], int len)
+{
+    int* a = arr;
+    int* b = (int*)malloc(len * sizeof(int));
+    if (!b)
+        return;
+    // 分为约log_2(len)次
+    for (int seg = 1; seg &lt; len; seg += seg)
+    {
+        // 每次对下标区间为[low,high)的子序列进行归并排序
+        for (int start = 0; start &lt; len; start += seg * 2)
+        {
+            // 当前排序区间：[low,high)
+            int low = start, mid = min(start + seg, len), 
+                high = min(start + seg * 2, len);
+            // 第1段：[low,mid)
+            int start1 = low, end1 = mid;
+            // 第2段：[mid,high)
+            int start2 = mid, end2 = high;
+            // 对子序列进行归并排序
+            int i = low;
+            // 将两个序列中较小的放在前面
+            while (start1 &lt; end1 &amp;&amp; start2 &lt; end2)
+                b[i++] = a[start1] &lt; a[start2] ? a[start1++] : a[start2++];
+            // 将某一序列中剩下的元素全部放入
+            while (start1 &lt; end1)
+                b[i++] = a[start1++];
+            while (start2 &lt; end2)
+                b[i++] = a[start2++];
+        }
+        int* tmp = a;
+        a = b;
+        b = tmp;
+    }
+    if (a != arr)
+    {
+        for (int i = 0; i &lt; len; i++)
+            b[i] = a[i];
+        b = a;
+    }
+    free(b);
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int) sizeof(arr) / sizeof(*arr);
+    mergeSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<p>递归实现：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void merge_sort_recursive(int arr[], int reg[], int start, int end)
+{
+    // 结束递归
+    if (start &gt;= end)
+        return;
+    // 当前排序区间：[start,end]
+    int len = end - start, mid = (len &gt;&gt; 1) + start;
+    // 第1段：[start,mid]
+    int start1 = start, end1 = mid;
+    // 第2段：[mid+1,end]
+    int start2 = mid + 1, end2 = end;
+    // 对第1段进行递归地排序
+    merge_sort_recursive(arr, reg, start1, end1);
+    // 对第2段进行递归地排序
+    merge_sort_recursive(arr, reg, start2, end2);
+    int i = start;
+    while (start1 &lt;= end1 &amp;&amp; start2 &lt;= end2)
+        reg[i++] = arr[start1] &lt; arr[start2] ? arr[start1++] : arr[start2++];
+    while (start1 &lt;= end1)
+        reg[i++] = arr[start1++];
+    while (start2 &lt;= end2)
+        reg[i++] = arr[start2++];
+    for (int i = start; i &lt;= end; i++)
+        arr[i] = reg[i];
+}
+
+void mergeSort(int arr[], int len)
+{
+    int* reg = (int*)malloc(len * sizeof(int));
+    merge_sort_recursive(arr, reg, 0, len - 1);
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int) sizeof(arr) / sizeof(*arr);
+    mergeSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+<h1 id="快速排序">快速排序</h1>
+<p>快速排序在平均状况下，排序<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>个项目是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n\log {n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">n</span></span><span class="mclose">)</span></span></span></span>。最坏运行情况是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，但这种状况并不常见，比如说数列为顺序数列的情况下。一般，对绝大多数顺序性较弱的随机数列而言，快速排序总是优于归并排序。</p>
+<p>事实上，快速排序通常明显比其他<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n\log {n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">n</span></span><span class="mclose">)</span></span></span></span>算法更快，因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来。</p>
+<p>快速排序使用分治法（Divide and conquer）策略来把一个序列（list）分为两个子序列（sub-lists）。</p>
+<p>本质上来看，快速排序应该算是在冒泡排序基础上的递归分治法。</p>
+<h2 id="算法步骤-7">算法步骤</h2>
+<ol>
+<li>从序列中选择一个元素作为“基准”（pivot）。</li>
+<li>将所有比基准数小的放在基准左边，所有比基准数大的放在基准右边（相同的数可以在任一边）。这个称为分区（partition）操作。</li>
+<li>分区完成后，该基准就会归到序列中的相应位置，该位置是排序完成后的位置。</li>
+<li>分别递归地把小于基准数的子序列（左边）和大于基准数的子序列（右边）执行1~3操作。</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="13"><img src="https://linna-cy.github.io/post-images/1662172485719.gif" alt="" loading="lazy"></figure>
+<h2 id="代码实现-6">代码实现</h2>
+<h3 id="python实现-5">Python实现</h3>
+<pre><code class="language-python">def swap(arr, i, j):
+    arr[i], arr[j] = arr[j], arr[i]
+
+def partition(arr, left, right):
+    # 设置基准
+    pivot = left
+    # 索引从基准的下一个元素开始
+    index = pivot + 1
+    # 遍历:[index,right]
+    for i in range(index, right + 1):
+        # 将小于基准值的元素全部放到左边
+        if arr[i] &lt; arr[pivot]:
+            swap(arr, i, index)
+            index += 1
+        i += 1
+    # 将基准归位
+    # 此时index位置上的是比基准值大的元素
+    # 或者等于right+1
+    # 即1&lt;=index&lt;=right+1
+    # 只有index-1才是基准真正的位置
+    swap(arr, pivot, index - 1)
+    return index - 1
+
+def quickSort(arr, left=None, right=None):
+    # 设定参数值
+    left = 0 if not isinstance(left, (int, float)) else left
+    right = len(arr) - 1 if not \
+        isinstance(right, (int, float)) else right
+    if left &lt; right:
+        # 先进行“治”操作并取得分区索引
+        partitionIndex = partition(arr, left, right)
+        # 分别对左右两个分区递归地进行快速排序
+        quickSort(arr, left, partitionIndex - 1)
+        quickSort(arr, partitionIndex + 1, right)
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    quickSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-6">C实现</h3>
+<p>递归实现：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void quick_sort_recursive(int arr[], int start, int end)
+{
+    if (start &gt;= end)
+        return;
+    // 设置基准
+    int pivot = arr[start];
+    int left = start, right = end;
+    while (left &lt; right)
+    {
+        // 先从右边起找出比基准小的
+        while (arr[right] &gt;= pivot &amp;&amp; left &lt; right)
+            right--;
+        // 把比基准小的放到基准左边
+        arr[left] = arr[right];
+        // 再从左边起找出比基准大的
+        while (arr[left] &lt;= pivot &amp;&amp; left &lt; right)
+            left++;
+        // 把比基准大的放到基准右边
+        arr[right] = arr[left];
+    }
+    // 将基准归位
+    arr[left] = pivot;
+    // 分别递归地排序左右两个分区
+    quick_sort_recursive(arr, start, left - 1);
+    quick_sort_recursive(arr, left + 1, end);
+}
+
+void quickSort(int arr[], const int len)
+{
+    quick_sort_recursive(arr, 0, len - 1);
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    quickSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<p>非递归实现：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 范围
+typedef struct _stack
+{
+    int start, end;
+} Range;
+
+// 申请一个新的栈元素
+Range new_Range(int start, int end)
+{
+    Range s = {
+        .start = start,
+        .end = end
+    };
+    return s;
+}
+
+void quickSort(int arr[], const int len)
+{
+    if (len &lt;= 1)
+        return;
+    // s模拟栈，p为数量，r[p++]为push，r[--p]为pop0
+    Range* s = (Range*)malloc(len * sizeof(Range));
+    int p = 0;
+    // 范围为[0,len-1]
+    s[p++] = new_Range(0, len - 1);
+    while (p)
+    {
+        // pop出当前要排序的范围
+        Range range = s[--p];
+        if (range.start &gt;= range.end)
+            continue;
+        // 设置基准
+        int pivot = arr[range.start];
+        int left = range.start, right = range.end;
+        while (left &lt; right)
+        {
+            // 先从右边起找出比基准小的
+            while (arr[right] &gt;= pivot &amp;&amp; left &lt; right)
+                right--;
+            // 把比基准小的放到基准左边
+            arr[left] = arr[right];
+            // 再从左边起找出比基准大的
+            while (arr[left] &lt;= pivot &amp;&amp; left &lt; right)
+                left++;
+            // 把比基准大的放到基准右边
+            arr[right] = arr[left];
+        }
+        // 将基准归位
+        arr[left] = pivot;
+        // 分别设置左右两个分区的范围
+        if (range.start &lt; left)
+            s[p++] = new_Range(range.start, left - 1);
+        if (range.end &gt; left)
+            s[p++] = new_Range(left + 1, range.end);
+    }
+    free(s);
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    quickSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+<h1 id="堆排序">堆排序</h1>
+<p>堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。</p>
+<p>堆积是一种近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<p>堆排序可以说是一种利用堆的概念来排序的选择排序。分为两种方法：</p>
+<ol>
+<li>大顶堆：每个节点的值都大于或等于其子节点的值，在堆排序算法中用于升序排列；</li>
+<li>小顶堆：每个节点的值都小于或等于其子节点的值，在堆排序算法中用于降序排列；</li>
+</ol>
+<p>堆排序的平均时间复杂度为 Ο(nlogn)。</p>
+<p>堆排序是不稳定的。</p>
+<h2 id="算法步骤-8">算法步骤</h2>
+<ol>
+<li>
+<p>将待排序的数组构造出一个堆 <code>H[0……n-1]</code>；</p>
+</li>
+<li>
+<p>把堆首（堆顶结点，即最大值）和堆尾（堆的最下层最右边的结点）互换；</p>
+<p>此时不再对原堆顶（最大值）进行操作，即原堆顶已经被“移出”，堆的长度缩小1。</p>
+</li>
+<li>
+<p>把新的数组顶端数据调整到相应位置；</p>
+</li>
+<li>
+<p>重复步骤 2~3，直到堆的尺寸为 1。</p>
+</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="14"><img src="https://linna-cy.github.io/post-images/1662172508258.gif" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="15"><img src="https://www.runoob.com/wp-content/uploads/2019/03/Sorting_heapsort_anim.gif" alt="" loading="lazy"></figure>
+<h2 id="代码实现-7">代码实现</h2>
+<h3 id="python实现-6">Python实现</h3>
+<pre><code class="language-python">def swap(arr, i, j):
+    arr[i], arr[j] = arr[j], arr[i]
+
+def heapify(arr, len, i):
+    # 子结点
+    son = 2*i + 1
+    # 最大值元素位置
+    largest = i
+    # 将最大值置为堆顶结点
+    if son &lt; len:
+        if son + 1 &lt; len and arr[son + 1] &gt; arr[son]:
+            son += 1
+        if arr[son] &gt; arr[largest]:
+            largest = son
+            swap(arr, i, largest)
+            # 重新构造子堆
+            heapify(arr, len, largest)
+
+def buildMaxHeap(arr):
+    # int(len(arr)/2)递减至0
+    for i in range(int(len(arr)/2) - 1, -1, -1):
+        heapify(arr, len(arr), i)
+
+def heapSort(arr, left=None, right=None):
+    global arrLen
+    arrLen = len(arr)
+    # 构造堆
+    buildMaxHeap(arr)
+    # len(arr)-1递减至1
+    for i in range(len(arr)-1, 0, -1):
+        # 交换堆顶和最下层最右元素
+        swap(arr, 0, i)
+        # 将原堆顶移出并重新调整堆
+        heapify(arr, i, 0)
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    heapSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-7">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void swap(int* x, int* y)
+{
+    int tmp = *x;
+    *x = *y;
+    *y = tmp;
+}
+
+void heapify(int arr[], int len, int i)
+{
+    // 子节点
+    int son = i*2 + 1;
+    // 最大值元素位置
+    int largest = i;
+    // 将最大值置为堆顶结点
+    if (son &lt; len)
+    {
+        if (son + 1 &lt; len &amp;&amp; arr[son + 1] &gt; arr[son])
+            son++;
+        if (arr[son] &gt; arr[largest])
+        {
+            largest = son;
+            swap(&amp;arr[i], &amp;arr[largest]);
+            // 重新构造子堆
+            heapify(arr, len, largest);
+        }
+    }
+}
+
+void buildMaxHeap(int arr[], int len)
+{
+    for (int i = len / 2 - 1; i &gt;= 0; i--)
+        heapify(arr, len, i);
+}
+
+void heapSort(int arr[], int len)
+{
+    // 构造堆
+    buildMaxHeap(arr, len);
+    for (int i = len - 1; i &gt; 0; i--)
+    {
+        // 交换堆顶和最下层最右元素
+        swap(&amp;arr[0], &amp;arr[i]);
+        // 将原堆顶移出并重新调整堆
+        heapify(arr, i, 0);
+    }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    heapSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+<h1 id="计数排序">计数排序</h1>
+<p>计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</p>
+<p>当输入的元素是 n 个 0 到 k 之间的整数时，它的运行时间是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Θ</mi><mo>(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">Θ(n + k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>。计数排序不是比较排序，排序的速度快于任何比较排序算法。</p>
+<p>由于用来计数的数组C的长度取决于待排序数组中数据的范围（等于待排序数组的最大值与最小值的差加上1），这使得计数排序对于数据范围很大的数组，需要大量时间和内存。例如：计数排序是用来排序0到100之间的数字的最好的算法，但是它不适合按字母顺序排序人名。但是，计数排序可以用在基数排序中的算法来排序数据范围很大的数组。</p>
+<h2 id="算法步骤-9">算法步骤</h2>
+<ol>
+<li>找出待排序的数组中最大和最小的元素。</li>
+<li>统计数组中每个值为 <code>i</code>的元素出现的次数，存入数组 <code>C</code>的第 <code>i</code>项。</li>
+<li>对所有的计数累加（从 <code>C</code>中的第一个元素开始，每一项和前一项相加）。</li>
+<li>反向填充目标数组：将每个元素 <code>i</code>放在新数组的第 <code>C(i)</code> 项，每放一个元素就将 <code>C(i)</code> 减去 <code>1</code>。</li>
+</ol>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="16"><img src="https://www.runoob.com/wp-content/uploads/2019/03/countingSort.gif" alt="" loading="lazy"></figure>
+<h2 id="代码实现-8">代码实现</h2>
+<h3 id="python实现-7">Python实现</h3>
+<pre><code class="language-python">def countingSort(arr):
+    # 找出最大值
+    max = arr[0]
+    for i in range(1, len(arr)):
+        if arr[i] &gt; max:
+            max = arr[i]
+    # 构建一个长度为max+1的数组
+    bucket = [0] * (max + 1)
+    # 计数
+    for i in range(len(arr)):
+        if not bucket[arr[i]]:
+            bucket[arr[i]] = 0
+        bucket[arr[i]] += 1
+    # 反向填充
+    index = 0
+    for i in range(len(bucket)):
+        while bucket[i] &gt; 0:
+            arr[index] = i
+            bucket[i] -= 1
+            index += 1
+    return arr
+
+if __name__ == '__main__':
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    countingSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-8">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void countingSort(int arr[], int len)
+{
+    // 找出最大值
+    int max = arr[0];
+    for (int i = 0; i &lt; len; i++)
+        if (arr[i] &gt; max)
+            max = arr[i];
+    // 构造和初始化
+    int bucketLen = max + 1;
+    int* bucket = (int*)malloc(bucketLen * sizeof(int));
+    for (int i = 0; i &lt; bucketLen; i++)
+        bucket[i] = 0;
+  
+    // 计数
+    for (int i = 0; i &lt; len; i++)
+        if (arr[i] &lt; bucketLen)
+            bucket[arr[i]]++;
+    // 反向填充
+    for (int i = 0, j = 0; i &lt; bucketLen; i++)
+        while (bucket[i] &gt; 0)
+        {
+            arr[j++] = i;
+            bucket[i]--;
+        }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    countingSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+</code></pre>
+<hr>
+<h1 id="桶排序">桶排序</h1>
+<p>桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。为了使桶排序更加高效，需要做到两点：</p>
+<ol>
+<li>在额外空间充足的情况下，尽量增大桶的数量</li>
+<li>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中</li>
+</ol>
+<p>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。</p>
+<ul>
+<li>最快的情况：当输入的数据可以均匀的分配到每一个桶中。</li>
+<li>最慢的情况：当输入的数据被分配到了同一个桶中。</li>
+</ul>
+<h2 id="算法步骤-10">算法步骤</h2>
+<ol>
+<li>
+<p>将数列中的数均匀地分布到每个桶中（有时候并不是均匀分布）。</p>
+</li>
+<li>
+<p>将每个桶中的数进行排序。</p>
+<p>这里的排序可以使用桶排序也可以使用其它方法排序。</p>
+</li>
+<li>
+<p>按照顺序将所有桶中的数据取出。</p>
+</li>
+</ol>
+<p>图片演示：</p>
+<p>将元素分布在桶中：</p>
+<figure data-type="image" tabindex="17"><img src="https://linna-cy.github.io/post-images/1662172566530.png" alt="" loading="lazy"></figure>
+<p>元素在每个桶中排序：</p>
+<figure data-type="image" tabindex="18"><img src="https://linna-cy.github.io/post-images/1662172573696.png" alt="" loading="lazy"></figure>
+<h2 id="代码实现-9">代码实现</h2>
+<h3 id="python实现-8">Python实现</h3>
+<pre><code class="language-python">from quick_sort import quickSort
+
+def bucketSort(arr, bucketsize):
+    if len(arr) == 0 or bucketsize &lt;= 0:
+        return arr
+    # 确定最大最小值
+    maxValue = minValue = arr[0]
+    for i in arr:
+        if i &lt; minValue:
+            minValue = i
+        elif i &gt; maxValue:
+            maxValue = i
+    # 桶数量
+    count = (maxValue - minValue) // bucketsize + 1
+    # 对应的桶
+    buckets = [[] for i in range(count + 1)]
+  
+    # 把数据放入相应的桶
+    for i in arr:
+        index = (i - minValue) // bucketsize
+        buckets[index].append(i)
+  
+    # 桶内排序并合并数据
+    arr.clear()
+    for j in buckets:
+        if len(j) != 0:
+            # 桶排序
+            # bucketSort(j, bucketsize-1)
+            # 快速排序
+            quickSort(j)
+            # 还可以换其它方法排序
+            arr.extend(j)
+    return arr
+
+if __name__ == &quot;__main__&quot; :
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    bucketSort(arr, 5)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-9">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+extern void quickSort(int arr[], const int len);
+
+typedef struct _list
+{
+    int* bucket;
+    int len;
+} List;
+
+void append(List* pl, int num)
+{
+    if (!pl-&gt;len)
+    {
+        pl-&gt;bucket = (int*)malloc(sizeof(int));
+        pl-&gt;bucket[pl-&gt;len++] = num;
+        return;
+    }
+    int* tmp = (int*)malloc((pl-&gt;len + 1) * sizeof(int));
+    for (int i = 0; i &lt; pl-&gt;len; i++)
+        tmp[i] = pl-&gt;bucket[i];
+    tmp[pl-&gt;len++] = num;
+    free(pl-&gt;bucket);
+    pl-&gt;bucket = tmp;
+}
+
+void bucketSort(int arr[], int len, int bucketsize)
+{
+    // 确定最大最小值
+    int max = arr[0], min = max;
+    for (int i = 0; i &lt; len; i++)
+        if (arr[i] &lt; min)
+            min = arr[i];
+        else if (arr[i] &gt; max)
+            max = arr[i];
+  
+    // 桶数量
+    int count = (max - min) / bucketsize + 1;
+    // 对应的桶
+    List* buckets = (List*)malloc(count * sizeof(List));
+    for (int i = 0; i &lt; count; i++)
+    {
+        buckets[i].bucket = NULL;
+        buckets[i].len = 0;
+    }
+
+    // 方案一：动态数组
+    // 把数据放入相应的桶
+    for (int i = 0; i &lt; len; i++)
+    {
+        int index = (arr[i] - min) / bucketsize;
+        append(&amp;buckets[index], arr[i]);
+    }
+    // 方案二：二维数组
+    // int* size = (int*)malloc(count * sizeof(int));
+    // // 计算最大宽度
+    // for (int i = 0; i &lt; count; i++)
+    //     size[i] = 0;
+    // for (int i = 0; i &lt; len; i++)
+    //     size[(arr[i] - min) / bucketsize]++;
+    // int maxSize = 0;
+    // for (int i = 0; i &lt; count; i++)
+    //     if (size[i] &gt; maxSize)
+    //         maxSize = size[i];
+    // // 把数据放入相应的桶
+    // for (int i = 0; i &lt; len; i++)
+    // {
+    //     int index = (arr[i] - min) / bucketsize;
+    //     if (!buckets[index].len)
+    //         buckets[index].bucket = (int*)malloc(maxSize * sizeof(int));
+    //     buckets[index].bucket[buckets[index].len++] = arr[i];
+    // }
+    // free(size);
+
+    // 桶内快排并合并数据
+    int index = 0;
+    for (int i = 0; i &lt; count; i++)
+        if (buckets[i].len)
+        {
+            quickSort(buckets[i].bucket, buckets[i].len);
+            for (int j = 0; j &lt; buckets[i].len; j++)
+                arr[index + j] = buckets[i].bucket[j];
+            index += buckets[i].len;
+            free(buckets[i].bucket);
+            buckets[i].bucket = NULL;
+            buckets[i].len = 0;
+        }
+  
+    free(buckets);
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    bucketSort(arr, len, 5);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+
+</code></pre>
+<hr>
+<h1 id="基数排序">基数排序</h1>
+<p>基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。基数排序还可以用于其它数据类型的排序（但其本质上还是整型，如字符型）。</p>
+<p>基数排序用到了桶的概念，是桶排序的扩展，它是根据键值的每位数字来分配桶。</p>
+<h2 id="算法步骤-11">算法步骤</h2>
+<p>有两类基数排序：</p>
+<ol>
+<li>最低位优先法，简称LSD法：先从最低位开始排序，再对次低位排序，直到对最高位排序后得到一个有序序列；</li>
+<li>最高位优先法，简称MSD法：先从最高位开始排序，再逐个对各分组按次高位进行子排序，循环直到最低位。</li>
+</ol>
+<blockquote>
+<p>📌如果位没有数的话，补0。</p>
+</blockquote>
+<p>动画演示：</p>
+<figure data-type="image" tabindex="19"><img src="https://www.runoob.com/wp-content/uploads/2019/03/radixSort.gif" alt="LSD基数排序演示" loading="lazy"></figure>
+<h2 id="代码实现-10">代码实现</h2>
+<h3 id="python实现-9">Python实现</h3>
+<pre><code class="language-python">def getBit(num, i):
+    return (num // i) % 10
+
+def getMax(arr):
+    max = arr[0]
+    for i in range(len(arr)):
+        if arr[i] &gt; max:
+            max = arr[i]
+    return max
+
+def radixSort(arr):
+    if len(arr) &lt;= 1:
+        return arr
+    # 获取最大值
+    max = getMax(arr)
+    # 根据最大位数排序
+    index = 1
+    while max // index:
+        # 桶排序
+        buckets = [[] for i in range(10)]
+        for x in arr:
+            bit_num = getBit(x, index)
+            buckets[bit_num].append(x)
+        arr.clear()
+        for x in buckets:
+            arr.extend(x)
+        index *= 10
+
+    return arr
+
+if __name__ == &quot;__main__&quot; :
+    arr = [ 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 ]
+    radixSort(arr)
+    print(arr)
+
+</code></pre>
+<h3 id="c实现-10">C实现</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct _list
+{
+    int* bucket;
+    int len;
+} List;
+
+void append(List* pl, int num)
+{
+    if (!pl-&gt;len)
+    {
+        pl-&gt;bucket = (int*)malloc(sizeof(int));
+        pl-&gt;bucket[pl-&gt;len++] = num;
+        return;
+    }
+    int* tmp = (int*)malloc((pl-&gt;len + 1) * sizeof(int));
+    for (int i = 0; i &lt; pl-&gt;len; i++)
+        tmp[i] = pl-&gt;bucket[i];
+    tmp[pl-&gt;len++] = num;
+    free(pl-&gt;bucket);
+    pl-&gt;bucket = tmp;
+}
+
+int getBit(int num, int i)
+{
+    return (num / i) % 10;
+}
+
+void radixSort(int arr[], int len)
+{
+    if (len &lt;= 1)
+        return;
+    // 获取最大值
+    int max = arr[0];
+    for (int i = 1; i &lt; len; i++)
+        if (arr[i] &gt; max)
+            max = arr[i];
+    // 根据最大位数排序
+    // 方案一：动态数组
+    for (int i = 1; max / i; i *= 10)
+    {
+        // 桶排序
+        List buckets[10] = { {NULL, 0} };
+        for (int j = 0; j &lt; len; j++)
+            append(&amp;buckets[getBit(arr[j], i)], arr[j]);
+        int index = 0;
+        for (int j = 0; j &lt; 10; j++)
+            if (buckets[j].len)
+            {
+                for (int k = 0; k &lt; buckets[j].len; k++)
+                    arr[index + k] = buckets[j].bucket[k];
+                index += buckets[j].len;
+                free(buckets[j].bucket);
+                buckets[j].bucket = NULL;
+                buckets[j].len = 0;
+            }
+    }
+    // 方案二：二维数组
+    // for (int i = 1; max / i; i *= 10)
+    // {
+    //     // 计算最大宽度
+    //     int size[10] = { 0 };
+    //     for (int j = 0; j &lt; len; j++)
+    //         size[getBit(arr[j], i)]++;
+    //     int maxSize = size[0];
+    //     for (int j = 0; j &lt; 10; j++)
+    //         if (size[j] &gt; maxSize)
+    //             maxSize = size[j];
+    //     // 桶排序
+    //     List buckets[10] = { {NULL, 0} };
+    //     for (int j = 0; j &lt; len; j++)
+    //     {
+    //         int index = getBit(arr[j], i);
+    //         if (!buckets[index].len)
+    //             buckets[index].bucket = (int*)malloc(maxSize*sizeof(int));
+    //         buckets[index].bucket[buckets[index].len++] = arr[j];
+    //     }
+    //     int index = 0;
+    //     for (int j = 0; j &lt; 10; j++)
+    //         if (buckets[j].len)
+    //         {
+    //             for (int k = 0; k &lt; buckets[j].len; k++)
+    //                 arr[index + k] = buckets[j].bucket[k];
+    //             index += buckets[j].len;
+    //             free(buckets[j].bucket);
+    //             buckets[j].bucket = NULL;
+    //             buckets[j].len = 0;
+    //         }
+    // }
+}
+
+int main(void)
+{
+    int arr[] = { 
+        22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
+    int len = (int)sizeof(arr) / sizeof(*arr);
+    radixSort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        printf(&quot;%d &quot;, arr[i]);
+    return 0;
+}
+
+</code></pre>
+<hr>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/SQL语句/" class="post-title gt-a-link">
+                    SQL语句
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>

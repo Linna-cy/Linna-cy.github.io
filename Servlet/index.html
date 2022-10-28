@@ -1,0 +1,761 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Servlet 与 Tomcat | Linner&#39;s Blog</title>
+
+<!-- 代码高亮： -->
+<!-- <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script> -->
+
+<link rel="shortcut icon" href="https://linna-cy.github.io/favicon.ico?v=1666941650550">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://linna-cy.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://linna-cy.github.io/media/icons/iconfont.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!-- <script src="media/scripts/index.js"></script> -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+    <script>
+      // 计算代码行数
+      let pxToNumber = function(px) {
+        // let num = Number(px.replace("px", ""));
+        let num = parseFloat(px);
+
+        return num;
+      };
+      let getRow = function(elem) {
+          let style = window.getComputedStyle(elem, null);
+          // let lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+          let lineHeight = style.lineHeight;
+
+          let height = style.height;
+          let padding = style.padding;
+          // let isiOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
+          let row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // if (isiOS) {
+          //   row = pxToNumber(height) / pxToNumber(lineHeight);
+          //   alert('ios!');
+          // }
+          // else {
+          //   row = (pxToNumber(height)-pxToNumber(padding)) / pxToNumber(lineHeight);
+          // }
+          return parseInt(row);
+      };
+      
+      // 获取行号文字
+      let getRowNumString = function (row) {
+          let num_str = new String('');
+          for (let i = 1; i <= row; i++) {
+              let num = new String(i.toString() + '\n');
+              num_str = num_str + num;
+          }
+          return num_str;
+      }
+
+      // 指定代码块开启代码行号
+      let setCodeNum = function(codeElem) {
+          let pre = codeElem.parentElement;
+          let span = document.createElement('span');
+          span.innerText = getRowNumString(getRow(codeElem));
+          let codeElemStyle = window.getComputedStyle(codeElem, null);
+          span.style.display = 'inline-block';
+          span.style.backgroundColor = "rgba(255,255,255,0)";
+          span.style.color = 'rgba(255,255,255,0.4)';
+          span.style.margin = 0;
+          span.style.padding = 0;
+          // span.style.borderRight = '1px #fff solid';
+          span.style.paddingRight = 4;
+          span.style.userSelect = 'none';
+          span.style.textAlign = 'center';
+          span.className = 'code-num';
+
+          span.style.font = codeElemStyle.font;
+          // span.style.height = codeElemStyle.height;
+          span.style.paddingLeft = codeElemStyle.paddingRight;
+          span.style.borderTopLeftRadius = codeElemStyle.borderTopRightRadius;
+          span.style.borderBottomLeftRadius = codeElemStyle.borderBottomRightRadius;
+          span.style.paddingTop = codeElemStyle.paddingTop;
+
+          pre.style.display = 'flex';
+          pre.style.overflowX = 'hidden';
+
+          codeElem.style.borderTopLeftRadius = 0;
+          codeElem.style.borderBottomLeftRadius = 0;
+          codeElem.style.marginLeft = 0;
+          codeElem.style.paddingLeft = span.style.paddingRight;
+          codeElem.style.overflowX = 'auto';
+          codeElem.style.display = 'inline-block';
+          pre.insertBefore(span, codeElem);
+      }
+
+      // 设置代码块开启代码行号
+      let setCodeAllNum = function() {
+          let codeElems = document.querySelectorAll('pre > code');
+          for (let i = 0; i < codeElems.length; i++) {
+              codeElems[i].parentElement.className = 'code-pre';
+              setCodeNum(codeElems[i]);
+          }
+      }
+    </script>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first post-main">
+    <!-- <div class="top">
+    <span id="go-top" class="iconfont icon-shangxiazuoyouTriangle17"></span>
+</div>
+<script>
+    let goTop = document.getElementById("go-top");
+    let goTopDisplay = function () {
+        let height = document.documentElement.scrollTop 
+                    || document.body.scrollTop
+        if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+            goTop.style.display = "block"
+        } else {
+            goTop.style.display = "none"
+        }
+        goTop.focus();
+    }
+    window.onscroll = goTopDisplay;
+    window.onload = goTopDisplay;
+    window.onresize = goTopDisplay;
+    goTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+</script> -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+    <a class="navbar-brand" href="/">
+        <!-- <img class="user-avatar" src="/images/avatar.png" alt="头像"> -->
+        <img class="site-icon" src="https://linna-cy.github.io/images/favicon.png" alt="icon">
+        <div class="site-name gt-c-content-color-first">
+            Linner&#39;s Blog
+        </div>
+    </a>
+
+    <div id="to-top" style="flex: 1; height: 100%;"></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    <span class="iconfont icon-zhuye"></span>
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    <span class="iconfont icon-guidang"></span>
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    <span class="iconfont icon-biaoqian"></span>
+                    标签
+                </a>
+                
+            </div>
+            
+            <!-- <div class="nav-item" id="toc">
+                <a class="menu gt-a-link">
+                    <span class="iconfont icon-mulu"></span>
+                    目录
+                </a>
+            </div> -->
+            <!-- <div class="nav-item" id="to-top">
+                <a href="#top" class="menu gt-a-link">
+                    <span class="iconfont icon-fanhuidingbu"></span>
+                    返回顶部
+                </a>
+            </div> -->
+        </div>
+        <!-- 搜索框 -->
+        <!-- <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 7px; left: 10px;"></i>
+            </form>
+        </div> -->
+        <div class="search-box">
+            <i class="fas fa-search gt-c-content-color-first"></i>
+            <form id="gridea-search-form" data-update="1666941650550"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'flex';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    // 自动显示目录项
+    // let toc = document.getElementById('toc');
+    // let isPost = document.getElementById('isPost');
+    // if (isPost == null) {
+    //     toc.style.display = 'none';
+    // }
+    // else {
+    //     toc.style.display = 'block';
+    // }
+
+    // toc.onclick = () => {
+
+    // }
+
+    // 点击导航栏转到页面顶部
+    let toTop = document.getElementById("to-top");
+    toTop.onclick = function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
+    // let goTopDisplay = function () {
+    //     let height = document.documentElement.scrollTop 
+    //                 || document.body.scrollTop
+    //     if (height >= (document.body.clientHeight || document.documentElement.clientHeight) * 0.8) {
+    //         navbar.style.position = "fixed !important"
+    //     } else {
+    //         navbar.style.position = "static !important"
+    //     }
+    // }
+    // window.onscroll = goTopDisplay;
+    // window.onload = goTopDisplay;
+    // window.onresize = goTopDisplay;
+</script>
+
+
+    <div id="background" class="background" style="background-image: url(https://gitcode.net/qq_22182345/myfiles/-/raw/master/img/4kcityscape.jpg);">
+        <div class="post-header">
+          <h2 class="post-title">
+            Servlet 与 Tomcat
+          </h2>
+          <div class="post-info">
+            <span class="meta-item pc-show">
+              <!-- icon -->
+              <span class="language" data-lan="publish">发布于</span>
+              <span class="publish-time">2022-09-12</span>
+              <span class="post-meta-divider pc-show">|</span>
+            </span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span class="pc-show language" data-lan="category-in">标签:</span>
+               
+              <a href="https://linna-cy.github.io/T9BN3xwNV/"> <span>#Tomcat </span></a>  
+              <a href="https://linna-cy.github.io/MrL8MvLdJ_/"> <span>#Java </span></a>  
+              <a href="https://linna-cy.github.io/vvCs3Js_LL/">
+                <span>#JavaWeb </span>
+              </a>
+               
+            </span>
+            <span class="post-meta-divider">|</span>
+            
+            <span class="meta-item">
+              <!-- icon -->
+              <span
+                >9<span class="language" data-lan="minute"
+                  >分钟</span
+                ></span
+              >
+            </span>
+            <span class="meta-item">
+              <span class="post-meta-divider">|</span>
+              <!-- icon -->
+              <span
+                >1964<span class="pc-show language" data-lan="words"
+                  >字数</span
+                ></span
+              >
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <div class="post-content">
+                    <!-- <div id="toc-div">
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#servlet-%E7%AE%80%E4%BB%8B">Servlet 简介</a></li>
+<li><a href="#servlet-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8">Servlet 基本使用</a></li>
+<li><a href="#servlet-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B">Servlet 执行流程</a></li>
+<li><a href="#servlet-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Servlet 生命周期</a></li>
+<li><a href="#servlet-%E6%96%B9%E6%B3%95">Servlet 方法</a></li>
+<li><a href="#urlpattern-%E9%85%8D%E7%BD%AE">urlPattern 配置</a>
+<ul>
+<li><a href="#urlpatterns-%E5%A4%9A%E8%B7%AF%E5%BE%84%E8%AE%BF%E9%97%AE">urlPatterns 多路径访问</a></li>
+<li><a href="#%E7%B2%BE%E7%A1%AE%E5%8C%B9%E9%85%8D">精确匹配</a></li>
+<li><a href="#%E7%9B%AE%E5%BD%95%E5%8C%B9%E9%85%8D">目录匹配</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95%E5%90%8D%E5%8C%B9%E9%85%8D">扩展名匹配</a></li>
+<li><a href="#%E4%BB%BB%E6%84%8F%E5%8C%B9%E9%85%8D">任意匹配</a></li>
+</ul>
+</li>
+<li><a href="#xml%E9%85%8D%E7%BD%AEservlet%E4%B8%8D%E6%8E%A8%E8%8D%90">XML配置Servlet（不推荐）</a></li>
+<li><a href="#servletrequest-%E5%92%8C-servletresponse">ServletRequest 和 ServletResponse</a></li>
+</ul>
+
+                        <hr>
+                    </div> -->
+                    
+                        <h1>目录</h1>
+                        <ul class="markdownIt-TOC">
+<li><a href="#servlet-%E7%AE%80%E4%BB%8B">Servlet 简介</a></li>
+<li><a href="#servlet-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8">Servlet 基本使用</a></li>
+<li><a href="#servlet-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B">Servlet 执行流程</a></li>
+<li><a href="#servlet-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Servlet 生命周期</a></li>
+<li><a href="#servlet-%E6%96%B9%E6%B3%95">Servlet 方法</a></li>
+<li><a href="#urlpattern-%E9%85%8D%E7%BD%AE">urlPattern 配置</a>
+<ul>
+<li><a href="#urlpatterns-%E5%A4%9A%E8%B7%AF%E5%BE%84%E8%AE%BF%E9%97%AE">urlPatterns 多路径访问</a></li>
+<li><a href="#%E7%B2%BE%E7%A1%AE%E5%8C%B9%E9%85%8D">精确匹配</a></li>
+<li><a href="#%E7%9B%AE%E5%BD%95%E5%8C%B9%E9%85%8D">目录匹配</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95%E5%90%8D%E5%8C%B9%E9%85%8D">扩展名匹配</a></li>
+<li><a href="#%E4%BB%BB%E6%84%8F%E5%8C%B9%E9%85%8D">任意匹配</a></li>
+</ul>
+</li>
+<li><a href="#xml%E9%85%8D%E7%BD%AEservlet%E4%B8%8D%E6%8E%A8%E8%8D%90">XML配置Servlet（不推荐）</a></li>
+<li><a href="#servletrequest-%E5%92%8C-servletresponse">ServletRequest 和 ServletResponse</a></li>
+</ul>
+
+                        <hr>
+                    
+                    <blockquote>
+<p>相关文章链接:</p>
+<ul>
+<li><a href="https://linna-cy.github.io/Maven/">Maven</a></li>
+<li><a href="https://linna-cy.github.io/Tomcat/">Tomcat</a></li>
+</ul>
+</blockquote>
+<h1 id="servlet-简介">Servlet 简介</h1>
+<p>Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。</p>
+<hr>
+<h1 id="servlet-基本使用">Servlet 基本使用</h1>
+<ol>
+<li>
+<p>创建Maven Web项目后，导入Servlet依赖坐标和Tomcat插件：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;!-- Servlet依赖 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+        &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+        &lt;version&gt;3.1.0&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+&lt;build&gt;
+   &lt;plugins&gt;
+   	&lt;!-- Tomcat插件 --&gt;
+       &lt;plugin&gt;
+           &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+           &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+           &lt;version&gt;2.2&lt;/version&gt;
+       &lt;/plugin&gt;
+   &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+<blockquote>
+<p>使用<code>&lt;scope&gt;provided&lt;/scope&gt;</code>的原因：<br>
+<code>provided</code>指的是在编译和测试过程中有效，最后生成的<code>war</code>包时不会加入。<br>
+因为Tomcat的lib目录中已经有servlet-api这个jar包，如果在生成war包的时候生效就会和Tomcat中的jar包冲突，导致报错。</p>
+</blockquote>
+</li>
+<li>
+<p>创建Servlet类，实现Servlet接口，并重写接口中所有方法：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+
+@WebServlet(&quot;/demo&quot;)
+public class ServletDemo implements Servlet {
+
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        System.out.println(&quot;Hello Servlet!&quot;);
+    }
+
+    @Override
+    public String getServletInfo() {
+        return null;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+
+    }
+
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+}
+</code></pre>
+<ul>
+<li>使用<code>@WebServlet</code>注解配置该Servlet的访问路径：<code>@WebServlet(&quot;/demo&quot;)</code></li>
+</ul>
+</li>
+<li>
+<p>启动Tomcat，根据自己项目和Tomcat的配置访问，如：<a href="http://localhost:8080/web-demo/demo">http://localhost:8080/web-demo/demo</a><br>
+访问成功后可以看到在控制台输出<code>service()</code>方法中的内容。</p>
+</li>
+</ol>
+<hr>
+<h1 id="servlet-执行流程">Servlet 执行流程</h1>
+<p>运行Tomcat时并没有显式创建Servlet对象，也没有显式调用其中的方法。可控制台依然输出了<code>ServletDemo.service()</code>中的内容。</p>
+<p>访问该Tomcat项目时，浏览器发出<a href="http://localhost:8080/web-demo/demo">http://localhost:8080/web-demo/demo</a>请求，从请求中可以解析出三部分内容：</p>
+<ul>
+<li>根据<code>localhost:8080</code>可以找到要访问的Tomcat Web服务器</li>
+<li>根据<code>web-demo</code>可以找到部署在Tomcat服务器上的web-demo项目</li>
+<li>根据<code>demo</code>可以找到要访问的是项目中的哪个Servlet类，根据@WebServlet后面的值进行匹配</li>
+</ul>
+<p>找到<code>ServletDemo</code>这个类后，Tomcat Web服务器就会为<code>ServletDemo</code>这个类创建一个对象，然后调用对象中的<code>service()</code>方法。</p>
+<p>而Tomcat则是根据<code>@WebServlet</code>注解或<code>web.xml</code>配置文件等信息来创建对应的Servlet对象。</p>
+<hr>
+<h1 id="servlet-生命周期">Servlet 生命周期</h1>
+<p>生命周期是指对象的生命周期指一个对象从被创建到被销毁的整个过程。</p>
+<p>Servlet运行在Servlet容器（web服务器）中，其生命周期由容器来管理，分为4个阶段：</p>
+<ol>
+<li><strong>加载和实例化</strong>：默认情况下，Servlet会在第一次访问时被容器创建</li>
+<li><strong>初始化</strong>：在Servlet实例化之后，容器将调用Servlet的<code>init()</code>方法初始化这个对象，完成一些如加载配置文件、创建连接等初始化的工作<br>
+<code>init()</code>方法仅会被调用一次</li>
+<li><strong>请求处理</strong>：每次请求Servlet时，Servlet容器都会调用Servlet的<code>service()</code>方法对请求进行处理</li>
+<li><strong>服务终止</strong>：当需要释放内存或者容器关闭时，容器就会调用Servlet实例的<code>destroy()</code>方法完成资源的释放<br>
+在<code>destroy()</code>方法调用之后，容器会释放这个Servlet实例，该实例随后会被Java的垃圾收集器所回收</li>
+</ol>
+<p>可以把Servlet的创建放到服务器启动的时候来创建（修改<code>@WebServlet</code>注解）：</p>
+<pre><code class="language-java">@WebServlet(urlPatterns = &quot;/demo1&quot;, loadOnStartup = 1)
+</code></pre>
+<p><code>loadOnstartup</code>的取值有两类情况：</p>
+<ol>
+<li>负整数：第一次访问时创建Servlet对象</li>
+<li>非负整数：服务器启动时创建Servlet对象，数字越小优先级越高（<code>0</code>的优先级最高）</li>
+</ol>
+<p>Example：</p>
+<pre><code class="language-java">package com.linner.web;
+  
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+
+@WebServlet(urlPatterns = &quot;/demo&quot;, loadOnStartup = 1)
+public class ServletDemo implements Servlet {
+    /**
+     * 初始化方法
+     * - 在Servlet被第一次访问或者服务器启动时被调用一次
+     */
+    public void init(ServletConfig config) throws ServletException {
+        System.out.println(&quot;init...&quot;);
+    }
+
+    /**
+     * 提供服务
+     * - 每一次Servlet被访问时被调用
+     * - 可被调用多次
+     */
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        System.out.println(&quot;Hello Servlet!&quot;);
+    }
+
+    /**
+     * 销毁方法
+     * - 调用时机：内存释放或者服务器关闭的时候被调用一次
+     */
+    public void destroy() {
+        System.out.println(&quot;destroy...&quot;);
+    }
+
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+
+    public String getServletInfo() {
+        return null;
+    }
+}
+</code></pre>
+<blockquote>
+<p>注意：若要在关闭Tomcat时调用<code>destroy()</code>，需要在正常关闭Tomcat的情况下，<code>destroy()</code>才能被执行。</p>
+</blockquote>
+<hr>
+<h1 id="servlet-方法">Servlet 方法</h1>
+<p>剩下两个Servlet方法的作用是：</p>
+<ul>
+<li>
+<p>获取Servlet信息：</p>
+<pre><code class="language-java">public String getServletInfo() {
+    return &quot;&quot;;
+}
+</code></pre>
+</li>
+<li>
+<p>获取ServletConfig对象：</p>
+<pre><code class="language-java">public String getServletInfo() {
+    return &quot;&quot;;
+}
+</code></pre>
+<p>ServletConfig对象，Tomcat Web服务器在创建Servlet对象的时候会通过<code>init()</code>方法将其作为参数传入：</p>
+<pre><code class="language-java">void init(ServletConfig config) throws ServletException
+</code></pre>
+<p>在<code>getServletInfo()</code>中仅需将服务器传过来的ServletConfig进行返回即可：</p>
+<pre><code class="language-java">private ServletConfig servletConfig;
+
+public void init(ServletConfig config) throws ServletException {
+    // 获取服务器传入的ServletConfig
+    this.servletConfig = config;
+    System.out.println(&quot;init...&quot;);
+}
+public ServletConfig getServletConfig() {
+    // 将服务器传入的ServletConfig返回
+    return servletConfig;
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<h1 id="urlpattern-配置">urlPattern 配置</h1>
+<h2 id="urlpatterns-多路径访问">urlPatterns 多路径访问</h2>
+<p>一个Servlet，可以配置多个访问路径（<code>urlPattern</code>）：</p>
+<pre><code class="language-java">@WebServlet(urlPatterns = {&quot;/path1&quot;, &quot;/path2&quot;, ....})
+</code></pre>
+<h2 id="精确匹配">精确匹配</h2>
+<ul>
+<li>
+<p>配置路径：</p>
+<pre><code class="language-java">@WebServlet(&quot;/path/servlet&quot;)
+</code></pre>
+</li>
+<li>
+<p>访问路径：<a href="http://localhost:8080/web-demo/path/servlet">http://localhost:8080/web-demo/path/servlet</a></p>
+</li>
+</ul>
+<h2 id="目录匹配">目录匹配</h2>
+<ul>
+<li>
+<p>配置路径：</p>
+<pre><code class="language-java">@WebServlet(&quot;/path/*&quot;)
+</code></pre>
+</li>
+<li>
+<p>访问路径：</p>
+<ul>
+<li><a href="http://localhost:8080/web-demo/path/abc">http://localhost:8080/web-demo/path/abc</a></li>
+<li><a href="http://localhost:8080/web-demo/path/def">http://localhost:8080/web-demo/path/def</a></li>
+<li><a href="http://localhost:8080/web-demo/path/">http://localhost:8080/web-demo/path/</a></li>
+<li><a href="http://localhost:8080/web-demo/path/anypath">http://localhost:8080/web-demo/path/anypath</a></li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>精确匹配优先级要高于目录匹配</p>
+</blockquote>
+<h2 id="扩展名匹配">扩展名匹配</h2>
+<ul>
+<li>
+<p>配置路径：</p>
+<pre><code class="language-java">@WebServlet(&quot;*.html&quot;)
+</code></pre>
+</li>
+<li>
+<p>访问路径：</p>
+<ul>
+<li><a href="http://localhost:8080/web-demo/index.html">http://localhost:8080/web-demo/index.html</a></li>
+<li><a href="http://localhost:8080/web-demo/login.html">http://localhost:8080/web-demo/login.html</a></li>
+<li><a href="http://localhost:8080/web-demo/any_name.html">http://localhost:8080/web-demo/any_name.html</a></li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li>如果路径配置的不是扩展名，那么在路径的前面就必须要加<code>/</code>否则会报错</li>
+<li>如果路径配置的是<code>*.html</code>，那么在<code>*.html</code>的前面不能加<code>/</code>，否则会报错</li>
+</ol>
+</blockquote>
+<h2 id="任意匹配">任意匹配</h2>
+<ul>
+<li>
+<p>配置路径：</p>
+<pre><code class="language-java">@WebServlet(&quot;/&quot;)
+</code></pre>
+<p>或</p>
+<pre><code class="language-java">@WebServlet(&quot;/*&quot;)
+</code></pre>
+</li>
+<li>
+<p>访问路径：<br>
+任何以 <code>http://localhost:8080/web-demo/</code> 开头的路径</p>
+</li>
+</ul>
+<blockquote>
+<p><code>/</code>和<code>/*</code>的区别：</p>
+<ol>
+<li>当项目中的Servlet配置了<code>@WebServlet(&quot;/&quot;)</code>，会覆盖掉Tomcat中的<code>DefaultServlet</code>，当其他的urlPattern都匹配不上时都会走这个Servlet。</li>
+<li>当项目中配置了<code>@WebServlet(&quot;/&quot;)</code>，意味着匹配任意访问路径。</li>
+<li><code>DefaultServlet</code>是用来处理静态资源，如果使用<code>@WebServlet(&quot;/&quot;)</code>将其覆盖掉。当请求静态资源的时候则是使用了自定义的Servlet类，最终会导致静态资源不能被访问。</li>
+</ol>
+</blockquote>
+<hr>
+<h1 id="xml配置servlet不推荐">XML配置Servlet（不推荐）</h1>
+<p>Servlet从3.0版本后才开始支持注解配置，而3.0版本前只支持XML配置文件的配置方法。</p>
+<ul>
+<li>
+<p>编写Servlet类：</p>
+<pre><code class="language-java">package com.linner.web;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+
+public class ServletDemo implements Servlet {
+    // ...
+}
+</code></pre>
+</li>
+<li>
+<p>在<code>web.xml</code>中配置该Servlet：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+        version=&quot;4.0&quot;&gt;
+    
+    &lt;!-- Servlet 全类名 --&gt;
+    &lt;servlet&gt;
+        &lt;!-- Servlet的名称，名字任意 --&gt;
+        &lt;servlet-name&gt;demo&lt;/servlet-name&gt;
+        &lt;!-- Servlet的类全名 --&gt;
+        &lt;servlet-class&gt;com.linner.web.ServletDemo&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+
+    &lt;!-- Servlet 访问路径 --&gt;
+    &lt;servlet-mapping&gt;
+        &lt;!-- Servlet的名称，要和上面的名称一致 --&gt;
+        &lt;servlet-name&gt;demo&lt;/servlet-name&gt;
+        &lt;!-- Servlet的访问路径 --&gt;
+        &lt;url-pattern&gt;/demo&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</li>
+</ul>
+<hr>
+<h1 id="servletrequest-和-servletresponse">ServletRequest 和 ServletResponse</h1>
+<p>在 <code>Servlet.service()</code> 中有这样两个参数，它们的类型是 <code>ServletRequest</code> 和 <code>ServletResponse</code>。这两个参数就是Servlet的 <code>Request</code> 和 <code>Response</code> 对象。</p>
+<p><code>Request</code>是请求对象，作用是将客户端的请求数据从客户端发送到服务端；<code>Response</code>是响应对象，作用是将服务端的响应数据从服务端发送到客户端。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://linna-cy.github.io/Tomcat/" class="post-title gt-a-link">
+                    Tomcat
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        <!-- <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://linna-cy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+ -->
+    </div>
+</div>
+<script>
+  hljs.highlightAll();
+  // 开启代码高亮
+  // hljs.initHighlightingOnLoad();
+  // 行号显示
+  // hljs.initLineNumbersOnLoad({ singleLine:true });
+  // let tocDiv = document.getElementById('toc-div');
+  // let toc = document.querySelector('#toc-div .markdownIt-TOC');
+  // if (toc === null || toc === undefined) {
+  //   tocDiv.style.display = 'none';
+  // }
+
+  setCodeAllNum();
+</script>
+</body>
+</html>
