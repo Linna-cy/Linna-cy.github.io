@@ -26,7 +26,7 @@
 <meta itemprop="name" content="HttpServlet 与 Tomcat">
 <meta itemprop="description" content="HttpServlet 简介 HttpServlet是对HTTP协议封装的Servlet实现类。 Servlet的体系结构： 在开发中，关注更多的是Servlet.se"><meta itemprop="datePublished" content="2022-09-12T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-09-12T00:00:00+00:00" />
-<meta itemprop="wordCount" content="8163">
+<meta itemprop="wordCount" content="8139">
 <meta itemprop="keywords" content="Java,JavaWeb,Tomcat," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -34,7 +34,7 @@
   <meta name="twitter:image:alt" content="HttpServlet 与 Tomcat" />
   <link rel="manifest" href="/manifest.json">
 
-<link data-precache rel="stylesheet" href="/assets/main/bundle.min.6b68fc29eec5dc4f6e04d89fc7388fc17878caac05d761942a571826ce313353.css" crossorigin="anonymous">
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.91eeb64400423c0c9d319907b530ecc011503d6415e3329ce58ccc762ab8f4aa.css" crossorigin="anonymous">
 
 
 <link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
@@ -115,6 +115,10 @@ Linner
                   </div></a>
               </li>
             </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/docs/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>文档
+            </a>
           </li>
         </ul>
         
@@ -1526,7 +1530,7 @@ URL编码：</p>
 </tr>
 <tr>
 <td style="text-align:center"><code>BufferedReader getReader()</code></td>
-<td style="text-align:center">获取请求体字符输入流<!-- raw HTML omitted --><code>getReader()</code>获取请求参数后，还需要使用<code>readLine()</code>读取参数数据<!-- raw HTML omitted -->即，<!-- raw HTML omitted --><code>BufferedReader br = request.getReader();</code><!-- raw HTML omitted --><code>String line = br.readLine();</code></td>
+<td style="text-align:center">获取请求体字符输入流<br><code>getReader()</code>获取请求参数后，还需要使用<code>readLine()</code>读取参数数据<br>即，<br><code>BufferedReader br = request.getReader();</code><br><code>String line = br.readLine();</code></td>
 </tr>
 <tr>
 <td style="text-align:center"><code>Map&lt;String, String[]&gt; getParameterMap()</code></td>
@@ -1534,11 +1538,11 @@ URL编码：</p>
 </tr>
 <tr>
 <td style="text-align:center"><code>String[] getParameterValues(String name)</code></td>
-<td style="text-align:center">根据名称获取请求参数值<!-- raw HTML omitted -->返回值为数组<!-- raw HTML omitted -->返回多个参数</td>
+<td style="text-align:center">根据名称获取请求参数值<br>返回值为数组<br>返回多个参数</td>
 </tr>
 <tr>
 <td style="text-align:center"><code>String getParameter(String name)</code></td>
-<td style="text-align:center">根据名称获取请求参数值<!-- raw HTML omitted -->返回单个参数值</td>
+<td style="text-align:center">根据名称获取请求参数值<br>返回单个参数值</td>
 </tr>
 <tr>
 <td style="text-align:center"><code>void setAttribute(String name, Object object)</code></td>
@@ -1554,7 +1558,7 @@ URL编码：</p>
 </tr>
 <tr>
 <td style="text-align:center"><code>RequestDispatcher getRequestDispatcher(String path)</code></td>
-<td style="text-align:center">创建请求转发器<!-- raw HTML omitted -->请求转发器中有一个方法，用于完成将请求对象转发给下一个资源：<!-- raw HTML omitted --><code>void forward(HttpServletRequest request, HttpServletResponse response)</code></td>
+<td style="text-align:center">创建请求转发器<br>请求转发器中有一个方法，用于完成将请求对象转发给下一个资源：<br><code>void forward(HttpServletRequest request, HttpServletResponse response)</code></td>
 </tr>
 <tr>
 <td style="text-align:center"><code>void setCharacterEncoding(String charset)</code></td>
@@ -1581,11 +1585,11 @@ URL编码：</p>
 </tr>
 <tr>
 <td style="text-align:center"><code>PrintWriter getWriter()</code></td>
-<td style="text-align:center">获取响应体字符输出流获取字符输出流后还需要使用<code>write()</code>方法来写入字符数据：<!-- raw HTML omitted --><code>PrintWriter writer = response.getWriter();</code><!-- raw HTML omitted --><code>writer.write(&quot;Hello World!&quot;);</code></td>
+<td style="text-align:center">获取响应体字符输出流获取字符输出流后还需要使用<code>write()</code>方法来写入字符数据：<br><code>PrintWriter writer = response.getWriter();</code><br><code>writer.write(&quot;Hello World!&quot;);</code></td>
 </tr>
 <tr>
 <td style="text-align:center"><code>ServletOutputStream getOutputStream()</code></td>
-<td style="text-align:center">获取响应体字节输出流<!-- raw HTML omitted -->获取字节输出流前需要先使用<code>FileInputStream</code>对象来读取文件<!-- raw HTML omitted -->然后使用<code>IOUtils</code>工具类的<code>copy()</code>来copy流<!-- raw HTML omitted -->获取字节输出流后还需要使用<code>write()</code>方法来写入字符数据<!-- raw HTML omitted --><a href="/blog/2022/09/httpservlet-%E4%B8%8E-tomcat/#%e5%93%8d%e5%ba%94%e5%ad%97%e8%8a%82%e6%95%b0%e6%8d%ae">响应字节数据</a></td>
+<td style="text-align:center">获取响应体字节输出流<br>获取字节输出流前需要先使用<code>FileInputStream</code>对象来读取文件<br>然后使用<code>IOUtils</code>工具类的<code>copy()</code>来copy流<br>获取字节输出流后还需要使用<code>write()</code>方法来写入字符数据<br><a href="/blog/2022/09/httpservlet-%E4%B8%8E-tomcat/#%e5%93%8d%e5%ba%94%e5%ad%97%e8%8a%82%e6%95%b0%e6%8d%ae">响应字节数据</a></td>
 </tr>
 <tr>
 <td style="text-align:center"><code>void sendRedirect(String path)</code></td>
@@ -1776,7 +1780,7 @@ URL编码：</p>
       <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Linner" src="/images/avatar.jpg" loading="lazy" data-viewer-invisible width="460" height="460" />
 </picture>
 </div>
-      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我们</a></div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
 
 
 <nav class="social-links nav justify-content-center mt-1 justify-content-around">
@@ -1865,10 +1869,6 @@ URL编码：</p>
                             JavaWeb
                             <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
                         </a>
-                        <a href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%B8%88/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软件设计师">
-                            软件设计师
-                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
-                        </a>
                         <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
                             软考
                             <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
@@ -1897,9 +1897,13 @@ URL编码：</p>
                             Linux
                             <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
                         </a>
+                        <a href="/tags/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+                        </a>
                         <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
                         全部
-                        <span class="badge badge-sm text-secondary bg-white ms-1">70</span>
+                        <span class="badge badge-sm text-secondary bg-white ms-1">57</span>
                         </a>
                     </div>
                     <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
@@ -1911,7 +1915,7 @@ URL编码：</p>
                 <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
 
     <a href="/archives/2023/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
-    2023 <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">8</span>
     </a>
 
     <a href="/archives/2022/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
@@ -1983,12 +1987,12 @@ URL编码：</p>
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/">
-        概念总结篇
+      <a class="post-title" href="/blog/2023/03/%E7%91%9E%E5%90%89%E5%A4%96%E5%8D%96%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">
+        瑞吉外卖项目实战
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月25日
+          2023年3月21日
         </span>
       </div>
     </div>
@@ -1998,12 +2002,12 @@ URL编码：</p>
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/">
-        软考图类汇总篇
+      <a class="post-title" href="/blog/2023/03/redis%E5%9F%BA%E7%A1%80/">
+        Redis基础
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月20日
+          2023年3月11日
         </span>
       </div>
     </div>
@@ -2013,12 +2017,12 @@ URL编码：</p>
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E7%AF%87/">
-        算法设计与分析篇
+      <a class="post-title" href="/blog/2023/02/mybatisplus/">
+        MyBatisPlus
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月17日
+          2023年2月28日
         </span>
       </div>
     </div>
@@ -2028,12 +2032,12 @@ URL编码：</p>
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AF%87/">
-        计算机网络篇
+      <a class="post-title" href="/blog/2023/02/maven-%E9%AB%98%E7%BA%A7/">
+        Maven 高级
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月12日
+          2023年2月27日
         </span>
       </div>
     </div>

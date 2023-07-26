@@ -34,7 +34,7 @@
   <meta name="twitter:image:alt" content="SpringMVC 基础" />
   <link rel="manifest" href="/manifest.json">
 
-<link data-precache rel="stylesheet" href="/assets/main/bundle.min.6b68fc29eec5dc4f6e04d89fc7388fc17878caac05d761942a571826ce313353.css" crossorigin="anonymous">
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.91eeb64400423c0c9d319907b530ecc011503d6415e3329ce58ccc762ab8f4aa.css" crossorigin="anonymous">
 
 
 <link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
@@ -115,6 +115,10 @@ Linner
                   </div></a>
               </li>
             </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/docs/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>文档
+            </a>
           </li>
         </ul>
         
@@ -977,7 +981,7 @@ URL。</li>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><blockquote>
-<p>关于Spring MVC的配置类，除了扫描组件和配置模板解析器外，Spring提供了两种方式来配置，一种是实现<code>WebMvcConfigurer</code>接口，另一种是继承<code>WebMvcConfigurationSupport</code>。由于Java 8的接口中提供了<code>default</code>关键字来修饰接口方法，使得接口可以存在默认的实现，所以使用<code>WebMvcConfigurer</code>接口也不必实现所有接口。而在SpringBoot 2中使用<code>WebMvcConfigurationSupport</code>有可能会导致SpringBoot的自动配置不生效，并且在Spring MVC中使用<code>WebMvcConfigurationSupport</code>也可能导致配置类不生效，所以我个人<!-- raw HTML omitted --><!-- raw HTML omitted -->推荐使用<code>WebMvcConfigurer</code><!-- raw HTML omitted --><!-- raw HTML omitted -->。</p>
+<p>关于Spring MVC的配置类，除了扫描组件和配置模板解析器外，Spring提供了两种方式来配置，一种是实现<code>WebMvcConfigurer</code>接口，另一种是继承<code>WebMvcConfigurationSupport</code>。由于Java 8的接口中提供了<code>default</code>关键字来修饰接口方法，使得接口可以存在默认的实现，所以使用<code>WebMvcConfigurer</code>接口也不必实现所有接口。而在SpringBoot 2中使用<code>WebMvcConfigurationSupport</code>有可能会导致SpringBoot的自动配置不生效，并且在Spring MVC中使用<code>WebMvcConfigurationSupport</code>也可能导致配置类不生效，所以我个人<b><u>推荐使用<code>WebMvcConfigurer</code></u></b>。</p>
 <p>如果你使用<code>WebMvcConfigurationSupport</code>后发现拦截器等配置不生效，那么可以尝试实现<code>WebMvcConfigurer</code>接口来解决问题。</p>
 </blockquote>
 <p>DAO相关配置类：</p>
@@ -1121,8 +1125,8 @@ URL。</li>
 <li>
 <p>请求参数：</p>
 <p>普通参数即URL地址传参。</p>
-<p><!-- raw HTML omitted -->定义相同的地址参数名与方法形参变量名即可接收参数。<!-- raw HTML omitted --></p>
-<p><!-- raw HTML omitted -->如果想要形参名与地址参数名不同则可使用<code>@RequestParam</code>注解定义地址参数名。<!-- raw HTML omitted --></p>
+<p><u>定义相同的地址参数名与方法形参变量名即可接收参数。</u></p>
+<p><u>如果想要形参名与地址参数名不同则可使用<code>@RequestParam</code>注解定义地址参数名。</u></p>
 <p>如果有多个请求参数则定义多个方法参数。</p>
 </li>
 <li>
@@ -1335,8 +1339,8 @@ URL。</li>
 <h2 id="ant-风格路径" data-numberify>Ant 风格路径<a class="anchor ms-1" href="#ant-风格路径"></a></h2>
 <p>在Ant风格中，定义了以下几种符号：</p>
 <ul>
-<li><code>?</code>：表示匹配请求资源目录中的<!-- raw HTML omitted -->任意单个字符<!-- raw HTML omitted -->。</li>
-<li><code>*</code>：表示匹配请求资源目录中的<!-- raw HTML omitted -->任意0个或多个字符<!-- raw HTML omitted -->。</li>
+<li><code>?</code>：表示匹配请求资源目录中的<u>任意单个字符</u>。</li>
+<li><code>*</code>：表示匹配请求资源目录中的<u>任意0个或多个字符</u>。</li>
 <li><code>/**/</code>：表示匹配请求路径中任意一层或多层目录。例如<code>/**/user</code>可以匹配<code>/abc/user</code>、<code>/abc/def/user</code>等等。</li>
 </ul>
 <h2 id="rest-风格" data-numberify>REST 风格<a class="anchor ms-1" href="#rest-风格"></a></h2>
@@ -1779,7 +1783,7 @@ URL。</li>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div></li>
 <li>
-<p><code>RequestEntity</code>：是封装请求报文的一种类型，在Controller方法形参中使用，它获得的是<!-- raw HTML omitted -->整个请求报文<!-- raw HTML omitted -->。</p>
+<p><code>RequestEntity</code>：是封装请求报文的一种类型，在Controller方法形参中使用，它获得的是<u>整个请求报文</u>。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/testRequestEntity&#34;</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="nd">@ResponseBody</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">String</span> <span class="nf">testRequestEntity</span><span class="o">(</span><span class="n">RequestEntity</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">requestEntity</span><span class="o">)</span> <span class="o">{</span>
@@ -1987,7 +1991,7 @@ afterCompletion...
 </li>
 <li>结束。</li>
 </ol>
-<p>当配置多个拦截器时，形成拦截器链。多个<code>preHandle()</code>按照Interceptor被声明顺序执行；多个<code>postHandle()</code>按照Interceptor被声明顺序逆序执行。即，<!-- raw HTML omitted -->拦截器链的运行顺序以拦截器添加顺序为准<!-- raw HTML omitted -->。</p>
+<p>当配置多个拦截器时，形成拦截器链。多个<code>preHandle()</code>按照Interceptor被声明顺序执行；多个<code>postHandle()</code>按照Interceptor被声明顺序逆序执行。即，<u>拦截器链的运行顺序以拦截器添加顺序为准</u>。</p>
 <p>当拦截器中出现对原始处理器的拦截，后面的拦截器均终止运行。当拦截器运行中断，仅运行配置在前面的拦截器的<code>afterCompletion()</code>操作（<code>afterCompletion()</code>代表当前拦截器执行完成，与后续拦截器链中<code>preHandle()</code>的返回值和Controller是否被执行无关）。</p>
 <p>假设现在有如下两个拦截器：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
@@ -2008,7 +2012,7 @@ afterCompletion...
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;FirstInterceptor afterCompletion...&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><!-- raw HTML omitted -->
+</span></span></code></pre></div><br>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LaterInterceptor</span> <span class="kd">implements</span> <span class="n">HandlerInterceptor</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
@@ -2183,7 +2187,7 @@ FirstInterceptor afterCompletion...
 </ul>
 <h2 id="配置文件配置拦截器" data-numberify>配置文件配置拦截器<a class="anchor ms-1" href="#配置文件配置拦截器"></a></h2>
 <p>除了使用配置类外，也可以使用配置文件的方式来配置拦截器。</p>
-<p>使用<code>&lt;mvc:interceptors&gt;</code>来配置拦截器。添加拦截器的方式有两种，一种是使用<!-- raw HTML omitted --><code>&lt;bean class=&quot;...&quot;/&gt;</code><!-- raw HTML omitted -->，另一种是使用<!-- raw HTML omitted --><code>&lt;ref bean=&quot;...&quot;/&gt;</code><!-- raw HTML omitted -->，这两种方式本质上没有什么区别。</p>
+<p>使用<code>&lt;mvc:interceptors&gt;</code>来配置拦截器。添加拦截器的方式有两种，一种是使用<u><code>&lt;bean class=&quot;...&quot;/&gt;</code></u>，另一种是使用<u><code>&lt;ref bean=&quot;...&quot;/&gt;</code></u>，这两种方式本质上没有什么区别。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;mvc:interceptors&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&#34;asia.linner.interceptor.FirstInterceptor&#34;</span><span class="nt">/&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- bean中指定的是Bean的默认id，即首字母小写的类名 --&gt;</span>
@@ -3153,7 +3157,7 @@ FirstInterceptor afterCompletion...
       <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Linner" src="/images/avatar.jpg" loading="lazy" data-viewer-invisible width="460" height="460" />
 </picture>
 </div>
-      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我们</a></div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
 
 
 <nav class="social-links nav justify-content-center mt-1 justify-content-around">
@@ -3242,10 +3246,6 @@ FirstInterceptor afterCompletion...
                             JavaWeb
                             <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
                         </a>
-                        <a href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%B8%88/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软件设计师">
-                            软件设计师
-                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
-                        </a>
                         <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
                             软考
                             <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
@@ -3274,9 +3274,13 @@ FirstInterceptor afterCompletion...
                             Linux
                             <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
                         </a>
+                        <a href="/tags/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+                        </a>
                         <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
                         全部
-                        <span class="badge badge-sm text-secondary bg-white ms-1">70</span>
+                        <span class="badge badge-sm text-secondary bg-white ms-1">57</span>
                         </a>
                     </div>
                     <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
@@ -3288,7 +3292,7 @@ FirstInterceptor afterCompletion...
                 <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
 
     <a href="/archives/2023/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
-    2023 <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">8</span>
     </a>
 
     <a href="/archives/2022/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
@@ -3360,12 +3364,12 @@ FirstInterceptor afterCompletion...
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/">
-        概念总结篇
+      <a class="post-title" href="/blog/2023/03/%E7%91%9E%E5%90%89%E5%A4%96%E5%8D%96%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">
+        瑞吉外卖项目实战
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月25日
+          2023年3月21日
         </span>
       </div>
     </div>
@@ -3375,12 +3379,12 @@ FirstInterceptor afterCompletion...
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/">
-        软考图类汇总篇
+      <a class="post-title" href="/blog/2023/03/redis%E5%9F%BA%E7%A1%80/">
+        Redis基础
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月20日
+          2023年3月11日
         </span>
       </div>
     </div>
@@ -3390,12 +3394,12 @@ FirstInterceptor afterCompletion...
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E7%AF%87/">
-        算法设计与分析篇
+      <a class="post-title" href="/blog/2023/02/mybatisplus/">
+        MyBatisPlus
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月17日
+          2023年2月28日
         </span>
       </div>
     </div>
@@ -3405,12 +3409,12 @@ FirstInterceptor afterCompletion...
   <div class="d-flex">
     <div
       class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
-      <a class="post-title" href="/blog/2023/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AF%87/">
-        计算机网络篇
+      <a class="post-title" href="/blog/2023/02/maven-%E9%AB%98%E7%BA%A7/">
+        Maven 高级
       </a>
       <div class="post-meta mt-2">
         <span class="post-date">
-          2023年5月12日
+          2023年2月27日
         </span>
       </div>
     </div>
