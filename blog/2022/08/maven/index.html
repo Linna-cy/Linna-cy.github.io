@@ -1,0 +1,1242 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.1ecfa508e43366670621c78906997619371f025e217cca06dc6f8b4c9b81f318.js" integrity="sha256-Hs&#43;lCOQzZmcGIceJBpl2GTcfAl4hfMoG3G&#43;LTJuB8xg=" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maven | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="Maven 简介 Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档. Mav" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Maven"/>
+<meta name="twitter:description" content="Maven 简介 Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档. Mav"/>
+<meta property="og:title" content="Maven" />
+<meta property="og:description" content="Maven 简介 Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档. Mav" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hbs-skeleton.netlify.app/blog/2022/08/maven/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2022-08-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-08-14T00:00:00+00:00" />
+<meta itemprop="name" content="Maven">
+<meta itemprop="description" content="Maven 简介 Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档. Mav"><meta itemprop="datePublished" content="2022-08-14T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-08-14T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2885">
+<meta itemprop="keywords" content="Java,JavaWeb,项目管理,Maven," />
+  <meta property="og:image" content="https://hbs-skeleton.netlify.app/images/favicon.ico"/>
+  <meta name="twitter:image" content="https://hbs-skeleton.netlify.app/images/favicon.ico"/>
+  <meta property="og:image:alt" content="Maven" />
+  <meta name="twitter:image:alt" content="Maven" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.6b68fc29eec5dc4f6e04d89fc7388fc17878caac05d761942a571826ce313353.css" integrity="sha256-a2j8Ke7F3E9uBNifxziPwXh4yqwF12GUKlcYJs4xM1M=" crossorigin="anonymous">
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" integrity="sha256-&#43;AlpKqsXju30mps4TQ6MvOsF5WO&#43;pdfPVGkBhXVrpBQ=" crossorigin="anonymous">
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" integrity="sha256-65FIRGNs1B8iHxCemciHu8O2tf&#43;yr3xmSyhM6i0bVLc=" crossorigin="anonymous">
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="https://hbs-skeleton.netlify.app/">
+    <picture><img class="logo " alt="Logo" src="https://hbs-skeleton.netlify.app/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle active"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">专栏</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of series.</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">分类</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of categories.</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">标签</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of tags.</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+    <span class="ms-1 d-xxl-none">RSS</span>
+  </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/blog/">博客</a></li><li class="breadcrumb-item active">Maven</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+  <a class="action action-toc d-none d-xxl-block" href="#postTOC" role="button" title="Table of contents">
+    <i class="fas fa-fw fa-list-alt"></i>
+  </a>
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    <a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title my-2">Maven</h1>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2022-08-14 00:00:00 &#43;0000 UTC。">2022年8月14日</span><span class="post-reading-time me-1 mb-1">6 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/javaweb/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>JavaWeb</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a><a href="/tags/javaweb/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">JavaWeb</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">项目管理</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="maven-简介" data-numberify>Maven 简介<a class="anchor ms-1" href="#maven-简介"></a></h1>
+<p>Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档.</p>
+<p>Maven的主要功能有:</p>
+<ul>
+<li>提供了一套标准化的项目结构.</li>
+<li>提供了一套标准化的构建流程 (编译, 测试, 打包, 发布&hellip;).</li>
+<li>提供了一套依赖管理机制.</li>
+</ul>
+<h2 id="maven-模型" data-numberify>Maven 模型<a class="anchor ms-1" href="#maven-模型"></a></h2>
+<p>Maven模型包含:</p>
+<ul>
+<li>项目对象模型 (Project Object Model)</li>
+<li>依赖管理模型 (Dependency)</li>
+<li>插件 (Plugin)</li>
+</ul>
+<p>Maven模型图示:</p>
+<p><picture><img class="img-fluid " alt="" src="/blog/2022/08/maven/1662167147568.png" loading="lazy" width="740" height="333" />
+</picture>
+
+</p>
+<p>其中紫色框框起来的部分, 就是用来完成标准化构建流程.</p>
+<h2 id="仓库" data-numberify>仓库<a class="anchor ms-1" href="#仓库"></a></h2>
+<p>Maven仓库是项目中依赖的第三方库, 这个库所在的位置叫做仓库 (在Maven的术语中，仓库是一个位置, place).</p>
+<p>Maven中, 任何一个依赖、插件或者项目构建的输出，都可以称之为构件.
+Maven仓库能帮助我们管理构件 (主要是JAR), 它就是放置所有JAR文件 (WAR, ZIP, POM等等) 的地方.</p>
+<p>仓库有三种类型:</p>
+<ul>
+<li>本地 (local)</li>
+<li>中央 (central)</li>
+<li>远程 (remote)</li>
+</ul>
+<p>在项目中使用坐标引入对应依赖jar包后, Maven会按照本地仓库 &ndash;&gt; 远程仓库&ndash;&gt; 中央仓库的顺序去查找相应的jar包. 只要jar包存在, 如果是在本地仓库则直接使用, 而如果在远程仓库或中央仓库, Maven则将jar包自动下载到本地仓库.</p>
+<h3 id="本地仓库" data-numberify>本地仓库<a class="anchor ms-1" href="#本地仓库"></a></h3>
+<p>本地仓库在第一次执行maven命令的时候才被创建.</p>
+<p>运行 Maven 的时候, Maven 所需要的任何构件都是直接从本地仓库获取的. 如果本地仓库没有, 它会首先尝试从远程仓库下载构件至本地仓库, 然后再使用本地仓库的构件.</p>
+<p>Maven 本地仓库默认为用户主目录 (USER HOME) 中的 <code>.m2/repository</code>.</p>
+<h3 id="中央仓库" data-numberify>中央仓库<a class="anchor ms-1" href="#中央仓库"></a></h3>
+<p>Maven 中央仓库是由 Maven 社区提供的仓库, 其中包含了大量常用的库.</p>
+<p>中央仓库包含了绝大多数流行的开源Java构件, 以及源码、作者信息、SCM、信息、许可证信息等. 一般来说，简单的Java项目依赖的构件都可以在这里下载到.</p>
+<p>Maven 社区提供了一个 URL: <a href="http://search.maven.org/#browse" target="_blank" rel="noopener noreferrer">search.maven.org/#browse<i class="fas fa-external-link-square-alt ms-1"></i></a>, 来浏览中央仓库的内容.</p>
+<h3 id="远程仓库" data-numberify>远程仓库<a class="anchor ms-1" href="#远程仓库"></a></h3>
+<p>远程仓库是开发人员自己定制的仓库, 包含了所需要的代码库或者其他工程中用到的 jar 文件. 一般是由公司团队搭建的私有仓库.</p>
+<hr>
+<h1 id="maven标准化项目结构" data-numberify>Maven标准化项目结构<a class="anchor ms-1" href="#maven标准化项目结构"></a></h1>
+<p>Maven提供了一套标准化的项目结构, 所有的IDE使用Maven构建的项目完全一样. 所以, 使用Maven创建的项目在所有IDE中可以通用.</p>
+<p>使用Maven构建的项目结构示例:</p>
+<ul>
+<li>📁<code>project_name</code> &mdash; 项目主目录
+<ul>
+<li>📁<code>src</code> &mdash; 源代码和测试代码文件目录
+<ul>
+<li>📁<code>main</code> &mdash; 源代码文件目录
+<ul>
+<li>📁<code>java</code> &mdash; 源代码Java文件目录</li>
+<li>📁<code>resourcs</code> &mdash; 源代码配置文件目录</li>
+</ul>
+</li>
+<li>📁<code>test</code> &mdash; 测试代码文件目录
+<ul>
+<li>📁<code>java</code> &mdash; 测试代码Java文件目录</li>
+<li>📁<code>resource</code> &mdash; 测试代码配置</li>
+</ul>
+</li>
+<li>📄<code>pom.xml</code> &mdash; 项目核心配置文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="项目核心配置文件-pomxml" data-numberify>项目核心配置文件 pom.xml<a class="anchor ms-1" href="#项目核心配置文件-pomxml"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&#34;http://maven.apache.org/POM/4.0.0&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://maven.apache.org/POM/4.0.0
+</span></span></span><span class="line"><span class="cl"><span class="s">                      http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 模型版本 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- The Basics --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 公司或者组织的唯一标志 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;groupId&gt;</span>...<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 当前项目唯一ID --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;artifactId&gt;</span>...<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 本项目目前所处的版本号 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;version&gt;</span>...<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 打包的机制 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;packaging&gt;</span>...<span class="nt">&lt;/packaging&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 项目依赖关系 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;dependencies&gt;</span>...<span class="nt">&lt;/dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;parent&gt;</span>...<span class="nt">&lt;/parent&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;dependencyManagement&gt;</span>...<span class="nt">&lt;/dependencyManagement&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;modules&gt;</span>...<span class="nt">&lt;/modules&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- pom常量 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;properties&gt;</span>...<span class="nt">&lt;/properties&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- Build Settings --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;build&gt;</span>...<span class="nt">&lt;/build&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;reporting&gt;</span>...<span class="nt">&lt;/reporting&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- More Project Information --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 项目的名称 --&gt;</span>  
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;name&gt;</span>...<span class="nt">&lt;/name&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 项目的详细描述 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;description&gt;</span>...<span class="nt">&lt;/description&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 项目主页的URL --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;url&gt;</span>...<span class="nt">&lt;/url&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;inceptionYear&gt;</span>...<span class="nt">&lt;/inceptionYear&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;licenses&gt;</span>...<span class="nt">&lt;/licenses&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;organization&gt;</span>...<span class="nt">&lt;/organization&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;developers&gt;</span>...<span class="nt">&lt;/developers&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;contributors&gt;</span>...<span class="nt">&lt;/contributors&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- Environment Settings --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;issueManagement&gt;</span>...<span class="nt">&lt;/issueManagement&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;ciManagement&gt;</span>...<span class="nt">&lt;/ciManagement&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;mailingLists&gt;</span>...<span class="nt">&lt;/mailingLists&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;scm&gt;</span>...<span class="nt">&lt;/scm&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;prerequisites&gt;</span>...<span class="nt">&lt;/prerequisites&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 发现依赖和扩展的远程仓库列表 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;repositories&gt;</span>...<span class="nt">&lt;/repositories&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;pluginRepositories&gt;</span>...<span class="nt">&lt;/pluginRepositories&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;distributionManagement&gt;</span>...<span class="nt">&lt;/distributionManagement&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;profiles&gt;</span>...<span class="nt">&lt;/profiles&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>pom.xml中描述符的根为<code>&lt;project&gt;</code>.</p>
+<h2 id="maven坐标" data-numberify>Maven坐标<a class="anchor ms-1" href="#maven坐标"></a></h2>
+<ul>
+<li>Maven 中的坐标是资源的唯一标识.</li>
+<li>使用坐标来<!-- raw HTML omitted -->定义项目<!-- raw HTML omitted -->或<!-- raw HTML omitted -->引入项目中需要的依赖<!-- raw HTML omitted -->.</li>
+</ul>
+<p>Maven坐标的主要组成 (在pom.xml文件中):</p>
+<ul>
+<li><code>&lt;groupId&gt;</code>: 公司或者组织的唯一标志. 配置时生成的路径也是由此生成. 如<code>com.linner.blog</code> (通常是域名反写), Maven会将该项目打成的jar包放本地路径：<code>/com/linner/blog</code>.</li>
+<li><code>&lt;artifactId&gt;</code>: 当前项目的唯一ID (通常是模块名称). 一个groupId下面可能多个项目, 就是靠<code>&lt;artifactId&gt;</code>来区分.</li>
+<li><code>&lt;version&gt;</code>: 本项目目前所处的版本号.</li>
+</ul>
+<p>Maven 中, 根据 <code>groupId</code>、<code>artifactId</code>、<code>version</code> 组合成 <code>groupId:artifactId:version</code> 来唯一识别一个 jar 包. 这三个标签构成了Maven坐标.</p>
+<h2 id="其他基本配置" data-numberify>其他基本配置<a class="anchor ms-1" href="#其他基本配置"></a></h2>
+<ul>
+<li><code>&lt;modelVersion&gt;</code>: 指定pom.xml符合哪个版本的描述符. Maven2和3只能为<code>4.0.0</code>.</li>
+<li><code>&lt;packaging&gt;</code>: 打包的机制. 有以下几种:
+<ul>
+<li>pom</li>
+<li>jar &mdash; 默认值</li>
+<li>maven-plugin</li>
+<li>ejb</li>
+<li>war</li>
+<li>ear</li>
+<li>rar</li>
+<li>par</li>
+</ul>
+</li>
+<li><code>&lt;dependencies&gt;</code>: 定义本项目的依赖关系.</li>
+</ul>
+<hr>
+<h1 id="maven依赖管理" data-numberify>Maven依赖管理<a class="anchor ms-1" href="#maven依赖管理"></a></h1>
+<p>依赖管理是指管理项目中所依赖的第三方资源 (jar包, 插件). 而Maven使用标准的<!-- raw HTML omitted -->坐标<!-- raw HTML omitted -->配置来管理各种依赖, 只需要简单的配置就可以完成依赖管理.</p>
+<p>Maven的依赖资源是在pom.xml配置文件中的<code>&lt;dependencies&gt;</code>描述的. 其结构如下:</p>
+<ul>
+<li><code>&lt;project&gt;</code>
+<ul>
+<li>&hellip;</li>
+<li><code>&lt;dependencies&gt;</code>
+<ul>
+<li><code>&lt;dependency&gt;</code>: 一个<code>&lt;dependency&gt;</code>代表一个依赖项.
+<code>&lt;groupId&gt;</code>, <code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>的含义与<code>&lt;project&gt;</code>的子标签<code>&lt;groupId&gt;</code>, <code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>的含义相同.
+<ul>
+<li><code>&lt;groupId&gt;</code></li>
+<li><code>&lt;artifactId&gt;</code></li>
+<li><code>&lt;version&gt;</code></li>
+<li><code>&lt;type&gt;</code>: 依赖的打包机制. 对应<code>&lt;packaging&gt;</code>的类型, 有pom, jar(默认), maven-plugin, ejb, war, ear, rar, par.</li>
+<li><code>&lt;scope&gt;</code>: 任务的类路径 (编译和运行时, 测试等) 以及如何限制依赖关系的传递性.
+<table>
+<thead>
+<tr>
+<th style="text-align:center">scope取值</th>
+<th style="text-align:center">有效范围(compile, runtime, test)</th>
+<th style="text-align:center">依赖传递</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>compile</code></td>
+<td style="text-align:center">all</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>provided</code></td>
+<td style="text-align:center">compile, test</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>runtime</code></td>
+<td style="text-align:center">runtime, test</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>test</code></td>
+<td style="text-align:center">test</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>system</code></td>
+<td style="text-align:center">compile, test</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><code>&lt;optional&gt;</code></li>
+<li><code>&lt;exclusions&gt;</code>
+<ul>
+<li><code>&lt;exclusion&gt;</code>
+<ul>
+<li><code>&lt;groupId&gt;</code></li>
+<li><code>&lt;artifactId&gt;</code></li>
+</ul>
+</li>
+<li><code>&lt;exclusion&gt;</code>
+<ul>
+<li>&hellip;</li>
+</ul>
+</li>
+<li>多个<code>&lt;exclusion&gt;</code>&hellip;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>多个<code>&lt;dependency&gt;</code>&hellip;</li>
+</ul>
+</li>
+<li>&hellip;</li>
+</ul>
+</li>
+</ul>
+<p><code>&lt;scope&gt;</code>取值说明:</p>
+<hr>
+<h1 id="maven常用命令" data-numberify>Maven常用命令<a class="anchor ms-1" href="#maven常用命令"></a></h1>
+<ul>
+<li><code>compile</code>: 编译</li>
+<li><code>clean</code>: 清理</li>
+<li><code>test</code>: 测试</li>
+<li><code>package</code>: 打包</li>
+<li><code>install</code>: 安装</li>
+</ul>
+<p>使用Maven命令需要先配置PATH, 然后在项目目录下执行.</p>
+<p>例如项目路径为<code>~/project</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> ~/project
+</span></span></code></pre></div><h2 id="编译" data-numberify>编译<a class="anchor ms-1" href="#编译"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mvn compile
+</span></span></code></pre></div><p>第一次执行该命令, Maven会自动从仓库 (中央仓库或远程仓库, 介绍常用命令时, 如无特别指出, 仓库均指中央仓库或远程仓库) 下载编译所需的jar插件包. 然后在项目下会生成一个 <code>target</code> 目录. 编译后的字节码文件就放在该目录下.</p>
+<h2 id="清理" data-numberify>清理<a class="anchor ms-1" href="#清理"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mvn clean
+</span></span></code></pre></div><p>第一次执行该命令, Maven会从仓库下载清理所需要的jar插件包. 接着便使用插件清除项目下的<code>target</code>目录.</p>
+<h2 id="打包" data-numberify>打包<a class="anchor ms-1" href="#打包"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mvn package
+</span></span></code></pre></div><p>第一次执行该命令, Maven会从仓库下载打包所需要的jar插件包. 然后在项目的 <code>terget</code> 目录下生成一个jar包 (将当前项目打成的jar包).</p>
+<h2 id="测试" data-numberify>测试<a class="anchor ms-1" href="#测试"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mvn <span class="nb">test</span>
+</span></span></code></pre></div><p>该命令会执行所有的测试代码, 即<code>project/scr/text</code>下的代码.</p>
+<h2 id="安装" data-numberify>安装<a class="anchor ms-1" href="#安装"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mvn install
+</span></span></code></pre></div><p>该命令会将当前项目打成jar包, 并安装到本地仓库. 执行完上述命令后可以到本地仓库查看结果. 仓库中的路径为pom.xml文件中<code>&lt;groupId&gt;</code>相应的路径, 生成的jar包名为<code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>组成的内容.</p>
+<hr>
+<h1 id="maven生命周期" data-numberify>Maven生命周期<a class="anchor ms-1" href="#maven生命周期"></a></h1>
+<p>Maven 构建项目生命周期描述的是一次构建过程经历经历了多少个事件.</p>
+<p>Maven对项目构建的生命周期划分为3套:</p>
+<ul>
+<li>clean: 清理工作.</li>
+<li>default: 核心工作, 例如编译, 测试, 打包, 安装等.</li>
+<li>site:  产生报告, 发布站点等. 这套声明周期一般不会使用.</li>
+</ul>
+<p>同一套生命周期内, 执行后边的命令, 前面的所有命令会自动执行.</p>
+<p>default 生命周期如下:</p>
+<p><picture><img class="img-fluid " alt="" src="/blog/2022/08/maven/1662167229604.png" loading="lazy" width="388" height="83" />
+</picture>
+
+</p>
+<p>如执行<code>install</code>命令, maven会按照上图中从左到右的顺序先执行<code>compile</code>, 再执行<code>test</code>, <code>package</code>, 最后执行<code>install</code>; 如果执行<code>package</code>, 除了<code>install</code>命令, 其它命令按照上图左到右顺序执行.</p>
+<blockquote>
+<p>默认的生命周期其实有对应的很多命令, 上图中只展示了常用的.</p>
+</blockquote>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://hbs-skeleton.netlify.app/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://hbs-skeleton.netlify.app/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/blog/2022/08/ssh-%E5%85%AC%E9%92%A5%E9%85%8D%E7%BD%AE/">SSH 公钥配置</a>
+    </div><div class="post-nav post-next">
+      <a href="/blog/2022/08/druid-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/">Druid 数据库连接池</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/08/druid-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/">
+    Druid 数据库连接池
+  </a>
+  <div class="post-meta mb-0">
+    2022年8月14日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/08/jdbc/">
+    JDBC
+  </a>
+  <div class="post-meta mb-0">
+    2022年8月12日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/08/ssh-%E5%85%AC%E9%92%A5%E9%85%8D%E7%BD%AE/">
+    SSH 公钥配置
+  </a>
+  <div class="post-meta mb-0">
+    2022年8月13日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/07/%E6%90%AD%E5%BB%BA-code-server/">
+    搭建 code-server
+  </a>
+  <div class="post-meta mb-0">
+    2022年7月23日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/07/%E6%90%AD%E5%BB%BA-frp-%E6%9C%8D%E5%8A%A1/">
+    搭建 frp 服务
+  </a>
+  <div class="post-meta mb-0">
+    2022年7月23日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        Profile
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Linner" src="https://hbs-skeleton.netlify.app/images/avatar.jpg" loading="lazy" data-viewer-invisible width="460" height="460" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我们</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link" target="_blank" href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss" style="color: #ea6221;"></i>
+  </a>
+</nav>
+</div>
+  </div>
+</div>
+
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                Taxonomies
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                        <a href="/categories/ruanshe/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="RuanShe">
+                            RuanShe
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/categories/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+                        </a>
+                        <a href="/categories/springboot/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="SpringBoot">
+                            SpringBoot
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                        <a href="/categories/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">1</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">18</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%B8%88/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软件设计师">
+                            软件设计师
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">8</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/tomcat/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Tomcat">
+                            Tomcat
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/%E7%AE%97%E6%B3%95/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="算法">
+                            算法
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/linux/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Linux">
+                            Linux
+                            <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+                        </a>
+                        <a href="https://hbs-skeleton.netlify.app/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">70</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">48</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="/archives/2023/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+    </a>
+
+    <a href="/archives/2022/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">27</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/07/nacos-server-%E9%83%A8%E7%BD%B2/">
+        Nacos Server 部署
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年7月24日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/">
+        概念总结篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月25日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/">
+        软考图类汇总篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月20日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E7%AF%87/">
+        算法设计与分析篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月17日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AF%87/">
+        计算机网络篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月12日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#maven-简介">Maven 简介</a>
+      <ul>
+        <li><a href="#maven-模型">Maven 模型</a></li>
+        <li><a href="#仓库">仓库</a>
+          <ul>
+            <li><a href="#本地仓库">本地仓库</a></li>
+            <li><a href="#中央仓库">中央仓库</a></li>
+            <li><a href="#远程仓库">远程仓库</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#maven标准化项目结构">Maven标准化项目结构</a></li>
+    <li><a href="#项目核心配置文件-pomxml">项目核心配置文件 pom.xml</a>
+      <ul>
+        <li><a href="#maven坐标">Maven坐标</a></li>
+        <li><a href="#其他基本配置">其他基本配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#maven依赖管理">Maven依赖管理</a></li>
+    <li><a href="#maven常用命令">Maven常用命令</a>
+      <ul>
+        <li><a href="#编译">编译</a></li>
+        <li><a href="#清理">清理</a></li>
+        <li><a href="#打包">打包</a></li>
+        <li><a href="#测试">测试</a></li>
+        <li><a href="#安装">安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#maven生命周期">Maven生命周期</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss" style="color: #ea6221;"></i>
+  </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.7ed611384ed3d2bea961263bcffe4c0a570fc3680cc55ec37628d41464defa51.js" integrity="sha256-ftYROE7T0r6pYSY7z/5MClcPw2gMxV7DdijUFGTe&#43;lE=" crossorigin="anonymous" async></script><script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" integrity="sha256-TzDVJnqfL51F7ZOWnUXsYmEAqWmouR9x91MxWiYekDQ=" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" integrity="sha256-Cg0AmZNb7uQbenv0VDzVXnk&#43;X4MKVxsHlO&#43;MNgLFgjw=" crossorigin="anonymous" defer></script>
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" integrity="sha256-ObfMEbO/uU4HIIT4S65Fyl/r3tp0NQzK&#43;6BAqW6aURM=" crossorigin="anonymous"></script>
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>

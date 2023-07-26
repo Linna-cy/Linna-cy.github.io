@@ -1,0 +1,1834 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.1ecfa508e43366670621c78906997619371f025e217cca06dc6f8b4c9b81f318.js" integrity="sha256-Hs&#43;lCOQzZmcGIceJBpl2GTcfAl4hfMoG3G&#43;LTJuB8xg=" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>操作系统篇 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="软考, 软件设计师, 操作系统" />
+  <meta name="description" content="概述 计算机系统由两部分组成： 硬件 软件 通常把未配置软件的计算机称为裸机。 操作系统（Operating System）目的是为了填补人与机器之间的" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="操作系统篇"/>
+<meta name="twitter:description" content="概述 计算机系统由两部分组成： 硬件 软件 通常把未配置软件的计算机称为裸机。 操作系统（Operating System）目的是为了填补人与机器之间的"/>
+<meta property="og:title" content="操作系统篇" />
+<meta property="og:description" content="概述 计算机系统由两部分组成： 硬件 软件 通常把未配置软件的计算机称为裸机。 操作系统（Operating System）目的是为了填补人与机器之间的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hbs-skeleton.netlify.app/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-04-12T16:28:00+08:00" />
+<meta property="article:modified_time" content="2023-04-12T16:28:00+08:00" />
+<meta itemprop="name" content="操作系统篇">
+<meta itemprop="description" content="概述 计算机系统由两部分组成： 硬件 软件 通常把未配置软件的计算机称为裸机。 操作系统（Operating System）目的是为了填补人与机器之间的"><meta itemprop="datePublished" content="2023-04-12T16:28:00+08:00" />
+<meta itemprop="dateModified" content="2023-04-12T16:28:00+08:00" />
+<meta itemprop="wordCount" content="9903">
+<meta itemprop="keywords" content="软考,软件设计师,操作系统," />
+  <meta property="og:image" content="https://hbs-skeleton.netlify.app/images/favicon.ico"/>
+  <meta name="twitter:image" content="https://hbs-skeleton.netlify.app/images/favicon.ico"/>
+  <meta property="og:image:alt" content="操作系统篇" />
+  <meta name="twitter:image:alt" content="操作系统篇" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.6b68fc29eec5dc4f6e04d89fc7388fc17878caac05d761942a571826ce313353.css" integrity="sha256-a2j8Ke7F3E9uBNifxziPwXh4yqwF12GUKlcYJs4xM1M=" crossorigin="anonymous">
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" integrity="sha256-&#43;AlpKqsXju30mps4TQ6MvOsF5WO&#43;pdfPVGkBhXVrpBQ=" crossorigin="anonymous">
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" integrity="sha256-65FIRGNs1B8iHxCemciHu8O2tf&#43;yr3xmSyhM6i0bVLc=" crossorigin="anonymous">
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="https://hbs-skeleton.netlify.app/">
+    <picture><img class="logo " alt="Logo" src="https://hbs-skeleton.netlify.app/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle active"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">专栏</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of series.</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">分类</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of categories.</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="https://hbs-skeleton.netlify.app/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">标签</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of tags.</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+    <span class="ms-1 d-xxl-none">RSS</span>
+  </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/blog/">博客</a></li><li class="breadcrumb-item active">操作系统篇</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+  <a class="action action-toc d-none d-xxl-block" href="#postTOC" role="button" title="Table of contents">
+    <i class="fas fa-fw fa-list-alt"></i>
+  </a>
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    <a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title my-2">操作系统篇</h1>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-04-12 08:28:00 &#43;0000 UTC。">2023年4月12日</span><span class="post-reading-time me-1 mb-1">20 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/ruanshe/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>RuanShe</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">操作系统</a><a href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%B8%88/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">软件设计师</a><a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">软考</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>计算机系统由两部分组成：</p>
+<ul>
+<li><strong>硬件</strong></li>
+<li><strong>软件</strong></li>
+</ul>
+<p>通常把未配置软件的计算机称为裸机。</p>
+<p>操作系统（Operating System）目的是为了填补人与机器之间的鸿沟，即建立用户与计算机之间的接口，而为裸机配置的一种系统软件。</p>
+<p>操作系统也包括了系统软件。</p>
+<p>操作系统在计算机系统中的地位：</p>
+<p><picture><img class="img-fluid " alt="操作系统在计算机系统中的地位" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682583172164.png" loading="lazy" width="309" height="145" />
+</picture>
+
+</p>
+<p>操作系统是用户与计算机之间的接口，它在计算机系统中占据重要而特殊的地位，所有其他软件，如编辑程序、汇编程序、编译程序、数据库管理系统等系统软件，以及大量的应用软件都是建立在操作系统基础上的，并得到它的支持和取得它的服务。</p>
+<hr>
+<h1 id="进程管理" data-numberify>进程管理<a class="anchor ms-1" href="#进程管理"></a></h1>
+<p>进程管理也称<strong>处理机管理</strong>。在多道程序批处理系统和分时系统中有多个并发执行的程序，为了描述系统中程序执行时动态变化的过程引入了进程。进程是<!-- raw HTML omitted -->资源分配和独立运行的基本单位<!-- raw HTML omitted -->。</p>
+<p>进程有两个基本属性：</p>
+<ul>
+<li>可拥有资源的独立单位；</li>
+<li>可独立调度和分配的基本单位。</li>
+</ul>
+<h2 id="程序执行顺序" data-numberify>程序执行顺序<a class="anchor ms-1" href="#程序执行顺序"></a></h2>
+<h3 id="程序顺序执行" data-numberify>程序顺序执行<a class="anchor ms-1" href="#程序顺序执行"></a></h3>
+<p>前驱图是一种有向无循环图，由结点和有向边组成：</p>
+<ul>
+<li>结点：代表各程序段的操作；</li>
+<li>有向边：表示两个程序段（结点）操作之间存在的前驱关系（$\rightarrow$）。</li>
+</ul>
+<p>前驱关系：</p>
+<p>程序段$P_i$和$P_j$的前趋关系表示成$P_i \rightarrow P_j$，其中，$P_i$是$P_j$的前驱，$P_j$是$P_i$的后继，其含义是：</p>
+<p>$P_i$执行结束后$P_j$才能执行。例如，输入、计算和输出：</p>
+<p><picture><img class="img-fluid " alt="3个结点的前驱图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682753834678.png" loading="lazy" width="358" height="107" />
+</picture>
+
+</p>
+<p>程序顺序执行时的主要特征包括：</p>
+<ul>
+<li>顺序性</li>
+<li>封闭性</li>
+<li>可再现性</li>
+</ul>
+<h3 id="程序并发执行" data-numberify>程序并发执行<a class="anchor ms-1" href="#程序并发执行"></a></h3>
+<p>若在计算机系统中采用多道程序设计技术，则主存中的多道程序可处于并发执行状态。</p>
+<p>虽然每个作业有前趋关系的各程序段不能在CPU和输入/输出各部件（同一个部件）中并行执行，但是同一个作业内没有前趋关系的程序段或不同作业的程序段可以分别在CPU和各输入/输出部件上（不同部件中）并行执行。</p>
+<p>例如，某系统中有一个CPU、一台输入设备和一台输出设备，每个作业具有3个程序段输入I<!-- raw HTML omitted -->i<!-- raw HTML omitted -->、计算C<!-- raw HTML omitted -->i<!-- raw HTML omitted -->和输出P<!-- raw HTML omitted -->i<!-- raw HTML omitted -->（i = 1，2，3）。其前驱图如（其中，在同一垂直方向上的作业并行执行）：</p>
+<p><picture><img class="img-fluid " alt="程序并发执行的前驱图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682754585700.png" loading="lazy" width="480" height="203" />
+</picture>
+
+</p>
+<p>程序并发执行时的特征：</p>
+<ul>
+<li>失去了程序的封闭性；</li>
+<li>程序和机器的执行程序的活动不再一一对应；</li>
+<li>并发程序间的相互制约性。</li>
+</ul>
+<p>程序并发执行带来的问题：并发程序间共享了变量，破坏了程序的封闭性和可再现性。</p>
+<p>并发程序的问题可以通过研究进程间的同步和互斥解决。</p>
+<h2 id="进程的三态模型" data-numberify>进程的三态模型<a class="anchor ms-1" href="#进程的三态模型"></a></h2>
+<p>在多道程序系统中，进程在处理器上交替运行，状态也不断地发生变化，因此进程一般有3种基本状态：</p>
+<ul>
+<li><strong>运行</strong>：当一个进程在处理机上运行时。</li>
+<li><strong>就绪</strong>：一个进程获得了除处理机外的一切所需资源，一旦得到处理机即可运行（还未得到）。</li>
+<li><strong>阻塞</strong>（等待或睡眠）：一个进程正在等待某一事件发生而暂时停止运行，这时即使把处理机分配给进程也无法运行。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="进程的三态模型" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682757000186.png" loading="lazy" width="314" height="275" />
+</picture>
+
+</p>
+<h2 id="进程间的通信" data-numberify>进程间的通信<a class="anchor ms-1" href="#进程间的通信"></a></h2>
+<p>在多道程序环境的系统中存在多个可以并发执行的进程，故进程间必然存在资源共享和相互合作的问题。进程通信是指各个进程交换信息的过程。</p>
+<h3 id="同步和互斥" data-numberify>同步和互斥<a class="anchor ms-1" href="#同步和互斥"></a></h3>
+<ul>
+<li>
+<p><strong>同步</strong>：合作进程间的直接制约问题。</p>
+<p>进程间的同步：是指在系统中一些需要相互合作，协同工作的进程，这样的相互联系称为进程的同步。</p>
+<p>例如，进程A向缓冲区送数据，进程B从缓冲区取数据加工，当进程B要取数据加工时，必须是进程A完成了向缓冲区送数据的操作，否则进程B必须停下来等待进程A的操作结束。</p>
+</li>
+<li>
+<p><strong>互斥</strong>：申请临界资源进程间的间接制约问题。</p>
+<p>进程间的互斥：是指系统中多个进程因争用临界资源而互斥执行。</p>
+<blockquote>
+<p>临界资源（Critical Resource，CR）：在多道程序系统环境中，那些一次只能供一个进程使用的资源。如打印机、共享变量和表格等。</p>
+</blockquote>
+</li>
+</ul>
+<p>临界区管理的原则：</p>
+<blockquote>
+<p>临界区（Critical Section，CS）：是进程中对临界资源实施操作的那段程序。</p>
+</blockquote>
+<p>对互斥临界区管理的4条原则如下：</p>
+<ul>
+<li><strong>有空即进</strong>：当<!-- raw HTML omitted -->无进程处于临界区<!-- raw HTML omitted -->时，<!-- raw HTML omitted -->允许<!-- raw HTML omitted -->进程<!-- raw HTML omitted -->进入<!-- raw HTML omitted -->临界区，并且<!-- raw HTML omitted -->只能在临界区运行有限
+的时间<!-- raw HTML omitted -->。</li>
+<li><strong>无空则等</strong>：当<!-- raw HTML omitted -->有一个进程在临界区<!-- raw HTML omitted -->时，<!-- raw HTML omitted -->其他欲进入临界区的进程必须等待<!-- raw HTML omitted -->，以保证进程互斥地访问临界资源。</li>
+<li><strong>有限等待</strong>：<!-- raw HTML omitted -->对于要求访问临界资源的进程，应保证进程能在有限的时间进入临界区，以免陷入“<strong>饥饿</strong>”状态<!-- raw HTML omitted -->。</li>
+<li><strong>让权等待</strong>：<!-- raw HTML omitted -->当进程不能进入自己的临界区时，应立即释放处理机，以免进程陷入<strong>忙等</strong>状态。<!-- raw HTML omitted --></li>
+</ul>
+<h3 id="信号量机制" data-numberify>信号量机制<a class="anchor ms-1" href="#信号量机制"></a></h3>
+<p>信号量机制是一种有效的进程同步与互斥工具。</p>
+<p>信号量机制主要有：</p>
+<ul>
+<li>整型信号量</li>
+<li>记录型信号量</li>
+<li>信号量集机制</li>
+</ul>
+<p>整型信号量：</p>
+<p>信号量是一个整型变量，根据控制对象的不同被赋予不同的值。信号量分为如下两类：</p>
+<ul>
+<li>公用信号量：实现进程间的互斥，初值为<code>1</code>或资源的数目。</li>
+<li>私用信号量：实现进程间的同步，初值为<code>0</code>或某个正整数。</li>
+</ul>
+<p>信号量$S$的物理意义：</p>
+<ul>
+<li>$S \ge 0$：表示某资源的可用数，此时<strong>有可用资源</strong>；</li>
+<li>$S &lt; 0$：则其绝对值表示阻塞队列中等待该资源的进程数，此时无可用资源，并且有进程被阻塞。</li>
+</ul>
+<h3 id="pv操作" data-numberify>PV操作<a class="anchor ms-1" href="#pv操作"></a></h3>
+<p>PV操作：实现进程同步与互斥的常用方法。</p>
+<p>P操作和V操作是低级通信原语，在执行期间不可分割。其中：</p>
+<ul>
+<li>
+<p><strong>P操作</strong>（减）：表示<strong>申请</strong>一个资源；</p>
+<p>定义：$S := S-1$（$S$表示信号量）。</p>
+<ul>
+<li>$S \ge 0$：执行P操作的进程继续执行；</li>
+<li>$S &lt; 0$：无可用资源，置该进程为<strong>阻塞</strong>状态，并将其插入阻塞队列。</li>
+</ul>
+</li>
+<li>
+<p><strong>V操作</strong>（加）：表示<strong>释放</strong>一个资源。</p>
+<p>定义：$S := S+1$。</p>
+<ul>
+<li>$S &gt; 0$：执行V操作的进程继续执行；</li>
+<li>$S \le 0$：表示释放前有程序被阻塞，从阻塞状态唤醒一个进程，并将其插入就绪队列，然后执行V操作的进程继续。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>P减V加，P进V出。</p>
+</blockquote>
+<p>利用PV操作实现进程的互斥：</p>
+<ol>
+<li>令信号量<code>mutex</code>的初始值为1；</li>
+<li>进入临界区：执行P操作；</li>
+<li>推出临界区：执行V操作。</li>
+</ol>
+<p>利用PV操作实现进程的同步：</p>
+<p>实现进程的同步可用一个信号量与消息联系起来。</p>
+<p>信号量的值：</p>
+<ul>
+<li>为<code>0</code>：表示希望的消息未产生；</li>
+<li>非<code>0</code>：表示希望的消息已经存在。</li>
+</ul>
+<p>假定信号量S表示某条消息，进程可以：</p>
+<ul>
+<li>调用P操作：测试消息是否到达；</li>
+<li>调用V操作：通知消息已经准备好。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>生产者进程$P_1$：不间断地生产产品送入缓冲区；</li>
+<li>消费者进程$P_2$：不断地从缓冲区中取产品消费。</li>
+</ul>
+<p>为实现$P_1$与$P_2$间同步问题，分别设置信号量：</p>
+<ul>
+<li>$S_1$：初值为1，表示缓冲区空，可以将产品送入缓冲区；</li>
+<li>$S_2$：初值为0，表示缓冲区有产品。</li>
+</ul>
+<p>同步过程如图：</p>
+<p><picture><img class="img-fluid " alt="PV实现进程同步例子" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/1682764456232.png" loading="lazy" width="979" height="310" />
+</picture>
+
+</p>
+<p>若缓冲区可存放$n$件产品，生产者不断生产，消费者不断消费。可以设置3个信号量：</p>
+<ul>
+<li>$S$：互斥信号量，初值为1；</li>
+<li>$S_1$：表示是否可以将产品放入缓冲区，初值为$n$；</li>
+<li>$S_2$：表示缓冲区是否存有产品，初值为0。</li>
+</ul>
+<p>其同步过程如图：</p>
+<p><picture><img class="img-fluid " alt="n缓冲区的同步" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682764884289.png" loading="lazy" width="550" height="368" />
+</picture>
+
+</p>
+<h3 id="死锁现象" data-numberify>死锁现象<a class="anchor ms-1" href="#死锁现象"></a></h3>
+<p>死锁是指两个以上的进程互相都要请求对方己经占有的资源，导致这些进程都无法继续运行下去的现象。</p>
+<p>产生死锁的原因有：</p>
+<ul>
+<li>
+<p>进程间互相<!-- raw HTML omitted -->竞争资源<!-- raw HTML omitted -->：</p>
+<p>多个进程所共享的资源不足以满足它们的需求时，将引起它们对资源的竞争，从而导致死锁。</p>
+</li>
+<li>
+<p><!-- raw HTML omitted -->进程推进顺序非法<!-- raw HTML omitted -->：</p>
+<p>进程在运行的过程中请求和释放资源的顺序不当，从而导致死锁。</p>
+</li>
+</ul>
+<p>产生死锁的4个必要条件：</p>
+<ul>
+<li>互斥条件</li>
+<li>请求保持条件</li>
+<li>不可剥夺条件</li>
+<li>环路条件</li>
+</ul>
+<p>发生死锁时，在进程资源有向图中必构成环路（每个进程占有了下一个进程申请的一个或多个资源），如：</p>
+<p><picture><img class="img-fluid " alt="2个进程死锁的资源有向图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682766203339.png" loading="lazy" width="323" height="242" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p>资源：用<strong>方框</strong>表示资源的集合，<strong>方框中的圆圈</strong>表示资源；</p>
+</li>
+<li>
+<p>进程：用<strong>圆圈</strong>表示；</p>
+</li>
+<li>
+<p>有向边：</p>
+<ul>
+<li>
+<p>请求资源：箭头由进程指向资源</p>
+<p>$$
+\bigcirc \rightarrow \Box
+$$</p>
+</li>
+<li>
+<p>分配资源：箭头由资源指向进程</p>
+<p>$$
+\bigcirc \leftarrow \Box
+$$</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>造成死锁的情况有：</p>
+<ul>
+<li>
+<p>进程推进顺序不当：</p>
+<p>设有两个互斥资源$A$和$B$被两个并发执行的进程$P_1$和$P_2$共享。假如它们按照如下次序请求，则系统会发生死锁：</p>
+<ol>
+<li>$P_1.Request(A)$：请求成功，资源$A$被$P_1$占用；</li>
+<li>$P_2.Request(B)$：请求成功，资源$B$被$P_2$占用；</li>
+<li>$P_1.Request(B)$：请求失败，资源$B$已被$P_2$占用；</li>
+<li>$P_2.Request(A)$：请求失败，资源$A$已被$P_1$占用。</li>
+</ol>
+<blockquote>
+<p>上述请求顺序中，1和2的顺序可以交换，3和4的顺序可以交换。</p>
+</blockquote>
+</li>
+<li>
+<p>同类资源分配不当：</p>
+<ul>
+<li>$m$：资源数，</li>
+<li>$n$：进程数，</li>
+<li>$k$：每个进程都要求的资源数。</li>
+</ul>
+<p>若满足$m \ge n \times (k-1) + 1$，则不会发生死锁。</p>
+<p>若每个进程要求的资源数不同，为$k_i$（$i = 1,2,\cdots,n$），那么此时可能会引起死锁的原因是：</p>
+<p>$$
+m &lt; \sum_{i=1}^{n}{k_i}
+$$</p>
+</li>
+<li>
+<p>PV操作使用不当：</p>
+<p>如图：</p>
+<p><picture><img class="img-fluid " alt="PV死锁示例" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682767634275.png" loading="lazy" width="577" height="290" />
+</picture>
+
+</p>
+<p>当信号量$S_1=S_2=0$时将发生死锁。</p>
+<ul>
+<li>$P_2.P(S_2)$：执行前$S_2 = 0$，执行后$S_2 = -1$，$P_2$等待；</li>
+<li>$P_1.P(S_1)$：执行前$S_1 = 0$，执行后$S_1 = -1$，$P_1$等待。</li>
+</ul>
+<p>此时$P_1$和$P_2$都无法继续运行，造成死锁。</p>
+</li>
+</ul>
+<h3 id="死锁的处理" data-numberify>死锁的处理<a class="anchor ms-1" href="#死锁的处理"></a></h3>
+<p>死锁的处理策略主要有4种：</p>
+<ul>
+<li>鸵鸟策略（不理睬策略）</li>
+<li>预防策略</li>
+<li>避免策略</li>
+<li>检测与解除死锁</li>
+</ul>
+<p>死锁预防：</p>
+<p>死锁预防是<!-- raw HTML omitted -->采用某种策略限制并发进程对资源的请求，破坏死锁产生的4个必要条件之一，严格防止死锁的产生<!-- raw HTML omitted -->，使系统在任何时刻都不满足死锁的必要条件。预防死锁的两种策略如下：</p>
+<ul>
+<li>
+<p>预先静态分配法：破坏了“不可剥夺条件”，<!-- raw HTML omitted -->预先分配所需资源，保证不等待资源<!-- raw HTML omitted -->。</p>
+<p>该方法的问题是降低了对资源的利用率，降低进程的并发程度；有时可能无法预先知道所需资源。</p>
+</li>
+<li>
+<p>资源有序分配法：破坏了“环路条件”，<!-- raw HTML omitted -->把资源分类按顺序排列，保证不形成环路<!-- raw HTML omitted -->。</p>
+<p>该方法存在的问题是限制进程对资源的请求：由于资源的排序占用系统开销。</p>
+</li>
+</ul>
+<p>死锁避免：</p>
+<p>比起死锁预防，<!-- raw HTML omitted -->死锁避免则不那么严格地限制产生死锁的必要条件<!-- raw HTML omitted -->。最著名的死锁避免算法是银行家算法，死锁避免算法需要很大的系统开销。</p>
+<h3 id="银行家算法" data-numberify>银行家算法<a class="anchor ms-1" href="#银行家算法"></a></h3>
+<p>银行家算法对于进程发出的、每一个系统可以满足的<!-- raw HTML omitted -->资源请求命令加以检测<!-- raw HTML omitted -->，若分配资源后系统：</p>
+<ul>
+<li>进入不安全状态，则不予分配；</li>
+<li>仍处于安全状态，则实施分配。</li>
+</ul>
+<p>与死锁预防策略相比，银行家算法提高了资源的利用率，但对于分配资源后系统是否安全的检测，增加了系统开销。</p>
+<ul>
+<li>
+<p>安全状态：指系统能按某种顺序如$&lt;P_1, P_2, \cdots, P_n&gt;$来为每个进程分配其所需资源，直到最大需求，使每个进程都可顺序完成。</p>
+<p>通常称$&lt;P_1, P_2, \cdots, P_n&gt;$序列为安全序列。</p>
+</li>
+<li>
+<p>不安全状态：若系统不存在这样一个安全序列，则称系统处于不安全状态。</p>
+</li>
+</ul>
+<p>假设系统有$n$个进程（$P_i, i = 1, 2, \cdots, n$），使用银行家算法求系统安全序列的一般步骤为：</p>
+<ol>
+<li>
+<p>根据目前可用资源数和仍需资源数求得序列当前的第$k$（$1 \le k \le n$）个进程应为$P_i$。</p>
+<blockquote>
+<p>$P_i$的仍需资源数$\le$系统可用资源数。</p>
+</blockquote>
+</li>
+<li>
+<p>根据$P_i$的已分配资源数 + 分配前系统可用资源数，求出系统执行完$P_i$后的可用资源数。</p>
+<blockquote>
+<p>系统执行完$P_4$后，会释放$P_4$占用的资源。</p>
+</blockquote>
+</li>
+<li>
+<p>重复执行步骤1到步骤2，直到能判断系统处于安全状态还是不安全状态。若为安全状态，则可求出安全序列。</p>
+</li>
+</ol>
+<p>假设系统种有三类互斥资源$R_1$、$R_2$和$R_3$，可用资源数分别为8、7和4。在$T_0$时刻系统种有$P_1$、$P_2$、$P_3$、$P_4$和$P_5$这5个进程，这些进程对资源的最大需求量和已分配资源数如图：</p>
+<p><picture><img class="img-fluid " alt="进程对资源的最大需求量和已分配资源数" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1682941260775.png" loading="lazy" width="490" height="231" />
+</picture>
+
+</p>
+<p>由上图可得系统的仍需资源数（最大需求量 - 已分配资源数）为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>可得系统目前可用资源数（可用资源数 - 所有进程的最大需求量）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p>求出安全序列的过程：</p>
+<ol>
+<li>
+<p>根据目前可用资源数和仍需资源数可得序列中第1个进程应为$P_4$。</p>
+<blockquote>
+<p>因为$P_4$仅仅只需要再分配一个$R_1$，而系统目前恰好剩余1个$R_1$和$R_2$。</p>
+</blockquote>
+<p>系统执行完$P_4$后，会释放$P_4$占用的资源，那么此时系统可用资源数为（已分配资源数 + 分配前可用资源数）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>与上一步类似，可求得序列中第2个进程为$P_2$或$P_5$。</p>
+<ul>
+<li>
+<p>若为$P_2$，执行完$P_2$后，系统可用资源数为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>若为$P_5$，执行完$P_5$后，系统可用资源数为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>
+<p>根据上一步，有两个可能的安全序列：</p>
+<ul>
+<li>若序列的上一个进程为$P_2$，序列的第3个进程为$P_5$。</li>
+<li>若序列的上一个进程为$P_5$，序列的第3个进程为$P_2$。</li>
+</ul>
+<p>此时，无论当前序列为$&lt;P_4, P_2, P_5&gt;$还是$&lt;P_4, P_5, P_2&gt;$，它们执行完序列的第3个进程后，系统可用资源数都为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>根据上一步的系统可用资源数，上一步所得的两个序列的第4个进程都为$P_1$。</p>
+<p>此时，它们执行完$P_1$后，系统可用资源数为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>两个序列的第4个进程都为$P_3$。</p>
+<p>它们执行完$P_3$后，系统可用资源数为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_1$</th>
+<th style="text-align:center">$R_2$</th>
+<th style="text-align:center">$R_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">4</td>
+</tr>
+</tbody>
+</table>
+<p>此时系统可用资源数与检测前的可用资源数相等，即所有资源都被释放，没有被任何进程占用。</p>
+<p>那么该系统处于安全状态，且一共有两个安全序列，分别为：</p>
+<ul>
+<li>$&lt;P_4, P_2, P_5, P_4, P_3&gt;$；</li>
+<li>$&lt;P_4, P_5, P_2, P_4, P_3&gt;$。</li>
+</ul>
+</li>
+</ol>
+<h2 id="线程" data-numberify>线程<a class="anchor ms-1" href="#线程"></a></h2>
+<blockquote>
+<p>传统进程有两个基本属性：</p>
+<ul>
+<li>可拥有资源的独立单位；</li>
+<li>可独立调度和分配的基本单位。</li>
+</ul>
+</blockquote>
+<p>引入线程的原因是，进程的系统必须付出较大的时空开销。引入线程后，将传统进程的两个基本属性分开：</p>
+<ul>
+<li>线程：作为调度和分配的基本单位；</li>
+<li>进程：作为独立分配资源的单位。</li>
+</ul>
+<p>线程是进程中的一个实体，是被系统独立分配和调度的基本单位。</p>
+<p>线程的特点：</p>
+<ul>
+<li>线程<!-- raw HTML omitted -->基本上不拥有资源<!-- raw HTML omitted -->，只拥有一点运行中必不可少的资源（如程序计数器、一组寄存器和栈），它可与同属一个进程的其他线程共享进程所拥有的全部资源。</li>
+<li>线程<!-- raw HTML omitted -->也具有就绪、运行和阻塞3种基本状态<!-- raw HTML omitted -->。</li>
+<li><!-- raw HTML omitted -->线程可创建另一个线程。<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->同一个进程中的多个线程可并发执行。<!-- raw HTML omitted --></li>
+</ul>
+<p>线程因其具有许多传统进程所具有的特性，故称为&quot;轻型进程（Light-Weight Process）&quot;；而传统进程称为&quot;重型进程（Heavy-Weight Process）&quot;。</p>
+<p>线程分为：</p>
+<ul>
+<li>用户级线程（User-Level Threads）：不依赖于内核，该类线程的创建、撤销和切换都不利用系统调用来实现；</li>
+<li>内核支持线程（Kernel-Supported Threads）：依赖于内核，即无论是在用户进程中的线程，还是在系统中的线程，它们的创建、撤销和切换都利用系统调用来实现。</li>
+</ul>
+<p>某些系统同时实现了两种类型的线程。</p>
+<blockquote>
+<p>与线程不同的是，不论是系统进程还是用户进程，在进行切换时，都要依赖于内核中的进程调度。因此，不论是什么进程都是与内核有关的，是在内核支持下进行切换的。</p>
+</blockquote>
+<hr>
+<h1 id="存储管理" data-numberify>存储管理<a class="anchor ms-1" href="#存储管理"></a></h1>
+<h2 id="程序局部性原理" data-numberify>程序局部性原理<a class="anchor ms-1" href="#程序局部性原理"></a></h2>
+<p>程序在执行时将呈现出局部性规律，即在一段时间内，程序的执行仅局限于某个部分。相应地，它所访问的存储空间也局限于某个区域内。</p>
+<p>程序的局限性表现在以下两个方面：</p>
+<ul>
+<li>
+<p><strong>时间局限性</strong>：</p>
+<ul>
+<li>如果程序中的某条<!-- raw HTML omitted -->指令一旦执行<!-- raw HTML omitted -->，则不久的将来该指令<!-- raw HTML omitted -->可能再次被执行<!-- raw HTML omitted -->；</li>
+<li>如果某个<!-- raw HTML omitted -->存储单元被访问<!-- raw HTML omitted -->，则不久以后该存储单元<!-- raw HTML omitted -->可能再次被访问<!-- raw HTML omitted -->。</li>
+</ul>
+<p>产生时间局限性的典型原因是<!-- raw HTML omitted -->在程序中存在着大量的循环操作<!-- raw HTML omitted -->。</p>
+</li>
+<li>
+<p><strong>空间局限性</strong>：指一旦<!-- raw HTML omitted -->程序访问了某个存储单元<!-- raw HTML omitted -->，则在不久的将来，<!-- raw HTML omitted -->其附近的存储单元也最有可能被访问<!-- raw HTML omitted -->。</p>
+<p>即程序在一段时间内所访问的地址可能集中在一定的范围内，其典型原因为<!-- raw HTML omitted -->程序是顺序执行的<!-- raw HTML omitted -->。</p>
+</li>
+</ul>
+<h2 id="分页存储管理" data-numberify>分页存储管理<a class="anchor ms-1" href="#分页存储管理"></a></h2>
+<p>分页原理：</p>
+<ul>
+<li><strong>页</strong>：将一个进程的地址空间划分成若干个大小相等的区域，称为页。</li>
+<li><strong>块</strong>（<strong>页框</strong>）：将主存空间划分成与页相同大小的若干个物理块，称为块或页框。</li>
+</ul>
+<p>在为进程分配主存时，将进程中若干页分别装入多个不相邻接的块中。</p>
+<p>地址结构：</p>
+<p><picture><img class="img-fluid " alt="分页地址结构" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683184749140.png" loading="lazy" width="496" height="55" />
+</picture>
+
+</p>
+<p>其中，页内地址是同一页（页号）中的偏移量。</p>
+<p>分页的过程是由操作系统完成的，对用户是透明的，所以用户不必关心分页的过程，其优点是能有效地提高主存利用率，其缺点是不易实现共享。</p>
+<h2 id="分段存储管理" data-numberify>分段存储管理<a class="anchor ms-1" href="#分段存储管理"></a></h2>
+<p>在分段存储管理方式中，作业的地址空间被划分为若干个段。每个段是一组完整的逻辑信息，例如有主程序段、子程序段、数据段及堆栈段等。每个段都有自己的名字，都是从0开始编址的一段连续的地址空间，各段的长度是不等的。</p>
+<p>分段系统的地址结构如：</p>
+<p><picture><img class="img-fluid " alt="分段的地址结构" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683184796335.png" loading="lazy" width="504" height="61" />
+</picture>
+
+</p>
+<p>段是信息的逻辑单位，其优点是易于实现段的共享，即允许若干个进程共享一个或多个段，而且对段的保护也十分简单。</p>
+<h2 id="段页式存储管理" data-numberify>段页式存储管理<a class="anchor ms-1" href="#段页式存储管理"></a></h2>
+<p>结合分页和分段存储管理方式，形成一种新的存储管理方式，即段页式存储管理。段页式系统有两种系统的优点。</p>
+<p>段页式系统的基本原理是：</p>
+<ol>
+<li>将整个主存划分成大小相等的存储块（页框）。</li>
+<li>将用户程序按程序的逻辑关系分为若干个段，并为每个段赋予一个段名。</li>
+<li>将每个段划分成若干页，以页框为单位离散分配。</li>
+</ol>
+<p>段页式地址空间的结构：</p>
+<p><picture><img class="img-fluid " alt="段页式的地址结构" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683185435872.png" loading="lazy" width="507" height="59" />
+</picture>
+
+</p>
+<hr>
+<h1 id="设备管理" data-numberify>设备管理<a class="anchor ms-1" href="#设备管理"></a></h1>
+<h2 id="缓冲技术" data-numberify>缓冲技术<a class="anchor ms-1" href="#缓冲技术"></a></h2>
+<p>缓冲技术可提高外设利用率，尽可能使外设处于忙状态。缓冲技术可以采用两种方式：</p>
+<ul>
+<li>硬件缓冲：利用专门的硬件寄存器作为缓冲；</li>
+<li>软件缓冲：通过操作系统来管理的。</li>
+</ul>
+<h3 id="单缓冲" data-numberify>单缓冲<a class="anchor ms-1" href="#单缓冲"></a></h3>
+<p>单缓冲工作过程图：</p>
+<p><picture><img class="img-fluid " alt="单缓冲工作过程图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683187166221.png" loading="lazy" width="601" height="138" />
+</picture>
+
+</p>
+<p>当第1块数据送入用户工作区后（进行数据处理），缓冲区是空闲的，可以传送第2块数据（输入）。即第1块数据的处理$C_1$与第2块数据的输入$T_2$是可以并行的，以此类推：</p>
+<p><picture><img class="img-fluid " alt="单缓冲并行工作示意图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683189558038.png" loading="lazy" width="1251" height="272" />
+</picture>
+
+</p>
+<p>若$T$为输入的时间，$M$为传输的时间，$C$为处理的时间系统对每一块数据的处理时间为：$Max(C, T) + M$：</p>
+<ul>
+<li>$T &gt; C$：处理时间为$M + T$；</li>
+<li>$T &lt; C$：处理时间为$M + C$。</li>
+</ul>
+<p>$n$个作业的单缓冲所花费的时间为：</p>
+<p>$$
+(Max(C, T) + M) \times n + Min(C, T)
+$$</p>
+<h3 id="双缓冲" data-numberify>双缓冲<a class="anchor ms-1" href="#双缓冲"></a></h3>
+<p>双缓冲进一步加快了I/O的速度，提高了设备的利用率。其工作基本过程是在设备输入时，先将数据输入到缓冲区1，装满后便转向缓冲区2。</p>
+<p>双缓冲工作过程图：</p>
+<p><picture><img class="img-fluid " alt="双缓冲工作过程图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683187304566.png" loading="lazy" width="586" height="141" />
+</picture>
+
+</p>
+<p>双缓冲的工作特点是，可以实现对缓冲中数据的输入$T$和提取$M$，与CPU的计算$C$，三者并行工作：</p>
+<p><picture><img class="img-fluid " alt="双缓冲并行工作示意图" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683189296831.png" loading="lazy" width="1147" height="257" />
+</picture>
+
+</p>
+<p>在双缓冲时，系统处理一块数据的时间可以粗略地认为是$Max(C, T)$：</p>
+<ul>
+<li>$C &lt; T$：可使块设备连续输入；</li>
+<li>$C &gt; T$：可使系统不必等待设备输入。</li>
+</ul>
+<p>$n$个作业的双缓冲所花费的时间为：</p>
+<p>$$
+Max(T, M, C) \times n + T + M + C - Max(T, M, C)
+$$</p>
+<p>即，</p>
+<p>$$
+Max(T, M, C) \times (n - 1) + T + M + C
+$$</p>
+<h2 id="磁盘调度算法" data-numberify>磁盘调度算法<a class="anchor ms-1" href="#磁盘调度算法"></a></h2>
+<ul>
+<li>
+<p><strong>先来先服务</strong>（First-Come First-Served，FCFS）：根据进程请求访问磁盘的先后次序进行调度。</p>
+<ul>
+<li>优点：公平、简单，且每个进程的请求都能依次得到处理，不会出现某进程的请求长期得不到满足的情况。</li>
+<li>缺点：此算法由于未对寻道进行优化，致使平均寻道时间可能较长。</li>
+</ul>
+</li>
+<li>
+<p><strong>最短寻道时间优先</strong>（Shortest Seek Time First，SSTF，最短移臂算法）：该算法选择这样的进程，其要求访问的磁道与当前磁头所在的磁道距离最近，使得每次的寻道时间最短。</p>
+<ul>
+<li>优点：可能会出现饥饿现象。</li>
+<li>缺点：不能保证平均寻道时间最短。</li>
+</ul>
+</li>
+<li>
+<p><strong>扫描算法</strong>（SCAN，电梯调度算法）：总是从磁头当前位置开始，沿磁头的移动方向去选择离当前磁头最近的那个柱面的请求。如果沿磁头的方向无请求访问时，就改变磁头的移动方向。</p>
+<p>在这种调度方法下磁头的移动类似于电梯的调度，所以它也称为电梯调度算法。</p>
+<ul>
+<li>优点：避免了饥饿现象的出现。</li>
+<li>缺点：当磁头刚从里向外移动过某一磁道时，恰有一进程请求访问此磁道，这时该进程必须等待，待磁头从里向外，再从外向里扫描完所有要访问的磁道后才处理该进程的请求，致使该进程的请求被严重地推迟。</li>
+</ul>
+</li>
+<li>
+<p><strong>单向扫描算法</strong>（CSCAN，循环扫描算法）：为了减少上述SCAN缺点中存在的这种延迟，算法规定磁头只做单向移动。</p>
+<p>例如，只是自里向外移动，从当前位置开始沿磁头的移动方向去选择离当前磁头最近的那个柱面访问，如果沿磁头的方向无请求访问时，磁头立即返回到最里面的欲访问的柱面，再亦即将最小柱面号紧接着最大柱面号构成循环，进行循环扫描。</p>
+</li>
+</ul>
+<h2 id="旋转调度算法" data-numberify>旋转调度算法<a class="anchor ms-1" href="#旋转调度算法"></a></h2>
+<p>旋转调度要考虑的问题是，当移动臂定位后，有多个进程等待访问该柱面时，应当如何决定这些进程的访问顺序。显然，系统应该选择延迟时间最短的进程对磁盘的扇区进行访问。</p>
+<p>当有若干等待进程请求访问磁盘上的信息时，旋转调度应考虑如下情况：</p>
+<ol>
+<li>进程请求访问的是同一磁道上不同编号的扇区。</li>
+<li>进程请求访问的是不同磁道上不同编号的扇区。</li>
+<li>进程请求访问的是不同磁道上具有相同编号的扇区。</li>
+</ol>
+<p>对于情况1和2，旋转调度总是让首先到达读/写磁头位置下的扇区先进行传送操作：对于情况3，旋转调度可以任选一个读/写磁头位置下的扇区进行传送操作。</p>
+<p>例如：</p>
+<p>假设磁盘旋转速度为20ms/圈，每读一个记录后处理需要4ms。若格式化时每个磁道被分为10个扇区，有10个逻辑记录存放在同一磁道上，其排序顺序如下图所示：</p>
+<p><picture><img class="img-fluid " alt="旋转调度算法例题排序表" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683254658689.png" loading="lazy" width="799" height="84" />
+</picture>
+
+</p>
+<p>初始时读写头停在记录A处，程序顺序处理这些记录（A～J）。</p>
+<p>顺序处理完这些记录的总时间：</p>
+<p><picture><img class="img-fluid " alt="初始逻辑记录分布情况" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683268410250.png" loading="lazy" width="322" height="311" />
+</picture>
+
+</p>
+<ol>
+<li>
+<p>经过一个扇区的时间 $= 20ms /10 = 2ms$。</p>
+</li>
+<li>
+<p>处理完A，磁盘转到读写头指向B开始处时，这个过程的时间为$2ms + 20ms = 22ms$。</p>
+<p>因为磁盘是一直在旋转的，而读取A扇区（2ms）后，处理A扇区花费4ms。此时磁盘可以再经过两个扇区，来到记录D的开始处。</p>
+<p>为了顺序处理记录，磁盘需要再旋转8个扇区回到B开始处。相当于处理完A后磁盘需要再旋转一圈以开始读取B。这样一个过程所耗费的时间即为$2ms + 20ms = 22ms$。</p>
+</li>
+<li>
+<p>顺序处理完所有记录的总时间 $= 9 \times (2ms + 20ms) + 2ms + 4ms = 204ms$。</p>
+<p>前9个记录（A～J）的一个过程所耗费的时间是一样的（$ 9 \times (2ms + 20ms)$）。</p>
+<p>当处理完记录I并旋转到J开始处时，只需要读取J（2ms）并且处理完（4ms）即可。这个过程的时间应为（$2ms + 4ms$）。</p>
+</li>
+</ol>
+<p>记录优化分布方案：</p>
+<p>让下一个要读取的记录，刚好在上一个记录处理完成后读写头所停的扇区。</p>
+<p><picture><img class="img-fluid " alt="优化后记录的分布情况" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683268275593.png" loading="lazy" width="370" height="358" />
+</picture>
+
+</p>
+<p>优化后的总时间 $= 10 \times (2ms + 4ms) = 60ms$。</p>
+<p>设$n$个扇区的磁盘，经过一个扇区的时间为$t$，读取一个记录后处理的时间为$c$，那么：</p>
+<ul>
+<li>
+<p>顺序处理完所有记录的总时间为：</p>
+<p>$$
+(t + nt) (n-1) + t + c
+$$</p>
+<p>即：</p>
+<p>$$
+t \times n^2 + c
+$$</p>
+</li>
+<li>
+<p>记录优化后的总时间：</p>
+<p>$$
+n(t + c)
+$$</p>
+</li>
+</ul>
+<hr>
+<h1 id="文件管理" data-numberify>文件管理<a class="anchor ms-1" href="#文件管理"></a></h1>
+<h2 id="多级索引结构" data-numberify>多级索引结构<a class="anchor ms-1" href="#多级索引结构"></a></h2>
+<p>磁盘索引是指在索引表中记录磁盘的地址项，地址项直接或间接地记录了磁盘数据块的地址。</p>
+<p>磁盘索引有以下几种结构：</p>
+<ul>
+<li>
+<p><strong>直接索引</strong>：索引表中的地址项直接指向磁盘数据块。</p>
+<p><picture><img class="img-fluid " alt="直接索引" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683271855209.png" loading="lazy" width="670" height="659" />
+</picture>
+
+</p>
+</li>
+<li>
+<p><strong>一级间接地址索引</strong>：索引表中的地址项指向一个磁盘索引块。这个索引块中的记录是地址项，这些地址项直接指向磁盘数据块。</p>
+<p>称这个磁盘索引块为<strong>一级索引块</strong>。</p>
+<p><picture><img class="img-fluid " alt="一级间接地址索引" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683274982800.png" loading="lazy" width="904" height="737" />
+</picture>
+
+</p>
+</li>
+<li>
+<p><strong>二级间接地址索引</strong>：索引表中的地址项指向一个磁盘索引块。这个索引块中的一个记录指向一个一级索引块。</p>
+<p>称这个记录指向一级索引块的磁盘索引块为<strong>二级索引块</strong>。</p>
+<p><picture><img class="img-fluid " alt="二级间接地址索引" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683275164015.png" loading="lazy" width="1121" height="784" />
+</picture>
+
+</p>
+</li>
+</ul>
+<h2 id="文件目录" data-numberify>文件目录<a class="anchor ms-1" href="#文件目录"></a></h2>
+<ul>
+<li>
+<p><strong>文件控制块</strong>（FCB）：用于文件的描述和控制的数据结构，实现了文件的“按名存取”。</p>
+<p>文件控制块至少要包括文件名和存放文件的物理地址。</p>
+<p>文件控制块也称为<strong>文件的说明</strong>或<strong>文件目录项</strong>（简称<strong>目录项</strong>）。</p>
+</li>
+<li>
+<p><strong>文件目录</strong>：文件控制块的有序集合。</p>
+<p>即文件目录是由文件控制块组成的，专门用于文件的检索。</p>
+</li>
+</ul>
+<h3 id="文件控制块" data-numberify>文件控制块<a class="anchor ms-1" href="#文件控制块"></a></h3>
+<p>文件控制块中包含以下信息：</p>
+<ul>
+<li>
+<p>基本信息类：例如文件名、文件的物理地址、文件长度和文件块数等。</p>
+</li>
+<li>
+<p>存取控制信息类：文件的存取权限。</p>
+<p>UNIX中，用户分成三类：</p>
+<ul>
+<li>文件主用户</li>
+<li>同组用户</li>
+<li>一般用户</li>
+</ul>
+<p>以上三类用户对文件的权限为：</p>
+<ul>
+<li>读</li>
+<li>写</li>
+<li>执行</li>
+</ul>
+</li>
+<li>
+<p>使用信息类：文件建立日期、最后一次修改日期、最后一次访问的日期、当前使用的
+信息（如打开文件的进程数、在文件上的等待队列）等。</p>
+</li>
+</ul>
+<h3 id="目录结构" data-numberify>目录结构<a class="anchor ms-1" href="#目录结构"></a></h3>
+<p>组织好文件的目录是设计文件系统的重要环节，文件目录结构的组织方式直接影响到文件的存取速度，关系到文件的共享性和安全性。</p>
+<p>常见的目录结构有：</p>
+<ul>
+<li>
+<p><strong>一级目录结构</strong>：一级目录的整个目录组织是一个<!-- raw HTML omitted -->线性结构<!-- raw HTML omitted -->，在整个系统中<!-- raw HTML omitted -->只需建立一张目录表<!-- raw HTML omitted -->，系统为每个文件分配一个目录项。</p>
+<p>优点：结构简单；</p>
+<p>缺点：查找速度慢，不允许重名和不便于实现文件共享等。</p>
+<p>主要用在单用户环境中。</p>
+</li>
+<li>
+<p><strong>二级目录结构</strong>：为了克服一级目录结构存在的缺点引入了二级目录结构。</p>
+<p>二级目录结构的组成为：</p>
+<ul>
+<li><strong>主文件目录</strong>（Master File Directory，MFD）：每个用户文件目录都占有一个目录项，其目录项中包括用户名和指向该用户目录文件的指针；</li>
+<li><strong>用户目录</strong>（User File Directory，UFD）：由用户所有文件的目录项组成的。</li>
+</ul>
+<p>优点：提高了检索目录的速度，较好地解决了重名问题。</p>
+<p>缺点：该结构虽然能有效地将多个用户隔离开（这种隔离在各个用户之间完全无关时是一个优点），但当多个用户之间要相互合作去共同完成一个大任务，且一个用户又需要去访问其他用户的文件时，这种隔离便成为一个缺点，因为这种隔离使诸用户之间不便于共享文件。</p>
+</li>
+<li>
+<p><strong>多级目录结构</strong>：在多道程序设计系统中常采用多级目录结构。</p>
+<p>多级目录结构是树型目录结构。从根结点向下，每一个结点是一个目录，叶结点是文件。</p>
+<p>在采用多级目录结构的文件系统中，用户要访问一个文件，必须指出文件所在的路径名：</p>
+<ul>
+<li>
+<p><strong>路径名</strong>：从某个目录开始到该文件的通路上所有各级目录名拼起来得到的。</p>
+<p>在各目录名之间、目录名与文件名之间需要用分隔符隔开。</p>
+</li>
+<li>
+<p><strong>绝对路径名</strong>（Absolute Path Name）：指从根目录开始的完整路径。</p>
+<p><strong>全文件名</strong>：指绝对路径名加上该文件的文件名。</p>
+</li>
+<li>
+<p><strong>相对路径名</strong>：从当前所在目录开始到其他目录或文件的路径。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="位示图" data-numberify>位示图<a class="anchor ms-1" href="#位示图"></a></h2>
+<p>位示图（Bitmap）是一种空闲空间管理方法。通过在外存上建立一张位示图，记录文件存储器的使用情况。</p>
+<p>位示图用二进制的一位来表示一个物理块的使用情况：</p>
+<ul>
+<li><code>0</code>：表示空闲；</li>
+<li><code>1</code>：表示占用。</li>
+</ul>
+<p>例如：</p>
+<p><picture><img class="img-fluid " alt="位示图示例" src="/blog/2023/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/uTools_1683253664111.png" loading="lazy" width="569" height="256" />
+</picture>
+
+</p>
+<p>位示图的大小由磁盘空间的大小（物理块总数）决定。</p>
+<p>位示图的描述能力强，适合各种物理结构。</p>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://hbs-skeleton.netlify.app/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://hbs-skeleton.netlify.app/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/blog/2023/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87/">数据结构篇</a>
+    </div><div class="post-nav post-next">
+      <a href="/blog/2023/04/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83%E7%AF%87/">知识产权篇</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87/">
+    数据结构篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月8日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/03/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AF%87/">
+    程序设计语言篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年3月30日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%AF%87/">
+    计算机系统篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年3月24日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        Profile
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Linner" src="https://hbs-skeleton.netlify.app/images/avatar.jpg" loading="lazy" data-viewer-invisible width="460" height="460" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我们</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link" target="_blank" href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss" style="color: #ea6221;"></i>
+  </a>
+</nav>
+</div>
+  </div>
+</div>
+
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                Taxonomies
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                        <a href="/categories/ruanshe/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="RuanShe">
+                            RuanShe
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/categories/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+                        </a>
+                        <a href="/categories/springboot/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="SpringBoot">
+                            SpringBoot
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                        <a href="/categories/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">1</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">18</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%B8%88/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软件设计师">
+                            软件设计师
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">8</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/tomcat/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Tomcat">
+                            Tomcat
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/%E7%AE%97%E6%B3%95/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="算法">
+                            算法
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/linux/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Linux">
+                            Linux
+                            <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+                        </a>
+                        <a href="https://hbs-skeleton.netlify.app/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">70</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">48</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="/archives/2023/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+    </a>
+
+    <a href="/archives/2022/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">27</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/07/nacos-server-%E9%83%A8%E7%BD%B2/">
+        Nacos Server 部署
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年7月24日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/">
+        概念总结篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月25日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/">
+        软考图类汇总篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月20日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E7%AF%87/">
+        算法设计与分析篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月17日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/blog/2023/05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AF%87/">
+        计算机网络篇
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年5月12日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#进程管理">进程管理</a>
+      <ul>
+        <li><a href="#程序执行顺序">程序执行顺序</a>
+          <ul>
+            <li><a href="#程序顺序执行">程序顺序执行</a></li>
+            <li><a href="#程序并发执行">程序并发执行</a></li>
+          </ul>
+        </li>
+        <li><a href="#进程的三态模型">进程的三态模型</a></li>
+        <li><a href="#进程间的通信">进程间的通信</a>
+          <ul>
+            <li><a href="#同步和互斥">同步和互斥</a></li>
+            <li><a href="#信号量机制">信号量机制</a></li>
+            <li><a href="#pv操作">PV操作</a></li>
+            <li><a href="#死锁现象">死锁现象</a></li>
+            <li><a href="#死锁的处理">死锁的处理</a></li>
+            <li><a href="#银行家算法">银行家算法</a></li>
+          </ul>
+        </li>
+        <li><a href="#线程">线程</a></li>
+      </ul>
+    </li>
+    <li><a href="#存储管理">存储管理</a>
+      <ul>
+        <li><a href="#程序局部性原理">程序局部性原理</a></li>
+        <li><a href="#分页存储管理">分页存储管理</a></li>
+        <li><a href="#分段存储管理">分段存储管理</a></li>
+        <li><a href="#段页式存储管理">段页式存储管理</a></li>
+      </ul>
+    </li>
+    <li><a href="#设备管理">设备管理</a>
+      <ul>
+        <li><a href="#缓冲技术">缓冲技术</a>
+          <ul>
+            <li><a href="#单缓冲">单缓冲</a></li>
+            <li><a href="#双缓冲">双缓冲</a></li>
+          </ul>
+        </li>
+        <li><a href="#磁盘调度算法">磁盘调度算法</a></li>
+        <li><a href="#旋转调度算法">旋转调度算法</a></li>
+      </ul>
+    </li>
+    <li><a href="#文件管理">文件管理</a>
+      <ul>
+        <li><a href="#多级索引结构">多级索引结构</a></li>
+        <li><a href="#文件目录">文件目录</a>
+          <ul>
+            <li><a href="#文件控制块">文件控制块</a></li>
+            <li><a href="#目录结构">目录结构</a></li>
+          </ul>
+        </li>
+        <li><a href="#位示图">位示图</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss" style="color: #ea6221;"></i>
+  </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.7ed611384ed3d2bea961263bcffe4c0a570fc3680cc55ec37628d41464defa51.js" integrity="sha256-ftYROE7T0r6pYSY7z/5MClcPw2gMxV7DdijUFGTe&#43;lE=" crossorigin="anonymous" async></script><script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" integrity="sha256-TzDVJnqfL51F7ZOWnUXsYmEAqWmouR9x91MxWiYekDQ=" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" integrity="sha256-Cg0AmZNb7uQbenv0VDzVXnk&#43;X4MKVxsHlO&#43;MNgLFgjw=" crossorigin="anonymous" defer></script>
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" integrity="sha256-ObfMEbO/uU4HIIT4S65Fyl/r3tp0NQzK&#43;6BAqW6aURM=" crossorigin="anonymous"></script>
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>
