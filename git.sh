@@ -1,37 +1,32 @@
 #!/bin/bash
-function public_git(){
-    cd ../..
-    echo "-------------MYBLOG-------------"
-    ./git.sh $1 $2
-    cd content/post
-}
 
-function add(){
-    echo "自动缓存"
+### 配置信息-START ###
+WORK_DIR="/root/myblog" # 工作目录
+CONTENT_DIR="content"   # 内容目录（工作目录的相对路径）
+PUBLIC_DIR="public"     # 生成的网站页面的目录（工作目录的相对路径）
+### 配置信息-END ###
+
+add_all(){
     git add --all
 }
 
-function commit(){
-    echo "自动缓存并提交"
-    echo "--------------------------------"
-    add
-    echo "--------------------------------"
-    echo "提交所有缓存"
+commit(){
+    add_all
     git commit -m "$1"
 }
 
-function push(){
-    echo "自动缓存提交并同步更改"
-    echo "--------------------------------"
+push(){
     commit $1
     echo "--------------------------------"
-    echo "同步更改"
     git push
 }
 
-function param(){
-    echo "--------------POST--------------"
+cd_public(){
+    cd "$PUBLIC_DIR"
+}
 
+# 命令参数解析
+param(){
     if [ "$1" == "add" ]
     then
         add
@@ -46,13 +41,20 @@ function param(){
     fi
 }
 
-if [ "$1" == "blog" ]
+cd $WORK_DIR
+
+if [ "$1" == "public" ]
 then
-    public_git $2 $3
+    cd_public
+    param $2 $3
 elif [ "$1" == "all" ]
 then
     param $2 $3
-    public_git $2 $3
+    echo "--------------------------------"
+    hugo
+    echo "--------------------------------"
+    cd_public
+    param $2 $3
 elif [[ "$1" == "add" || "$1" == "commit" || "$1" == "push" ]]
 then
     param $1 $2
