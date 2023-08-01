@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Nacos 部署">
 <meta itemprop="description" content="本地部署 Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问Nacos项目仓库，你可以选择将该项目clone到本"><meta itemprop="datePublished" content="2023-07-24T02:58:36+08:00" />
 <meta itemprop="dateModified" content="2023-07-24T02:58:36+08:00" />
-<meta itemprop="wordCount" content="3646">
+<meta itemprop="wordCount" content="3644">
 <meta itemprop="keywords" content="Spring,Maven,Nacos,Docker,环境搭建," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -352,7 +352,15 @@ Linner
           </div>
           <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-9381102fbed42e351f5da17ba517eda6">
             <div class="btn-toggle-nav fw-normal ms-2 small">
-              <ul class="list-unstyled mb-2 w-100"></ul>
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/introduction/"><span class="docs-nav-title">Docker 介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/container-options/"><span class="docs-nav-title">Container Options</span></a>
+        </li></ul>
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
@@ -753,10 +761,10 @@ server {
 <p>使用Docker创建的MySQL容器同样需要创建<code>nacos</code>数据库。可以通过文件挂载的方式将<code>mysql-schema.sql</code>挂载到容器中，或者通过其它文件传输方式传输到容器中。
 在容器中创建数据库可以在本机输入命令（假设<code>mysql-schema.sql</code>导入到了容器的<code>root</code>目录中）：</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> -ti mysql mysql -uroot -proot -e <span class="s2">&#34;CREATE DATABASE nacos; USE nacos; SOURCE /root/mysql-schema.sql;&#34;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -proot -e <span class="s2">&#34;CREATE DATABASE nacos; USE nacos; SOURCE /root/mysql-schema.sql;&#34;</span>
 </span></span></code></pre></div><p>上方命令第一个<code>mysql</code>是指容器名称，第二个是指容器中的<code>mysql</code>命令。</p>
 <p>或者是在本地使用Docker登录MySQL后进行操作：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> -ti mysql mysql -uroot -p
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -p
 </span></span><span class="line"><span class="cl"><span class="c1"># 然后输入你的密码，回车</span>
 </span></span><span class="line"><span class="cl">mysql&gt; CREATE DATABASE nacos<span class="p">;</span>
 </span></span><span class="line"><span class="cl">mysql&gt; USE nacos<span class="p">;</span>
