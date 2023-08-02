@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Spring Cloud | Linner&#39;s Blog</title>
+    <title>Dockerfile | Linner&#39;s Blog</title>
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
@@ -13,22 +13,29 @@
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
 <meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile" />
     <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Spring Cloud"/>
-<meta name="twitter:description" content=""/>
-<meta property="og:title" content="Spring Cloud" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/docs/spring/springcloud/" />
+<meta name="twitter:title" content="Dockerfile"/>
+<meta name="twitter:description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile"/>
+<meta property="og:title" content="Dockerfile" />
+<meta property="og:description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/docker/dockerfile/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2023-08-01T14:26:03+00:00" />
+<meta property="article:modified_time" content="2023-08-01T14:26:03+00:00" />
+<meta property="og:see_also" content="/docs/docker/container-options/" /><meta property="og:see_also" content="/docs/docker/images-options/" /><meta property="og:see_also" content="/docs/docker/docker-hub/" /><meta property="og:see_also" content="/docs/docker/introduction/" />
 
-<meta itemprop="name" content="Spring Cloud">
-<meta itemprop="description" content="">
+<meta itemprop="name" content="Dockerfile">
+<meta itemprop="description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile"><meta itemprop="datePublished" content="2023-08-01T14:26:03+00:00" />
+<meta itemprop="dateModified" content="2023-08-01T14:26:03+00:00" />
+<meta itemprop="wordCount" content="1014">
+<meta itemprop="keywords" content="Docker," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
-  <meta property="og:image:alt" content="Spring Cloud" />
-  <meta name="twitter:image:alt" content="Spring Cloud" />
+  <meta property="og:image:alt" content="Dockerfile" />
+  <meta name="twitter:image:alt" content="Dockerfile" />
   <link rel="manifest" href="/manifest.json">
-<link rel="alternate" type="application/rss+xml" href="/docs/spring/springcloud/index.xml" title="Linner's Blog" />
+
 <link data-precache rel="stylesheet" href="/assets/main/bundle.min.63881d543b8598f2443e93c3ece2d353658cb5b67788cb681ad9e28e39f01632.css" crossorigin="anonymous">
 
 
@@ -156,7 +163,7 @@ Linner
           ></i>
         <span class="ms-1 d-xxl-none">Github</span>
       </a>
-  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="/docs/spring/springcloud/index.xml" title="RSS" rel="me">
+  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="/index.xml" title="RSS" rel="me">
     <i class="fas fa-fw fa-rss"></i>
     <span class="ms-1 d-xxl-none">RSS</span>
   </a>
@@ -337,14 +344,14 @@ Linner
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
     </div>
     <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/"><span class="docs-nav-title">Docker</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-9381102fbed42e351f5da17ba517eda6" aria-expanded="false" aria-controls="nav-9381102fbed42e351f5da17ba517eda6">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-9381102fbed42e351f5da17ba517eda6" aria-expanded="true" aria-controls="nav-9381102fbed42e351f5da17ba517eda6">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-9381102fbed42e351f5da17ba517eda6">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-9381102fbed42e351f5da17ba517eda6">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/introduction/"><span class="docs-nav-title">Docker 介绍</span></a>
@@ -354,20 +361,20 @@ Linner
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
-        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
         </li></ul>
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/"><span class="docs-nav-title">Spring</span></a>
-            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b" aria-expanded="true" aria-controls="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b" aria-expanded="false" aria-controls="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
           <div class="py-1 d-flex justify-content-between align-items-center ms-3">
@@ -447,14 +454,14 @@ Linner
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
-            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-f03e9a6ffb896ed89385de43b461a0d5" aria-expanded="true" aria-controls="nav-f03e9a6ffb896ed89385de43b461a0d5">
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f03e9a6ffb896ed89385de43b461a0d5" aria-expanded="false" aria-controls="nav-f03e9a6ffb896ed89385de43b461a0d5">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-f03e9a6ffb896ed89385de43b461a0d5">
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-f03e9a6ffb896ed89385de43b461a0d5">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/springcloud-base/"><span class="docs-nav-title">Spring 微服务基础</span></a>
@@ -504,53 +511,320 @@ Linner
         </li></ul></div>
   </div>
 </aside><div class="col-xxl-7 ms-auto">
-  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body pb-0">
-    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">文档</a></li><li class="breadcrumb-item text-surface"><a href="/docs/spring/">Spring</a></li><li class="breadcrumb-item active">Spring Cloud</li></ol>
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">文档</a></li><li class="breadcrumb-item text-surface"><a href="/docs/docker/">Docker</a></li><li class="breadcrumb-item active">Dockerfile</li></ol>
   </div>
-</nav><div class="posts mb-4"><article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/spring/springcloud/nacos-deploy/">Nacos 部署</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-07-23 18:58:36 &#43;0000 UTC。">2023年7月24日</span><span class="post-reading-time me-1 mb-1">8 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/memo/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>备忘录</a><a href="/tags/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Docker</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/nacos/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Nacos</a><a href="/tags/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Spring</a><a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">环境搭建</a>
-</div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
 
-    <div class="post-summary"><p>本地部署 Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问Nacos项目仓库，你可以选择将该项目clone到本地自己打包后部署，也可以选择直接访问Nacos...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/spring/springcloud/nacos-deploy/">阅读更多</a></div>
-    </div>
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
   </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/spring/springcloud/springcloud-base/">Spring 微服务基础</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-06-26 03:46:12 &#43;0000 UTC。">2023年6月26日</span><span class="post-reading-time me-1 mb-1">44 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">Dockerfile</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-08-01 14:26:03 &#43;0000 UTC。">2023年8月1日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
-      <i class="fas fa-fw fa-columns me-1"></i>Spring</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/springcloud/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">SpringCloud</a>
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Docker</a><a href="/tags/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Docker</a>
 </div>
 
-    <div class="post-summary"><p>简介 微服务架构 从前的项目是使用单体架构，单体架构是指将业务的所有功能集中在一个项目中开发，打成一个包部署。
-单体架构的优点是：
-架构简单； 部署成本低。 缺点是模块之间的耦合度高，不利于大型项目开...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/spring/springcloud/springcloud-base/">阅读更多</a></div>
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><p>常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。</p>
+<h1 id="镜像结构" data-numberify>镜像结构<a class="anchor ms-1" href="#镜像结构"></a></h1>
+<p>镜像是将应用程序及其需要的系统函数库、环境、配置、依赖打包而成。</p>
+<p>以MySQL镜像的组成结构为例：</p>
+<p><picture><img class="img-fluid " alt="MySQL镜像的组成结构" src="/docs/docker/dockerfile/image-20210731175806273.png" loading="lazy" width="2956" height="1674" />
+</picture>
+
+</p>
+<p>镜像就是在系统函数库、运行环境基础上，添加应用程序文件、配置文件、依赖文件等组合，然后编写好启动脚本打包在一起形成的文件。构建镜像，其实就是实现上述打包的过程。</p>
+<h1 id="语法" data-numberify>语法<a class="anchor ms-1" href="#语法"></a></h1>
+<p>构建自定义的镜像时，并不需要一个个文件去拷贝，打包。我们只需要告诉Docker，镜像的组成，需要哪些BaseImage、需要拷贝什么文件、需要安装什么依赖、启动脚本是什么。Dockerfile就是描述上述信息的文件。Docker会通过Dockerfile构建镜像。</p>
+<p>Dockerfile是一个文本文件，其中包含一个个的指令(Instruction），用指令来说明要执行什么操作来构建镜像。每一个指令都会形成一层Layer。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>FROM</code></td>
+<td style="text-align:left">指定基础镜像。必须在Dockerfile的第一行指定。</td>
+<td style="text-align:left"><code>FORM centos:6</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ENV</code></td>
+<td style="text-align:left">设置环境变量。在使用<code>docker run</code>时可以通过<code>-e</code>重设环境变量值。</td>
+<td style="text-align:left"><code>ENV key=value</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>COPY</code></td>
+<td style="text-align:left">拷贝本地文件到镜像的指定目录。</td>
+<td style="text-align:left">复制当前目录下的<code>mysql-5.7.rpm</code>到镜像的<code>/tmp</code>目录：<br><code>COPY ./mysql-5.7.rpm /tmp</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>RUN</code></td>
+<td style="text-align:left">执行Linux的Shell命令，一般是安装过程的命令。</td>
+<td style="text-align:left"><code>RUN yum install gcc</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>EXPOSE</code></td>
+<td style="text-align:left">指定容器运行时监听的端口，是给镜像使用者看到。</td>
+<td style="text-align:left"><code>EXPOSE 8080</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ENTRYPOINT</code></td>
+<td style="text-align:left">镜像中应用的启动命令，容器运行时调用。</td>
+<td style="text-align:left"><code>ENTRYPOINT java -jar xxx.jar</code></td>
+</tr>
+</tbody>
+</table>
+<p>更新详细语法说明，请参考官网文档：<a href="https://docs.docker.com/engine/reference/builder" target="_blank" rel="noopener noreferrer">Dockerfile reference<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>在使用Ubuntu、Debian这样的容器的时候，我们可能没办法使用它们的<code>systemctl</code>命令。这是因为它们在启动时默认没有初始化系统（<code>init</code>进程没有运行）。新的Debian和Ubuntu镜像中移除了<code>init</code>软件包，我们可以通过Dockerfile在创建一个包含<code>init</code>软件包的Debian镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> debian:latest</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 设置环境变量</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">APT_ETC_DIR</span><span class="o">=</span>/etc/apt <span class="nv">SOURCES_LIST_PATH</span><span class="o">=</span>./sources.list<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 将在本地配置好的镜像源文件拷贝到镜像</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> <span class="nv">$SOURCES_LIST_PATH</span> <span class="nv">$APT_DIR</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 更换镜像源</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> apt-get update<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装init软件包</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get install init -y<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装ssh</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get install -y openssh-server<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get clean all<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 暴露端口</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 22</span><span class="err">
+</span></span></span></code></pre></div><p>接着通过<code>docker build</code>命令构建镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker build -f ./Dockerfile . -t linner/debian
+</span></span></code></pre></div><p>然后使用以下命令运行容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -ti <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name my-debian <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">SOURCES_LIST_PATH</span><span class="o">=</span>/etc/apt/sources.list <span class="se">\ </span>   <span class="c1"># 把本地上使用的镜像源配置拷贝到容器中</span>
+</span></span><span class="line"><span class="cl">    linner/debian <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /sbin/init      <span class="c1"># 启动时运行init</span>
+</span></span></code></pre></div></div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
     </div>
   </div>
-</article>
-</div><div class="row table-responsive mb-3"></div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/docs/docker/container-options/">Docker 容器操作</a>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/">
+    软考概念总结篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年5月25日
+
+  </div>
 </div>
 
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/">
+    软考图类汇总篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年5月20日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/02/java-%E8%BF%9B%E9%98%B6/">
+    Java 进阶
+  </a>
+  <div class="post-meta mb-0">
+    2023年2月14日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/09/linux-%E7%BB%88%E7%AB%AF%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%AE%BE%E7%BD%AE/">
+    Linux 终端中文编码设置
+  </a>
+  <div class="post-meta mb-0">
+    2022年9月13日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/09/%E9%9B%86%E5%90%88%E8%AE%BA/">
+    集合论
+  </a>
+  <div class="post-meta mb-0">
+    2022年9月2日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
 </div>
 <aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
   <div class="container">
     
-    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#镜像结构">镜像结构</a></li>
+    <li><a href="#语法">语法</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
     
 
   </div>
@@ -622,7 +896,7 @@ Linner
         <i class="fa-fw fa-2x fab fa-zhihu"
            style="color: #056de8;"></i>
       </a>
-  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="/docs/spring/springcloud/index.xml" title="RSS" rel="me">
+  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="/index.xml" title="RSS" rel="me">
     <i class="fas fa-fw fa-2x fa-rss" style="color: #ea6221;"></i>
   </a>
 </nav>
@@ -640,6 +914,7 @@ Linner
 
 
 <script src="/js/sw-register.js" defer></script>
+
 
   </body>
 </html>
