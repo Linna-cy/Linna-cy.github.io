@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Nacos 部署">
 <meta itemprop="description" content="本地部署 Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问Nacos项目仓库，你可以选择将该项目clone到本"><meta itemprop="datePublished" content="2023-07-24T02:58:36+08:00" />
 <meta itemprop="dateModified" content="2023-07-24T02:58:36+08:00" />
-<meta itemprop="wordCount" content="3644">
+<meta itemprop="wordCount" content="4086">
 <meta itemprop="keywords" content="Spring,Maven,Nacos,Docker,环境搭建," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -550,7 +550,7 @@ Linner
     <h1 class="card-title post-title my-2">Nacos 部署</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-07-23 18:58:36 &#43;0000 UTC。">2023年7月24日</span><span class="post-reading-time me-1 mb-1">8 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-07-23 18:58:36 &#43;0000 UTC。">2023年7月24日</span><span class="post-reading-time me-1 mb-1">9 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/memo/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>备忘录</a><a href="/tags/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Docker</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/nacos/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Nacos</a><a href="/tags/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Spring</a><a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">环境搭建</a>
 </div>
@@ -759,22 +759,7 @@ server {
 </ol>
 <p>之后在加入这个Network的容器中，可以将它们的容器名当作IP地址来使用。所以在<code>nacos-server</code>中可以将<code>db.url</code>修改为如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://mysql:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
-</span></span></code></pre></div><blockquote>
-<p>使用Docker创建的MySQL容器同样需要创建<code>nacos</code>数据库。可以通过文件挂载的方式将<code>mysql-schema.sql</code>挂载到容器中，或者通过其它文件传输方式传输到容器中。
-在容器中创建数据库可以在本机输入命令（假设<code>mysql-schema.sql</code>导入到了容器的<code>root</code>目录中）：</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -proot -e <span class="s2">&#34;CREATE DATABASE nacos; USE nacos; SOURCE /root/mysql-schema.sql;&#34;</span>
-</span></span></code></pre></div><p>上方命令第一个<code>mysql</code>是指容器名称，第二个是指容器中的<code>mysql</code>命令。</p>
-<p>或者是在本地使用Docker登录MySQL后进行操作：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -p
-</span></span><span class="line"><span class="cl"><span class="c1"># 然后输入你的密码，回车</span>
-</span></span><span class="line"><span class="cl">mysql&gt; CREATE DATABASE nacos<span class="p">;</span>
-</span></span><span class="line"><span class="cl">mysql&gt; USE nacos<span class="p">;</span>
-</span></span><span class="line"><span class="cl">mysql&gt; SOURCE /root/mysql-schema.sql<span class="p">;</span>
-</span></span></code></pre></div><blockquote>
-<p>注：使用Docker部署Nacos，并使用MySQL数据库，按照上述方法直接修改配置文件可能不生效（可能会导致Nacos容器无法启动）。其实使用Docker部署并使用MySQL数据库还有一个简便的方法（见下方）。</p>
-</blockquote>
-<p>如果上述方式无法生效，可以先删除该容器后通过在创建容器的Docker命令中直接指定MySQL服务的配置信息：</p>
+</span></span></code></pre></div><p>其实使用Docker部署并使用MySQL数据库还有一个简便的方法（按照上述方法直接修改配置文件可能不生效），可以在创建容器的Docker命令中通过<code>nacos-server</code>提供的环境变量直接指定MySQL服务的配置信息（<code>nacos-server</code>容器在创建时会自动生成对应的配置文件）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -d <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name nacos-server <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 8848:8848 <span class="se">\
@@ -792,7 +777,36 @@ server {
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">JVM_XMS</span><span class="o">=</span>256m -e <span class="nv">JVM_XMX</span><span class="o">=</span>256m <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    nacos/nacos-server <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    /usr/sbin/init
-</span></span></code></pre></div><hr>
+</span></span></code></pre></div><blockquote>
+<p>使用Docker创建的MySQL容器同样需要创建<code>nacos</code>数据库。可以通过其它文件传输方式传输到容器中（这种方式适用于你有一个已经在运行的MySQL容器）。</p>
+<p>在容器中创建数据库可以在本机输入命令（假设<code>mysql-schema.sql</code>导入到了容器的<code>root</code>目录中）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -proot -e <span class="s2">&#34;CREATE DATABASE nacos; USE nacos; SOURCE /root/mysql-schema.sql;&#34;</span>
+</span></span></code></pre></div><p>上方命令第一个<code>mysql</code>是指容器名称，第二个是指容器中的<code>mysql</code>命令。</p>
+<p>或者是在本地使用Docker登录MySQL后进行操作：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 然后输入你的密码，回车</span>
+</span></span><span class="line"><span class="cl">mysql&gt; CREATE DATABASE nacos<span class="p">;</span>
+</span></span><span class="line"><span class="cl">mysql&gt; USE nacos<span class="p">;</span>
+</span></span><span class="line"><span class="cl">mysql&gt; SOURCE /root/mysql-schema.sql<span class="p">;</span>
+</span></span></code></pre></div></blockquote>
+<p>推荐使用Dockerfile方式创建一个包含<code>nacos</code>数据库的MySQL容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> mysql:5.7</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span>
+</span></span><span class="line"><span class="cl"><span class="k">ENV</span> <span class="nv">LANG</span><span class="o">=</span>C.UTF-8<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./mysql-schema.sql /docker-entrypoint-initdb.d<span class="err">
+</span></span></span></code></pre></div><p>这是利用MySQL镜像的机制。MySQL容器在创建时会自动执行<code>/docker-entrypoint-initdb.d</code>目录下的<code>.sh</code>、<code>.sql</code>等文件。因为Nacos官方提供的<code>mysql-schema.sql</code>中并没有创建数据库和使用数据库的SQL语句，所以在创建容器之前还需要对<code>mysql-schema.sql</code>稍加修改。在<code>mysql-schema.sql</code>里面最上方添加这么两句：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nacos</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="n">USE</span><span class="w"> </span><span class="n">nacos</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>需要注意的是这里的数据库名称要和创建<code>nacos-server</code>时配置的一致。</p>
+<p>然后将<code>mysql-schema.sql</code>复制到与Dockerfile同级的目录中（或者你也可以在Dockerfile将<code>mysql-schema.sql</code>的路径修改到你想要的位置）。接着使用<code>docker build</code>命令构建镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker build -f .<span class="se">\D</span>ockerfile . -t linner/mysql-nacos
+</span></span></code></pre></div><p>最后使用<code>docker run</code>运行容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -id --name mysql-nacos -p 3306:3306 linner/nacos-mysql
+</span></span></code></pre></div><blockquote>
+<p>因为一些配置在Dockerfile提前设置过了，所以这条构建MySQL容器的命令十分简洁。</p>
+</blockquote>
+<hr>
 <h1 id="基于-docker-搭建-nacos-集群" data-numberify>基于 Docker 搭建 Nacos 集群<a class="anchor ms-1" href="#基于-docker-搭建-nacos-集群"></a></h1>
 <p>基于Docker搭建Nacos集群，首先可以创建一个用于创建集群模式Nacos的脚本<code>create_nacos.sh</code>（使用MySQL）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">name</span><span class="o">=</span><span class="nv">$1</span>
