@@ -601,11 +601,11 @@ Linner
 <hr>
 <h1 id="异步通讯" data-numberify>异步通讯<a class="anchor ms-1" href="#异步通讯"></a></h1>
 <p>异步调用可以避免上述同步通讯时造成的问题。</p>
-<p>在异步通讯中，使用事件（Event）和代理（Broker）处理通讯。在异步通讯中有三种角色：</p>
+<p>在异步通讯中，使用<strong>事件</strong>（<strong>Event</strong>）和<strong>代理</strong>（<strong>Broker</strong>）处理通讯。在异步通讯中有三种角色：</p>
 <ul>
-<li>事件发布者（Publisher）：Publisher在处理完自己的业务后，发布一个事件给Broker。</li>
-<li>事件代理者（Broker）：Borker在接收到Publisher的事件消息后，将该消息发送给订阅了该事件的Consumer。</li>
-<li>事件订阅者（Consumer）：Consumer接收到自己订阅的事件消息后，根据事件做相应的业务处理。并且Consumer可以根据自己的情况和业务处理能力来处理（就好比说能力不够就不要揽太多活，Consumer性能不够就不会同时处理太多业务）。</li>
+<li><strong>事件发布者</strong>（<strong>Publisher</strong>）：Publisher在处理完自己的业务后，发布一个事件给Broker。</li>
+<li><strong>事件代理者</strong>（<strong>Broker</strong>）：Borker在接收到Publisher的事件消息后，将该消息发送给订阅了该事件的Consumer。</li>
+<li><strong>事件订阅者</strong>（<strong>Consumer</strong>）：Consumer接收到自己订阅的事件消息后，根据事件做相应的业务处理。并且Consumer可以根据自己的情况和业务处理能力来处理（就好比说能力不够就不要揽太多活，Consumer性能不够就不会同时处理太多业务）。</li>
 </ul>
 <p>在事件模式中，Publisher在处理完业务后，就只管发布事件给Broker。剩下的由Broker和Consumer完成。这样Publisher与Consumer并没有直接通讯，而且Publisher也无需等待响应，即可以降低耦合、减少级联失败的情况，又能提高性能、减少资源浪费。Broker在这一模式中，就像是一个数据总线，所有的服务要接收数据和发送数据都发到这个总线上；这个总线就像协议一样，让服务间的通讯变得标准和可控。</p>
 <p>使用事件模式的异步通讯的好处：</p>
