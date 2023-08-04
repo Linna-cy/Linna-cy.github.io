@@ -1,0 +1,2645 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.18e725f5bc5d83136e879a4c4d579207578d4c12ef2ac405096d3d7b10ecef10.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>数据库篇 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="数据库体系结构 数据描述有两种形式： 逻辑描述：指程序员或用户用以操作的数据形式，是抽象的概念化数据。 物理描述：指数据在存储设备上的存储方式，物" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据库篇"/>
+<meta name="twitter:description" content="数据库体系结构 数据描述有两种形式： 逻辑描述：指程序员或用户用以操作的数据形式，是抽象的概念化数据。 物理描述：指数据在存储设备上的存储方式，物"/>
+<meta property="og:title" content="数据库篇" />
+<meta property="og:description" content="数据库体系结构 数据描述有两种形式： 逻辑描述：指程序员或用户用以操作的数据形式，是抽象的概念化数据。 物理描述：指数据在存储设备上的存储方式，物" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/notes/ruan-she/data-base/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2023-04-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-04-22T00:00:00+00:00" />
+<meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/" /><meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/" /><meta property="og:see_also" content="/notes/ruan-she/algorithm-design-analysis/" /><meta property="og:see_also" content="/notes/ruan-she/computer-nework/" /><meta property="og:see_also" content="/notes/ruan-she/software-engineering/" /><meta property="og:see_also" content="/notes/ruan-she/structured-dev/" />
+
+<meta itemprop="name" content="数据库篇">
+<meta itemprop="description" content="数据库体系结构 数据描述有两种形式： 逻辑描述：指程序员或用户用以操作的数据形式，是抽象的概念化数据。 物理描述：指数据在存储设备上的存储方式，物"><meta itemprop="datePublished" content="2023-04-22T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-04-22T00:00:00+00:00" />
+<meta itemprop="wordCount" content="19424">
+<meta itemprop="keywords" content="软考,数据库," />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="数据库篇" />
+  <meta name="twitter:image:alt" content="数据库篇" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.769e45ba6bcaf3277b3bdf3bf853db6ab20b1eccf640611fafc0b710b2fce0fb.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDocsNav"
+      aria-expanded="false" aria-label="Toggle docs navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start justify-content-center ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+<aside class="docs-nav col-xxl-2" tabindex="-1" data-bs-hide="focusout">
+  <div class="offcanvas-xxl offcanvas-start" id="offcanvasDocsNav" aria-labelledby="offcanvasDocsNavLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="offcanvas-title h5" id="offcanvasDocsNavLabel">Browse docs</div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
+    </div>
+    <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/"><span class="docs-nav-title">Docker</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-012aba4eb9af6d9f4ae66a201ea7f8c6" aria-expanded="true" aria-controls="nav-012aba4eb9af6d9f4ae66a201ea7f8c6">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-012aba4eb9af6d9f4ae66a201ea7f8c6">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/"><span class="docs-nav-title">Spring</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-7ceb766179c4063d15c38386bc4661ae" aria-expanded="true" aria-controls="nav-7ceb766179c4063d15c38386bc4661ae">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-7ceb766179c4063d15c38386bc4661ae">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/"><span class="docs-nav-title">Java Web</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-b49b12a009c97c23131b13becb962032" aria-expanded="true" aria-controls="nav-b49b12a009c97c23131b13becb962032">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-b49b12a009c97c23131b13becb962032">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/jdbc/"><span class="docs-nav-title">JDBC</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/druid/"><span class="docs-nav-title">Druid</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/maven-base/"><span class="docs-nav-title">Maven 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/mybatis-base/"><span class="docs-nav-title">MyBatis</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/tomcat-base/"><span class="docs-nav-title">Tomcat</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/servlet/"><span class="docs-nav-title">Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/http-servlet/"><span class="docs-nav-title">HTTP Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/ajax-interaction/"><span class="docs-nav-title">Ajax</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/cookie-session/"><span class="docs-nav-title">Cookie and Session</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/filter/"><span class="docs-nav-title">Filter</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springframework/"><span class="docs-nav-title">Spring Framework</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springmvc/"><span class="docs-nav-title">SpringMVC</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-97093b4343a8670aa2a0c822fe58364f" aria-expanded="true" aria-controls="nav-97093b4343a8670aa2a0c822fe58364f">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-97093b4343a8670aa2a0c822fe58364f">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springmvc/springmvc-base/"><span class="docs-nav-title">SpringMVC 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springmvc/api-tools/"><span class="docs-nav-title">API 测试工具</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-a0f2c80217bd7447451517ab863ad1cd" aria-expanded="true" aria-controls="nav-a0f2c80217bd7447451517ab863ad1cd">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-a0f2c80217bd7447451517ab863ad1cd">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/springboot-base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/maven-senior/"><span class="docs-nav-title">Maven 高级</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/swagger_knife4j/"><span class="docs-nav-title">API 文档</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-3a0ec4e5cdc1d8885deb786ecdfaeed6" aria-expanded="true" aria-controls="nav-3a0ec4e5cdc1d8885deb786ecdfaeed6">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-3a0ec4e5cdc1d8885deb786ecdfaeed6">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/introduction/"><span class="docs-nav-title">微服务简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/spring-cloud-config/"><span class="docs-nav-title">Spring 环境和配置</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/remote-call/"><span class="docs-nav-title">RestTemplate</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/eureka/"><span class="docs-nav-title">Eureka</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/nacos/"><span class="docs-nav-title">Nacos</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/nacos-deploy/"><span class="docs-nav-title">Nacos 部署</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/feign/"><span class="docs-nav-title">Feign</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/gateway/"><span class="docs-nav-title">Gateway</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/communications/"><span class="docs-nav-title">通讯方式</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/rabbit-mq/"><span class="docs-nav-title">RabbitMQ</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/"><span class="docs-nav-title">软件设计师</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-6d298da5c210698dc010c5ef3b7a035f" aria-expanded="true" aria-controls="nav-6d298da5c210698dc010c5ef3b7a035f">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-6d298da5c210698dc010c5ef3b7a035f">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/computer-system/"><span class="docs-nav-title">计算机系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/programming-language/"><span class="docs-nav-title">程序设计语言</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/"><span class="docs-nav-title">知识产权</span></a>
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/data-base/"><span class="docs-nav-title">数据库</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/object-oriented/"><span class="docs-nav-title">面向对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/operating-system/"><span class="docs-nav-title">操作系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/structured-dev/"><span class="docs-nav-title">结构化开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/software-engineering/"><span class="docs-nav-title">软件工程</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/computer-nework/"><span class="docs-nav-title">计算机网络</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/data-structure/"><span class="docs-nav-title">数据结构</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/algorithm-design-analysis/"><span class="docs-nav-title">算法设计与分析</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul></div>
+  </div>
+</aside><div class="col-xxl-7 ms-auto">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/ruan-she/">软件设计师</a></li><li class="breadcrumb-item active">数据库篇</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">数据库篇</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-04-22 00:00:00 &#43;0000 UTC。">2023年4月22日</span><span class="post-reading-time me-1 mb-1">39 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/ruan-she/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>软件设计师</a><a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">软考</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">数据库</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="数据库体系结构" data-numberify>数据库体系结构<a class="anchor ms-1" href="#数据库体系结构"></a></h1>
+<p>数据描述有两种形式：</p>
+<ul>
+<li>逻辑描述：指程序员或用户用以操作的数据形式，是抽象的概念化数据。</li>
+<li>物理描述：指数据在存储设备上的存储方式，物理数据是实际存放在存储设备上的数据。</li>
+</ul>
+<h2 id="三级模式结构" data-numberify>三级模式结构<a class="anchor ms-1" href="#三级模式结构"></a></h2>
+<p>实际上有许多不同的数据库产品，但它们的体系结构基本上都具有相同的特征，采用“三级模式和两级映像”：</p>
+<p><picture><img class="img-fluid " alt="三级模式两级映像" src="/notes/ruan-she/data-base/uTools_1681373319410.png" loading="lazy" width="486" height="377" />
+</picture>
+
+</p>
+<p>三级结构有3类数据模型：</p>
+<ul>
+<li><strong>外模型</strong>：用户使用的<strong>数据视图</strong>，是一种局部的逻辑数据视图，表示用户所理解的实体、实体属性和实体关系。</li>
+<li><strong>概念模型</strong>：全局的<strong>逻辑数据视图</strong>，是数据库管理员所看到的实体、实体属性和实体之间的联系。</li>
+<li><strong>内模型</strong>：数据的物理<strong>存储模型</strong>。</li>
+</ul>
+<p>三个物理模型分别对应数据库系统的3层结构：</p>
+<ul>
+<li>
+<p><strong>外模式（子模式、用户模式）</strong>：数据库用户的数据视图，是与某一应用程序有关的数据的逻辑表示。</p>
+<p>外模式用DBMS的外模式描述语言（外模式DDL)来定义。</p>
+</li>
+<li>
+<p><strong>概念模式（模式）</strong>：所有用户的公共数据视图，与具体的应用程序和应用程序开发工具无关。</p>
+<p>概念模式用DBMS的模式描述语言（模式DDL)来定义。</p>
+</li>
+<li>
+<p><strong>内模式（物理模式、存储模式）</strong>：是数据在数据库内部的表示方式。</p>
+<p>内模式由DBMS的内模式描述语言（内模式DDL)来描述，由设备介质语言来定义。</p>
+<p>定义<u>所有的<strong>内部记录类型</strong>、<strong>索引</strong>和<strong>文件</strong>的组织方式</u>。</p>
+</li>
+</ul>
+<h2 id="两级模式映象" data-numberify>两级模式映象<a class="anchor ms-1" href="#两级模式映象"></a></h2>
+<p>数据库系统在三级模式之间提供了两级映像：</p>
+<ul>
+<li>模式——内模式映像存在于<u>概念级和内部级</u>之间，实现<u>概念模式和内模式</u>间的相互转换。</li>
+<li>外模式——模式映像：存在于<u>外部级和概念级</u>之间，实现了<u>外模式和概念模式</u>之间的相互转换。</li>
+</ul>
+<p>数据的独立性（指数据与程序独立）是由DBMS的二级映像功能来保证的。数据的独立性包括：</p>
+<ul>
+<li>
+<p><strong>物理独立性</strong>：指当数据库的<u>内模式发生改变时，数据的逻辑结构不变</u>。</p>
+<p>物理独立性可以保证，当数据的物理结构改变时，应用程序不用改变。</p>
+<p>但是，为了保证应用程序能够正确执行，<u>需要修改概念模式和内模式之间的映像</u>。</p>
+</li>
+<li>
+<p><strong>逻辑独立性</strong>：指用户的<u>应用程序与数据库的逻辑结构是相互独立的</u>。</p>
+<p>数据的逻辑结构发生变化后，用户程序也可以不修改。</p>
+<p>但是，为了保证应用程序能够正确执行，<u>需要修改外模式和概念模式之间的映像</u>。</p>
+</li>
+</ul>
+<hr>
+<h1 id="数据模型" data-numberify>数据模型<a class="anchor ms-1" href="#数据模型"></a></h1>
+<p>在数据库技术中，表示实体类型及实体类型间联系的模型称为数据模型。</p>
+<p>数据模型有以下类型：</p>
+<ul>
+<li>概念数据模型：从信息世界中抽象的数据模型；</li>
+<li>结构数据模型：从计算机世界中抽象出的DBMS支持的数据模型。</li>
+</ul>
+<h2 id="概念数据模型" data-numberify>概念数据模型<a class="anchor ms-1" href="#概念数据模型"></a></h2>
+<p>概念数据模型用于信息世界建模，一般采用实体-联系方法（E-R方法）。概念数据模型的常用术语有：</p>
+<ul>
+<li>
+<p><strong>实体</strong>：客观存在并可以相互区别的事物称为实体。</p>
+<p>如一个单位、一个职工、一个部门或一个项目等。</p>
+</li>
+<li>
+<p><strong>属性</strong>：描述实体的特性称为属性，一个实体可以由若干个属性来刻画。</p>
+<p>属性的具体取值称为属性值，用以表示一个具体实体。</p>
+</li>
+<li>
+<p><strong>码</strong>：<u>唯一标识</u>实体的属性集称为码。</p>
+</li>
+<li>
+<p><strong>域</strong>：属性的<u>取值范围</u>称为该属性的域。</p>
+</li>
+<li>
+<p><strong>实体型</strong>：具有相同属性的实体必然具有共同的特征和性质，用实体名及其属性名集合来抽象和刻画同类实体，称为实体型。</p>
+<p>例如，学生（学号，姓名，性别，班号）就是一个实体型。</p>
+</li>
+<li>
+<p><strong>实体集</strong>：同型实体的集合称为实体集。</p>
+<p>例如，全体学生就是一个实体集。</p>
+</li>
+<li>
+<p><strong>联系</strong>：实体（型）之间的对应关系称为联系。联系分为两种：</p>
+<ul>
+<li>实体内部各属性之间的联系；</li>
+<li>实体之间的联系。</li>
+</ul>
+<p>两个实体型之间的联系有3种类型：</p>
+<ul>
+<li>一对一联系(1:1)；</li>
+<li>一对多联系(1:n)；</li>
+<li>多对多联系(m:n)。</li>
+</ul>
+</li>
+</ul>
+<p>实体-联系方法表示的概念数据模型称为E-R图。E-R图是抽象和描述现实世界的有力工具：</p>
+<ul>
+<li><strong>实体型</strong>：用<strong>矩形</strong>表示，矩形框内写明实体名；</li>
+<li><strong>属性</strong>：用<strong>椭圆形</strong>表示，并用无向边将其与相应的实体连接起来；</li>
+<li><strong>联系</strong>：用<strong>菱形</strong>表示，菱形框内写明联系名，并用无向边将其分别与有关实体连接起来，同时在无向边旁标上联系的类型。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="E-R图示例" src="/notes/ruan-she/data-base/uTools_1681289395117.png" loading="lazy" width="240" height="242" />
+</picture>
+
+</p>
+<h2 id="结构数据模型" data-numberify>结构数据模型<a class="anchor ms-1" href="#结构数据模型"></a></h2>
+<p>结构数据模型是直接面向数据库的逻辑结构。这类模型涉及到计算机系统和数据库管理系统，所以称为结构数据模型。任何一个DBMS都以某个结构数据模型为基础，或者说支持某个结构数据模型。</p>
+<p>常用术语：</p>
+<ul>
+<li>
+<p><strong>数据项</strong>：又称<strong>字段</strong>，是数据库中可以命名的最小逻辑数据单位。可以是一个数或个字符串，用它描述属性的数据。</p>
+</li>
+<li>
+<p><strong>记录</strong>：是数据项的有序集，即一个记录是由若干个数据项或字段组成，用它描述实体。</p>
+<p>一般来说，数据只有被组成记录的形式才有实际意义。</p>
+</li>
+<li>
+<p><strong>文件</strong>：文件是一个具有符号名的一组同类记录的集合。文件包含记录的结构和记录的值。</p>
+</li>
+</ul>
+<p>结构数据模型主要包括：层次、网状、关系和面向对象模型。</p>
+<p>关系模型是一种用二维表格结构快表示实体以及实体之间联系的数据模型。每个二维表由行、列组成，又可称为关系，关系模式是对关系的描述。因此可以说，关系模型是由关系模式组成的集合。</p>
+<blockquote>
+<p>目前大多数数据库管理系统都是关系型的。</p>
+</blockquote>
+<hr>
+<h1 id="关系模型" data-numberify>关系模型<a class="anchor ms-1" href="#关系模型"></a></h1>
+<h2 id="术语" data-numberify>术语<a class="anchor ms-1" href="#术语"></a></h2>
+<p>有关关系模型的术语：</p>
+<ul>
+<li>
+<p><strong>关系</strong>：一个关系就是一张<strong>二维表</strong>，每个关系有一个关系名</p>
+</li>
+<li>
+<p><strong>元组</strong>：表中的一行即为一个<strong>元组</strong>，对应存储文件中的一个<strong>记录值</strong>。</p>
+</li>
+<li>
+<p><strong>属性</strong>：表中的<strong>列</strong>称为属性，每一列有一个属性名。</p>
+<p>属性值相当于记录中的数据项或者字段值。</p>
+</li>
+<li>
+<p><strong>域</strong>：属性的<strong>取值范围</strong>。</p>
+</li>
+<li>
+<p><strong>关系模式</strong>：对关系的<strong>描述</strong>称为关系模式，由关系名和其属性集合构成，关系模式的格式为：关系名（属性名1，属性名2，…，属性名n）</p>
+</li>
+<li>
+<p><strong>候选码</strong>（候选健）：属性或属性组合其值能够<strong>唯一地标识</strong>一个元组。</p>
+</li>
+<li>
+<p><strong>主码</strong>（主键）：在一个关系中可能有<u>多个候选码，从中选择一个</u>作为主码。</p>
+</li>
+<li>
+<p><strong>主属性</strong>：所有候选键都称为主属性，其他的属性都称为<strong>非码属性</strong>。</p>
+</li>
+<li>
+<p><strong>外码</strong>（或外键）：如果一个关系中的属性或属性组并非该关系（二维表）的码，但它们是<u>另外一个关系（二维表）的码</u>，则称其为该关系的外码。</p>
+</li>
+<li>
+<p><strong>全码</strong>：关系模式的<u>所有属性组是这个关系模式的候选码</u>，称为全码。</p>
+</li>
+<li>
+<p><strong>超码</strong>（超键）：一个<u>包含码的属性集称为超码</u>。</p>
+<p>例如学号是码，则（学号，姓名）就是一个超码。</p>
+</li>
+</ul>
+<h2 id="完整性约束" data-numberify>完整性约束<a class="anchor ms-1" href="#完整性约束"></a></h2>
+<p>完整性规则保证用户对数据库做修改时不会破坏数据的一致性。</p>
+<ul>
+<li>
+<p><strong>实体完整性</strong>（Entity Integrity，引用完整性）：规定基本关系R的主属性A不能取空值。</p>
+<p>即<u>主属性不能为空</u>。</p>
+</li>
+<li>
+<p><strong>参照完整性</strong>（Referential Integrity）：若F是基本关系R的外码，它与基本关系S的主码K<sub>s</sub>相对应（基本关系R和S不一定是不同的关系），则对于R中每个元组在F上的值可以取：</p>
+<ul>
+<li>空值（F的每个属性值均为空值）；</li>
+<li>S中某个元组的主码值。</li>
+</ul>
+<p>即实体之间的关联可以变现为：关系R用外码F与关系S关联，外码F的值可以为空也可以为关系S中某个元组（记录）的主码值。</p>
+</li>
+<li>
+<p><strong>用户定义完整性</strong>（User Defined Integrity）：针对某一具体的关系数据库的约束条件，反映某一具体应用所涉及的数据必须满足的语义要求，由应用的环境决定。</p>
+<p>例如，银行的用户账户规定必须大于等于100000、小于999999。</p>
+</li>
+</ul>
+<h2 id="关系代数运算符" data-numberify>关系代数运算符<a class="anchor ms-1" href="#关系代数运算符"></a></h2>
+<p>关系操作的特点是操作对象和操作结果都是集合，而非关系数据模型的数据操作方式则为一次一个记录的方式。</p>
+<p>关系数据语言分为三类：</p>
+<ul>
+<li>关系代数语言；</li>
+<li>关系演算语言；</li>
+<li>具有关系代数和关系演算双重特点的语言。</li>
+</ul>
+<p>关系演算语言包含：</p>
+<ul>
+<li>元组关系演算语言；</li>
+<li>域关系演算语言。</li>
+</ul>
+<p>关系代数运算符有4类：</p>
+<p><picture><img class="img-fluid " alt="关系代数运算符" src="/notes/ruan-she/data-base/uTools_1681431891302.png" loading="lazy" width="735" height="301" />
+</picture>
+
+</p>
+<p>基本关系代数运算是对两个具有<u>相同的关系模式</u>的关系进行运算。关系$R$与$S$具有<u>相同的关系模式</u>，即$R$与$S$的元数相同（结构相同）。</p>
+<p>基本关系代数运算包含：</p>
+<ul>
+<li>
+<p><strong>并</strong>（Union）：关系$R$与$S$的并是由属于$R$或属于$S$的元组构成的集合，记作$R \cup S$，其形式定义如下：</p>
+<p>$$
+R \cup S = \{ t | (t \in R) \vee (t \in S) \}
+$$</p>
+<blockquote>
+<p>式中$t$为元组变量。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>差</strong>（Difference）：关系$R$与$S$的差是由<u>属于$R$但不属于$S$</u>的元组构成的集合，记作$R-S$，其形式定义如下：</p>
+<p>$$
+R-S = \{ t| (t \in R) \wedge (t \not\in S) \}
+$$</p>
+</li>
+<li>
+<p><strong>交</strong>（Intersection）：关系$R$与$S$的交是由属于$R$同时又属于$S$的元组构成的集合，记作$R \cap S$,其形式定义如下：</p>
+<p>$$
+R \cap S = \{ t| (t \in R) \wedge (t \in S) \}
+$$</p>
+<blockquote>
+<p>$R \cap S = R-(R-S)$，或者$R \cap S = S-(S-R)$。</p>
+</blockquote>
+</li>
+</ul>
+<p>扩展的关系代数运算可以从基本的关系运算中导出，包括：</p>
+<ul>
+<li>
+<p><strong>广义笛卡儿积</strong>（Extended Cartesian Product）：两个元组分别为$n$目和$m$目的关系$R$和$S$的广义笛卡儿积是一个$(n+m)$列的元组的集合。</p>
+<p>元组的前$n$列是关系$R$的一个元组，后$m$列是关系$S$的一个元组，记作$R \times S$，其形式定义如下：</p>
+<p>$$
+R \times S = \{ t| (t \ = \ &lt;t^n, t^m&gt;) \wedge (t^n \in R) \wedge (t^m \in S) \}
+$$</p>
+<p>如果$R$和$S$中有相同的属性名，可在属性名前加关系名作为限定，以示区别。若$R$有$K_1$,个元组，$S$有$K_2$个元组，则$R$和$S$的广义笛卡儿积有$K_1 \times K2$个元组。</p>
+<blockquote>
+<p>$&lt;t^n, t^m&gt;$是一个元组$t^n$和$t^m$拼接成的一个元组。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>投影</strong>（Projection）：投影运算是从关系的<u>垂直方向</u>进行运算，在关系$R$中选出若干属性列$A$组成新的关系，记作$\pi_A (R)$，其形式定义如下：</p>
+<p>$$
+\pi_A (R) = \{ t[A]|t \in R \}
+$$</p>
+</li>
+<li>
+<p><strong>选择</strong>（Selection）：选择运算是从关系的<u>水平方向</u>进行运算，是从关系$R$中选择满足给定条件的诸元组，记作$\sigma_F (R)$其形式定义如下：</p>
+<p>$$
+\sigma_A (R) = \{ t| (t \in R) \wedge F(t) = True \}
+$$</p>
+<p>其中，$F(t)$中的运算对象可以是：</p>
+<ul>
+<li>属性名（或列的序号）；</li>
+<li>常数；</li>
+<li>运算符；</li>
+<li>算术比较符（$&lt;, \le, &gt;, \ge, \neq$）；</li>
+<li>逻辑运算符（$\wedge, \vee, \neg$）。</li>
+</ul>
+</li>
+<li>
+<p><strong>连接</strong>（Join）：连接运算是从两个关系$R$和$S$的笛卡儿积中选取满足条件的元组。</p>
+<blockquote>
+<p>可以认为笛卡儿积是无条件连接，其他的连接操作认为是有条件连接。</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>$\theta$连接</strong>：从$R$与$S$的笛卡儿积中选取属性间满足一定条件的元组。记作：</p>
+<p>$$
+R \mathop{\Join}\limits_{X \theta Y} S = \{ t| (t=&lt;t^n,t^m&gt;) \wedge (t^n \in R) \wedge (t^m \in S) \wedge (t^n[X] \ \theta \ t^m[Y]) \}
+$$</p>
+<p>其中：</p>
+<ul>
+<li>$X \theta Y$：连接的条件；</li>
+<li>$\theta$：比较运算符；</li>
+<li>$X$和$Y$分别为$R$和$S$上度数相等且可比的属性组；</li>
+<li>$t^n\left[ X \right]$表示$R$中$t^n$元组的对应于属性$X$的一个分量；</li>
+<li>$t^m[Y]$表示$S$中$t^m$元组的对应于属性$Y$的一个分量。</li>
+</ul>
+<p>$\theta$连接也可以表示为：</p>
+<p>$$
+R \mathop{\Join}\limits_{i \theta j} S = \{ t| (t=&lt;t^n,t^m&gt;) \wedge (t^n \in R) \wedge (t^m \in S) \wedge (t^n[i] \ \theta \ t^m[j]) \}
+$$</p>
+<p>其中，</p>
+<ul>
+<li>
+<p>$i=1,2,3,\cdots,n$；</p>
+</li>
+<li>
+<p>$j=1,2,3,\cdots,m$；</p>
+</li>
+<li>
+<p>$i \theta j$：</p>
+<p>从两个关系$R$和$S$中选取$R$的第$i$列和$S$的第$j$列之间满足$\theta$运算的元组进行连接。</p>
+</li>
+</ul>
+<p>$\theta$连接可以由基本的关系运算笛卡儿积和选取运算导出。因此，$\theta$连接可表示为：</p>
+<p>$$
+R \mathop{\Join}\limits_{X \theta Y} S = \sigma_{X \theta Y}(R \times S)
+$$</p>
+<p>或：</p>
+<p>$$
+R \mathop{\Join}\limits_{i \theta j} S = \sigma_{i \theta j}(R \times S)
+$$</p>
+</li>
+<li>
+<p><strong>等值连接</strong>：当$\theta$为“=”时，称之为等值连接，记为$R \mathop{\Join}\limits_{i = j} S$，其形式定义如下：</p>
+<p>$$
+R \mathop{\Join}\limits_{i = j} S = \{ t| (t=&lt;t^n,t^m&gt;) \wedge (t^n \in R) \wedge (t^m \in S) \wedge (t^n[i] = t^m[j]) \}
+$$</p>
+</li>
+<li>
+<p>$F$连接：从关系$R$和$S$的笛卡尔积中选取属性值满足某一公式$F$的元组，记为$\mathop{\Join}\limits_{F}$。</p>
+<p>$F$是形为$F_1 \wedge F_2 \wedge \cdots \wedge F_n$的公式，每个$F_p$是形为$i \theta j$的式子。</p>
+</li>
+<li>
+<p><strong>自然连接</strong>：自然连接是一种特殊的等值连接，它要求两个关系中<u>进行比较的分量必须是相同的属性组</u>，并且在结果集中<u>将重复属性列去掉</u>。</p>
+<p>若：</p>
+<ul>
+<li>
+<p>$t^n \in R$，$t^m \in S$；</p>
+</li>
+<li>
+<p>$R$和$S$具有相同的属性组$B$，且$B=(B_1,B_2,,B_k)$；</p>
+</li>
+<li>
+<p>假定$R$关系的属性：</p>
+<p>$$
+A_1,A_2,\cdots,A_{n-k},B_1,B_2,\cdots,B_k
+$$</p>
+</li>
+<li>
+<p>$S$关系的属性：</p>
+<p>$$
+B_1,B2,\cdots,B_k,B_{k+1},B_{k+2},\cdots,B_m
+$$</p>
+</li>
+</ul>
+<p>自然连接可以记为$R \Join S$,其形式定义如下：</p>
+<p>$$
+R \Join S = \{ t| (t = &lt;t^n, t^m&gt;) \wedge (t^n \in R) \wedge (t^m \in S) \wedge (R.B_1 = S.B_1) \wedge (R.B_2 = S.B_2) \wedge \cdots \wedge (R.B_k = S.B_k) \}
+$$</p>
+<blockquote>
+<p>一般连接是从关系的水平方向运算，而自然连接<u>不仅要从关系的水平方向运算，而且要从关系的垂直方向运算</u>（去掉重复属性）。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>外连接</strong>（Outer Jion）：外连接运算是连接运算的扩展，可以处理由于连接运算而缺失的信息。</p>
+<p>外连接运算有3种：</p>
+<ul>
+<li>
+<p><strong>左外连接</strong>（Left Outer Jion，⟕）：取出左侧关系中所有与右侧关系中任一元组都不匹配的元组，用空值$null$充填所有来自右侧关系的属性，构成新的元组，将其加入自然连接的结果中。</p>
+</li>
+<li>
+<p><strong>右外连接</strong>（Right Outer Jion，⟖）：取出右侧关系中所有与左侧关系中任一元组都不匹配的元组，用空值$null$填充所有来自左侧关系的属性，构成新的元组，将其加入自然连接的结果中。</p>
+</li>
+<li>
+<p><strong>全外连接</strong>（Full Outer Jion，⟗）。完成左外连接和右外连接的操作。即填充左侧关系中所有与右侧关系中任一元组都不匹配的元组，并填充右侧关系中所有与左侧关系中任一元组都不匹配的元组，将产生的新元组加入自然连接的结果中。</p>
+</li>
+</ul>
+<p><picture><img class="img-fluid " alt="" src="/notes/ruan-she/data-base/uTools_1681454087063.png" loading="lazy" width="762" height="575" />
+</picture>
+
+</p>
+</li>
+<li>
+<p><strong>除</strong>（Division）：给定关系$R(X,Y)$和$S(Y,Z)$，$X、Y、Z$为属性组。$R \div S$应当满足元组在$X$上的分量值$x$的象集$Y_x$包含关系$S$在属性组$Y$上投影的集合。其形式定义如下：</p>
+<p>$$
+R \div S = \{ t^n[X] | (t^n \in R) \wedge (\pi_y (S) \subseteq Y_x) \}
+$$</p>
+<p>其中，$Y_x$为$x$在$R$中的象集，$x=t^n[X]$，且$R \div S$的结果集的属性组为$X$。</p>
+<blockquote>
+<p>除运算是同时从关系的水平方向和垂直方向进行运算。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h1 id="sql-语句" data-numberify>SQL 语句<a class="anchor ms-1" href="#sql-语句"></a></h1>
+<p><strong>SQL</strong>（<strong>Structured Query Language</strong>，发音为 sequal）是一种专门用来与数据库沟通的语言。通过 SQL，用户可以对数据库进行各种操作。</p>
+<blockquote>
+<p>标准 SQL 由 ANSI 标准委员会管理，从而称为 ANSISQL。</p>
+<p>查看更多 <a href="../sql-%e8%af%ad%e5%8f%a5">SQL语句</a> 相关内容。</p>
+</blockquote>
+<h2 id="分类" data-numberify>分类<a class="anchor ms-1" href="#分类"></a></h2>
+<ol>
+<li>
+<p><strong>DDL</strong>（<strong>Data Definition Language</strong>，<strong>数据定义语言</strong>）：用来定义数据库对象：数据库，表，列等。</p>
+<p>关键字：<code>CREATE</code>、<code>DROP</code>、<code>ALTER</code> 等。</p>
+</li>
+<li>
+<p><strong>DML</strong>（<strong>Data Manipulation Language</strong>，<strong>数据操作语言</strong>）：用来对数据库中表的数据进行增删改。</p>
+<p>关键字：<code>INSERT</code>、<code>DELETE</code>、<code>UPDATE</code> 等。</p>
+</li>
+<li>
+<p><strong>DQL</strong>（<strong>Data Query Language</strong>，<strong>数据查询语言</strong>）：用来查询数据库中表的记录。</p>
+<p>关键字：<code>SELECT</code>等。</p>
+</li>
+<li>
+<p><strong>DCL</strong>（<strong>Data Control Language</strong>，<strong>数据控制语言</strong>）：用来定义数据库的访问权限和安全级别，及创建用户。</p>
+</li>
+</ol>
+<h2 id="数据定义语言ddl" data-numberify>数据定义语言（DDL）<a class="anchor ms-1" href="#数据定义语言ddl"></a></h2>
+<p><code>CREATE</code>——创建：</p>
+<ul>
+<li>
+<p>建立数据库：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="err">数据库名</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>建立基本表：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tab_name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="err">列名</span><span class="w">    </span><span class="err">数据类型</span><span class="w"> </span><span class="p">[</span><span class="err">列级完整性约束条件</span><span class="p">],</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="err">表级完整性约束条件</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>完整性约束有3种子句：</p>
+<ul>
+<li><code>PRIMARY KEY</code>：主键约束；</li>
+<li><code>CHECK</code>：检查约束；</li>
+<li><code>FOREIGN KEY</code>：外键约束；</li>
+<li><code>NOT NULL</code>：非空约束；</li>
+<li><code>UNIQUE</code>：唯一约束；</li>
+<li><code>DEFAULT</code>：默认约束。</li>
+</ul>
+<p>定义列时使用的基本数据类型如下：</p>
+<ul>
+<li><code>NTEGER</code>：整数（也可写成<code>INT</code>）。</li>
+<li><code>FLOAT(n)</code>：浮点数，精度至少为n位数字。</li>
+<li><code>NUMERIC(p,d)</code>：定点数，由p位数字（不包括符号、小数点）组成，小数点后面有d位数字（也可写成<code>DECIMAL(p,d)</code>或<code>DEC(p,d)</code>）。</li>
+<li><code>CHAR(n)</code>：长度为n的定长字符串。</li>
+<li><code>DATETIME</code>：日期时间型。</li>
+</ul>
+</li>
+</ul>
+<p><code>ALTER TABLE</code>——修改表结构：</p>
+<ul>
+<li>
+<p>增加新列：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="err">表名</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="err">列名</span><span class="w"> </span><span class="err">类型</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>修改列的定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="err">表名</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="err">列名</span><span class="w"> </span><span class="err">新类型</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>删除列：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="err">表名</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="err">列名</span><span class="w">
+</span></span></span></code></pre></div></li>
+</ul>
+<p><code>DROP TABLE</code>——删除基本表：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="err">表名</span><span class="w">
+</span></span></span></code></pre></div><h2 id="数据操纵语言dml" data-numberify>数据操纵语言（DML）<a class="anchor ms-1" href="#数据操纵语言dml"></a></h2>
+<p><code>INSERT INTO</code>——插入：</p>
+<ul>
+<li>
+<p>直接插入元组值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="err">表名（列名序列）</span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="err">元组值</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></div><p>或者：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="err">表名</span><span class="w"> </span><span class="p">(</span><span class="err">列名</span><span class="w"> </span><span class="err">序列</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">TABLE</span><span class="w"> </span><span class="p">(</span><span class="err">元组值</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="err">元组值</span><span class="p">),</span><span class="w"> </span><span class="p">...)</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>插入一个查询的结果值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="err">表名</span><span class="w"> </span><span class="p">(</span><span class="err">列名序列</span><span class="p">)</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="err">查询语句</span><span class="w">
+</span></span></span></code></pre></div></li>
+</ul>
+<p><code>DELETE FROM</code>——删除：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="err">表名</span><span class="w"> </span><span class="p">[</span><span class="k">WHERE</span><span class="w"> </span><span class="err">条件表达式</span><span class="p">]</span><span class="w">
+</span></span></span></code></pre></div><p><code>UPDATE</code>——修改：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="err">表名</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="err">列名</span><span class="o">=</span><span class="err">值表达式</span><span class="p">[,</span><span class="w"> </span><span class="err">列名</span><span class="o">=</span><span class="err">值表达式</span><span class="p">...]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="n">WHERE</span><span class="err">条件表达式</span><span class="p">]</span><span class="w">
+</span></span></span></code></pre></div><h2 id="数据查询语言dql" data-numberify>数据查询语言（DQL）<a class="anchor ms-1" href="#数据查询语言dql"></a></h2>
+<p><code>SELECT</code>——查询：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">WHERE</span><span class="w"> </span><span class="err">行条件表达式</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">列名序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">HAVING</span><span class="w"> </span><span class="err">组条件表达式</span><span class="p">]]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">列名</span><span class="p">[</span><span class="k">ASC</span><span class="o">|</span><span class="k">DESC</span><span class="p">]...]</span><span class="w">
+</span></span></span></code></pre></div><h3 id="where-条件查询" data-numberify>WHERE 条件查询<a class="anchor ms-1" href="#where-条件查询"></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="err">行条件表达式</span><span class="w">
+</span></span></span></code></pre></div><p>运算符：</p>
+<table>
+<thead>
+<tr>
+<th><strong>运算符</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>运算符</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>=</code></td>
+<td>等于</td>
+<td><code>&gt;</code></td>
+<td>大于</td>
+</tr>
+<tr>
+<td><code>&lt;&gt;</code> 或 <code>!=</code></td>
+<td>不等于</td>
+<td><code>&gt;=</code></td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>小于</td>
+<td><code>!&gt;</code></td>
+<td>不大于</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>小于等于</td>
+<td><code>BETWEEN</code></td>
+<td>范围在指定的两个值之间</td>
+</tr>
+<tr>
+<td><code>!&lt;</code></td>
+<td>不小于</td>
+<td><code>IS NULL</code></td>
+<td>为 NULL 的值</td>
+</tr>
+<tr>
+<td><code>IS NOT NULL</code></td>
+<td>不为 NULL 的值</td>
+<td><code>AND</code></td>
+<td>逻辑与</td>
+</tr>
+<tr>
+<td><code>OR</code></td>
+<td>逻辑或</td>
+<td><code>NOT</code>逻辑非</td>
+<td></td>
+</tr>
+<tr>
+<td><code>IN</code></td>
+<td>匹配包含在集合中的值</td>
+<td><code>NOT IN</code></td>
+<td>指定不包含在集合中的值</td>
+</tr>
+<tr>
+<td><code>LIKE</code></td>
+<td>字符模糊配对</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><code>LIKE</code>字符模糊配对包含以下通配符：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">WHRER</span><span class="w"> </span><span class="err">列名</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;_ABC%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><ul>
+<li><code>%</code>：表示任何字符出现任意次数。</li>
+<li><code>_</code>：表示匹配单个任意字符。</li>
+</ul>
+<h3 id="order-by-排序数据" data-numberify>ORDER BY 排序数据<a class="anchor ms-1" href="#order-by-排序数据"></a></h3>
+<p><code>ORDER BY</code>可以指定多个列来排序，排序规则有：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">关键字</th>
+<th style="text-align:center">规则说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>ASC</code></td>
+<td style="text-align:center">升序排序</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>DESC</code></td>
+<td style="text-align:center">降序排序</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[...]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">列名</span><span class="w"> </span><span class="p">[</span><span class="k">ASC</span><span class="o">|</span><span class="k">DESC</span><span class="p">]</span><span class="w"> </span><span class="p">...]</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>ORDER BY子句必须是SELECT命令中的最后一个子句。</p>
+</blockquote>
+<h3 id="group-by-分组数据" data-numberify>GROUP BY 分组数据<a class="anchor ms-1" href="#group-by-分组数据"></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">列名序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">HAVING</span><span class="w"> </span><span class="err">组条件表达式</span><span class="p">]]</span><span class="w">
+</span></span></span></code></pre></div><ul>
+<li><code>HAVING</code>是<code>GROUP BY</code>的分组条件控制语句。</li>
+<li><code>HAVING</code>的操作符和<code>WHERE</code>相同。</li>
+<li>被<code>WHERE</code>过滤掉的记录并不会出现在分组中。</li>
+</ul>
+<h3 id="聚合函数" data-numberify>聚合函数<a class="anchor ms-1" href="#聚合函数"></a></h3>
+<p>聚合函数实现数据统计等功能。</p>
+<p>函数名|功能
+<code>AVG</code>|计算一个数值型表达式的平均值
+<code>COUNT</code>|计算指定表达式中选择的项数，<code>COUNT(*)</code>统计查询输出的行数
+<code>MIN</code>|计算指定表达式中的最小值
+<code>MAX</code>|计算指定表达式中的最大值
+<code>SUM</code>|计算指定表达式中的数值总和
+<code>STDEV</code>|计算指定表达式中所有数据的标准差
+<code>STDEVP</code>|计算总体标准差</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="err">使用了聚合函数的条件判断</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span></span></span></code></pre></div><p>或：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">聚合函数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">关系名表序列</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>聚合函数可以使用算数运算符。</p>
+<p>聚合函数常与<code>GROUP BY</code>子句一起使用。</p>
+</blockquote>
+<h3 id="连接" data-numberify>连接<a class="anchor ms-1" href="#连接"></a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">连接符号</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>INNER JOIN</code></td>
+<td style="text-align:center">内连接（默认）。<br>内连接又包括等值连接、非等值连接和自连接。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>OUTER JOIN</code></td>
+<td style="text-align:center">外连接。<br>又包括：<br><code>LEFT OUTER JOIN</code>（左外连接）；<br><code>RIGHT OUTER JOIN</code>（右外连接）；<br><code>FULL OUTER JOIN</code>（全外连接）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="子查询" data-numberify>子查询<a class="anchor ms-1" href="#子查询"></a></h3>
+<p>子查询是指将<code>SELECT</code>作为其它语句的子句使用。例如在<code>WHERE</code>、<code>FROM</code>中使用<code>SELECT</code>。</p>
+<h2 id="数据控制语言dcl" data-numberify>数据控制语言（DCL）<a class="anchor ms-1" href="#数据控制语言dcl"></a></h2>
+<p>数据控制控制的是<strong>用户对数据的存储访问权力</strong>，是由DBA决定的。但是，某个用户对某类数据具有何种权利，是个<strong>政策问题</strong>而不是技术问题。</p>
+<p>授权语句格式（<code>GRANT</code>）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">GRANT</span><span class="w"> </span><span class="o">&lt;</span><span class="err">权限</span><span class="o">&gt;</span><span class="p">[,</span><span class="w"> </span><span class="o">&lt;</span><span class="err">权限</span><span class="o">&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="err">对象类型</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="err">对象名</span><span class="o">&gt;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">TO</span><span class="o">&lt;</span><span class="err">用户</span><span class="o">&gt;</span><span class="p">[,</span><span class="w"> </span><span class="o">&lt;</span><span class="err">用户</span><span class="o">&gt;</span><span class="p">]...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">WITH</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">OPTION</span><span class="p">];</span><span class="w">
+</span></span></span></code></pre></div><p>不同类型的操作对象有不同的操作权限，常见的操作权限如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">对象</th>
+<th style="text-align:center">对象类型</th>
+<th style="text-align:left">操作权限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">属性列</td>
+<td style="text-align:center"><code>TABLE</code></td>
+<td style="text-align:left"><code>SELECT</code>、<br><code>INSERT</code>、<br><code>UPDATE</code>、<br><code>DELETE</code>、<br><code>ALL PRIVILEGES</code></td>
+</tr>
+<tr>
+<td style="text-align:center">视图</td>
+<td style="text-align:center"><code>TABLE</code></td>
+<td style="text-align:left"><code>SELECT</code>、<br><code>INSERT</code>、<br><code>UPDATE</code>、<br><code>DELETE</code>、<br><code>ALL PRIVILEGES</code></td>
+</tr>
+<tr>
+<td style="text-align:center">基本表</td>
+<td style="text-align:center"><code>TABLE</code></td>
+<td style="text-align:left"><code>SELECT</code>、<br><code>INSERT</code>、<br><code>UPDATE</code>、<br><code>DELETE</code>、<br><code>ALTER</code>、<br><code>INDEX</code>、<br><code>ALL PRIVILEGES</code></td>
+</tr>
+<tr>
+<td style="text-align:center">数据库</td>
+<td style="text-align:center"><code>DATABASE</code></td>
+<td style="text-align:left"><code>CREATETAB</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>建立表的权限，可由DBA授予普通用户；</li>
+<li><code>WITH GRANT OPTION</code>：表示获得了这些权限的用户还可以将权限赋给其他用户。</li>
+</ul>
+<p>收回权限语句格式（<code>REVOKE</code>）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">REVOKE</span><span class="w"> </span><span class="o">&lt;</span><span class="err">权限</span><span class="o">&gt;</span><span class="p">[,</span><span class="w"> </span><span class="o">&lt;</span><span class="err">权限</span><span class="o">&gt;</span><span class="p">]...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="err">对象类型</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="err">对象名</span><span class="o">&gt;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="err">用户</span><span class="o">&gt;</span><span class="p">[,</span><span class="w"> </span><span class="o">&lt;</span><span class="err">用户</span><span class="o">&gt;</span><span class="p">];</span><span class="w">
+</span></span></span></code></pre></div><h2 id="视图" data-numberify>视图<a class="anchor ms-1" href="#视图"></a></h2>
+<p>视图是从一个或者多个基本表或视图中导出的虚拟表。</p>
+<p>创建视图：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="err">视图名</span><span class="w"> </span><span class="p">(</span><span class="err">列表名</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="err">查询子句</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="k">WITH</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="k">OPTION</span><span class="p">];</span><span class="w">
+</span></span></span></code></pre></div><ul>
+<li>子查询可以是任意复杂的<code>SELECT</code>语句，但通常不允许含有<code>ORDER BY</code>子句和<code>DISTINCT</code>短语。</li>
+<li><code>WITH CHECK OPTION</code>：表示对<code>UPDATE</code>、<code>INSERT</code>、<code>DELETE</code>操作时保证更新、插入或删除的行满足视图定义中的谓词条件（即子查询中的条件表达式）。</li>
+<li>组成视图的属性列名或者全部省略或者全部指定。如果省略属性列名，则隐含该视图由<code>SELECT</code>子查询目标列的主属性组成。</li>
+<li>对视图进行的增改操作实际上是对基本表进行操作。</li>
+</ul>
+<p>删除视图：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">DROP</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="err">视图名</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h2 id="索引" data-numberify>索引<a class="anchor ms-1" href="#索引"></a></h2>
+<p>数据库中的索引是<u>某个表中一列或者若干列值的集合</u>和<u>相应的指向表中物理标识这些值的数据页的逻辑指针清单</u>。</p>
+<p>索引分为：</p>
+<ul>
+<li>聚集索引：指索引表中索引项的顺序与表中记录的物理顺序一致的索引；</li>
+<li>非聚集索引。</li>
+</ul>
+<blockquote>
+<p>对数据库表创建和删除索引，修改的是数据库的内模式。</p>
+</blockquote>
+<hr>
+<h1 id="关系数据库的规范化" data-numberify>关系数据库的规范化<a class="anchor ms-1" href="#关系数据库的规范化"></a></h1>
+<h2 id="关系模式" data-numberify>关系模式<a class="anchor ms-1" href="#关系模式"></a></h2>
+<p>一个关系模式应当是一个五元组（含关系名）：$R&lt;U,D,dom,F&gt;$。</p>
+<p>其中：</p>
+<ul>
+<li>$R$：<u>关系名，是符号化的元祖语义；</u></li>
+<li>$U$：<u>一组属性名；</u></li>
+<li>$D$：属性组$U$中的属性来自域$D$；</li>
+<li>$dom$：属性到域的映射；</li>
+<li>$F$：<u>属性组$U$上的一组数据依赖（函数依赖）。</u></li>
+</ul>
+<p>$D$和$dom$对模式设计关系不大，通常将关系模式看作是一个三元组：$R&lt;U,F&gt;$。</p>
+<p>当且仅当$U$上的一个关系$r$满足$F$时，称$r$为关系模式$R&lt;U,F&gt;$的一个关系。</p>
+<h2 id="函数依赖" data-numberify>函数依赖<a class="anchor ms-1" href="#函数依赖"></a></h2>
+<p>数据依赖是<u>通过一个关系中属性间值的相等与否</u>体现出来的<u>数据间的相互关系</u>。</p>
+<ul>
+<li>
+<p><strong>函数依赖</strong>：设$R(U)$是属性集U上的关系模式，<u>$X$、$Y$是$U$的子集</u>。若对$R(U)$的任何一个可能的关系$r$，$r$中不可能存在两个元组在$X$上的属性值相等，而在$Y$上的属性值不等（即，<u>在关系$r$中，元组在$X$上的属性值相等，那么在$Y$上的属性值也相等</u>），则称<strong>X函数决定Y</strong>或<strong>Y函数依赖于X</strong>，记作$X \rightarrow Y$。</p>
+<p>如，学生表中，$学号 \rightarrow 姓名$。</p>
+<p>属性之间有3种关系，但并不是每一种都存在函数依赖。如果$X$和$Y$之间的对应关系是：</p>
+<ul>
+<li>$1-1$：存在函数依赖$X \rightarrow Y$和$Y \rightarrow Y$；</li>
+<li>$n:1$：存在函数依赖$X \rightarrow Y$；</li>
+<li>$n:m$：不存在函数依赖。</li>
+</ul>
+</li>
+<li>
+<p><strong>非平凡的函数依赖</strong>：$X \rightarrow Y$，但$Y \not\subseteq X$，则称$X \rightarrow Y$是非平凡的函数依赖。</p>
+<p>例如，$姓名 \not\subseteq 学号$，则$学号 \rightarrow 姓名$是一个非平凡的函数依赖。</p>
+</li>
+<li>
+<p><strong>平凡的函数依赖</strong>：如果$X \rightarrow Y$，但$Y \subseteq X$，则称$X \rightarrow Y$是平凡的函数依赖。</p>
+<p>例如，$学号 \subset (学号,课程号)$，则$(学号,课程号) \rightarrow 学号$是一个平凡的函数依赖。</p>
+</li>
+<li>
+<p><strong>完全函数依赖</strong>：在R(U)中，如果$X \rightarrow Y$，并且对于X的任何一个真子集$X&rsquo;$都有**$X&rsquo;$不能决定$Y$**，则称$Y$对$X$完全函数依赖，记作$X \stackrel{f}{\longrightarrow} Y$。</p>
+<p>即需要由$X$的所有属性才能决定$Y$的，才能称为完全函数依赖。</p>
+<p>如，$(学号,课程号) \rightarrow 成绩$。</p>
+<p>如果$X$仅包含一个属性，那么此时必为完全函数依赖。</p>
+</li>
+<li>
+<p><strong>部分函数依赖</strong>：如果$X \rightarrow Y$，但<strong>Y不完全函数依赖于X</strong>，则称Y对X部分函数依赖，记作$X \stackrel{P}{\longrightarrow} Y$。部分函数依赖也称为局部函数依赖。</p>
+<p>如，（学号，班级代号） $\rightarrow$ 姓名，因为学号 $\rightarrow$ 姓名，所以（学号，班级代号） $\stackrel{P}{\longrightarrow}$ 姓名。</p>
+</li>
+<li>
+<p><strong>传递依赖</strong>：在$R(U,F)$中（F是U上的一组函数依赖），如果$X \rightarrow Y,\ Y \not\subseteq X,\ Y \rightarrow Z$，则称<strong>Z对X传递依赖</strong>（$X \rightarrow Z$）。</p>
+<p>即$X \stackrel{f}{\longrightarrow} Y$，且$Y \rightarrow Z$，则$X \rightarrow Z$。</p>
+</li>
+<li>
+<p><strong>码</strong>：设$K$为$R(U,F)$中属性的组合，若$K \rightarrow U$，且对于$K$的任何一个真子集$K&rsquo;$都有$K&rsquo;$不能决定$U$，则$K$为$R$的候选码。</p>
+<p>即$K \stackrel{f}{\rightarrow} U$，那么K是R的候选码。</p>
+<p>若有多个候选码，则选一个作为主码（主键，主关键字）。候选码通常也称为<strong>候选关键字</strong>（候选键，键）。</p>
+</li>
+<li>
+<p><strong>主属性</strong>和<strong>非主属性</strong>：<strong>包含在任何一个候选码中</strong>的属性称为主属性，否则称为非主属性。</p>
+</li>
+<li>
+<p><strong>外码</strong>：若$R(U)$中的属性或属性组<u>$X$非$R$的码，但$X$是另一个关系的码</u>，则称$X$为外码。</p>
+</li>
+</ul>
+<p><strong>函数依赖的公理系统</strong>（Armstrong公理系统）：</p>
+<p>设关系模式$R(U,F)$，其中$U$为属性集，$F是$U$上的一组函数依赖，那么有以下推理规则：</p>
+<ul>
+<li>
+<p><strong>自反律</strong>（A1）：若$Y \subseteq X \subseteq U$，则$X \rightarrow Y$为$F$所蕴涵（蕴含）。</p>
+<p>如，（学号，姓名） $\rightarrow$ 姓名是函数依赖所蕴涵的。</p>
+</li>
+<li>
+<p><strong>增广律</strong>（A2）：若$X \rightarrow Y$为F所蕴涵，且$Z \subseteq U$,则$XZ \rightarrow YZ$为$F$所蕴涵。</p>
+<p>如，学号 $\rightarrow$ 姓名，班级 $\subseteq$ 学生表，那么（学号，班级） $\rightarrow$ （姓名，班级）是函数依赖所蕴涵的。</p>
+</li>
+<li>
+<p><strong>传递律</strong>（A3）：若$X \rightarrow Y,\ Y \rightarrow Z$为$F$所蕴涵，则$X \rightarrow Z$为$F$所蕴涵。</p>
+</li>
+</ul>
+<p>根据上述3条推理规则又可推出下述3条推理规则：</p>
+<ul>
+<li><strong>合并规则</strong>：若$X \rightarrow Y,\ X \rightarrow Z$，则$X \rightarrow YZ$为F所蕴涵。</li>
+<li><strong>伪传递律</strong>：若$X \rightarrow Y,\ WY \rightarrow Z$，则$XW \rightarrow Z$为F所蕴涵。</li>
+<li><strong>分解规则</strong>：若$X \rightarrow Y,\ Z \subseteq Y$，则$X \rightarrow Z$为F所蕴涵。</li>
+</ul>
+<blockquote>
+<p>合并规则和分解规则是两个互逆的规则。即$X \rightarrow Y,\ X \rightarrow Z$，可得$X \rightarrow YZ$；那么$X \rightarrow YZ$，也可得$X \rightarrow Y,\ X \rightarrow Z$（因为$Y,Z \sub YZ$）。</p>
+</blockquote>
+<p>总结：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:left">条件</th>
+<th style="text-align:left">结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">函数依赖</td>
+<td style="text-align:left">元组在$X$上的属性值相等，那么在$Y$上的属性值也相等</td>
+<td style="text-align:left">$X$函数决定$Y$或$Y$函数依赖于$X$，记作$X \rightarrow Y$</td>
+</tr>
+<tr>
+<td style="text-align:center">非平凡的函数依赖</td>
+<td style="text-align:left">$X \rightarrow Y$，$Y \not\subseteq X$</td>
+<td style="text-align:left">$X \rightarrow Y$是非平凡的函数依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">平凡的函数依赖</td>
+<td style="text-align:left">$X \rightarrow Y$，$Y \subseteq X$</td>
+<td style="text-align:left">$X \rightarrow Y$是平凡的函数依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">完全函数依赖</td>
+<td style="text-align:left">$X \rightarrow Y$，$X&rsquo; \subset X$，$X&rsquo; \not\rightarrow Y$</td>
+<td style="text-align:left">$Y$对$X$完全函数依赖，记作$X \stackrel{f}{\longrightarrow} Y$</td>
+</tr>
+<tr>
+<td style="text-align:center">部分函数依赖（局部函数依赖）</td>
+<td style="text-align:left">$X \rightarrow Y$，$X \stackrel{f}{\not\longrightarrow} Y$</td>
+<td style="text-align:left">$Y$对$X$部分函数依赖，记作$X \stackrel{P}{\longrightarrow} Y$</td>
+</tr>
+<tr>
+<td style="text-align:center">传递依赖</td>
+<td style="text-align:left">$X \rightarrow Y$，$Y \not\subseteq X$，$Y \rightarrow Z$</td>
+<td style="text-align:left">$Z$对$X$传递依赖</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:left">定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">码（候选码，候选关键字）</td>
+<td style="text-align:left">若$K \stackrel{f}{\rightarrow} U$，则$K$为$R$的候选码</td>
+</tr>
+<tr>
+<td style="text-align:center">主属性</td>
+<td style="text-align:left">包含在任何一个候选码中的属性</td>
+</tr>
+<tr>
+<td style="text-align:center">非主属性</td>
+<td style="text-align:left">不包含在任何一个候选码中的属性</td>
+</tr>
+<tr>
+<td style="text-align:center">外码</td>
+<td style="text-align:left">$X$非$R$的码，但$X$是另一个关系的码，则称$X$为外码</td>
+</tr>
+</tbody>
+</table>
+<p>Armstrong公理系统：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">定律</th>
+<th style="text-align:left">条件</th>
+<th style="text-align:left">F蕴含</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">自反律</td>
+<td style="text-align:left">$Y \subseteq X \subseteq U$</td>
+<td style="text-align:left">$X \rightarrow Y$</td>
+</tr>
+<tr>
+<td style="text-align:center">增广律</td>
+<td style="text-align:left">$X \rightarrow Y$，$Z \subseteq U$</td>
+<td style="text-align:left">$XZ \rightarrow XZ$</td>
+</tr>
+<tr>
+<td style="text-align:center">传递律</td>
+<td style="text-align:left">$X \rightarrow Y,\ Y \rightarrow Z$</td>
+<td style="text-align:left">$X \rightarrow Z$</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">规则</th>
+<th style="text-align:left">条件</th>
+<th style="text-align:left">F蕴含</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">合并规则</td>
+<td style="text-align:left">$X \rightarrow Y,\ X \rightarrow Z$</td>
+<td style="text-align:left">$X \rightarrow YZ$</td>
+</tr>
+<tr>
+<td style="text-align:center">伪传递律</td>
+<td style="text-align:left">$X \rightarrow Y,\ WY \rightarrow Z$</td>
+<td style="text-align:left">$XW \rightarrow Z$</td>
+</tr>
+<tr>
+<td style="text-align:center">分解规则</td>
+<td style="text-align:left">$X \rightarrow Y,\ Z \subseteq Y$</td>
+<td style="text-align:left">$X \rightarrow Z$</td>
+</tr>
+</tbody>
+</table>
+<h2 id="闭包计算" data-numberify>闭包计算<a class="anchor ms-1" href="#闭包计算"></a></h2>
+<p>设关系模式$R&lt;U,F&gt;$，其中$U$为属性集，$F$是$U$上的一组函数依赖。称所有用Armstrong公理从F推出的函数依赖$X \rightarrow A_i$中，$A_i(X,A_i \subseteq U)$的属性集合为$X$的属性闭包，记为$X^{+}_{F}$或$X^{+}$。</p>
+<p>定理：</p>
+<p>设关系模式$R&lt;U,F&gt;$，其中$F$为函数依赖集，$X,Y \subseteq U$，则从$F$推出$X \rightarrow Y$的充要条件是$Y \subseteq X^{+}$。</p>
+<blockquote>
+<p>属性的闭包计算用于求主键。</p>
+</blockquote>
+<p>例如，给定关系$R(U,F)$，其中$U={A,B,C,D,E,H}$，$F={A \rightarrow B, B \rightarrow DH, A \rightarrow H, C \rightarrow E }$。</p>
+<p>先根据$F$选取仅在$\rightarrow$左边出现的属性集（例如，$A$、$C$和$AC$）。根据选取的属性集进行闭包运算（先对$A$进行运算）：</p>
+<p>$$
+(A)^{+} \rightarrow (A \ BH)^{+} \rightarrow (AB \ D \ H)^{+} \rightarrow (ABDH)
+$$</p>
+<p>此时，$(ABDH)^{+}$无论再怎么推，结果都是$(ABDH)$，说明对$A$的闭包计算已经结束了，结果就是$(ABDH)$。</p>
+<p>而$(ABDH) \neq U$，说明$A$并不是关系$R$的主键。</p>
+<p>而对于$C$的函数依赖仅有$C \rightarrow E$，所以此时应该对$(AC)$进行闭包运算：</p>
+<p>$$
+(AC)^{+} \rightarrow (ABDH \ CE)^{+} \rightarrow (ABCDEH)
+$$</p>
+<p>此时对$(AC)$的闭包计算结果$(ABCDEH) = U$，说明$(AC)$是关系$R$的主键。</p>
+<h2 id="关系模式的分解" data-numberify>关系模式的分解<a class="anchor ms-1" href="#关系模式的分解"></a></h2>
+<p>对存在<strong>数据冗余</strong>、<strong>插入异常</strong>、<strong>删除异常</strong>问题的关系模式，应采取<u>将一个关系模式分解为多个关系模式的方法进行处理</u>（原来存储在一个二维表内的数据就要分散到多个二维表中）。要求是分解后的二维表不能丢失分解前二维表的信息。</p>
+<p>为使分解后的模式保持原模式所满足的特性，其基本要求是模式分解具有：</p>
+<ul>
+<li>无损连接性；</li>
+<li>保持函数依赖性。</li>
+</ul>
+<h3 id="无损连接" data-numberify>无损连接<a class="anchor ms-1" href="#无损连接"></a></h3>
+<p>无损连接性指的是对关系模式分解时，原关系模式下，任一合法的关系实例，在<u>分解之后应能通过<strong>自然连接</strong>运算恢复</u>起来。</p>
+<p>设$\rho = \{ R_1&lt;U_1,F_1&gt;,\ R_2&lt;U_2,F_2&gt;,\ \cdots,\ R_k&lt;U_k,F_k&gt; \}$是关系模式$R&lt;U,F&gt;$的一个分解，如果对于$R$的任一满足$F$的关系$r$都有：</p>
+<p>$$
+r = \pi_{R1}(r) \Join \pi_{R2}(r) \Join \cdots \Join \pi_{Rk}(r)
+$$</p>
+<p>则称这个分解$\rho$是满足依赖集$F$的无损连接。</p>
+<blockquote>
+<ul>
+<li>
+<p>$\pi()$运算是投影运算。</p>
+</li>
+<li>
+<p>$\Join$运算是自然连接运算。</p>
+</li>
+</ul>
+<p>个人理解：</p>
+<p>无损连接性就是指，关系模式拆分后（分成若干个小的关系模式，即$\rho$），$\rho$中的关系模式从总体上看，保持着与$R$一致的连接。$\rho$中的关系模式通过自然连接保持着原本的关系模式。<u>重要的是$rho$中的关系模式可以通过<strong>自然连接</strong>恢复到原关系模式。</u></p>
+</blockquote>
+<p>验证无损连接的充要条件：</p>
+<p>如果$R$的分解为$\rho = \{R_1,R_2\}$，$F$为$R$所满足的函数依赖集合，则分解$\rho$具有无损连接性的充分必要条件为：</p>
+<p>$$
+R_1 \cap R_2 \rightarrow (R_1 - R_2) \\
+或 \\
+R_1 \cap R_2 \rightarrow (R_2 - R_1)
+$$</p>
+<p>无损连接的判定算法：</p>
+<ol>
+<li>
+<p>构造一个$k$行$n$列的表：</p>
+<ul>
+<li>每一列对应一个属性$A_j$；</li>
+<li>每一行对应分解$rho$中的一个关系模式$R_i&lt;U_i, F_i&gt;$。</li>
+</ul>
+<p>若属性$A_j$属于$U_i$，则在第$i$行第$j$列上放符号$a_j$，否则放符号$b_{ij}$。</p>
+</li>
+<li>
+<p>逐个检查$F$中的每一个函数依赖$FD_i$，并修改表中的元素：</p>
+<p>取$F$中一个函数依赖$X_i \rightarrow A_j$（$X_i$要属于$rho$中的任一关系），考虑这些行中第$j$列元素：</p>
+<ul>
+<li>若其中有$a_j$，则全部改为$a_j$；</li>
+<li>否则全部改为$b_{mj}$，$m$为这些行的行号最小值。</li>
+</ul>
+<p>若某一行变成了$(a_1, a_2, \cdots, a_n)$，则分解$rho$具有无损连接性，算法终止。</p>
+</li>
+<li>
+<p>比较扫描前后，表有无变化。</p>
+<ul>
+<li>如有变化，则返回第2步；</li>
+<li>否则算法终止，分解$rho$是有损连接。</li>
+</ul>
+</li>
+</ol>
+<p>例如，关系模式$R&lt;U,F&gt;$，其中，$U = \{ A, B, C \}$，$F = \{ A \rightarrow B, C \rightarrow B \}$。</p>
+<p>判断$\rho = \{ AC, BC \}$是否具有无损连接性：</p>
+<ol>
+<li>
+<p>构造初始表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_i$</th>
+<th style="text-align:center">$A$</th>
+<th style="text-align:center">$B$</th>
+<th style="text-align:center">$C$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AC</td>
+<td style="text-align:center">$a_1$</td>
+<td style="text-align:center">$b_{12}$</td>
+<td style="text-align:center">$a_3</td>
+</tr>
+<tr>
+<td style="text-align:center">BC</td>
+<td style="text-align:center">$b_{21}$</td>
+<td style="text-align:center">$a_2$</td>
+<td style="text-align:center">$a_3$</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>考察$A \rightarrow B$，将$AC$行的$B$列改为$a_2$：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$R_i$</th>
+<th style="text-align:center">$A$</th>
+<th style="text-align:center">$B$</th>
+<th style="text-align:center">$C$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AC</td>
+<td style="text-align:center">$a_1$</td>
+<td style="text-align:center">$a_2$</td>
+<td style="text-align:center">$a_3</td>
+</tr>
+<tr>
+<td style="text-align:center">BC</td>
+<td style="text-align:center">$b_{21}$</td>
+<td style="text-align:center">$a_2$</td>
+<td style="text-align:center">$a_3$</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>从上表中看出$AC$行为${a_1, a_2, a_3}$，所以判断该关系模式具有无损连接性。</p>
+</li>
+</ol>
+<h3 id="保持函数依赖" data-numberify>保持函数依赖<a class="anchor ms-1" href="#保持函数依赖"></a></h3>
+<p>设有关系模式$R$，$F$是$R$的函数依赖集，$Z$是$R$的一个属性集合，则称$Z$所涉及到的$F^+$中所有函数依赖为$F$在$Z$上的投影，即为$\pi_Z(F)$，有：</p>
+<p>$$
+\pi_Z(F) = \{ x \rightarrow y | (x \rightarrow y) \in F^+ 且 xy \subseteq z \}
+$$</p>
+<p>设关系模式$R$的一个分解$\rho = \{ R_1&lt;U_1,F_1&gt;,\ R_2&lt;U_2,F_2&gt;,\ \cdots,\ R_k&lt;U_k,F_k&gt; \}$，$F$是$R$的依赖集，如果$F$等价于$\pi_{R1}(F) \cup \pi_{R2}(F) \cup \cdots \cup \pi_{Rk}(F)$，则称分解$\rho$具有依赖保持性。</p>
+<blockquote>
+<p>该定义中的&quot;等价&quot;并不代表相等，而是$F$中所包含的函数依赖在分解的函数依赖中也被包含，或者在分解的函数依赖中能被推出。</p>
+</blockquote>
+<ul>
+<li>一个无损连接分解不一定具有依赖保持性；</li>
+<li>一个依赖保持性分解不一定具有无损连接性。</li>
+</ul>
+<h2 id="范式" data-numberify>范式<a class="anchor ms-1" href="#范式"></a></h2>
+<p>关系数据库中的<u>关系必须满足一定的规范化要求</u>，对于不同的规范化程度可用范式来衡量。</p>
+<p><u>范式是符合某一种级别的关系模式的集合</u>，是衡量关系模式规范化程度的标准，达到范式的关系才是规范化的。</p>
+<p>一个低一级范式的关系模式，通过模式分解可以转换为若干个高一级范式的关系模式的集合，这个过程称为规范化。</p>
+<p>主要有6种范式，高一级范式是在低一级范式的基础上进一步满足一些要求，按要求从低到高分为：</p>
+<ol>
+<li>
+<p>第一范式（1NF）：若关系模式R的<u>每一个分量是不可再分的数据项</u>，则关系模式R属于第一范式。</p>
+<p>如，关系模式$R&lt;U,F&gt;$：</p>
+<p>$$
+U = \{ 学号,姓名,学院,院长,课程号,课程名,成绩 \} \\
+F = \{ 学号 \rightarrow 姓名,学号 \rightarrow 学院,学院 \rightarrow 院长,课程号 \rightarrow 课程名,(学号,课程号) \rightarrow 成绩 \}
+$$</p>
+<p>1NF可能存在的问题：</p>
+<ul>
+<li>
+<p><strong>数据冗余</strong>：数据的冗余度大，R中可能出现多个元组在多个属性集中值相同；</p>
+</li>
+<li>
+<p><strong>修改异常</strong>：引起修改操作的不一致性，修改一条记录可能需要修改其他多条记录才能保持数据一致性（由数据冗余引起）；</p>
+</li>
+<li>
+<p><strong>插入异常</strong>：主码不能取空值或部分空值，会出现插入异常；</p>
+</li>
+<li>
+<p><strong>删除异常</strong>：本该删除但又客观存在的元组，会出现删除异常。</p>
+<p>即，删除掉的数据可能包含着其他本不该被删除的属性。</p>
+</li>
+</ul>
+<p>问题的原因是1NF中可能存在<u>部分函数依赖</u>。</p>
+</li>
+<li>
+<p>第二范式（2NF）：若关系模式$R \in 1NF$，且<u>每一个非主属性完全依赖于码</u>，则关系模式$R \in 2NF$。</p>
+<p>即当<u>1NF消除了对主键的部分函数依赖后就能满足2NF</u>。</p>
+<p>例如，$学号 \rightarrow 学院$，即$(学号,课程号) \stackrel{P}{\rightarrow} 学院$（部分依赖于码），所以$R \not\in 2NF$。</p>
+<p><u>模式的分解需要保持函数依赖。</u>根据$F$，将$R$分解为：</p>
+<ul>
+<li>
+<p>$R_1&lt;U_1,F_1&gt;$：</p>
+<p>$$
+U_1 = \{ 学号,姓名,学院,院长 \} \\
+F_1 = \{ 学号 \rightarrow 姓名,学号 \rightarrow 学院,学院 \rightarrow 院长 \}
+$$</p>
+</li>
+<li>
+<p>$R_2&lt;U_2,F_2&gt;$：</p>
+<p>$$
+U_2 = \{ 课程号,课程名 \} \\
+F_2 = \{ 课程号 \rightarrow 课程名 \}
+$$</p>
+</li>
+<li>
+<p>$R_3&lt;U_3,F_3&gt;$：</p>
+<p>$$
+U_3 = \{ 学号,课程号,成绩 \} \\
+F_3 = \{ (学号,课程号) \rightarrow 成绩 \}</p>
+</li>
+</ul>
+<p>则，$R1 \in 2NF$，$R2 \in 2NF$，$R3 \in 2NF$。</p>
+<blockquote>
+<p>2NF可能依然会存在数据冗余、修改异常、插入异常删除异常等问题。</p>
+</blockquote>
+</li>
+<li>
+<p>第三范式（3NF）：若关系模式$R(R \in 2NF)$中<u>任何一个非主属性都不传递函数依赖于码</u>。</p>
+<p>若关系模式$R&lt;U,F&gt;$（$U$为关系集，$F$为函数依赖集）中不存在这样的码$X$，使得：</p>
+<ul>
+<li>$X \rightarrow Y(Y \not\rightarrow X)$，</li>
+<li>$Y \rightarrow Z$，</li>
+</ul>
+<p>则关系模式$R \in 3NF$，其中：</p>
+<ul>
+<li>$Y$为属性组，</li>
+<li>$Z(Z \not\subseteq Y)$为非主属性。</li>
+</ul>
+<p>即当<u>2NF消除了非主属性对主键的传递函数依赖</u>，则称为3NF。</p>
+<p>如，$R_1$中有$学号 \rightarrow 学院$，$学院 \rightarrow 院长$（非主属性&quot;院长&quot;传递依赖于主键&quot;学号&quot;）。可将$R_1$分解为：</p>
+<ul>
+<li>
+<p>$R_{11}&lt;U_{11},F_{11}&gt;$：</p>
+<p>$$
+U_{11} = \{ 学号,姓名,学院 \} \\
+F_{11} = \{ 学号 \rightarrow 姓名, 学号 \rightarrow 学院 \}
+$$</p>
+</li>
+<li>
+<p>$R_{12}&lt;U_{12},F_{12}&gt;$：</p>
+<p>$$
+U_{12} = \{ 学院,院长 \} \\
+F_{12} = \{ 学院 \rightarrow 院长 \}
+$$</p>
+</li>
+</ul>
+</li>
+<li>
+<p>BC范式（BCNF）：关系模式$R&lt;U,F&gt;$属于BCNF（$R$首先得满足3NF），当且仅当其$F$中<u>每个依赖的决定因素必定包含R的某个候选码</u>。</p>
+<p>由BCNF的定义可以得到结论，一个满足BCNF的关系模式有：</p>
+<ul>
+<li>
+<p>满足3NF。</p>
+</li>
+<li>
+<p>所有<u>非主属性</u>对每一个<u>码</u>都是<u>完全函数依赖</u>。</p>
+<p>$$
+码 \stackrel{f}{\longrightarrow} 非主属性
+$$</p>
+</li>
+<li>
+<p>所有的<u>主属性对每一个</u>不包含它的码</u>，也是<u>完全函数依赖</u>。</p>
+</li>
+<li>
+<p>没有任何属性完全函数依赖于非码的任何一组属性。</p>
+</li>
+</ul>
+<p>一个满足BCNF的关系模式R己<u>消除了<strong>插入</strong>和<strong>删除异常</strong></u>。</p>
+</li>
+<li>
+<p>第四范式（4NF）：</p>
+<p>多值依赖：</p>
+<p>给定的关系模式$R(U,F)$：</p>
+<ul>
+<li>$X,Y,Z \subseteq U$，</li>
+<li>$Z=U-X-Y$（$Z$是$X \cup Y$的差集）。</li>
+</ul>
+<p>当且仅当对$R$的任一关系$r$，给定的一对$(x,z)$值，有一组$Y$的值，这组值仅仅决定于$x$值而与$z$值无关。则关系模式$R$中的多值依赖$X \rightarrow\rightarrow Y$成立。</p>
+<p>平凡的多值依赖：</p>
+<ul>
+<li>$X \rightarrow\rightarrow Y$成立，</li>
+<li>$Z = \Phi$，</li>
+</ul>
+<p>则$X \rightarrow\rightarrow Y$为平凡的多值依赖。</p>
+<p>例如，课程$\rightarrow\rightarrow$任课老师，课程$\rightarrow\rightarrow$参考书。</p>
+<p><picture><img class="img-fluid " alt="多值依赖表示例" src="/notes/ruan-she/data-base/uTools_1681986736869.png" loading="lazy" width="401" height="168" />
+</picture>
+
+</p>
+<p>4NF定义：</p>
+<p>设有一关系模式$R(U,F)$是1NF，如果对于$R$的每个<u>非平凡多值依赖</u>$X \rightarrow\rightarrow Y(Y \not\subseteq X)$，<u>$X$都包含了$R$的一个候选码</u>，则称$R$是第四范式，记为4NF。</p>
+<p>例如，课程$\rightarrow\rightarrow$任课老师，课程$\rightarrow\rightarrow$参考书都是非平凡多值依赖，而课程不是码，所以不属于4NF。</p>
+</li>
+<li>
+<p>第五范式（5NF）。</p>
+</li>
+</ol>
+<p>范式之间的关系：</p>
+<p>$$
+5NF \sub 4NF \sub BCNF \sub 3NF \sub 2NF \sub 1NF
+$$</p>
+<p><picture><img class="img-fluid " alt="规范化范式的包含关系" src="/notes/ruan-she/data-base/uTools_1681894653450.png" loading="lazy" width="564" height="309" />
+</picture>
+
+</p>
+<p>3NF和BCNE它们是进行规范化的主要目标。</p>
+<p>1NF到4NF之间的转换关系：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">范式</th>
+<th style="text-align:left">转换关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1NF</td>
+<td style="text-align:left">每一个分量是不可再分的数据项</td>
+</tr>
+<tr>
+<td style="text-align:center">2NF</td>
+<td style="text-align:left">1NF消除了部分函数依赖后满足2NF</td>
+</tr>
+<tr>
+<td style="text-align:center">3NF</td>
+<td style="text-align:left">2NF消除了非主属性对码的传递函数依赖后满足3NF</td>
+</tr>
+<tr>
+<td style="text-align:center">BCNF</td>
+<td style="text-align:left">3NF消除了主属性对码的部分和传递函数依赖后满足BCNF</td>
+</tr>
+<tr>
+<td style="text-align:center">4NF</td>
+<td style="text-align:left">BCNF消除非平凡且非函数依赖的多值依赖后满足4NF</td>
+</tr>
+</tbody>
+</table>
+<p><picture><img class="img-fluid " alt="规范化步骤" src="/notes/ruan-she/data-base/uTools_1681988070233.png" loading="lazy" width="288" height="303" />
+</picture>
+
+</p>
+<p>几种范式及其分解的性质：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">性质</th>
+<th style="text-align:center">3NF</th>
+<th style="text-align:center">BCNF</th>
+<th style="text-align:center">4NF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">消除函数依赖带来冗余</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:left">消除多值函数依赖带来冗余</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:left">保持函数依赖</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:left">保持多值函数依赖</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="数据库设计" data-numberify>数据库设计<a class="anchor ms-1" href="#数据库设计"></a></h1>
+<p>新奥尔良（New Orleans）法式目前公认的数据库设计方法，它将数据库设计分为以下几个阶段：</p>
+<ol>
+<li>用户需求分析</li>
+<li>概念结构设计</li>
+<li>逻辑结构设计</li>
+<li>物理结构设计</li>
+</ol>
+<p>这几个阶段之后是与数据库建立和运行有关的阶段：</p>
+<ol>
+<li>数据库实施</li>
+<li>数据库运行和维护</li>
+</ol>
+<p><picture><img class="img-fluid " alt="数据库设计步骤" src="/notes/ruan-she/data-base/uTools_1682505975157.png" loading="lazy" width="382" height="711" />
+</picture>
+
+</p>
+<h2 id="需求分析" data-numberify>需求分析<a class="anchor ms-1" href="#需求分析"></a></h2>
+<p>需求分析是项目确定后，对数据库应用系统所要设计的<u>内容（数据）</u>和<u>功能（行为）</u>的整理和描述，是以用户的角度来认识系统。</p>
+<p>需求分析是后面几个阶段，<u>逻辑结构设计</u>、<u>物理结构设计</u>以及<u>应用程序设计</u>的依据。</p>
+<p>需求分析将收集到的零碎的、局部的数据分析整理后，建立<u>需求说明文档</u>、<u>数据字典</u>和<u>数据流程图</u>。</p>
+<p>需求分析还包含：</p>
+<ul>
+<li>
+<p>数据流分析：是对事务处理所需的原始数据的收集，及经过处理后所得数据及其流向。</p>
+<p>使用数据流图（DFD）表示。DFD能指出数据的流向和需要进行的事物处理（不涉及如何处理）。</p>
+</li>
+<li>
+<p>数据字典：是关于数据库中数据的描述，即元数据（不是数据本身）。</p>
+<p>数据字典包括5个部分：</p>
+<ul>
+<li>数据项；</li>
+<li>数据结构；</li>
+<li>数据流；</li>
+<li>数据存储；</li>
+<li>加工。</li>
+</ul>
+</li>
+</ul>
+<p><u>系统需求说明书是需求分析阶段的成果</u>，主要包括<u>数据流图</u>、<u>数据字典</u>、<u>各种说明性表格</u>、<u>统计输出表和系统功能结构图</u>等。</p>
+<p>需求分析阶段的工作：</p>
+<p><picture><img class="img-fluid " alt="需求分析阶段的工作步骤" src="/notes/ruan-she/data-base/uTools_1682560887456.png" loading="lazy" width="646" height="291" />
+</picture>
+
+</p>
+<h2 id="概念结构设计" data-numberify>概念结构设计<a class="anchor ms-1" href="#概念结构设计"></a></h2>
+<p>概念设计阶段的目标是产生整体数据库概念结构，即概念模型，它是与DBMS无关的。</p>
+<p>概念结构设计的方法：</p>
+<ul>
+<li>自顶向下</li>
+<li>自底向上</li>
+<li>逐步扩张</li>
+<li>混合策略（自顶向下和自底向上相结合）</li>
+</ul>
+<p>概念结构是对现实世界的一种抽象，从数据库设计角度看，主要是数据抽象，一般有如下3种数据抽象：</p>
+<ul>
+<li>分类</li>
+<li>聚集</li>
+<li>概括</li>
+</ul>
+<p>局部视图设计就是对某个局部应用设计其分一R图，也称局部E-R图。其基本步骤如下：</p>
+<p><picture><img class="img-fluid " alt="概念结构设计的工作步骤" src="/notes/ruan-she/data-base/uTools_1682560993863.png" loading="lazy" width="717" height="341" />
+</picture>
+
+</p>
+<ol>
+<li>确定局部结构范围；</li>
+<li>定义实体；</li>
+<li>联系定义；</li>
+<li>属性分配。</li>
+</ol>
+<p>概念模型的建立采用E-R模型。</p>
+<h3 id="e-r-模型" data-numberify>E-R 模型<a class="anchor ms-1" href="#e-r-模型"></a></h3>
+<p>E-R模型用E-R图（ERD）表示，E-R图有以下几个成分：</p>
+<ul>
+<li>
+<p><strong>实体</strong>：用<strong>矩形</strong>表示。</p>
+</li>
+<li>
+<p><strong>联系</strong>：用<strong>棱形</strong>表示，并用无向边分别与有关实体连接起来，同时在无向边标注联系的类型（$1:1$，$1:n$ 或 $m:n$）。</p>
+</li>
+<li>
+<p><strong>属性</strong>：用<strong>椭圆形</strong>表示，并用无向边将其与相应的实体连接起来</p>
+<p>E-R模型中的属性有以下分类：</p>
+<ul>
+<li>
+<p>简单属性和复合属性：</p>
+<ul>
+<li>简单属性是原子的、不可再分的；</li>
+<li>复合属性可以细分为更小的部分。</li>
+</ul>
+</li>
+<li>
+<p>单值属性和多值属性：</p>
+<ul>
+<li>单值属性是一个属性对应一个值；</li>
+<li>多值属性是一个属性对应一组值。</li>
+</ul>
+</li>
+<li>
+<p>NULL属性：实体在某个属性上没有值或属性值未知时，使用NULL值表示。</p>
+</li>
+<li>
+<p>派生属性：派生属性可以从其他属性得来（通过运算等方式求出）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>扩充的E-R模型（用来表达更多具有特殊语义的成分）有以下成分：</p>
+<ul>
+<li>
+<p><strong>弱实体</strong>：使用<strong>双线矩形框</strong>表示。将需要依赖其他实体存在的实体。</p>
+<p>实体间的所有（Ownership，拥有）关系代表一个实体对另一些实体具有很强的依赖关系，即一个实体的存在必须以另一个实体为前提。</p>
+<p>例如职工与家属的联系，家属总是属于某职工的（在关系模式中需要依赖职工而存在），所以家属是弱实体。</p>
+</li>
+<li>
+<p><strong>特殊化</strong>：将一个实体集<u>按照某些特性区分为几个<strong>子实体</strong></u>。这种从普遍到特殊的过程即为特殊化。</p>
+<p>子实体的图形表示如下：</p>
+<p><picture><img class="img-fluid " alt="子实体" src="/notes/ruan-she/data-base/uTools_1684564987147.png" loading="lazy" width="256" height="145" />
+</picture>
+
+</p>
+<p>子实体由称为子类，它会有一个超类，并且能继承超类的属性，超类的属性是实体集中所有子实体的相同属性。</p>
+</li>
+</ul>
+<p>E-R图中的主要构件（包含扩充的E-R模型成分）：</p>
+<p><picture><img class="img-fluid " alt="E-R图中的主要构件" src="/notes/ruan-she/data-base/uTools_1682508598814.png" loading="lazy" width="1035" height="391" />
+</picture>
+
+</p>
+<h3 id="建立概念结构模型" data-numberify>建立概念结构模型<a class="anchor ms-1" href="#建立概念结构模型"></a></h3>
+<p>建立概念结构模型的步骤如下：</p>
+<ol>
+<li>
+<p>选择局部应用：</p>
+<p>需求分析阶段得到的大量数据分散杂乱，许多数据会应用于不同的处理，数据与数据之间关联关系也较为复杂。要最终<u>确定实体、属性和联系，必须根据数据流图这一线索理清数据</u>。</p>
+<p>数据流图是对业务处理过程从高层到底层的一级抽象：</p>
+<ul>
+<li>高层抽象流图一般反映系统的概貌，对数据的引用较为笼统；</li>
+<li>底层又可能过于细致，不能体现数据的关联关系。</li>
+</ul>
+<p>因此要<u>选择适当层次的数据流图，让这一层的每一部分对应一个局部应用，实现某一项功能。从这一层入手，就能很好地设计<strong>分E-R图</strong></u>。</p>
+</li>
+<li>
+<p>逐一设计分E-R图。</p>
+</li>
+<li>
+<p>E-R图合并：</p>
+<p>根据局部应用设计好各局部E-R图之后，就可以对各分E-R图进行合并。</p>
+<p>合并的目的在于，在合并过程中解决分E-R图中相互存在的冲突。</p>
+</li>
+</ol>
+<p>分E-R图之间的冲突主要有：</p>
+<ul>
+<li><strong>属性冲突</strong>：同一属性在不同的分E-R图上的属性类型、取值范围和数据单位等可能会不一致。</li>
+<li><strong>命名冲突</strong>：相同意义的属性在不同的分E-R图上可能会有不同的命名。</li>
+<li><strong>结构冲突</strong>：同一实体在不同的分E-R图中可能会有不同的属性；同一对象在某一分E-R图中被抽象为实体，而在另一分E-R图中又可能被抽象为属性，反之亦然。</li>
+</ul>
+<h2 id="逻辑结构设计" data-numberify>逻辑结构设计<a class="anchor ms-1" href="#逻辑结构设计"></a></h2>
+<p>逻辑结构设计就是在概念结构设计的基础上进行数据模型设计，可以是层次模型、网状模型和关系模型。</p>
+<p>通常是把概念模型转换成为<u>某个具体的数据库管理系统所支持的结构数据模型</u>（与DBMS有关）。即，将概念结构设计所得的E-R模型转换成关系模式。</p>
+<p>逻辑结构设计的工作步骤：</p>
+<p><picture><img class="img-fluid " alt="逻辑结构设计的工作步骤" src="/notes/ruan-she/data-base/uTools_1682577339219.png" loading="lazy" width="581" height="296" />
+</picture>
+
+</p>
+<h3 id="e-r-模型转换关系模式" data-numberify>E-R 模型转换关系模式<a class="anchor ms-1" href="#e-r-模型转换关系模式"></a></h3>
+<ol>
+<li>
+<p>实体向关系模式的转换：</p>
+<p>将E-R图中的实体逐一转换成为一个关系模式：</p>
+<ul>
+<li>实体名：对应关系模式的名称；</li>
+<li>实体的属性：转换成关系模式的属性；</li>
+<li>实体标识符：关系的码（键）。</li>
+</ul>
+<p>超类和子类的转换：超类和子类定义为两个关系模式，将超类的主键加到子类中。</p>
+</li>
+<li>
+<p>联系向关系模式的转换：</p>
+<ul>
+<li>
+<p>一对一联系的转换：</p>
+<p>有两种方式：</p>
+<ul>
+<li>
+<p>方式1：将联系转换成一个独立的关系模式，关系模式的名称取联系的名称，关系模式的属性包括该联系所关联的两个实体的码及联系的属性，关系的码取自任一方实体的码。</p>
+<p>那么一个一对一联系需要转换成三个关系模式。</p>
+</li>
+<li>
+<p>方式2（一般使用该方式）：将联系归并到关联的两个实体的任一方，给待归并的一方实体属性集中增加另一方实体的码和该联系的属性即可，归并后的实体码保持不变。</p>
+<p>一个一对一联系仅需转换成两个关系模式。</p>
+</li>
+</ul>
+<p>例如：</p>
+<p><picture><img class="img-fluid " alt="联系向关系模式的转换示例" src="/notes/ruan-she/data-base/uTools_1682562445900.png" loading="lazy" width="304" height="358" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p>方式1：</p>
+<p>厂长（<strong>姓名</strong>，性别，年龄）</p>
+<p>工厂（<strong>厂号</strong>，厂名，地点）</p>
+<p>管理（（厂长）<strong>姓名</strong>，厂号，任期）</p>
+<blockquote>
+<p>粗体代表该关系模式的码。管理的码可以为姓名或厂号。</p>
+</blockquote>
+</li>
+<li>
+<p>方式2：</p>
+<p>厂长（姓名，性别，年龄）</p>
+<p>工厂（厂号，厂名，地点，（厂长）姓名，任期）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>一对多联系的转换：</p>
+<p>两种方式：</p>
+<ul>
+<li>方式1：将联系转换成一个独立的关系模式，关系模式的名称取联系的名称，关系模式的属性取该联系所关联的两个实体的码及联系的属性，<u>关系的码是多方实体的码</u>；</li>
+<li>方式2（一般使用该方式）：将联系<u>归并到关联的两个实体的多方</u>，给待归并的多方实体属性集中增加一方实体的码和该联系的属性即可，归并后的多方实体码保持不变。</li>
+</ul>
+<p>例如：</p>
+<p><picture><img class="img-fluid " alt="一对多联系转换的例子" src="/notes/ruan-she/data-base/uTools_1682563544291.png" loading="lazy" width="315" height="361" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p>方式1:</p>
+<p>仓库（<strong>仓库号</strong>，地点，面积）</p>
+<p>商品（<strong>货号</strong>，商品名，价格）</p>
+<p>仓储（<strong>货号</strong>，仓库号，数量）</p>
+</li>
+<li>
+<p>方式2：</p>
+<p>仓库（<strong>仓库号</strong>，地点，面积）</p>
+<p>商品（<strong>货号</strong>，商品名，价格，仓库号，数量）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>多对多联系的转换：</p>
+<p>多对多联系只能转换成一个独立的关系模式，关系模式的名称取联系的名称，关系模式的属性取该联系所关联的两个多方实体的码及联系的属性，关系的码是多方实体的码构成的属性组。</p>
+<p>例如：</p>
+<p><picture><img class="img-fluid " alt="多对多联系转换的示例" src="/notes/ruan-she/data-base/uTools_1682564018777.png" loading="lazy" width="327" height="373" />
+</picture>
+
+</p>
+<p>转换成：</p>
+<p>学生（<strong>学号</strong>，姓名，性别，年龄）</p>
+<p>课程（<strong>课程号</strong>，课程名，学时）</p>
+<p>选修（<strong>（学号，课程号）</strong>，成绩）</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="关系模式的规范化" data-numberify>关系模式的规范化<a class="anchor ms-1" href="#关系模式的规范化"></a></h3>
+<p>转换后的关系模式可能存在数据冗余、更新异常等问题，所以需要进一步的规范化处理。</p>
+<ol>
+<li>
+<p>根据语义确定各关系模式的数据依赖（函数依赖）。</p>
+</li>
+<li>
+<p>根据数据依赖确定关系模式的范式。判定关系模式是否达到了3NF或4NF。</p>
+</li>
+<li>
+<p>如果关系模式不符合要求，要根据关系模式的分解算法对其进行分解，达到3NF、BCNF或4NF。</p>
+</li>
+<li>
+<p>关系模式的评价及修正。</p>
+<p>根据规范化理论对关系模式分解之后，就可以在理论上消除冗余和更新异常。但根据处理要求，可能还需要增加部分冗余以满足处理要求，这就需要做部分关系模式的处理，分解、合并或增加冗余属性，提高存储效率和处理效率。</p>
+</li>
+</ol>
+<hr>
+<h1 id="事务管理" data-numberify>事务管理<a class="anchor ms-1" href="#事务管理"></a></h1>
+<p>事务是一个操作序列，这些操作“要么都做，要么都不做”。</p>
+<p>事务和程序是两个不同的概念，一般一个程序可包含多个事务。</p>
+<p>在SQL语言中，事务定义的语句有以下三条。</p>
+<ul>
+<li>
+<p><code>BEGIN TRANSACTION</code>：事务开始。</p>
+</li>
+<li>
+<p><code>COMMIT</code>：事务提交。</p>
+<p>该操作表示事务成功地结束，它将通知事务管理器该事务的<u>所有更新操作现在可以被提交或永久地保留</u>。</p>
+</li>
+<li>
+<p><code>ROLLBACK</code>：事务回滚。</p>
+<p>该操作表示事务非成功地结束，它将通知事务管理器<u>出故障</u>了，数据库可能处于不一致状态，该事务的<u>所有更新操作必须回滚或撤销</u>。</p>
+</li>
+</ul>
+<p>事务的ACID性质：</p>
+<ul>
+<li>
+<p><strong>原子性</strong>（Atomicity）：事务是原子的，要么都做，要么都不做。</p>
+</li>
+<li>
+<p><strong>一致性</strong>（Consistency）：事务执行的结果必须保证数据库从一个一致性状态变到另一个一致性状态。</p>
+<p>因此，当数据库只包含成功事务提交的结果时，称数据库处于一致性状态。</p>
+</li>
+<li>
+<p><strong>隔离性</strong>（Isolation）：事务相互隔离。</p>
+<p>当多个事务并发执行时，任一事务的更新操作直到其成功提交的整个过程，对其他事务都是不可见的</p>
+</li>
+<li>
+<p><strong>持久性</strong>（Durability）：一旦事务成功提交，即使数据库崩溃，其对数据库的更新操作也将永久有效。</p>
+</li>
+</ul>
+<hr>
+<h1 id="数据库故障" data-numberify>数据库故障<a class="anchor ms-1" href="#数据库故障"></a></h1>
+<p>在数据库的运行过程中，难免会出现计算机系统的软、硬件故障，这些故障会影响数据库中数据的正确性，甚至破坏数据库，使数据库中的全部或部分数据丢失。因此，数据库的关键技术在于建立冗余数据，即备份数据。如何在系统出现故障后能够及时地使数据库恢复到故障前的正确状态，就是数据库恢复技术。</p>
+<p>故障类型：</p>
+<ul>
+<li><strong>事务内部故障</strong>：有的可以通过事务程序本身发现；有的是非预期的，不能由事务程序处理。</li>
+<li><strong>系统故障</strong>（软故障）：是指造成系统停止运行的任何事件，使得系统要重新启动，例如CPU故障、操作系统故障和突然停电等。</li>
+<li><strong>介质故障</strong>（硬故障）：如磁盘损坏、磁头碰撞和瞬时强磁干扰。此类故障发生的几率小，但破坏性最大。</li>
+<li><strong>计算机病毒</strong>：计算机病毒是一种人为的故障和破坏，是在计算机程序中插入的破坏，计算机功能或者数据可以繁殖和传播的一组计算机指令或程序代码。</li>
+</ul>
+<h2 id="备份方法" data-numberify>备份方法<a class="anchor ms-1" href="#备份方法"></a></h2>
+<p>恢复的基本原理是“建立数据冗余”（重复存储）。建立冗余数据的方法是进行<u>数据转储</u>和<u>登记日志文件</u>，分为：</p>
+<ul>
+<li>
+<p>静态转储和动态转储：</p>
+<ul>
+<li>
+<p><strong>静态转储</strong>：在转储期间不允许对数据库进行任何存取、修改操作；</p>
+</li>
+<li>
+<p><strong>动态转储</strong>：在转储期间允许对数据库进行存取、修改操作。</p>
+<p>动态转储和用户事务可并发执行。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>海量转储和增量转储：</p>
+<ul>
+<li><strong>海量转储</strong>：指每次转储全部数据；</li>
+<li><strong>增量转储</strong>：指每次只转储上次转储后更新过的数据。</li>
+</ul>
+</li>
+<li>
+<p><strong>日志文件</strong>：</p>
+<p>在事务处理的过程中，DBMS把以下操作写入日志文件：</p>
+<ul>
+<li>事务开始、事务结束；</li>
+<li>对数据库的插入、删除和修改。</li>
+</ul>
+<p>一旦发生故障，DBMS的恢复子系统利用日志文件撤销事务对数据库的改变，回退到事务的初始状态。因此，DBMS利用日志文件来进行事务故障恢复和系统故障恢复，并可协助后备副本进行介质故障恢复。</p>
+</li>
+</ul>
+<h2 id="恢复" data-numberify>恢复<a class="anchor ms-1" href="#恢复"></a></h2>
+<p>事务恢复有以下3个步骤：</p>
+<ol>
+<li>反向扫描文件日志（即从最后向前扫描日志文件），查找该事务的更新操作。</li>
+<li>对事务的更新操作执行逆操作。</li>
+<li>继续反向扫描日志文件，查找该事务的其他更新操作，并做同样的处理，直到事务的开始标志。</li>
+</ol>
+<hr>
+<h1 id="并发控制" data-numberify>并发控制<a class="anchor ms-1" href="#并发控制"></a></h1>
+<p>所谓并发操作，是指在多用户共享的系统中许多用户可能同时对同一数据进行操作。并发操作带来的问题是数据的不一致性，主要有三类：</p>
+<ul>
+<li><strong>丢失更新</strong></li>
+<li><strong>不可重复读</strong></li>
+<li><strong>读脏数据</strong></li>
+</ul>
+<p>其主要原因是事务的并发操作破坏了事务的隔离性。DBMS的并发控制子系统负责协调并发事务的执行，保证数据库的完整性不受破坏，避免用户得到不正确的数据。</p>
+<h2 id="封锁" data-numberify>封锁<a class="anchor ms-1" href="#封锁"></a></h2>
+<p>并发控制的主要技术是封锁。基本封锁的类型有：</p>
+<ul>
+<li>
+<p>排它锁（X锁或写锁）：若事务T对数据对象A加上X锁，则<u>只允许T读取和修改A，其他事务都不能再对A加任何类型的锁</u>，直到T释放A上的锁。</p>
+</li>
+<li>
+<p>共享锁（S锁或读锁）：若事务T对数据对象A加上S锁，则<u>只允许T读取A，但不能修改A，其他事务只能再对A加S锁</u>，直到T释放A上的S锁。</p>
+<p>这就保证了其他事务可以读A，但在T释放A上的S锁之前不能对A进行任何修改。</p>
+</li>
+</ul>
+<hr>
+<h1 id="分布式数据库" data-numberify>分布式数据库<a class="anchor ms-1" href="#分布式数据库"></a></h1>
+<p>分布式数据库系统是指数据存放在计算机网络的不同场地的计算机中，每一场地都有自治处理能力并能完成局部应用；而每一场地也参与（至少一种）全局应用程序的执行，全局应用程序可通过网络通信访问系统中多个场地的数据。其定义强调分布性和逻辑整体性两点。</p>
+<p>分布式数据库中有以下基本概念：</p>
+<ul>
+<li><strong>分片透明</strong>：指用户或应用程序不需要知道逻辑上访问的表具体是怎么分块存储的。</li>
+<li><strong>复制透明</strong>：指采用复制技术的分布方法，用户不需要知道数据是复制到哪些节点，如何复制的。</li>
+<li><strong>位置透明</strong>：指用户无须知道数据存放的物理位置。</li>
+<li><strong>逻辑透明</strong>：指用户或应用程序无需知道局部场地使用的是哪种数据模型。</li>
+</ul>
+<p>具有以下性质：</p>
+<ul>
+<li><strong>共享性</strong>：数据存储在不同的结点数据共享。</li>
+<li><strong>自治性</strong>：指每结点对本地数据都能独立管理。</li>
+<li><strong>可用性</strong>：指当某一场地故障时，系统可以使用其他场地上的副本而不至于使整个系统瘫痪。</li>
+<li><strong>分布性</strong>：指数据在不同场地上的存储。</li>
+</ul>
+<hr>
+<h1 id="存储过程" data-numberify>存储过程<a class="anchor ms-1" href="#存储过程"></a></h1>
+<p>存储过程（Stored Procedure）是在大型数据库系统中，一组为了完成特定功能的SQL语句集，它存储在数据库中，一次编译后永久有效，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。</p>
+<p>存储过程是数据库所提供的一种数据库对象，通过存储过程定义一段代码，提供给应用程序调用来执行。从安全性的角度考虑，更新数据时，通过提供存储过程正第三方调用，将需要更新的数据传入存储过程，而在存储过程内部用代码分别对需要的多个表进行更新，从而避免了向第三方提供系统的表结构，保证了系统的数据安全。</p>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/notes/ruan-she/object-oriented/">面向对象篇</a>
+    </div><div class="post-nav post-next">
+      <a href="/notes/ruan-she/structured-dev/">结构化开发篇</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/object-oriented/">
+    面向对象篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月18日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/">
+    知识产权篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月15日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/programming-language/">
+    程序设计语言篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年3月30日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springboot/sharding-jdbc/">
+    Sharding Jdbc
+  </a>
+  <div class="post-meta mb-0">
+    2023年3月20日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springboot/redis-base/">
+    Redis基础
+  </a>
+  <div class="post-meta mb-0">
+    2023年3月11日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
+  <div class="container">
+    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据库体系结构">数据库体系结构</a>
+      <ul>
+        <li><a href="#三级模式结构">三级模式结构</a></li>
+        <li><a href="#两级模式映象">两级模式映象</a></li>
+      </ul>
+    </li>
+    <li><a href="#数据模型">数据模型</a>
+      <ul>
+        <li><a href="#概念数据模型">概念数据模型</a></li>
+        <li><a href="#结构数据模型">结构数据模型</a></li>
+      </ul>
+    </li>
+    <li><a href="#关系模型">关系模型</a>
+      <ul>
+        <li><a href="#术语">术语</a></li>
+        <li><a href="#完整性约束">完整性约束</a></li>
+        <li><a href="#关系代数运算符">关系代数运算符</a></li>
+      </ul>
+    </li>
+    <li><a href="#sql-语句">SQL 语句</a>
+      <ul>
+        <li><a href="#分类">分类</a></li>
+        <li><a href="#数据定义语言ddl">数据定义语言（DDL）</a></li>
+        <li><a href="#数据操纵语言dml">数据操纵语言（DML）</a></li>
+        <li><a href="#数据查询语言dql">数据查询语言（DQL）</a>
+          <ul>
+            <li><a href="#where-条件查询">WHERE 条件查询</a></li>
+            <li><a href="#order-by-排序数据">ORDER BY 排序数据</a></li>
+            <li><a href="#group-by-分组数据">GROUP BY 分组数据</a></li>
+            <li><a href="#聚合函数">聚合函数</a></li>
+            <li><a href="#连接">连接</a></li>
+            <li><a href="#子查询">子查询</a></li>
+          </ul>
+        </li>
+        <li><a href="#数据控制语言dcl">数据控制语言（DCL）</a></li>
+        <li><a href="#视图">视图</a></li>
+        <li><a href="#索引">索引</a></li>
+      </ul>
+    </li>
+    <li><a href="#关系数据库的规范化">关系数据库的规范化</a>
+      <ul>
+        <li><a href="#关系模式">关系模式</a></li>
+        <li><a href="#函数依赖">函数依赖</a></li>
+        <li><a href="#闭包计算">闭包计算</a></li>
+        <li><a href="#关系模式的分解">关系模式的分解</a>
+          <ul>
+            <li><a href="#无损连接">无损连接</a></li>
+            <li><a href="#保持函数依赖">保持函数依赖</a></li>
+          </ul>
+        </li>
+        <li><a href="#范式">范式</a></li>
+      </ul>
+    </li>
+    <li><a href="#数据库设计">数据库设计</a>
+      <ul>
+        <li><a href="#需求分析">需求分析</a></li>
+        <li><a href="#概念结构设计">概念结构设计</a>
+          <ul>
+            <li><a href="#e-r-模型">E-R 模型</a></li>
+            <li><a href="#建立概念结构模型">建立概念结构模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#逻辑结构设计">逻辑结构设计</a>
+          <ul>
+            <li><a href="#e-r-模型转换关系模式">E-R 模型转换关系模式</a></li>
+            <li><a href="#关系模式的规范化">关系模式的规范化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#事务管理">事务管理</a></li>
+    <li><a href="#数据库故障">数据库故障</a>
+      <ul>
+        <li><a href="#备份方法">备份方法</a></li>
+        <li><a href="#恢复">恢复</a></li>
+      </ul>
+    </li>
+    <li><a href="#并发控制">并发控制</a>
+      <ul>
+        <li><a href="#封锁">封锁</a></li>
+      </ul>
+    </li>
+    <li><a href="#分布式数据库">分布式数据库</a></li>
+    <li><a href="#存储过程">存储过程</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    
+
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.31e346fe8b757cca42a655530e1c726ac0ba5ae10affbeb952a03a54d4f68549.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>

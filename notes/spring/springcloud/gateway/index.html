@@ -1,0 +1,1642 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.18e725f5bc5d83136e879a4c4d579207578d4c12ef2ac405096d3d7b10ecef10.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gateway | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="网关 网关是所有微服务的统一入口。网关的核心功能特性： 请求路由：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gateway"/>
+<meta name="twitter:description" content="网关 网关是所有微服务的统一入口。网关的核心功能特性： 请求路由：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个"/>
+<meta property="og:title" content="Gateway" />
+<meta property="og:description" content="网关 网关是所有微服务的统一入口。网关的核心功能特性： 请求路由：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/notes/spring/springcloud/gateway/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2023-06-26T11:46:12+08:00" />
+<meta property="article:modified_time" content="2023-06-26T11:46:12+08:00" />
+<meta property="og:see_also" content="/notes/spring/springcloud/rabbit-mq/" /><meta property="og:see_also" content="/notes/spring/springcloud/communications/" /><meta property="og:see_also" content="/notes/spring/springcloud/eureka/" /><meta property="og:see_also" content="/notes/spring/springcloud/feign/" /><meta property="og:see_also" content="/notes/spring/springcloud/nacos/" />
+
+<meta itemprop="name" content="Gateway">
+<meta itemprop="description" content="网关 网关是所有微服务的统一入口。网关的核心功能特性： 请求路由：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个"><meta itemprop="datePublished" content="2023-06-26T11:46:12+08:00" />
+<meta itemprop="dateModified" content="2023-06-26T11:46:12+08:00" />
+<meta itemprop="wordCount" content="6027">
+<meta itemprop="keywords" content="Java,Maven,SpringCloud," />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="Gateway" />
+  <meta name="twitter:image:alt" content="Gateway" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.769e45ba6bcaf3277b3bdf3bf853db6ab20b1eccf640611fafc0b710b2fce0fb.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/spring/">Spring</a></li><li class="breadcrumb-item text-surface"><a href="/notes/spring/springcloud/">Spring Cloud</a></li><li class="breadcrumb-item active">Gateway</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+  
+  
+  <a class="action action-toc d-none d-xxl-block" href="#postTOC" role="button" title="目录">
+    <i class="fas fa-fw fa-list-alt"></i>
+  </a>
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title my-2">Gateway</h1>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-06-26 03:46:12 &#43;0000 UTC。">2023年6月26日</span><span class="post-reading-time me-1 mb-1">13 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Spring</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/springcloud/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">SpringCloud</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="网关" data-numberify>网关<a class="anchor ms-1" href="#网关"></a></h1>
+<p>网关是所有微服务的统一入口。网关的核心功能特性：</p>
+<ul>
+<li><strong>请求路由</strong>：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个微服务，这个过程叫做路由。当路由的目标服务有多个时，还需要做<strong>负载均衡</strong>。</li>
+<li><strong>权限控制</strong>：网关作为微服务入口，需要校验用户是是否有请求资格，如果没有则进行拦截。</li>
+<li><strong>限流</strong>：当请求流量过高时，在网关中按照下流的微服务能够接受的速度来放行请求，避免服务压力过大。</li>
+</ul>
+<p>在SpringCloud中网关的实现包括两种：</p>
+<ul>
+<li>Gateway：基于Spring5中提供的WebFlux，属于响应式编程的实现，具备更好的性能。</li>
+<li>Zuul：基于Servlet的实现，属于阻塞式编程。</li>
+</ul>
+<blockquote>
+<p>Spring Cloud Gateway旨在为微服务架构提供一种简单有效的统一的API路由管理方式。</p>
+</blockquote>
+<hr>
+<h1 id="创建-gateway-服务" data-numberify>创建 Gateway 服务<a class="anchor ms-1" href="#创建-gateway-服务"></a></h1>
+<p>创建一个Gateway服务的基本步骤如下：</p>
+<ol>
+<li>
+<p>创建一个新的gateway模块。</p>
+</li>
+<li>
+<p>导入Gateway所需依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!-- Nacos服务注册发现依赖 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.alibaba.cloud<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 网关Gateway依赖 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-gateway<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>因为Gateway属于一个服务，所以需要创建并编写<code>GatewayApplication</code>启动类：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootApplication</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">GatewayApplication</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">GatewayApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>在配置文件<code>application.yml</code>中编写Gateway相关配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">server</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">10010</span><span class="w"> </span><span class="c"># 网关端口</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">application</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">gateway</span><span class="w"> </span><span class="c"># 服务名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nacos</span><span class="p">:</span><span class="w">  </span><span class="c"># Nacos配置</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">server-addr</span><span class="p">:</span><span class="w"> </span><span class="l">localhost:8848</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">routes</span><span class="p">:</span><span class="w">   </span><span class="c"># 网关路由配置（是数组类型，可以配置多个）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service </span><span class="w"> </span><span class="c"># 路由ID，自定义，只要唯一即可</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># uri支持以下两种方式，推荐使用lb方式</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># uri: http://localhost:8081  # 路由的目标地址，使用http表示固定地址（不推荐使用）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://user-service </span><span class="w"> </span><span class="c"># 路由的目标地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                                </span><span class="c"># lb是Load Balance的缩写，表示负载均衡</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                                </span><span class="c"># 后面是服务地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> </span><span class="c"># 路由断言，判断请求是否符合路由规则的条件</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">Path=/user/**</span><span class="w"> </span><span class="c"># 路径断言，匹配&#34;/user/&#34;开头的请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">order-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://${spring.cloud.gateway.routes[1].id} </span><span class="w"> </span><span class="c"># 通过yaml变量设置uri</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">Path=/order/**</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">Before=2037-01-20T17:42:47.789-07:00[America/Denver]</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>启动<code>GatewayApplication</code>，使用<code>localhost:10010</code>来访问系统上的服务。</p>
+<p>例如访问<code>user-service</code>上的<code>/user/{id}</code>请求，就可以使用<code>http://localhost:10010/user/{id}</code>访问。获取<code>id</code>为<code>1</code>的<code>user</code>就访问<a href="http://localhost:10010/user/1" target="_blank" rel="noopener noreferrer"><code>http://localhost:10010/user/1</code><i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>如上所述，访问<code>order-service</code>上的<code>/order/{id}</code>就使用<code>http://localhost:10010/order/{id}</code>访问。</p>
+</li>
+</ol>
+<p>使用网关就可以通过网关来访问服务中的资源，并且还能做到负载均衡和权限控制等。</p>
+<hr>
+<h1 id="路由配置" data-numberify>路由配置<a class="anchor ms-1" href="#路由配置"></a></h1>
+<p>Gateway的路由配置如上所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">routes</span><span class="p">:</span><span class="w">   </span><span class="c"># 网关路由配置（是数组类型，可以配置多个）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service </span><span class="w"> </span><span class="c"># 路由ID，自定义，只要唯一即可</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># uri支持以下两种方式，推荐使用lb方式</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># uri: http://localhost:8081  # 路由的目标地址，使用http表示固定地址（不推荐使用）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://user-service </span><span class="w"> </span><span class="c"># 路由的目标地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                                </span><span class="c"># lb是Load Balance的缩写，表示负载均衡</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                                </span><span class="c"># 后面是服务地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> </span><span class="c"># 路由断言，判断请求是否符合路由规则的条件</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">Path=/user/**</span><span class="w"> </span><span class="c"># 路径断言，匹配&#34;/user/&#34;开头的请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">order-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://${spring.cloud.gateway.routes[1].id} </span><span class="w"> </span><span class="c"># 通过yaml变量设置uri</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">Path=/order/**</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">Before=2037-01-20T17:42:47.789-07:00[America/Denver]</span><span class="w">
+</span></span></span></code></pre></div><ul>
+<li>
+<p><code>cloud.gateway.routes</code>：Gateway的网关路由配置，数组类型。其元素可以有<code>id</code>、<code>uri</code>和<code>predicates</code>等属性。</p>
+</li>
+<li>
+<p><code>id</code>属性：标识一个服务的路由配置的唯一ID。可由用户自定义，但在当前Gateway网关服务中不可重复存在。</p>
+</li>
+<li>
+<p><code>uri</code>属性：标识当前服务路由配置的目标地址。有两种配置方式：</p>
+<ul>
+<li>
+<p><code>http</code>：使用<code>http://</code>前缀，表示当前的地址是固定地址。例如<code>http://localhost:8081</code>。</p>
+</li>
+<li>
+<p><code>lb</code>：使用<code>lb://</code>前缀，表示当前的地址是非固定的，需要做负载均衡。例如：<code>lb://user-service</code>。</p>
+<blockquote>
+<p><code>lb</code>是Load Balance的缩写，表示负载均衡。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><code>predicates</code>属性：路由断言，根据Gateway提供的断言工厂，对经过网关的请求进行权限的断言（也就是判断有没有权限可以访问该服务）。<code>predicates</code>是数组属性，可以配置多个规则。</p>
+</li>
+</ul>
+<h1 id="断言工厂" data-numberify>断言工厂<a class="anchor ms-1" href="#断言工厂"></a></h1>
+<p>在配置文件中写的断言规则，会被Predicate Factory读取并处理，转变为路由判断的条件。</p>
+<p>例如上方<code>Path=/user/**</code>就是按照路径匹配，断言只有<code>/user/**</code>这个请求方式才能通过网关访问到<code>user-service</code>。<code>order-service</code>中的<code>Path=/order/**</code>同理。这两条规则是由<code>org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory</code>类来处理的。</p>
+<p>在Gateway中还有以下断言工厂：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>名称</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>After</code></td>
+<td>是某个时间点后的请求。</td>
+<td><code>After=2037-01-20T17:42:47.789-07:00[America/Denver]</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Before</code></td>
+<td>是某个时间点之前的请求。</td>
+<td><code>Before=2031-04-13T15:14:47.433+08:00[Asia/Shanghai]</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Between</code></td>
+<td>是某两个时间点之前的请求。</td>
+<td><code>Between=2037-01-20T17:42:47.789-07:00[America/Denver], 2037-01-21T17:42:47.789-07:00[America/Denver]</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Cookie</code></td>
+<td>请求必须包含某些cookie。</td>
+<td><code>Cookie=chocolate, ch.p</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Header</code></td>
+<td>请求必须包含某些header。</td>
+<td><code>Header=X-Request-Id, \d+</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Host</code></td>
+<td>请求必须是访问某个host（域名）。</td>
+<td><code>Host=**.somehost.org,**.anotherhost.org</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Method</code></td>
+<td>请求方式必须是指定方式。</td>
+<td><code>Method=GET,POST</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Path</code></td>
+<td>请求路径必须符合指定规则。</td>
+<td><code>Path=/red/{segment},/blue/**</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Query</code></td>
+<td>请求参数必须包含指定参数。</td>
+<td><code>Query=name, Jack</code>，<br>或者<code>Query=name</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>RemoteAddr</code></td>
+<td>请求者的ip必须是指定范围。</td>
+<td><code>RemoteAddr=192.168.1.1/24</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Weight</code></td>
+<td>权重处理。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="路由过滤器" data-numberify>路由过滤器<a class="anchor ms-1" href="#路由过滤器"></a></h1>
+<p>GatewayFilter是网关中提供的一种过滤器，可以对进入网关的请求和微服务返回的响应做处理。</p>
+<p>Spring提供了31种不同的路由过滤器工厂。常用的有：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AddRequestHeader</code></td>
+<td>给当前请求添加一个请求头。</td>
+</tr>
+<tr>
+<td><code>RemoveRequestHeader</code></td>
+<td>移除请求中的一个请求头。</td>
+</tr>
+<tr>
+<td><code>AddResponseHeader</code></td>
+<td>给响应结果中添加一个响应头。</td>
+</tr>
+<tr>
+<td><code>RemoveResponseHeader</code></td>
+<td>从响应结果中移除有一个响应头。</td>
+</tr>
+<tr>
+<td><code>RequestRateLimiter</code></td>
+<td>限制请求的流量。</td>
+</tr>
+</tbody>
+</table>
+<p>GatewayFilter的使用也是在<code>application.yml</code>中配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://user-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">Path=/user/** </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">filters</span><span class="p">:</span><span class="w"> </span><span class="c"># 过滤器</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">AddRequestHeader=Hello, Hello Spring Cloud Gateway!</span><span class="w"> </span><span class="c"># 添加请求头</span><span class="w">
+</span></span></span></code></pre></div><h1 id="defaultfilter" data-numberify>DefaultFilter<a class="anchor ms-1" href="#defaultfilter"></a></h1>
+<p>上方所示的GatewayFilter只有在访问<code>user-service</code>时才能生效。Spring Cloud Gateway还提供了全局默认的GatewayFilter配置方式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://userservice </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">Path=/user/**</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">order-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://order-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">Path=/order/**</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">default-filters</span><span class="p">:</span><span class="w"> </span><span class="c"># 默认过滤项</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">AddRequestHeader=Truth, Itcast is freaking awesome! </span><span class="w">
+</span></span></span></code></pre></div><p>这种方式无论访问的是<code>user-service</code>还是<code>order-service</code>都会生效。</p>
+<p>在Spring Cloud Gateway的官方文档中可以查找更多路由工厂及其使用方式：</p>
+<p><a href="https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gatewayfilter-factories" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Spring Cloud Gateway 官方文档" src="/notes/spring/springcloud/gateway/uTools_1690728134391.png" loading="lazy" width="1897" height="949" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<h1 id="globalfilter" data-numberify>GlobalFilter<a class="anchor ms-1" href="#globalfilter"></a></h1>
+<p>GlobalFilter的作用与GatewayFilter的作用一样，也是处理一切进入网关的请求和微服务响应。区别在于GatewayFilter通过配置定义，处理逻辑是固定的；而GlobalFilter的逻辑需要自己写代码实现，可以自定义实现。</p>
+<p><code>GlobalFilter</code>接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">GlobalFilter</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 * 处理当前请求，有必要的话通过{@link GatewayFilterChain}将请求交给下一个过滤器处理
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 * @param exchange 请求上下文，里面可以获取Request、Responses等信息
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 * @param chain 用来把请求委托给下一个过滤器（放行请求）
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 * @return {@code Mono&lt;Void&gt;} 返回一个当前过滤器业务结束的标示
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 */</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">filter</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">,</span> <span class="n">GatewayFilterChain</span> <span class="n">chain</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><blockquote>
+<p>注：<code>GlobalFilter</code>是在<code>org.springframework.cloud.gateway.filter</code>包下的，是属于Spring Cloud Gateway中的一部分。</p>
+</blockquote>
+<p>在Filter中编写自定义逻辑，可以实现登录状态判断、权限校验、请求限流等等功能。</p>
+<p>假设实现一个简单的用户权限判断，其判断逻辑如下：</p>
+<ul>
+<li>请求参数中是否有<code>authorization</code>；</li>
+<li><code>authorization</code>参数值是否为<code>admin</code>。</li>
+</ul>
+<p>如果同时满足则放行，否则拦截。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 识别用户权限
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="mi">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nd">@Component</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizeFilter</span> <span class="kd">implements</span> <span class="n">GlobalFilter</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">filter</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">,</span> <span class="n">GatewayFilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1. 获取请求参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ServerHttpRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">exchange</span><span class="o">.</span><span class="na">getRequest</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">MultiValueMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getQueryParams</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 2. 获取参数中的 authorization
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">auth</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="na">getFirst</span><span class="o">(</span><span class="s">&#34;authorization&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 3. 判断参数值是否等于 admin
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="s">&#34;admin&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">auth</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 4. 是则放行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">// chain.filter()的返回值是Mono&lt;Void&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">exchange</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 5. 否则拦截
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ServerHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">exchange</span><span class="o">.</span><span class="na">getResponse</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 5.1. 设置状态码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// HttpStatus.UNAUTHORIZED 表示用户未认证，状态码为401
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">response</span><span class="o">.</span><span class="na">setStatusCode</span><span class="o">(</span><span class="n">HttpStatus</span><span class="o">.</span><span class="na">UNAUTHORIZED</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 5.2. 拦截请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// setComplete()的返回也是Mono&lt;Void&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="na">setComplete</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>定义GlobalFilter的过程可总结为：</p>
+<ol>
+<li>
+<p>继承<code>GlobalFilter</code>接口。</p>
+</li>
+<li>
+<p>实现<code>GlobalFilter.filter()</code>方法。</p>
+<p>在实现<code>GlobalFilter.filter()</code>时，可以使用<code>exchange</code>对象获取请求的<code>Request</code>、<code>Response</code>、<code>Attribute</code>、<code>Session</code>、<code>FormData</code>等信息。其中获取到的<code>Request</code>和<code>Response</code>分别是<code>ServerHttpRequest</code>和<code>ServerHttpResponse</code>对象。</p>
+<blockquote>
+<p>使用<code>exchange</code>获取到的对象与使用标准的ServletAPI获取到的不一样。</p>
+</blockquote>
+<p>放行资源使用的是<code>chain</code>对象。该对象仅有一个方法<code>filter()</code>。该方法接受一个<code>ServerWebExchange</code>对象（也就是<code>exchange</code>，相当于将<code>exchange</code>传给下一级Filter），并返回给上层Filter一个<code>Mono&lt;Void&gt;</code>对象。放行资源时标准的用法是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">exchange</span><span class="o">);</span>
+</span></span></code></pre></div><p>拦截资源使用的是从<code>exchange</code>中获取的<code>response</code>对象。调用<code>response</code>对象的<code>setComplete()</code>方法，返回给上层Filter一个<code>Mono&lt;Void&gt;</code>。标准用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="na">setComplete</span><span class="o">();</span>
+</span></span></code></pre></div><p>这样相当于直接将业务结束标示<code>Mono&lt;Void&gt;</code>返回给上层Filter。而没有调用<code>chain.filter(exchange)</code>的话，请求也就不会进入到下层Filter。</p>
+</li>
+<li>
+<p>为实现的<code>GlobalFilter</code>使用<code>@Component</code>注解，让Spring可以将该过滤器加载为Bean。</p>
+</li>
+<li>
+<p>为实现的<code>GlobalFilter</code>定义顺序（有两种定义方式）。</p>
+<p>定义<code>GlobalFilter</code>执行的优先级顺序的一个方法就是使用如上所示的<code>@Order</code>注解。在<code>@Order</code>注解中，其<code>value</code>属性是一个<code>int</code>类型的值，默认为<code>Integer.MAX_VALUE</code>也就是<code>int</code>类型的最大值<code>2147483647</code>（即$2^{31}-1$，按32位补码计算），<code>value</code>越小优先级越高。</p>
+<p>另一种方式就是继承一个<code>Ordered</code>接口，并实现其<code>getOrder()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizeFilter</span> <span class="kd">implements</span> <span class="n">GlobalFilter</span><span class="o">,</span> <span class="n">Ordered</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">filter</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">,</span> <span class="n">GatewayFilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 拦截/放行逻辑... */</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 定义过滤器执行顺序，效果与{@code @Order}相同
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return 过滤器的执行顺序，值越小优先级越高
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div></li>
+</ol>
+<h1 id="过滤器链" data-numberify>过滤器链<a class="anchor ms-1" href="#过滤器链"></a></h1>
+<p>请求进入网关后会遇到三类过滤器：</p>
+<ul>
+<li>当前路由的过滤器；</li>
+<li>默认过滤器（DefaultFilter）；</li>
+<li>全局过滤器（GlobalFilter）。</li>
+</ul>
+<p>在请求路由后，Spring Cloud Gateway会将每个路由的路由过滤器、默认过滤器和全局过滤器合并到一个过滤器链（集合）中，并进行排序。然后Spring Cloud Gateway会根据请求，按顺序执行路由对应的过滤器链。</p>
+<blockquote>
+<p>在CSDN上看到一个Gateway执行流程图，确实是在请求路由之后才开始组装过滤器链：</p>
+<p><picture><img class="img-fluid " alt="Gateway执行流程图" src="/notes/spring/springcloud/gateway/20210405115550799.png" loading="lazy" width="1076" height="1268" />
+</picture>
+
+</p>
+<p>原文链接：<a href="https://blog.csdn.net/riemann_/article/details/115440231" target="_blank" rel="noopener noreferrer">Spring Cloud Gateway 源码剖析之Filter Chain过滤器链<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+</blockquote>
+<p>路由过滤器和默认过滤器的实现十分接近，它们的本质都是<code>AddRequestHeaderGatewayFilterFactory</code>，并且最后通过<code>apply()</code>方法读取配置后生成统一的过滤器对象<code>GatewayFilter</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AddRequestHeaderGatewayFilterFactory</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">extends</span> <span class="n">AbstractNameValueGatewayFilterFactory</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="n">GatewayFilter</span> <span class="nf">apply</span><span class="o">(</span><span class="n">NameValueConfig</span> <span class="n">config</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">GatewayFilter</span><span class="o">()</span> <span class="o">{</span>    <span class="c1">// 生成过滤器对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">filter</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">					<span class="n">GatewayFilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">};</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>全局过滤器则是通过<code>FilteringWebHandler</code>中的私有类<code>GatewayFilterAdapter</code>（过滤器适配器）生成，使用<code>loadFilters()</code>将所有<code>GlobalFilter</code>转化为<code>GatewayFilterAdapter</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FilteringWebHandler</span> <span class="kd">implements</span> <span class="n">WebHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">GatewayFilter</span><span class="o">&gt;</span> <span class="n">globalFilters</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">FilteringWebHandler</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">GlobalFilter</span><span class="o">&gt;</span> <span class="n">globalFilters</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">this</span><span class="o">.</span><span class="na">globalFilters</span> <span class="o">=</span> <span class="n">loadFilters</span><span class="o">(</span><span class="n">globalFilters</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 将所有GlobalFilter链转为GatewayFilter
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">GatewayFilter</span><span class="o">&gt;</span> <span class="nf">loadFilters</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">GlobalFilter</span><span class="o">&gt;</span> <span class="n">filters</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">filters</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">filter</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">GatewayFilterAdapter</span> <span class="n">gatewayFilter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GatewayFilterAdapter</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">filter</span> <span class="k">instanceof</span> <span class="n">Ordered</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="kt">int</span> <span class="n">order</span> <span class="o">=</span> <span class="o">((</span><span class="n">Ordered</span><span class="o">)</span> <span class="n">filter</span><span class="o">).</span><span class="na">getOrder</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="k">new</span> <span class="n">OrderedGatewayFilter</span><span class="o">(</span><span class="n">gatewayFilter</span><span class="o">,</span> <span class="n">order</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">gatewayFilter</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}).</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 加载全局过滤器，与所有的路由过滤器和默认过滤器合并后更具Order排序、组织过滤器链
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">handle</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Route</span> <span class="n">route</span> <span class="o">=</span> <span class="n">exchange</span><span class="o">.</span><span class="na">getRequiredAttribute</span><span class="o">(</span><span class="n">GATEWAY_ROUTE_ATTR</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 加载所有的默认过滤器和路由过滤器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 加载方式是，先加载默认过滤器链，然后根据Route（规则）加载路由过滤器链，最后合并为一个过滤器链
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">List</span><span class="o">&lt;</span><span class="n">GatewayFilter</span><span class="o">&gt;</span> <span class="n">gatewayFilters</span> <span class="o">=</span> <span class="n">route</span><span class="o">.</span><span class="na">getFilters</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="n">List</span><span class="o">&lt;</span><span class="n">GatewayFilter</span><span class="o">&gt;</span> <span class="n">combined</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="k">this</span><span class="o">.</span><span class="na">globalFilters</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">combined</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">gatewayFilters</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// TODO: needed or cached?
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">AnnotationAwareOrderComparator</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">combined</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;Sorted gatewayFilterFactories: &#34;</span> <span class="o">+</span> <span class="n">combined</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="k">new</span> <span class="n">DefaultGatewayFilterChain</span><span class="o">(</span><span class="n">combined</span><span class="o">).</span><span class="na">filter</span><span class="o">(</span><span class="n">exchange</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GatewayFilterAdapter</span> <span class="kd">implements</span> <span class="n">GatewayFilter</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kd">final</span> <span class="n">GlobalFilter</span> <span class="n">delegate</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 私有类构造方法
+</span></span></span><span class="line"><span class="cl"><span class="cm">         */</span>
+</span></span><span class="line"><span class="cl">        <span class="n">GatewayFilterAdapter</span><span class="o">(</span><span class="n">GlobalFilter</span> <span class="n">delegate</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">=</span> <span class="n">delegate</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 实现GatewayFilter的filter()方法
+</span></span></span><span class="line"><span class="cl"><span class="cm">         */</span>
+</span></span><span class="line"><span class="cl">        <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">filter</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">,</span> <span class="n">GatewayFilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">delegate</span><span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">exchange</span><span class="o">,</span> <span class="n">chain</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>综上所述，Spring Cloud Gateway加载过滤器链的过程大致如下：</p>
+<ol>
+<li>
+<p>加载默认过滤器链。</p>
+</li>
+<li>
+<p>加载路由过滤器链。</p>
+</li>
+<li>
+<p>合并默认过滤器链和路由过滤器链为一条过滤器链。</p>
+<p>路由过滤器和默认过滤器的<code>Order</code>由Spring指定，默认是按照声明顺序从1递增。</p>
+</li>
+<li>
+<p>加载全局过滤器链。</p>
+</li>
+<li>
+<p>将全局过滤器链和 默认过滤器与路由过滤器合并的链 合并。</p>
+<blockquote>
+<p>所有的过滤器都有一个<code>int</code>类型的<code>Order</code>值，<code>Order</code>值越小，优先级越高，执行顺序越靠前。</p>
+</blockquote>
+<p>当过滤器的<code>Order</code>值一样时，会按照 <strong>默认过滤器 &gt; 路由过滤器 &gt; 全局过滤器</strong> 的顺序执行。</p>
+</li>
+</ol>
+<h1 id="跨域问题处理" data-numberify>跨域问题处理<a class="anchor ms-1" href="#跨域问题处理"></a></h1>
+<p>跨域是指发送与当前服务的域名（或端口）不一致的请求。</p>
+<p>跨域问题的产生原因是浏览器不允许Ajax请求对域名不同或端口不同的服务发起请求。例如：</p>
+<ul>
+<li>域名不同： <code>www.taobao.com</code>和<code>www.taobao.org</code>，<code>www.linner.asia</code>和<code>blog.linner.asia</code>。</li>
+<li>域名相同，端口不同：<code>localhost:8080</code>和<code>localhost8081</code>。</li>
+</ul>
+<p>解决方案之一就是CORS。Gateway为我们提供了使用CORS处理跨域问题的方法，只需修改<code>application.yml</code>即可：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">globalcors</span><span class="p">:</span><span class="w"> </span><span class="c"># 全局的跨域处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">add-to-simple-url-handler-mapping</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># 解决options请求被拦截问题</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">cors-configurations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">&#39;[/**]&#39;</span><span class="p">:</span><span class="w">  </span><span class="c"># 对所有请求进行跨域处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowedOrigins</span><span class="p">:</span><span class="w"> </span><span class="c"># 允许跨域请求的网站</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;http://localhost:5500&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;http://http://127.0.0.1:5500&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowedMethods</span><span class="p">:</span><span class="w"> </span><span class="c"># 允许的跨域ajax的请求方式</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;GET&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;POST&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;DELETE&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;PUT&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;OPTIONS&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowedHeaders</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;*&#34;</span><span class="w"> </span><span class="c"># 允许在请求中携带的头信息（这里是允许所有）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowCredentials</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="c"># 是否允许携带cookie</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">maxAge</span><span class="p">:</span><span class="w"> </span><span class="m">360000</span><span class="w">  </span><span class="c"># 每次跨域检测的有效期（在有效期内浏览器不会重复询问跨域请求）</span><span class="w">
+</span></span></span></code></pre></div><p>模拟一个跨域问题：</p>
+<ol>
+<li>
+<p>编写一个简单的页面，其中用Ajax发起跨域请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;X-UA-Compatible&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;ie=edge&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>模拟跨域问题<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://unpkg.com/axios/dist/axios.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 发送请求到Gateway网关上
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;http://localhost:10010/user/1?authorization=admin&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">resp</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">data</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用Tomcat或Nginx之类的Web服务器放置这个Html页面。</p>
+<blockquote>
+<p>我在模拟时使用的是VS Code的<code>Live Server</code>插件。它会想Web服务器一样在你电脑上开一个端口加载页面，让你能实时预览你的页面效果。用在这里做个简单的静态页面Web服务器也很方便。</p>
+<p><picture><img class="img-fluid " alt="Live Server 插件" src="/notes/spring/springcloud/gateway/uTools_1690798301739.png" loading="lazy" width="919" height="238" />
+</picture>
+
+</p>
+<p>Live Server使用的端口是<code>5500</code>，当然也有可能不同。</p>
+</blockquote>
+</li>
+<li>
+<p>在给Gateway网关配置跨域请求处理之前，通过Web服务器访问页面，可以在浏览器控制台发现类似以下的报错：</p>
+<p><picture><img class="img-fluid " alt="跨域报错信息" src="/notes/spring/springcloud/gateway/uTools_1690798524991.png" loading="lazy" width="702" height="66" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>配置成功后重启Gateway网关，再次访问页面，可以发现浏览器控制台打印出了跨域请求获取到的结果。</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/notes/spring/springcloud/nacos/">Nacos</a>
+    </div><div class="post-nav post-next">
+      <a href="/notes/spring/springcloud/feign/">Feign</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/eureka/">
+    Eureka
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/feign/">
+    Feign
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/nacos/">
+    Nacos
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/remote-call/">
+    RestTemplate
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/spring-cloud-config/">
+    Spring 环境和配置
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        信息
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Linner" src="/images/avatar.jpg" loading="lazy" data-viewer-invisible width="460" height="460" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+</nav>
+</div>
+  </div>
+</div>
+
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                分栏
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomySeriesTab" data-bs-toggle="tab" data-bs-target="#taxonomySeries" 
+                            type="button" role="tab" aria-controls="taxonomySeries" aria-selected="true">
+                            专栏
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomySeries" role="tabpanel" aria-labelledby="taxonomySeriesTab" tabindex="0">
+                        <a href="/series/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">26</span>
+                        </a>
+                        <a href="/series/ruan-she/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="软件设计师">
+                            软件设计师
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/series/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/note/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="笔记">
+                            笔记
+                            <span class="badge badge-sm text-secondary bg-white ms-1">54</span>
+                        </a>
+                        <a href="/categories/memo/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="备忘录">
+                            备忘录
+                            <span class="badge badge-sm text-secondary bg-white ms-1">11</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">26</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">22</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">9</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">9</span>
+                        </a>
+                        <a href="/tags/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/tomcat/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Tomcat">
+                            Tomcat
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/%E7%AE%97%E6%B3%95/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="算法">
+                            算法
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">39</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">63</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="/archives/2023/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">22</span>
+    </a>
+
+    <a href="/archives/2022/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">27</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="featured-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#featured-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="featured-posts"
+                  aria-selected="true">
+                  精选文章
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="featured-posts"
+                role="tabpanel"
+                aria-labelledby="featured-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/nacos-deploy/">
+        Nacos 部署
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年7月24日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+              <div
+                class="tab-pane"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/rabbit-mq/">
+        RabbitMQ
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月3日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/communications/">
+        通讯方式
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月3日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+    
+  
+  <div class="d-flex">
+      <div
+        class="flex-shrink-0 d-flex justify-content-center align-items-center"
+        style="max-width: 100px"><picture><img class="img-fluid" alt="API 测试工具" src="/images/dark-purple.png" loading="lazy"
+     width="2600"
+     height="1646"/>
+  </picture>
+      </div>
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center ms-3">
+      <a class="post-title" href="/notes/spring/springmvc/api-tools/">
+        API 测试工具
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年7月27日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/nacos-deploy/">
+        Nacos 部署
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年7月24日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/introduction/">
+        微服务简介
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年6月26日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#网关">网关</a></li>
+    <li><a href="#创建-gateway-服务">创建 Gateway 服务</a></li>
+    <li><a href="#路由配置">路由配置</a></li>
+    <li><a href="#断言工厂">断言工厂</a></li>
+    <li><a href="#路由过滤器">路由过滤器</a></li>
+    <li><a href="#defaultfilter">DefaultFilter</a></li>
+    <li><a href="#globalfilter">GlobalFilter</a></li>
+    <li><a href="#过滤器链">过滤器链</a></li>
+    <li><a href="#跨域问题处理">跨域问题处理</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    <div class="accordion featured-posts">
+      <section class="row card component">
+        <div class="card-header">
+          <h2 class="card-title my-2 fs-4 text-surface d-none d-lg-block">
+            精选文章
+          </h2>
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#featured-posts"
+            aria-expanded="true"
+            aria-controls="featured-posts">
+            精选文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="featured-posts">
+          <ul class="post-list list-unstyled ms-1">
+              <li class="mb-2">
+                <a href="/notes/spring/springcloud/nacos-deploy/">
+                  Nacos 部署
+                </a>
+              </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+  <div class="accordion recent-posts">
+    <section class="row card component">
+      <div class="card-header">
+        <h2 class="card-title my-2 fs-4 text-surface d-none d-lg-block">
+          最近文章
+        </h2>
+        <a
+          class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+          role="button"
+          data-bs-toggle="collapse"
+          href="#recent-posts"
+          aria-expanded="true"
+          aria-controls="recent-posts">
+          最近文章
+        </a>
+      </div>
+      <div
+        class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+        id="recent-posts">
+        <ul class="post-list list-unstyled ms-1">
+            <li class="mb-2">
+              <a href="/notes/spring/springcloud/rabbit-mq/">RabbitMQ</a>
+            </li>
+            <li class="mb-2">
+              <a href="/notes/spring/springcloud/communications/">通讯方式</a>
+            </li>
+            <li class="mb-2">
+              <a href="/notes/spring/springmvc/api-tools/">API 测试工具</a>
+            </li>
+            <li class="mb-2">
+              <a href="/notes/spring/springcloud/nacos-deploy/">Nacos 部署</a>
+            </li>
+            <li class="mb-2">
+              <a href="/notes/spring/springcloud/introduction/">微服务简介</a>
+            </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.31e346fe8b757cca42a655530e1c726ac0ba5ae10affbeb952a03a54d4f68549.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>

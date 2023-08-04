@@ -1,0 +1,1533 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.18e725f5bc5d83136e879a4c4d579207578d4c12ef2ac405096d3d7b10ecef10.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>结构化开发篇 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="模块化, 数据流图, 数据字典, 耦合" />
+  <meta name="description" content="概述 结构化方法是一种面向数据流的开 发方法，它由以下构成： 结构化分析：根据分解与抽象的原则，按照系统中数据处理的流程，用数据流图来建立系统的功" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="结构化开发篇"/>
+<meta name="twitter:description" content="概述 结构化方法是一种面向数据流的开 发方法，它由以下构成： 结构化分析：根据分解与抽象的原则，按照系统中数据处理的流程，用数据流图来建立系统的功"/>
+<meta property="og:title" content="结构化开发篇" />
+<meta property="og:description" content="概述 结构化方法是一种面向数据流的开 发方法，它由以下构成： 结构化分析：根据分解与抽象的原则，按照系统中数据处理的流程，用数据流图来建立系统的功" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/notes/ruan-she/structured-dev/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2023-05-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-05-07T00:00:00+00:00" />
+<meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/" /><meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/" /><meta property="og:see_also" content="/notes/ruan-she/algorithm-design-analysis/" /><meta property="og:see_also" content="/notes/ruan-she/computer-nework/" /><meta property="og:see_also" content="/notes/ruan-she/software-engineering/" />
+
+<meta itemprop="name" content="结构化开发篇">
+<meta itemprop="description" content="概述 结构化方法是一种面向数据流的开 发方法，它由以下构成： 结构化分析：根据分解与抽象的原则，按照系统中数据处理的流程，用数据流图来建立系统的功"><meta itemprop="datePublished" content="2023-05-07T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-05-07T00:00:00+00:00" />
+<meta itemprop="wordCount" content="6038">
+<meta itemprop="keywords" content="软考,结构化开发," />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="结构化开发篇" />
+  <meta name="twitter:image:alt" content="结构化开发篇" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.769e45ba6bcaf3277b3bdf3bf853db6ab20b1eccf640611fafc0b710b2fce0fb.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDocsNav"
+      aria-expanded="false" aria-label="Toggle docs navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start justify-content-center ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+<aside class="docs-nav col-xxl-2" tabindex="-1" data-bs-hide="focusout">
+  <div class="offcanvas-xxl offcanvas-start" id="offcanvasDocsNav" aria-labelledby="offcanvasDocsNavLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="offcanvas-title h5" id="offcanvasDocsNavLabel">Browse docs</div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
+    </div>
+    <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/"><span class="docs-nav-title">Docker</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-012aba4eb9af6d9f4ae66a201ea7f8c6" aria-expanded="true" aria-controls="nav-012aba4eb9af6d9f4ae66a201ea7f8c6">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-012aba4eb9af6d9f4ae66a201ea7f8c6">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/"><span class="docs-nav-title">Spring</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-7ceb766179c4063d15c38386bc4661ae" aria-expanded="true" aria-controls="nav-7ceb766179c4063d15c38386bc4661ae">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-7ceb766179c4063d15c38386bc4661ae">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/"><span class="docs-nav-title">Java Web</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-b49b12a009c97c23131b13becb962032" aria-expanded="true" aria-controls="nav-b49b12a009c97c23131b13becb962032">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-b49b12a009c97c23131b13becb962032">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/jdbc/"><span class="docs-nav-title">JDBC</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/druid/"><span class="docs-nav-title">Druid</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/maven-base/"><span class="docs-nav-title">Maven 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/mybatis-base/"><span class="docs-nav-title">MyBatis</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/tomcat-base/"><span class="docs-nav-title">Tomcat</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/servlet/"><span class="docs-nav-title">Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/http-servlet/"><span class="docs-nav-title">HTTP Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/ajax-interaction/"><span class="docs-nav-title">Ajax</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/cookie-session/"><span class="docs-nav-title">Cookie and Session</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/java-web/filter/"><span class="docs-nav-title">Filter</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springframework/"><span class="docs-nav-title">Spring Framework</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springmvc/"><span class="docs-nav-title">SpringMVC</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-97093b4343a8670aa2a0c822fe58364f" aria-expanded="true" aria-controls="nav-97093b4343a8670aa2a0c822fe58364f">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-97093b4343a8670aa2a0c822fe58364f">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springmvc/springmvc-base/"><span class="docs-nav-title">SpringMVC 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springmvc/api-tools/"><span class="docs-nav-title">API 测试工具</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-a0f2c80217bd7447451517ab863ad1cd" aria-expanded="true" aria-controls="nav-a0f2c80217bd7447451517ab863ad1cd">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-a0f2c80217bd7447451517ab863ad1cd">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/springboot-base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/maven-senior/"><span class="docs-nav-title">Maven 高级</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springboot/swagger_knife4j/"><span class="docs-nav-title">API 文档</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-3a0ec4e5cdc1d8885deb786ecdfaeed6" aria-expanded="true" aria-controls="nav-3a0ec4e5cdc1d8885deb786ecdfaeed6">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-3a0ec4e5cdc1d8885deb786ecdfaeed6">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/introduction/"><span class="docs-nav-title">微服务简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/spring-cloud-config/"><span class="docs-nav-title">Spring 环境和配置</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/remote-call/"><span class="docs-nav-title">RestTemplate</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/eureka/"><span class="docs-nav-title">Eureka</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/nacos/"><span class="docs-nav-title">Nacos</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/nacos-deploy/"><span class="docs-nav-title">Nacos 部署</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/feign/"><span class="docs-nav-title">Feign</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/gateway/"><span class="docs-nav-title">Gateway</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/communications/"><span class="docs-nav-title">通讯方式</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/spring/springcloud/rabbit-mq/"><span class="docs-nav-title">RabbitMQ</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/"><span class="docs-nav-title">软件设计师</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-6d298da5c210698dc010c5ef3b7a035f" aria-expanded="true" aria-controls="nav-6d298da5c210698dc010c5ef3b7a035f">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-6d298da5c210698dc010c5ef3b7a035f">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/computer-system/"><span class="docs-nav-title">计算机系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/programming-language/"><span class="docs-nav-title">程序设计语言</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/"><span class="docs-nav-title">知识产权</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/data-base/"><span class="docs-nav-title">数据库</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/object-oriented/"><span class="docs-nav-title">面向对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/operating-system/"><span class="docs-nav-title">操作系统</span></a>
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/structured-dev/"><span class="docs-nav-title">结构化开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/software-engineering/"><span class="docs-nav-title">软件工程</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/computer-nework/"><span class="docs-nav-title">计算机网络</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/data-structure/"><span class="docs-nav-title">数据结构</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/notes/ruan-she/algorithm-design-analysis/"><span class="docs-nav-title">算法设计与分析</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul></div>
+  </div>
+</aside><div class="col-xxl-7 ms-auto">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/ruan-she/">软件设计师</a></li><li class="breadcrumb-item active">结构化开发篇</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">结构化开发篇</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-05-07 00:00:00 &#43;0000 UTC。">2023年5月7日</span><span class="post-reading-time me-1 mb-1">13 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/ruan-she/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>软件设计师</a><a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%80%E5%8F%91/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">结构化开发</a><a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">软考</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>结构化方法是一种面向数据流的开
+发方法，它由以下构成：</p>
+<ul>
+<li>结构化分析：根据分解与抽象的原则，按照系统中数据处理的流程，用数据流图来建立系统的功能模型，从而完成需求分析工作。</li>
+<li>结构化设计：根据模块独立性准则、软件结构优
+化准则将数据流图转换为软件的体系结构，用软件结构图来建立系统的物理模型，实现系统的
+概要设计。</li>
+<li>结构化程序设计：使用3种基本控制结构构造程序，任何程序都可以由顺序、选择和重复3种基本控制结构构造。</li>
+</ul>
+<p>结构化方法总的指导思想是自顶向下、逐层分解，它的基本原则是功能的分解与抽象。它是软件工程中最早出现的开发方法，特别适合于数据处理领域的问题，但是不适合解决大规模的、特别复杂的项目，且难以适应需求的变化。</p>
+<hr>
+<h1 id="系统设计" data-numberify>系统设计<a class="anchor ms-1" href="#系统设计"></a></h1>
+<h2 id="抽象" data-numberify>抽象<a class="anchor ms-1" href="#抽象"></a></h2>
+<p>抽象是一种设计技术，重点说明一个实体的本质方面，而忽略或者掩盖不太重要或非本质的方面。</p>
+<p>抽象是一种重要的工具，用来将复杂的现象简化到可以分析、实验或者可以理解的程度。</p>
+<p>软件工程中从软件定义到软件开发要经历多个阶段，在这个过程中每前进一步都可看作是对软件解法的抽象层次的一次细化。</p>
+<p>抽象的最底层就是实现该软件的源程序代码。在进行模块化设计时也可以有多个抽象层次，最高抽象层次的模块用概括的方式叙述问题的解法，较低抽象层次的模块是较高抽象层次模块对问题解法描述的细化。</p>
+<h2 id="模块化" data-numberify>模块化<a class="anchor ms-1" href="#模块化"></a></h2>
+<ul>
+<li>
+<p><strong>模块</strong>：是在程序中是数据说明、可执行语句等<u>程序对象的集合</u>，或者是单独命名和编址的元素，例如高级语言中的过程、函数和子程序等。</p>
+<p>在软件的体系结构中，模块是可组合、分解和更换的单元。</p>
+</li>
+<li>
+<p><strong>模块化</strong>：是指<u>将一个待开发的软件分解成若干个小的简单部分一模块</u>，<u>每个模块可独立地开发、测试，最后组装成完整的程序</u>。</p>
+<p>这是一种<u>复杂问题“分而治之”的原则</u>。</p>
+<p>模块化的<u>目的是使程序的结构清晰，容易阅读、理解、测试和修改。</u></p>
+</li>
+<li>
+<p><strong>模块独立</strong>：是指<u>每个模块完成一个相对独立的特定子功能</u>，并且<u>与其他模块之间的联系简单</u>。</p>
+<p>衡量模块独立程度的标准有（模块独立性的两个定性标准）：</p>
+<ul>
+<li><strong>耦合性</strong>；</li>
+<li><strong>内聚性</strong>。</li>
+</ul>
+<p>在将软件系统划分模块时，应尽量做到<strong>高内聚</strong>、<strong>低耦合</strong>，提高模块的独立性。</p>
+</li>
+</ul>
+<p>通常，可以按照在软件系统中的功能将模块分为四种类型：</p>
+<ul>
+<li>传入模块：取得数据或输入数据，经过某些处理，再将其传送给其他模块。</li>
+<li>传出模块：输出数据，在输出前可能进行某些处理。数据可能被输出到系统的外部，或者会输出到其他模块进行进一步处理。</li>
+<li>变换模块：从上级调用模块得到数据，进行特定的处理，转换成其他形式，再将加工结果返回给调用模块。</li>
+<li>协调模块：一般不对数据进行加工，主要是通过调用、协调和管理其他模块来完成特定的功能。</li>
+</ul>
+<h3 id="耦合" data-numberify>耦合<a class="anchor ms-1" href="#耦合"></a></h3>
+<p>耦合是模块之间的相对独立性（互相连接的紧密程度）的度量。</p>
+<p>模块之间的耦合取决于：</p>
+<ul>
+<li>各个模块之间接口的复杂程度；</li>
+<li>调用模块的方式；</li>
+<li>通过接口的信息类型。</li>
+</ul>
+<p>一般模块之间可能的耦合方式有7种类型：</p>
+<p><picture><img class="img-fluid " alt="耦合的种类" src="/notes/ruan-she/structured-dev/uTools_1683443957893.png" loading="lazy" width="874" height="133" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p><strong>无直接耦合</strong>：指两个模块之间<u>没有直接的关系</u>，它们分别从属于不同模块的控制与调用，<u>它们之间不传递任何信息</u>。</p>
+<p>无直接耦合的模块间：</p>
+<ul>
+<li><u>耦合性最弱</u>；</li>
+<li><u>模块独立性最高</u>。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据耦合</strong>：指两个模块之间<u>有调用关系</u>，<u>传递的是简单的数据值</u>，相当于高级语言中的值传递。</p>
+</li>
+<li>
+<p><strong>标记耦合</strong>：指两个模块之间<u>传递的是数据结构</u>。</p>
+</li>
+<li>
+<p><strong>控制耦合</strong>：指一个模块调用另一个模块时，<u>传递的是控制变量</u>，<u>被调用模块通过该控制变量的值有选择地执行模块内的某一功能</u>。</p>
+</li>
+<li>
+<p><strong>外部耦合</strong>：模块间<u>通过软件之外的环境联结</u>（如I/O将模块耦合到特定的设备、格式、通信协议上）时称为外部耦合。</p>
+</li>
+<li>
+<p><strong>公共耦合</strong>：指<u>通过一个公共数据环境相互作用</u>的那些模块间的耦合。</p>
+</li>
+<li>
+<p><strong>内容耦合</strong>：当一个模块<u>直接使用另一个模块的内部数据</u>，或<u>通过非正常入口转入另一个模块内部时</u>，这种模块之间的耦合称为内容耦合。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">耦合类型</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">无直接耦合</td>
+<td style="text-align:left">没有直接关系，不传递任何信息</td>
+</tr>
+<tr>
+<td style="text-align:center">数据耦合</td>
+<td style="text-align:left">调用关系，传递简单数据值</td>
+</tr>
+<tr>
+<td style="text-align:center">标记耦合</td>
+<td style="text-align:left">传递数据结构</td>
+</tr>
+<tr>
+<td style="text-align:center">控制耦合</td>
+<td style="text-align:left">调用关系，被调模块传递给主调模块控制变量</td>
+</tr>
+<tr>
+<td style="text-align:center">外部耦合</td>
+<td style="text-align:left">通过软件之外的环境联结</td>
+</tr>
+<tr>
+<td style="text-align:center">公共耦合</td>
+<td style="text-align:left">通过公共数据环境相互作用</td>
+</tr>
+<tr>
+<td style="text-align:center">内容耦合</td>
+<td style="text-align:left">直接使用另一个模块的内部数据<br>或通过非正常入口转入另一个模块内部</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>解耦：降低模块之间的耦合性的过程。</p>
+</blockquote>
+<h3 id="内聚" data-numberify>内聚<a class="anchor ms-1" href="#内聚"></a></h3>
+<p>内聚是<u>对一个模块内部各个元素彼此结合的紧密程度的度量</u>。<u>一个内聚程度高的模块（在理想情况下）应当只做一件事。</u></p>
+<p>一般模块的内聚性分为7种类型：</p>
+<p><picture><img class="img-fluid " alt="内聚的种类" src="/notes/ruan-she/structured-dev/uTools_1683460613634.png" loading="lazy" width="852" height="150" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p><strong>偶然内聚</strong>（<strong>巧合内聚</strong>）：指一个模块内的各<u>处理元素之间没有任何联系</u>。</p>
+<p>偶然内聚具有最低的内聚性。</p>
+<p>具有偶然内聚的模块具有以下特点（缺点）：</p>
+<ul>
+<li>不易修改、理解和维护；</li>
+<li>会影响到模块间的耦合关系。</li>
+</ul>
+</li>
+<li>
+<p><strong>逻辑内聚</strong>：指模块内<u>执行若干个逻辑上相似的功能，通过参数确定该模块完成哪一个功能</u>。</p>
+</li>
+<li>
+<p><strong>时间内聚</strong>：把<u>需要同时执行的动作组合在一起形成的模块</u>。</p>
+</li>
+<li>
+<p><strong>过程内聚</strong>：指一个模块<u>完成多个任务，这些任务必须按指定的过程执行</u>。</p>
+</li>
+<li>
+<p><strong>通信内聚</strong>：指模块内的<u>所有处理元素都在同一个数据结构上操作</u>，或者<u>各处理使用相同的输入数据或者产生相同的输出数据</u>。</p>
+</li>
+<li>
+<p><strong>顺序内聚</strong>：指一个模块中的<u>各个处理元素都密切相关于同一功能且必须顺序执行，前一功能元素的输出就是下一功能元素的输入</u>。</p>
+</li>
+<li>
+<p><strong>功能内聚</strong>：指模块内的<u>所有元素共同作用完成一个功能，缺一不可</u>。</p>
+<p>这是最强的内聚。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">内聚类型</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">偶然内聚<br>（巧合内聚）</td>
+<td style="text-align:left">各处理之间没有任何联系</td>
+</tr>
+<tr>
+<td style="text-align:center">逻辑内聚</td>
+<td style="text-align:left">执行若干个逻辑上相似的功能，<br>通过参数确定该模块完成哪一个功能</td>
+</tr>
+<tr>
+<td style="text-align:center">时间内聚</td>
+<td style="text-align:left">把需要同时执行的动作组合在一起</td>
+</tr>
+<tr>
+<td style="text-align:center">过程内聚</td>
+<td style="text-align:left">完成多个任务，这些任务必须按指定的过程执行</td>
+</tr>
+<tr>
+<td style="text-align:center">通信内聚</td>
+<td style="text-align:left">所有处理都在同一个数据结构上操作，<br>或者各处理使用相同的输入数据或者产生相同的输出数据</td>
+</tr>
+<tr>
+<td style="text-align:center">顺序内聚</td>
+<td style="text-align:left">各处理都与同一功能密切相关且必须顺序执行，<br>前一功能元素的输出就是下一功能元素的输入</td>
+</tr>
+<tr>
+<td style="text-align:center">功能内聚</td>
+<td style="text-align:left">所有元素共同作用完成一个功能，缺一不可</td>
+</tr>
+</tbody>
+</table>
+<h2 id="系统结构设计原则" data-numberify>系统结构设计原则<a class="anchor ms-1" href="#系统结构设计原则"></a></h2>
+<p>为保证总体结构设计顺利完成，应遵循以下几条原则：</p>
+<ul>
+<li>
+<p><strong>分解——协调原则</strong>：</p>
+<p>系统整体，具有其整体的目的和功能，但这些目的和功能的实现又是由相互联系的各个组成部分共同工作的结果。解决复杂问题的一个很重要的原则就是把它分解成多个小问题分别处理，在处理过程中根据系统总体要求协调各部门的关系。</p>
+</li>
+<li>
+<p><strong>自顶向下的原则</strong>：</p>
+<p>从上往下，逐层分解；先确定上层模块的功能，再确定下层模块的功能。</p>
+</li>
+<li>
+<p><strong>信息隐蔽、抽象的原则</strong>：</p>
+<p><u>上层模块只规定下层模块做什么和所属模块间的协调关系，但不规定怎么做</u>，以保证各模块的相对独立性和内部结构的合理性，使得模块与模块之间层次分明，易于理解、实施和维护。</p>
+</li>
+<li>
+<p><strong>一致性原则</strong>：</p>
+<p>要保证整个软件设计过程中具有：</p>
+<ul>
+<li><strong>统一的规范</strong>、</li>
+<li><strong>统一的标准</strong>、</li>
+<li><strong>统一的文件模式</strong></li>
+<li>……</li>
+</ul>
+</li>
+<li>
+<p><strong>明确性原则</strong>：</p>
+<p>每个模块必须：</p>
+<ul>
+<li>功能明确、接口明确；</li>
+<li>消除多重功能和无用接口。</li>
+</ul>
+</li>
+<li>
+<p><strong>高内聚、低耦合</strong>：</p>
+<p>模块之间的耦合尽可能小，模块的内聚度尽可能高。</p>
+</li>
+<li>
+<p><strong>模块的扇入系数和扇出系数要合理</strong>：</p>
+<ul>
+<li><strong>扇出系数</strong>：模块直接调用其他模块的个数。</li>
+<li><strong>扇入系数</strong>：模块被其他模块调用时，直接调用它的模块个数。</li>
+</ul>
+<p>经验表明，<u>一个设计得好的系统的平均扇入、扇出系数通常是 3 或 4，一般不应超过 7</u>，否则会引起出错概率的增大。但菜单调用型模块的扇入与扇出系数可以大一些，公用模块的扇入系数可以大一些。</p>
+</li>
+<li>
+<p><strong>模块的规模适当</strong>：</p>
+<ul>
+<li><u>过大的模块常常使系统分解得不充分；</u></li>
+<li><u>过小的模块有可能降低模块的独立性，造成系统接口的复杂性。</u></li>
+</ul>
+</li>
+<li>
+<p><u>模块的作用范围应该在其控制范围之内。</u></p>
+</li>
+<li>
+<p>避免或减少使用病态连接：病态连接是指从中部进入或访问一个模块。</p>
+</li>
+</ul>
+<h2 id="系统文档" data-numberify>系统文档<a class="anchor ms-1" href="#系统文档"></a></h2>
+<p>信息系统的文档是系统建设过程的“痕迹”，是系统维护人员的指南，是开发人员与用户交流的工具。</p>
+<p>对文档在<u>系统开发人员</u>、<u>项目管理人员</u>、<u>系统维护人员</u>、<u>系统评价人员</u>以及<u>用户</u>之间的多种作用总结如下：</p>
+<ul>
+<li>
+<p><u>用户</u>与<u>系统分析人员</u>在<u>系统规划</u>和<u>系统分析阶段</u>通过文档进行沟通。</p>
+<p>这里的文档主要包括：</p>
+<ul>
+<li><strong>可行性研究报告</strong>、</li>
+<li><strong>总体规划报告</strong>、</li>
+<li><strong>系统开发合同</strong>、</li>
+<li><strong>系统方案说明书</strong>。</li>
+</ul>
+</li>
+<li>
+<p><u>系统开发人员</u>与<u>项目管理人员</u>通过文档在<u>项目期内</u>进行沟通。</p>
+<p>这里的文档是指项目管理文件，主要有：</p>
+<ul>
+<li>
+<p><strong>系统开发计划</strong>，</p>
+<p>包括：</p>
+<ul>
+<li><strong>工作任务分解表</strong>、</li>
+<li><strong>PERT图</strong>、</li>
+<li><strong>甘特图</strong>、</li>
+<li><strong>预算分配表</strong>；</li>
+</ul>
+</li>
+<li>
+<p><strong>系统开发月报</strong>；</p>
+</li>
+<li>
+<p><strong>系统开发总结报告</strong>。</p>
+</li>
+</ul>
+<p>有了这些文档可以：</p>
+<ul>
+<li>不同阶段开发人员工作的顺利交接；</li>
+<li>降低因为人员流动带来的风险。</li>
+</ul>
+</li>
+<li>
+<p><u>系统测试人员</u>与<u>系统开发人员</u>通过文档进行沟通。</p>
+<p>系统测试人员可以根据以下文档对系统开发人员所开发的系统进行测试：</p>
+<ul>
+<li><strong>系统方案说明书</strong>、</li>
+<li><strong>系统开发合同</strong>、</li>
+<li><strong>系统设计说明书</strong>、</li>
+<li><strong>测试计划</strong>。</li>
+</ul>
+<p>系统测试人员再将评估结果撰写成<strong>系统测试报告</strong>。</p>
+</li>
+<li>
+<p><u>系统开发人员</u>与<u>用户</u>在<u>系统运行期间</u>进行沟通。</p>
+<p>用户通过系统开发人员撰写的文档运行系统。这里的文档主要是：</p>
+<ul>
+<li><strong>用户手册</strong>、</li>
+<li><strong>操作指南</strong>。</li>
+</ul>
+</li>
+<li>
+<p><u>系统开发人员</u>与<u>系统维护人员</u>通过文档进行沟通。</p>
+<p>这里的文档主要有：</p>
+<ul>
+<li>
+<p><strong>系统设计说明书</strong>；</p>
+</li>
+<li>
+<p><strong>系统开发总结报告</strong>。</p>
+<p>开发总结报告还可分为以下3个文档：</p>
+<ul>
+<li><strong>研制报告</strong>；</li>
+<li><strong>技术报告</strong>；</li>
+<li><strong>技术手册</strong>：记录了系统开发过程中的各种主要技术细节。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><u>用户</u>与<u>维修人员</u>在<u>运行维护期间</u>进行沟通。</p>
+<p>用户在使用信息系统的过程中，将运行过程中的问题进行记载，形成：</p>
+<ul>
+<li><strong>系统运行报告</strong>、</li>
+<li><strong>维护修改建议</strong>。</li>
+</ul>
+<p>系统维护人员根据以下文档对系统进行维护和升级：</p>
+<ul>
+<li>维护修改建议；</li>
+<li>系统开发人员留下的技术手册等文档。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">人员</th>
+<th style="text-align:center">阶段</th>
+<th style="text-align:left">文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">用户<br>系统分析人员</td>
+<td style="text-align:center">系统规划<br>系统分析</td>
+<td style="text-align:left">沟通文档，主要是<strong>规划报告</strong>、<strong>合同</strong>、<strong>方案</strong>：<br><ul><li>可行性研究报告</li><li>总体规划报告</li><li>系统开发合同</li><li>系统方案说明书</li></ul></td>
+</tr>
+<tr>
+<td style="text-align:center">系统开发人员<br>项目管理人员</td>
+<td style="text-align:center">项目期内</td>
+<td style="text-align:left">沟通文档（项目管理文件），主要是<strong>计划</strong>、<strong>报告</strong>类文档：<br><ul><li>系统开发计划<ul><li>工作任务分解表</li><li>PERT图</li><li>甘特图</li><li>预算分配表</li></ul></li><li>系统开发月报</li><li>系统开发总结报告</li></ul></td>
+</tr>
+<tr>
+<td style="text-align:center">系统测试人员<br>系统开发人员</td>
+<td style="text-align:center">测试</td>
+<td style="text-align:left">系统测试人员根据以下文档对系统进行测试：<br><ul><li>系统方案说明书</li><li>系统开发合同</li><li>系统设计说明书</li><li>测试计划</li></ul>系统测试人员再将评估结果撰写成系统测试报告</td>
+</tr>
+<tr>
+<td style="text-align:center">系统开发人员<br>用户</td>
+<td style="text-align:center">系统运行期间</td>
+<td style="text-align:left">用户通过系统开发人员撰写的文档运行系统：<br><ul><li>用户手册</li><li>操作指南</li></ul></td>
+</tr>
+<tr>
+<td style="text-align:center">系统开发人员<br>系统维护人员</td>
+<td style="text-align:center">维护</td>
+<td style="text-align:left">沟通文档：<ul><li>系统设计说明书</li><li>系统开发总结报告<ul><li>研制报告</li><li>研制报告</li><li>技术手册</li></ul></li></ul></td>
+</tr>
+<tr>
+<td style="text-align:center">用户<br>维修人员</td>
+<td style="text-align:center">运维</td>
+<td style="text-align:left">用户将运行过程中的问题进行记载：<ul><li>系统运行报告</li><li>维护修改建议</li></ul>系统维护人员根据以下文档对系统进行维护和升级：<ul><li>维护修改建议</li><li>系统开发人员留下的技术手册等文档</li></ul></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="结构化分析方法" data-numberify>结构化分析方法<a class="anchor ms-1" href="#结构化分析方法"></a></h1>
+<h2 id="数据流图" data-numberify>数据流图<a class="anchor ms-1" href="#数据流图"></a></h2>
+<p><strong>数据流图</strong>也称<strong>数据流程图</strong>（Data Flow Diagram，<strong>DFD</strong>），是一种便于用户理解、分析系统数据流程的图形工具。它<u>摆脱了系统的物理内容</u>，精确地在逻辑上描述系统的功能、输入、输出和数据存储等，是系统逻辑模型的重要组成部分。</p>
+<p>数据流图中的基本图形元素包括：</p>
+<ul>
+<li>
+<p><strong>数据流</strong>（Data Flow）：由一组固定成分的数据组成，表示数据的流向。</p>
+<p><picture><img class="img-fluid " alt="数据流" src="/notes/ruan-she/structured-dev/uTools_1683518468182.png" loading="lazy" width="193" height="71" />
+</picture>
+
+</p>
+<p>在DFD种，数据流的流向由以下几种：</p>
+<ul>
+<li>从<u>加工</u>流向另一个<u>加工</u>；</li>
+<li>从<u>加工</u>流向<u>数据存储</u>（写）；</li>
+<li>从<u>数据存储</u>流向<u>加工</u>（读）；</li>
+<li>从<u>外部实体</u>流向<u>加工</u>（输入）；</li>
+<li>从<u>加工</u>流向<u>外部实体</u>（输出）。</li>
+</ul>
+<p>即数据流的<u>起点或终点必须至少有一个是加工</u>。</p>
+<p>除了与数据存储有关的数据流（流向数据存储或从数据存储流出），DFD中的每个数据流都必须用一个定义明确的名字表示。</p>
+</li>
+<li>
+<p><strong>加工</strong>（Process）：加工描述了输入数据流到输出数据流之间的变换，也就是<u>输入数据流经过什么处理后变成了输出数据流</u>。</p>
+<p><picture><img class="img-fluid " alt="加工" src="/notes/ruan-she/structured-dev/1683518239889.png" loading="lazy" width="282" height="105" />
+</picture>
+
+</p>
+<p>每个加工都有一个名字和编号。</p>
+<p>一个加工可以有多个输入数据流和多个输出数据流，但<u>至少有一个输入数据流和一个输出数据流</u>。</p>
+<p>数据流图中常见的3种错误如下所示：</p>
+<ul>
+<li>
+<p><strong>黑洞</strong>：加工只有输入，没有输出。</p>
+<p>如下图加工1。</p>
+</li>
+<li>
+<p><strong>白洞</strong>：加工只有输出但没有输入。</p>
+<p>如下图加工2。</p>
+</li>
+<li>
+<p><strong>灰洞</strong>：加工中输入数据不足以产生输出数据。</p>
+<p>有几种可能的原因：</p>
+<ul>
+<li>一个错误的命名过程；</li>
+<li>错误命名的输入或输出；</li>
+<li>不完全的事实。</li>
+</ul>
+<p>如下图加工3。</p>
+</li>
+</ul>
+<p><picture><img class="img-fluid " alt="数据流图中常见错误" src="/notes/ruan-she/structured-dev/1683528176745.png" loading="lazy" width="793" height="542" />
+</picture>
+
+</p>
+</li>
+<li>
+<p><strong>数据存储</strong>（Data Store）：存储和提供数据。</p>
+<p><picture><img class="img-fluid " alt="数据存储" src="/notes/ruan-she/structured-dev/uTools_1683517944926.png" loading="lazy" width="350" height="79" />
+</picture>
+
+</p>
+<p>每个数据存储都有一个定义明确的名字标识。</p>
+<p>数据存储可以：</p>
+<ul>
+<li>存储加工的输出数据：数据流流入数据存储，表示数据的写入操作；</li>
+<li>提供加工的输入数据：数据流从数据存储流出，表示数据的读操作。</li>
+<li>双向箭头的数据流指向数据存储，表示对数据的修改。</li>
+</ul>
+<p>DFD中的数据存储在具体实现时可以用以下方式实现：</p>
+<ul>
+<li>文件系统实现；</li>
+<li>数据库系统实现。</li>
+</ul>
+<p>数据存储的存储介质可以是：</p>
+<ul>
+<li>磁盘、</li>
+<li>磁带、</li>
+<li>其他存储介质。</li>
+</ul>
+</li>
+<li>
+<p><strong>外部实体</strong>（External Agent，外部主体）：指<u>存在于软件系统之外的人员、组织、物体或外部系统</u>，它指出系统所需数据的<u>发源地（源）</u>和<u>系统所产生的数据的归宿地（宿）</u>。</p>
+<p><picture><img class="img-fluid " alt="外部实体" src="/notes/ruan-she/structured-dev/uTools_1683517896893.png" loading="lazy" width="118" height="79" />
+</picture>
+
+</p>
+<p>例如：</p>
+<ul>
+<li>人员：学生、老师、员工、主观、医生、客户……</li>
+<li>组织：供应商、采购部门……</li>
+<li>物体：传感器、控制器、单车、车辆……</li>
+<li>外部系统：支付系统、车辆交易系统、库存管理系统、道闸控制系统……</li>
+</ul>
+<p>在许多系统中，某个源和某个宿可以是同一个人员、组织、物体或外部系统，此时，在DFD中可以用同一个符号表示：</p>
+<ul>
+<li>当数据流从该符号流出时，表示它是源；</li>
+<li>当数据流流向该符号时，表示它是宿；</li>
+<li>当两者皆有时，表示它既是源又是宿。</li>
+</ul>
+<p>外部实体表示存在于系统之外的对象，用来帮助用户理解系统数据的来源和去向。</p>
+</li>
+</ul>
+<p>软件系统内部的<strong>数据处理模型</strong>：使用<u>数据流</u>、<u>加工</u>和<u>数据存储</u>构建。</p>
+<p>数据流图描述了系统的分解，但没有对图中各成分进行说明。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">基本元素</th>
+<th style="text-align:center">图形表示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">数据流</td>
+<td style="text-align:center"><picture><img class="img-fluid " alt="数据流" src="/notes/ruan-she/structured-dev/uTools_1683518468182.png" loading="lazy" width="193" height="71" />
+</picture>
+
+</td>
+</tr>
+<tr>
+<td style="text-align:center">加工</td>
+<td style="text-align:center"><picture><img class="img-fluid " alt="加工" src="/notes/ruan-she/structured-dev/1683518239889.png" loading="lazy" width="282" height="105" />
+</picture>
+
+</td>
+</tr>
+<tr>
+<td style="text-align:center">数据存储</td>
+<td style="text-align:center"><picture><img class="img-fluid " alt="数据存储" src="/notes/ruan-she/structured-dev/uTools_1683517944926.png" loading="lazy" width="350" height="79" />
+</picture>
+
+</td>
+</tr>
+<tr>
+<td style="text-align:center">外部实体</td>
+<td style="text-align:center"><picture><img class="img-fluid " alt="外部实体" src="/notes/ruan-she/structured-dev/uTools_1683517896893.png" loading="lazy" width="118" height="79" />
+</picture>
+
+</td>
+</tr>
+</tbody>
+</table>
+<p>数据流图必须确保：</p>
+<ul>
+<li>数据流的起点或终点必须至少有一个是加工。</li>
+<li>加工至少有一个输入数据流和一个输出数据流。</li>
+</ul>
+<p>分层数据流图：</p>
+<ol>
+<li>
+<p>顶层图：描述系统的输入和输出。</p>
+<p>即描述系统从哪些外部实体接受数据流，以及系统发送数据流到哪些外部实体。</p>
+<ul>
+<li>顶层图只有一个加工，即待开发的软件系统。</li>
+<li>顶层图中的数据流就是系统的输入/输出信息。</li>
+<li>顶层图中通常没有数据存储。</li>
+</ul>
+</li>
+<li>
+<p>0层图：分解顶层图的加工。</p>
+</li>
+<li>
+<p>再分解：将DFD中某些比较复杂的加工再次分解成一张DFD子图。</p>
+</li>
+</ol>
+<h2 id="数据字典" data-numberify>数据字典<a class="anchor ms-1" href="#数据字典"></a></h2>
+<p>数据字典（DD）是为数据流图中的以下成分做出说明：</p>
+<ul>
+<li><strong>数据流</strong>；</li>
+<li><strong>文件</strong>；</li>
+<li><strong>加工</strong>：对加工的描述称为“小说明”或“加工逻辑说明”；</li>
+<li>组成数据流或文件的<strong>数据项</strong>。</li>
+</ul>
+<p>数据字典有以下4类条目：</p>
+<ul>
+<li>
+<p><strong>数据流</strong>条目：对DFD中数据流的定义，通常列出该数据流的各组成数据项。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:left">举例及说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$=$</td>
+<td style="text-align:center">被定义为</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">$+$</td>
+<td style="text-align:center">与</td>
+<td style="text-align:left">$x = a + b$：$x$由$a$和$b$组成</td>
+</tr>
+<tr>
+<td style="text-align:center">$[a|b]$</td>
+<td style="text-align:center">或</td>
+<td style="text-align:left">$x = [a</td>
+</tr>
+<tr>
+<td style="text-align:center">$\{a\}$</td>
+<td style="text-align:center">重复</td>
+<td style="text-align:left">$x = \{a\}$：$x$由任意个$a$组成</td>
+</tr>
+<tr>
+<td style="text-align:center">$m\{a\}n$<br>或<br>$\big\{ a \big\}^{n}_{m}$</td>
+<td style="text-align:center">重复</td>
+<td style="text-align:left">$x=m\{a\}n$ 或 $x=\big\{a\big\}^{n}_{m}$：$x$中出现$m \sim n$次$a$<br><ul><li>$n$：重复次数的上限</li><li>$m$：重复次数的下限</li></ul></td>
+</tr>
+<tr>
+<td style="text-align:center">$(a)$</td>
+<td style="text-align:center">可选</td>
+<td style="text-align:left">$x = (a)$：$a$在$x$中出现$0$或$1$次</td>
+</tr>
+<tr>
+<td style="text-align:center">$&ldquo;a&rdquo;$</td>
+<td style="text-align:center">基本数据元素</td>
+<td style="text-align:left">$x = &ldquo;a&rdquo;$：$x$是取值为字符$a$的数据元素</td>
+</tr>
+<tr>
+<td style="text-align:center">$m..n$</td>
+<td style="text-align:center">连接符</td>
+<td style="text-align:left">$x = m..n$：$x$可取$m \sim n$中的任意一个值</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>数据项</strong>条目：组成数据流和数据存储的最小元素，是不可再分解的数据单位。</p>
+</li>
+<li>
+<p><strong>数据存储</strong>条目：对DFD中数据存储的定义。</p>
+</li>
+<li>
+<p><strong>基本加工</strong>条目：用来说明DFD中（下层）基本加工的处理逻辑（加工逻辑）。</p>
+<ul>
+<li>对每一个基本加工，必须有一个加工规格说明（加工逻辑描述）。</li>
+<li>加工规格说明（加工逻辑描述）必须描述基本加工如何把输入数据流变换为输出数据流的加工规则。</li>
+<li>加工规格说明必须描述实现加工的策略，而不是实现加工的细节。</li>
+<li>加工规格说明中包含的信息应是充足的，完备的，有用的，没有重复的多余信息。</li>
+</ul>
+<p>结构化语言、判定树和判定表可以用来表示加工逻辑。</p>
+</li>
+</ul>
+<p>源点、终点不在系统之内，故一般不在字典中说明。</p>
+<hr>
+<h1 id="用户界面设计" data-numberify>用户界面设计<a class="anchor ms-1" href="#用户界面设计"></a></h1>
+<p>用户界面（UI）设计在人与计算机之间搭建了一个有效的交流媒介。</p>
+<h2 id="黄金原则" data-numberify>黄金原则<a class="anchor ms-1" href="#黄金原则"></a></h2>
+<p>黄金原则一共有3条：</p>
+<ul>
+<li>用户操纵控制</li>
+<li>减少用户的记忆负担</li>
+<li>保持界面一致</li>
+</ul>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/notes/ruan-she/data-base/">数据库篇</a>
+    </div><div class="post-nav post-next">
+      <a href="/notes/ruan-she/software-engineering/">软件工程篇</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/data-base/">
+    数据库篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月22日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/object-oriented/">
+    面向对象篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月18日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/">
+    知识产权篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月15日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/operating-system/">
+    操作系统篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月12日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/ruan-she/data-structure/">
+    数据结构篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年4月8日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
+  <div class="container">
+    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#系统设计">系统设计</a>
+      <ul>
+        <li><a href="#抽象">抽象</a></li>
+        <li><a href="#模块化">模块化</a>
+          <ul>
+            <li><a href="#耦合">耦合</a></li>
+            <li><a href="#内聚">内聚</a></li>
+          </ul>
+        </li>
+        <li><a href="#系统结构设计原则">系统结构设计原则</a></li>
+        <li><a href="#系统文档">系统文档</a></li>
+      </ul>
+    </li>
+    <li><a href="#结构化分析方法">结构化分析方法</a>
+      <ul>
+        <li><a href="#数据流图">数据流图</a></li>
+        <li><a href="#数据字典">数据字典</a></li>
+      </ul>
+    </li>
+    <li><a href="#用户界面设计">用户界面设计</a>
+      <ul>
+        <li><a href="#黄金原则">黄金原则</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    
+
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.31e346fe8b757cca42a655530e1c726ac0ba5ae10affbeb952a03a54d4f68549.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>
