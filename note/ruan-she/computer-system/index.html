@@ -1,0 +1,1414 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.18e725f5bc5d83136e879a4c4d579207578d4c12ef2ac405096d3d7b10ecef10.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>计算机系统篇 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="校验码, 指令集, 中央处理单元, 数据表示, 中断, 加密技术" />
+  <meta name="description" content="计算机的基本单位 位（比特） 最小数据单位 bit、b 字节 最小存储单位 byte、B 1B = 8b 千字节 KB 1KB = 1024B 兆字节 MB 1MB = 1024KB 吉字节 GB 1GB = 1024MB 太字节 TB 1TB = 1024GB 计" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="计算机系统篇"/>
+<meta name="twitter:description" content="计算机的基本单位 位（比特） 最小数据单位 bit、b 字节 最小存储单位 byte、B 1B = 8b 千字节 KB 1KB = 1024B 兆字节 MB 1MB = 1024KB 吉字节 GB 1GB = 1024MB 太字节 TB 1TB = 1024GB 计"/>
+<meta property="og:title" content="计算机系统篇" />
+<meta property="og:description" content="计算机的基本单位 位（比特） 最小数据单位 bit、b 字节 最小存储单位 byte、B 1B = 8b 千字节 KB 1KB = 1024B 兆字节 MB 1MB = 1024KB 吉字节 GB 1GB = 1024MB 太字节 TB 1TB = 1024GB 计" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/note/ruan-she/computer-system/" /><meta property="article:section" content="note" />
+<meta property="article:published_time" content="2023-03-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-03-24T00:00:00+00:00" />
+<meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/" /><meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/" /><meta property="og:see_also" content="/note/ruan-she/algorithm-design-analysis/" /><meta property="og:see_also" content="/note/ruan-she/computer-nework/" /><meta property="og:see_also" content="/note/ruan-she/software-engineering/" /><meta property="og:see_also" content="/note/ruan-she/structured-dev/" />
+
+<meta itemprop="name" content="计算机系统篇">
+<meta itemprop="description" content="计算机的基本单位 位（比特） 最小数据单位 bit、b 字节 最小存储单位 byte、B 1B = 8b 千字节 KB 1KB = 1024B 兆字节 MB 1MB = 1024KB 吉字节 GB 1GB = 1024MB 太字节 TB 1TB = 1024GB 计"><meta itemprop="datePublished" content="2023-03-24T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-03-24T00:00:00+00:00" />
+<meta itemprop="wordCount" content="7088">
+<meta itemprop="keywords" content="软考,计算机系统," />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="计算机系统篇" />
+  <meta name="twitter:image:alt" content="计算机系统篇" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.63881d543b8598f2443e93c3ece2d353658cb5b67788cb681ad9e28e39f01632.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDocsNav"
+      aria-expanded="false" aria-label="Toggle docs navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start justify-content-center ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/note/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+<aside class="docs-nav col-xxl-2" tabindex="-1" data-bs-hide="focusout">
+  <div class="offcanvas-xxl offcanvas-start" id="offcanvasDocsNav" aria-labelledby="offcanvasDocsNavLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="offcanvas-title h5" id="offcanvasDocsNavLabel">Browse docs</div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
+    </div>
+    <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/docker/"><span class="docs-nav-title">Docker</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-5f5eb8b7625d291e649e30c17bc4ba0a" aria-expanded="true" aria-controls="nav-5f5eb8b7625d291e649e30c17bc4ba0a">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-5f5eb8b7625d291e649e30c17bc4ba0a">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/"><span class="docs-nav-title">Spring</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-2d7f0f9b604a1409482311f84a5aaed9" aria-expanded="true" aria-controls="nav-2d7f0f9b604a1409482311f84a5aaed9">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-2d7f0f9b604a1409482311f84a5aaed9">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/"><span class="docs-nav-title">Java Web</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-1c10e578a03cb3d29b4aeadc274bad7e" aria-expanded="true" aria-controls="nav-1c10e578a03cb3d29b4aeadc274bad7e">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-1c10e578a03cb3d29b4aeadc274bad7e">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/jdbc/"><span class="docs-nav-title">JDBC</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/druid/"><span class="docs-nav-title">Druid</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/maven-base/"><span class="docs-nav-title">Maven 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/mybatis-base/"><span class="docs-nav-title">MyBatis</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/tomcat-base/"><span class="docs-nav-title">Tomcat</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/servlet/"><span class="docs-nav-title">Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/http-servlet/"><span class="docs-nav-title">HTTP Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/ajax-interaction/"><span class="docs-nav-title">Ajax</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/cookie-session/"><span class="docs-nav-title">Cookie and Session</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/filter/"><span class="docs-nav-title">Filter</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springframework/"><span class="docs-nav-title">Spring Framework</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springmvc/"><span class="docs-nav-title">SpringMVC</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e40b528ee0eb171cf492a5028feb54ef" aria-expanded="true" aria-controls="nav-e40b528ee0eb171cf492a5028feb54ef">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-e40b528ee0eb171cf492a5028feb54ef">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springmvc/springmvc-base/"><span class="docs-nav-title">SpringMVC 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springmvc/api-tools/"><span class="docs-nav-title">API 测试工具</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f2a7b71e208c33b72bbb79462ef38b2b" aria-expanded="true" aria-controls="nav-f2a7b71e208c33b72bbb79462ef38b2b">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-f2a7b71e208c33b72bbb79462ef38b2b">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/springboot-base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/maven-senior/"><span class="docs-nav-title">Maven 高级</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/swagger_knife4j/"><span class="docs-nav-title">API 文档</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-7aaae3863713eea681871a69f7293d4a" aria-expanded="true" aria-controls="nav-7aaae3863713eea681871a69f7293d4a">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-7aaae3863713eea681871a69f7293d4a">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/introduction/"><span class="docs-nav-title">微服务简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/spring-cloud-config/"><span class="docs-nav-title">Spring 环境和配置</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/remote-call/"><span class="docs-nav-title">RestTemplate</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/eureka/"><span class="docs-nav-title">Eureka</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/nacos/"><span class="docs-nav-title">Nacos</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/nacos-deploy/"><span class="docs-nav-title">Nacos 部署</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/feign/"><span class="docs-nav-title">Feign</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/gateway/"><span class="docs-nav-title">Gateway</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/communications/"><span class="docs-nav-title">通讯方式</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/rabbit-mq/"><span class="docs-nav-title">RabbitMQ</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/"><span class="docs-nav-title">软件设计师</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-b7c207dd051559c699f4cb05e443c738" aria-expanded="true" aria-controls="nav-b7c207dd051559c699f4cb05e443c738">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-b7c207dd051559c699f4cb05e443c738">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/computer-system/"><span class="docs-nav-title">计算机系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/programming-language/"><span class="docs-nav-title">程序设计语言</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/"><span class="docs-nav-title">知识产权</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/data-base/"><span class="docs-nav-title">数据库</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/object-oriented/"><span class="docs-nav-title">面向对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/operating-system/"><span class="docs-nav-title">操作系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/structured-dev/"><span class="docs-nav-title">结构化开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/software-engineering/"><span class="docs-nav-title">软件工程</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/computer-nework/"><span class="docs-nav-title">计算机网络</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/data-structure/"><span class="docs-nav-title">数据结构</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/algorithm-design-analysis/"><span class="docs-nav-title">算法设计与分析</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul></div>
+  </div>
+</aside><div class="col-xxl-7 ms-auto">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/note/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/note/ruan-she/">软件设计师</a></li><li class="breadcrumb-item active">计算机系统篇</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">计算机系统篇</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-03-24 00:00:00 &#43;0000 UTC。">2023年3月24日</span><span class="post-reading-time me-1 mb-1">15 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/ruan-she/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>软件设计师</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">计算机系统</a><a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">软考</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="计算机的基本单位" data-numberify>计算机的基本单位<a class="anchor ms-1" href="#计算机的基本单位"></a></h1>
+<table>
+<tr>
+    <td>位（比特）<br>最小数据单位</td>
+    <td><b>bit、b</b></td>
+    <td></td>
+</tr>
+<tr>
+    <td>字节<br>最小存储单位</td>
+    <td>byte、B</td>
+    <td>1B = 8b</td>
+</tr>
+<tr>
+    <td>千字节</td>
+    <td>KB</td>
+    <td>1KB = 1024B</td>
+</tr>
+<tr>
+    <td>兆字节</td>
+    <td>MB</td>
+    <td>1MB = 1024KB</td>
+</tr>
+<tr>
+    <td>吉字节</td>
+    <td>GB</td>
+    <td>1GB = 1024MB</td>
+</tr>
+<tr>
+    <td>太字节</td>
+    <td>TB</td>
+    <td>1TB = 1024GB</td>
+</tr>
+</table>
+<hr>
+<h1 id="计算机系统" data-numberify>计算机系统<a class="anchor ms-1" href="#计算机系统"></a></h1>
+<p>计算机系统由<u>硬件</u>和<u>软件</u>组成。</p>
+<p>计算机基本硬件系统：</p>
+<ul>
+<li>运算器</li>
+<li>控制器</li>
+<li>存储器</li>
+<li>输入设备</li>
+<li>输出设备</li>
+</ul>
+<hr>
+<h1 id="中央处理单元" data-numberify>中央处理单元<a class="anchor ms-1" href="#中央处理单元"></a></h1>
+<p>运算器、控制器等部件被集成在一起统称中央处理单元（CPU）。CPU是硬件系统的核心，用于数据的加工处理，能完成各种算术、逻辑运算及控制功能。</p>
+<p>中央处理单元（CPU）负责获取程序指令、对指令进行译码并加以执行。</p>
+<p>CPU的功能：</p>
+<ul>
+<li>
+<p>程序控制：通过执行指令来控制程序的执行顺序。</p>
+</li>
+<li>
+<p>操作控制：CPU产生每条指令的（若干）操作信号并将操作信号送往对应的部件，控制相应的部件按指令的功能要求进行操作。</p>
+</li>
+<li>
+<p>时间控制：对各种操作进行时间上的控制，即指令执行过程中操作信号的出现时间、持续时间及出现的时间顺序都需要进行严格控制。</p>
+</li>
+<li>
+<p>数据处理：通过对数据进行算术运算及逻辑运算等方式进行加工处理，数据加工处理的结果被人们所利用。</p>
+<p>对数据的加工处理也是CPU最根本的任务。</p>
+</li>
+<li>
+<p>对系统内部和外部的中断（异常）做出响应，进行相应的处理。</p>
+</li>
+</ul>
+<p>CPU的组成：</p>
+<ul>
+<li>运算器</li>
+<li>控制器</li>
+<li>寄存器组</li>
+<li>内部总线</li>
+</ul>
+<h2 id="运算器" data-numberify>运算器<a class="anchor ms-1" href="#运算器"></a></h2>
+<p>运算器组成部件：</p>
+<ul>
+<li>
+<p>算术逻辑单元（ALU）：重要组成部件。负责处理数据，实现对数据的算术运算和逻辑运算。</p>
+</li>
+<li>
+<p>累加寄存器（AC，累加器）：是一个通用寄存器。存放操作数或者结果。</p>
+<p>其功能是当运算器的算术逻辑单元执行算术或逻辑运算时，为ALU提供一个工作区。例如，在执行一个减法运算前，先将被减数取出暂存在AC中，再从内存储器中取出减数，然后同AC的内容相减，将所得的结果送回AC中。
+运算的结果是放在累加器中的，运算器中至少要有一个累加寄存器。</p>
+</li>
+<li>
+<p>数据缓冲寄存器（DR）：暂存由内存读/写的一条指令或一个数据字，将不同时间段内读/写的数据隔离开来。</p>
+<p>DR的主要作用为：</p>
+<ul>
+<li>作为CPU和内存、外部设备之间数据传送的中转站；</li>
+<li>作为CPU和内存、外围设备之间在操作速度上的缓冲；</li>
+<li>在单累加器结构的运算器中，数据缓冲寄存器还可兼作为操作数寄存器。</li>
+</ul>
+</li>
+<li>
+<p>状态条件寄存器（PSW）：保存了当前指令执行完成之后的状态（标志通常分别由1位触发器保存）。通常，一个算术操作产生一个运算结果，而一个逻辑操作产生一个判决。</p>
+</li>
+</ul>
+<h2 id="控制器" data-numberify>控制器<a class="anchor ms-1" href="#控制器"></a></h2>
+<p>控制器用于控制整个CPU的工作，它决定了计算机运行过程的
+自动化。它不仅要保证程序的正确执行，而且要能够处理异常事件。</p>
+<p>指令控制逻辑要完<u>取指令</u>、<u>分析指令</u>和<u>执行指令</u>的操作，其过程分为<u>取指令</u>、<u>指令译码</u>、<u>按指令操作码执行</u>、<u>形成下一条指令地址</u>等步骤。</p>
+<ul>
+<li>
+<p>指令寄存器（IR）：暂存要执行的指令，该指令从内存中获取（通过缓冲寄存器）。</p>
+<p>当CPU执行一条指令时：</p>
+<ol>
+<li>把指令从内存储器取到缓冲寄存器中。</li>
+<li>送入IR暂存。</li>
+<li>指令译码器根据IR的内容产生各种微操作指令，控制其他的组成部件工作，完成所需的功能。</li>
+</ol>
+</li>
+<li>
+<p>程序计数器（PC，指令计数器）：具有寄存信息和计数两种</p>
+<ol>
+<li>在程序开始执行前，将程序的起始地址送入PC。
+该地址在程序加载到内存时确定，因此PC的内容即是程序第一条指令的地址。</li>
+<li>执行指令时，CPU自动修改PC的内容，以便使其保持的总是将要执行的下一条指令的地址。</li>
+</ol>
+<p>由于大多数指令都是按顺序来执行的，所以修改的过程通常只是简单地对PC加1。</p>
+<p>执行转移指令时，后继指令的地址根据当前指令的地址加上一个向前或向后转移的位移量得到，或者根据转移指令给出的直接转移的地址得到。</p>
+</li>
+<li>
+<p>地址寄存器（AR）：保存当前CPU所访问的内存单元的地址。</p>
+</li>
+<li>
+<p>指令译码器（ID）：指令包含操作码和地址码两部分，而指令译码器就是对指令中的操作码字段进行分析解释，识别该指令规定的操作，向操作控制器发出具体的控制信号，控制各部件工作，完成所需的功能。</p>
+</li>
+</ul>
+<hr>
+<h1 id="数据表示" data-numberify>数据表示<a class="anchor ms-1" href="#数据表示"></a></h1>
+<h2 id="原码" data-numberify>原码<a class="anchor ms-1" href="#原码"></a></h2>
+<p>原码表示法又叫符号加绝对值表示法。最高位为符号位，0表示正号，1表示负号，其余的n-1位表示数值的绝对值。</p>
+<p>原码特点：</p>
+<ul>
+<li>0的表示不唯一（有正负0）；</li>
+<li>加、减运算方式不统一；</li>
+<li>需额外对符号位进行处理，不利于硬件设计；</li>
+<li>当 $a &lt; b$ 时，实现 $a-b$ 比较困难。</li>
+</ul>
+<h2 id="反码" data-numberify>反码<a class="anchor ms-1" href="#反码"></a></h2>
+<p>最高位为符号位，0表示正号，1表示负号，其余的n-1位表示数值的绝对值。正数的反码与原码相同，负数的反码则是除符号位以外其余各位按位取反。</p>
+<p>原码特点：0的表示不唯一。</p>
+<h2 id="补码" data-numberify>补码<a class="anchor ms-1" href="#补码"></a></h2>
+<p>计算机中的补码是模2补码</p>
+<p>概念：在一个模运算（Moduler Arithmetic）系统中，同余（Congruence Modulo）的数等价。</p>
+<p>补码的定义：有 $n$ 位时，$[X]_补=(2^n+X)\mod{2^n}\quad (-2^{n-1}\leq X&lt;2^{n-1})$。</p>
+<ul>
+<li>
+<p>当 $X&lt;0$ 时，补码有两种求法：</p>
+<ul>
+<li>各位取反，末位加 1。</li>
+<li>从第 2 个 1 开始往右各位取反。</li>
+</ul>
+</li>
+<li>
+<p>当 $X&gt;0$ 时，补码与原码相同。</p>
+</li>
+</ul>
+<p>补码的减法：$Y-X=Y+[-X]_补$。</p>
+<p>特殊的补码：</p>
+<ol>
+<li>
+<p>$[-2^{n-1}]_补=(2^n-2^{n-1})\mod{2^n}=(10\ldots0)_2\ (n-1 个0)$。</p>
+<p>这个数的最高位（符号位）即表示符号，又表示数值。如，-128。</p>
+</li>
+<li>
+<p>$[-1]_补=2^n-1=(11\ldots1)_2\ (n个1)$。</p>
+</li>
+<li>
+<p>$[+0]_补=[-0]_补=(00\ldots0)\ (n个0)$。
+补码的0表示唯一。</p>
+</li>
+</ol>
+<h2 id="移码" data-numberify>移码<a class="anchor ms-1" href="#移码"></a></h2>
+<ul>
+<li>移码就是将每个数值加上一个偏置常数（Excess/Bias）。</li>
+<li>通常，当编码位数为 $n$ 时，bias 取 $2^{n-1}$ 或 $2^{n-1}-1$。</li>
+<li>移码可以方便地进行大小的比较。</li>
+</ul>
+<p>移码可以看成是在其补码的基础上对符号位取反。移码的0表示唯一。</p>
+<blockquote>
+<p>其实（个人认为）根据补码和移码的定义，可以将补码当作特殊的移码。其bias为$2^n$。</p>
+</blockquote>
+<h2 id="各种码制带符号数的范围" data-numberify>各种码制带符号数的范围<a class="anchor ms-1" href="#各种码制带符号数的范围"></a></h2>
+<p><picture><img class="img-fluid " alt="带符号数的范围" src="/note/ruan-she/computer-system/%E5%B8%A6%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E8%8C%83%E5%9B%B4.png" loading="lazy" width="1174" height="273" />
+</picture>
+
+</p>
+<h2 id="浮点数" data-numberify>浮点数<a class="anchor ms-1" href="#浮点数"></a></h2>
+<p>浮点数使用两个定点数来分别表示实数的尾数（F）和阶码（E）。其一般形式为：$N=2^E \times F$。</p>
+<ul>
+<li>一个数的浮点表示不是唯一的。小数点位置改变，阶码也随着相应改变。</li>
+<li>浮点数所能表示的数值范围主要由阶码决定，所表示数值的精度则由尾数决定。</li>
+</ul>
+<p>规格化浮点数：</p>
+<ul>
+<li>尾数$M \ge 0$，其规格化尾数形式为$M=0.\times\times\times$，$\times$可为0也可为1。即$M$限定在了$[0.5,1]$。</li>
+<li>尾数$M \le 0$，其规格化尾数形式为$M=1.\times\times\times$，$\times$可为0也可为1。即$M$限定在了$[-1,-0.5]$。</li>
+</ul>
+<p>一般浮点数阶码用R位的移码表示，尾数用M位的补码表示。这种表示的数值范围为：</p>
+<p>$$
+-1 \times 2^{(2^{R-1}-1)} \sim +(1-2^{-M+1}) \times 2^{(2^{R-1}-1)}
+$$</p>
+<p>现在所有通用计算机都采用 IEEE 754 来表示浮点数。IEEE 754 的尾数用原码表示，阶码还是用移码表示。</p>
+<hr>
+<h1 id="寻址方式" data-numberify>寻址方式<a class="anchor ms-1" href="#寻址方式"></a></h1>
+<ul>
+<li>立即寻址：操作数就包含在指令中。</li>
+<li>直接寻址：操作数在内存，指令给出操作数的地址。</li>
+<li>寄存器寻址：操作数在寄存器，指令给出操作数的寄存器名（地址）。</li>
+<li>寄存器间接寻址：操作数在内存，寄存器存放操作数的地址，指令给出存放操作数地址的寄存器地址。</li>
+<li>间接寻址：指令中给出操作数地址（操作数地址在内存中）的地址。</li>
+<li>相对寻址：指令地址码给出的是一个偏移量（可正可负），操作数地址等于本条指令的地址加上该偏移量。</li>
+<li>变址寻址：操作数地址等于变址寄存器的内容加偏移量。</li>
+</ul>
+<hr>
+<h1 id="校验码" data-numberify>校验码<a class="anchor ms-1" href="#校验码"></a></h1>
+<p>码距，是指一个编码系统中任意两个合法编码之间至少有多少个二进制位不同。码距为n的编码方案，在该编码方案中任意两个合法编码之间至少有n个二进制位不同。例如值1和2的编码分别为<code>0000 0001</code>和<code>0000 0010</code>他们最后两位不同，所以，码距为2。</p>
+<ul>
+<li>一个编码系统的码距$\ge 2$时，该编码系统具有<u>检错能力</u>；</li>
+<li>一个编码系统的码距$\ge 3$时，该编码系统才<u>可能有纠错能力</u>。</li>
+</ul>
+<p>即，一个校验码要想能够检错和纠错那么它的码距至少是3。</p>
+<h2 id="奇偶校验码" data-numberify>奇偶校验码<a class="anchor ms-1" href="#奇偶校验码"></a></h2>
+<p>奇偶校验（Parity Codes）是通过在编码中增加一位校验位来<u>使编码中1的个数为奇数（奇校验）或者为偶数（偶校验）</u>。但该编码只能检错，但不能纠错。</p>
+<p>奇偶校验：</p>
+<ul>
+<li>
+<p>码距为2。</p>
+</li>
+<li>
+<p>仅检测出代码中奇数位数（奇数个0或1发生错误），不能发现偶数位数出错。</p>
+<pre tabindex="0"><code>奇数 + 偶数 = 奇数
+奇数 + 奇数 = 偶数
+偶数 + 偶数 = 偶数
+偶数 + 奇数 = 奇数
+</code></pre><p>即奇数可以改变奇偶性，偶数不能，所以当代码中偶数位出错时，奇偶性不变，无法发现错误。</p>
+</li>
+<li>
+<p>常用的奇偶校验码有3种：水平奇偶校验码、垂直奇偶校验码和水平垂直校验码。</p>
+</li>
+</ul>
+<h2 id="海明码" data-numberify>海明码<a class="anchor ms-1" href="#海明码"></a></h2>
+<p>海明码（Hamming Code）是一种利用奇偶性来<u>检错和纠错</u>的校验方法。海明码是在数据位之间的特定位置上插入k个校验位，通过扩大码距来实现检错和纠错。设数据位是$n$位，校验位是$k$位，则$n$和$k$必须满足以下关系：</p>
+<p>$$
+2^k-1 \ge n+k
+$$</p>
+<blockquote>
+<p>该公式的字面意思为，$k$个校验位的最大值（$k$个校验位都为1），要比海明码的位数（$n+k$）要大。
+海明码的码距为3。</p>
+</blockquote>
+<p>海明码的编码规则如下：</p>
+<ul>
+<li>
+<p>$k$个校验位：$P_k, P_{k-1}, \cdots, P_1$。</p>
+</li>
+<li>
+<p>$n$个数据位：$D_{n-1}, D_{n-2}, \cdots, D_1, D_0$。</p>
+</li>
+<li>
+<p>对应的海明码：$H_{n+k}, H_{n+k-1}, \cdots, H_1$。</p>
+<ul>
+<li>$H_j = P_i, j=2^{i-1}$。</li>
+<li>数据位依序插入到海明码中剩下的位置。</li>
+</ul>
+</li>
+</ul>
+<p>海明码中任一位都是由若干个校验位来检验：</p>
+<ul>
+<li>校验数据位时：被校验的海明位的下标等于所有参与校验该位的校验位的下标之和。</li>
+<li>校验位由自身校验。</li>
+</ul>
+<p>Example：</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679983905932.png" loading="lazy" width="1023" height="1049" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p>偶校验：$G_4G_3G_2G_1={(0000)}_{2}$则表示数据无错误，否则表示接收到的数据有错误。</p>
+<p>若出错，$G_4G_3G_2G_1$的十进制值指出来出错位置。如$G_4G_3G_2G_1=1010$，说明$H_{10}(D_5)$出错，将其取反即可纠错。</p>
+</li>
+<li>
+<p>奇校验：$G_4G_3G_2G_1=(1111)_2$则表示数据无错误，否则表示接收到的数据有错误。</p>
+</li>
+</ul>
+<h2 id="循环冗余码" data-numberify>循环冗余码<a class="anchor ms-1" href="#循环冗余码"></a></h2>
+<p>循环冗余校验码（Cyclic Redundancy Check，CRC）广泛应用于数据通信领域和磁介质存储系统中。它利用生成多项式为k个数据位产生个校验位来进行编码，其编码长度为k+r。CRC的代码格式为：</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679825785079.png" loading="lazy" width="613" height="92" />
+</picture>
+
+</p>
+<p>若CRC码的字长为n，又可称其为（n,k）码，则：</p>
+<ul>
+<li>
+<p>左边为信息码（数据），占k位；</p>
+</li>
+<li>
+<p>右边为校验码，占n-k位。</p>
+<p>校验码是由信息码产生的，校验码位数越多，该代码的校验能力就越强。</p>
+</li>
+</ul>
+<p>在求CRC编码时，采用的是模2运算。模2加减运算的规则是按位运算，不发生借位和进位。</p>
+<p>CRC码距为2，可以检错不能纠错。</p>
+<hr>
+<h1 id="计算机指令集" data-numberify>计算机指令集<a class="anchor ms-1" href="#计算机指令集"></a></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">RISC<br>精简指令集（计算机）</th>
+<th style="text-align:center">CISC<br>复杂指令集（计算机）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">指令种类</td>
+<td style="text-align:center">少、精简</td>
+<td style="text-align:center">多、复杂</td>
+</tr>
+<tr>
+<td style="text-align:center">指令复杂度</td>
+<td style="text-align:center">低（简单）</td>
+<td style="text-align:center">高（复杂）</td>
+</tr>
+<tr>
+<td style="text-align:center">指令长度</td>
+<td style="text-align:center">固定</td>
+<td style="text-align:center">变化</td>
+</tr>
+<tr>
+<td style="text-align:center">寻址方式</td>
+<td style="text-align:center">少</td>
+<td style="text-align:center">复杂多样</td>
+</tr>
+<tr>
+<td style="text-align:center">实现（译码方式）</td>
+<td style="text-align:center">硬布线控制逻辑（组合逻辑控制器）</td>
+<td style="text-align:center">微程序控制技术</td>
+</tr>
+<tr>
+<td style="text-align:center">通用寄存器数量</td>
+<td style="text-align:center">多、大量</td>
+<td style="text-align:center">一般</td>
+</tr>
+<tr>
+<td style="text-align:center">流水线技术</td>
+<td style="text-align:center">支持</td>
+<td style="text-align:center">不支持</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="流水线技术" data-numberify>流水线技术<a class="anchor ms-1" href="#流水线技术"></a></h1>
+<p>计算机中的流水线技术（Pipelining）是把一个重复的过程分解为若干个子过程，每个子过程与其他子过程并行进行。</p>
+<p>若要执行$n$条指令：</p>
+<ul>
+<li>
+<p>顺序执行总时间：</p>
+<p>$$
+顺序执行总时间=单条指令执行的时间\times n
+$$</p>
+</li>
+<li>
+<p>流水线执行总时间：</p>
+<p>$$
+流水线执行总时间=一条指令执行的时间+流水线周期 \times (n-1)
+$$</p>
+<p>流水线（操作）周期为执行时间最长的一段操作的时间。</p>
+</li>
+<li>
+<p>连续输入$n$条指令的吞吐率：</p>
+<p>$$
+吞吐率=\cfrac {n}{总执行时间}
+$$</p>
+<p>如果是流水线的吞吐率，则总执行时间为流水线执行总时间。
+流水线的吞吐率是最长流水段操作时间的倒数。即：</p>
+<p>$$
+最长流水段操作时间=\cfrac {流水线执行总时间}{n}
+$$</p>
+</li>
+<li>
+<p>加速比：</p>
+<p>$$
+加速比 = \cfrac{顺序执行总时间}{流水线执行总时间}
+$$</p>
+</li>
+</ul>
+<hr>
+<h1 id="存储器" data-numberify>存储器<a class="anchor ms-1" href="#存储器"></a></h1>
+<p>按存储器所处位置可分为：</p>
+<ul>
+<li>内存（主存）：在主机内或主板上，存放机器当前运行所需的程序和数据，以便向CPU提供信息。（相对外存）容量小、速度快。</li>
+<li>外存（辅存）：存放当前不参加运行的大量信息，在需要时调入内存。</li>
+</ul>
+<p>按存储器的构成材料分类：</p>
+<ul>
+<li>磁存储器</li>
+<li>半导体存储器</li>
+<li>光存储器</li>
+</ul>
+<p>按存储器工作方式：</p>
+<ul>
+<li>读/写存储器（RAM）。</li>
+<li>只读存储器：ROM、PROM、EPROM、EEPROM等。
+<ul>
+<li>固定只读存储器（ROM）：厂家生产时就写好数据在其中。只能读（用户）不能写。一般用于存放BIOS和微程序控制。</li>
+<li>可编程读只读存储器（PROM）：其内容可以由用户一次性地写入，写入后不能再修改。</li>
+</ul>
+</li>
+</ul>
+<p>按访问方式：</p>
+<ul>
+<li>
+<p>按地址访问：</p>
+<p>可分为：</p>
+<ul>
+<li>随机存储器</li>
+<li>顺序存储器</li>
+<li>直接存储器</li>
+</ul>
+</li>
+<li>
+<p>按内容访问：例如相联存储器。</p>
+</li>
+</ul>
+<p>虚拟存储器由主存与辅存组成。</p>
+<p>DRAM（动态随机存储器）构成主存 DRAM需要周期性地刷新保持信息。</p>
+<p>SRAM（静态随机存储器）构成Cache（缓存）。</p>
+<p>闪存类似U盘，掉电后信息不会丢失。以块为单位进行删除。闪存是EPROM的一种类型，可以代替ROM存储器。闪存不可以代替主存。</p>
+<h2 id="缓存" data-numberify>缓存<a class="anchor ms-1" href="#缓存"></a></h2>
+<p>高速缓存用来存放当前最活跃的程序和数据，其特点是：</p>
+<ul>
+<li>位于CPU与主存之间；容量一般在几千字节到几兆字节之间；</li>
+<li>速度一般比主存快5~10倍，由快速半导体存储器构成；</li>
+<li>其内容是主存局部域的副本，对程序员来说是透明的（看不到或可以忽略）。</li>
+</ul>
+<p>Cache存储器部分用来存放主存的部分拷贝（副本）信息。控制部分的功能是判断CPU要访问的信息是否在Cache存储器中，若在即为命中，若不在则没有命中。命中时直接对Cache存储器寻址；未命中时，要按照替换原则决定主存的一块信息放到Cache存储器的哪一块里。</p>
+<h2 id="缓存地址映射" data-numberify>缓存地址映射<a class="anchor ms-1" href="#缓存地址映射"></a></h2>
+<p>CPU工作时，送出的是主存单元的地址。为从Cache存储器中读/写信息，就需要将主存地址转成Cache存储器的地址，这种地址转换即为地址映像。</p>
+<p>高速缓存中的地址映像方法：</p>
+<ul>
+<li>
+<p>直接映像：主存的块与Cache块的对应关系是固定的。冲突多、关系固定。</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679884025087.png" loading="lazy" width="825" height="526" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>全相联映像：允许主存的任一块调入Cache存储器的任一块。冲突少、关系不固定。</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679884252415.png" loading="lazy" width="730" height="538" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>组相联映像：将缓存和主存先分为组，组下再分为块。组与组采用直接映像，组内的块采用全相联映像。冲突较少，是直接映像与全相联映像的折中。</p>
+</li>
+</ul>
+<blockquote>
+<p>发生块冲突从多到少的顺序：直接映像 &gt; 组相联映像 &gt; 全相联映像。</p>
+<p>地址映像都是由硬件自动完成。</p>
+</blockquote>
+<hr>
+<h1 id="中断" data-numberify>中断<a class="anchor ms-1" href="#中断"></a></h1>
+<p>计算机在执行程序过程中，当遇到急需处理的事件时，暂停当前正在运行的程序，转去执行有关服务程序，处理完后自动返回源程序，这个过程称为中断。</p>
+<p>中断是一种非常重要的技术，<u>输入输出</u>设备和<u>主机交换数据</u>、<u>分时操作</u>、<u>实时系统</u>、<u>计算机网络</u>和<u>分布式计算机系统</u>中都要用到这种技术。为了提高响应中断的速度，通常把所有中断服务程序的入口地址（或称为中断向量）汇集为中断向量表。</p>
+<h2 id="输入输出控制方式" data-numberify>输入输出控制方式<a class="anchor ms-1" href="#输入输出控制方式"></a></h2>
+<p>程序查询方式（程序直接控制方式）：</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679888001780.png" loading="lazy" width="754" height="1174" />
+</picture>
+
+</p>
+<ul>
+<li>CPU和I/O只能串行工作。CPU需要一直轮询检查，长期处于忙等状态，CPU利用率低。</li>
+<li>一次只能读/写一个字。</li>
+<li>由CPU将数放入内存。</li>
+</ul>
+<p>中断驱动方式：</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679888578058.png" loading="lazy" width="787" height="1134" />
+</picture>
+
+</p>
+<ul>
+<li>I/O设备通过中断信号主动向CPU报告I/O操作已完成。</li>
+<li>CPU和I/O可并行工作。</li>
+<li>CPU利用率得到提升。</li>
+<li>一次只能读/写一个字。</li>
+<li>由CPU将数据放入内存。</li>
+</ul>
+<p>DMA方式（直接存储器存储方式）：</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/uTools_1679888972074.png" loading="lazy" width="816" height="723" />
+</picture>
+
+</p>
+<ul>
+<li>CPU和I/O可并行工作。</li>
+<li>仅在传送数据块多开始和结束时才需要CPU的干预。</li>
+<li>由外设直接将数据放入内存。</li>
+<li>一次读写的单位为&quot;块&quot;而不是字。</li>
+</ul>
+<p>DMA传输数据比中断驱动方式传输数据要快一点。</p>
+<hr>
+<h1 id="总线" data-numberify>总线<a class="anchor ms-1" href="#总线"></a></h1>
+<p>总线是连接计算机有关部件的一组信号线，是计算机中用来传送信息代码的公共通道。</p>
+<p>采用总线结构主要有以下优点：</p>
+<ul>
+<li>简化系统结构，便于系统设计制造；</li>
+<li>大大减少了连线数目，便于布线，减小体积，提高系统的可靠性；</li>
+<li>便于接口设计，所有与总线连接的设备均采用类似的接口；</li>
+<li>便于系统的扩充、更新与灵活配置，易于实现系统的模块化；</li>
+<li>便于设备的软件设计；</li>
+<li>便于故障诊断和维修，同时也降低了成本。</li>
+</ul>
+<p>在计算机系统中采用总线结构，便于实现系统的积木化构造，同时可以减少信息传输线的数量。</p>
+<p>微机中的总线分为：</p>
+<ul>
+<li>数据总线</li>
+<li>地址总线</li>
+<li>控制总线</li>
+</ul>
+<p>常见总线：</p>
+<ul>
+<li>ISA总线。</li>
+<li>EISA总线。</li>
+<li>PCI总线：PCI总线是目前微型机上广泛采用的内总线，采用并行传输方式。</li>
+<li>PCI Express 总线。</li>
+<li>前端总线。</li>
+<li>RS-232C。</li>
+<li>SCSI总线：小型计算机系统接口（SCSI）是一条并行外总线。</li>
+<li>SATA。</li>
+<li>USB。</li>
+<li>IEEE-1394。</li>
+<li>IEEE-488总线。</li>
+</ul>
+<p>地址总线宽度：例如，内存容量4GB，$4GB=2^{2+10+10+10}B=2^32B$。所以内存单元的地址宽度为32位，即地址总线宽度为32位。</p>
+<p>数据总线宽度：例如字长为32的机器，那么其数据总线的宽度要为32。</p>
+<hr>
+<h1 id="加密技术与认证技术" data-numberify>加密技术与认证技术<a class="anchor ms-1" href="#加密技术与认证技术"></a></h1>
+<h2 id="加密技术" data-numberify>加密技术<a class="anchor ms-1" href="#加密技术"></a></h2>
+<p>加密技术用于防止第三方窃听。</p>
+<ul>
+<li>
+<p>对称加密：只有一把密钥。加密和解密用同一把密钥。</p>
+<ul>
+<li>密钥分发有缺陷。</li>
+<li>加密解密速度很快。</li>
+<li>适合加量大量明文数据。</li>
+</ul>
+</li>
+<li>
+<p>非对称加密：</p>
+<ul>
+<li>加密和解密不是同一把密钥。</li>
+<li>一共有两把密钥，分别是公钥和私钥。</li>
+<li>用公钥加密只能用私钥解密，用私钥加密只能用公钥解密。</li>
+<li>不能通过一把密钥推出另一把密钥。</li>
+<li>用接收方的公钥加密明文可以实现防止窃听的效果。</li>
+<li>密钥分发没有缺陷。</li>
+<li>加密解密速度很慢。</li>
+</ul>
+</li>
+</ul>
+<h2 id="认证技术" data-numberify>认证技术<a class="anchor ms-1" href="#认证技术"></a></h2>
+<p>认证技术用于防止篡改、假冒和否认。</p>
+<p>摘要（防止篡改）：将发送的明文进行Hash算法后得到摘要放在密文后一起发送过去，与接收方解密后的明文进行相同的Hash算法得到的摘要进行对比如果一致，侧没有篡改，否则有篡改。</p>
+<p>数字签名（防止假冒和否认）：</p>
+<p>发送方用自己的<u>私钥对摘要进行签名</u>（加密）。得到数字签名放在密文后一起发送过去。</p>
+<p>接收方用发送方的<u>公钥对数字签名进行验证</u>（解密）。如果验证成功则该消息没有被假冒且不能否认，否则该消息的真实性为假冒发送。</p>
+<h2 id="数字证书" data-numberify>数字证书<a class="anchor ms-1" href="#数字证书"></a></h2>
+<p>数字证书是第三方CA机构使用自己的私钥对用户的公钥签名（加密），来保证这个公钥不被篡改。然后接收方用CA的公钥验证（解密），从而得到用户的公钥。</p>
+<h2 id="加密算法" data-numberify>加密算法<a class="anchor ms-1" href="#加密算法"></a></h2>
+<p>对称密钥（私钥、私有密钥加密）算法（共享密钥加密算法）：</p>
+<ul>
+<li>DES</li>
+<li>3DES</li>
+<li>RC-5</li>
+<li>IDEA</li>
+<li>AES</li>
+<li>RC4</li>
+</ul>
+<p>非对称密钥（公钥、公开密钥加密）算法：</p>
+<ul>
+<li>RSA</li>
+<li>ECC</li>
+<li>DSA</li>
+</ul>
+<p>其他加密算法：</p>
+<ul>
+<li>
+<p>Hash函数</p>
+</li>
+<li>
+<p>SHA-1安全散列算法</p>
+</li>
+<li>
+<p>MD5摘要算法：</p>
+<ul>
+<li>输出结果为128位</li>
+<li>摘要算法防止发送的报文被篡改</li>
+</ul>
+</li>
+</ul>
+<p>加密可以阻止被动攻击，认证可以阻止主动攻击（不可以处理被动攻击）。</p>
+<hr>
+<h1 id="系统可靠度" data-numberify>系统可靠度<a class="anchor ms-1" href="#系统可靠度"></a></h1>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/%E4%B8%B2%E8%81%94%E7%B3%BB%E7%BB%9F.png" loading="lazy" width="1157" height="400" />
+</picture>
+
+</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/computer-system/%E5%B9%B6%E8%81%94%E7%B3%BB%E7%BB%9F.png" loading="lazy" width="1133" height="376" />
+</picture>
+
+</p>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-next">
+      <a href="/note/ruan-she/programming-language/">程序设计语言篇</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
+  <div class="container">
+    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#计算机的基本单位">计算机的基本单位</a></li>
+    <li><a href="#计算机系统">计算机系统</a></li>
+    <li><a href="#中央处理单元">中央处理单元</a>
+      <ul>
+        <li><a href="#运算器">运算器</a></li>
+        <li><a href="#控制器">控制器</a></li>
+      </ul>
+    </li>
+    <li><a href="#数据表示">数据表示</a>
+      <ul>
+        <li><a href="#原码">原码</a></li>
+        <li><a href="#反码">反码</a></li>
+        <li><a href="#补码">补码</a></li>
+        <li><a href="#移码">移码</a></li>
+        <li><a href="#各种码制带符号数的范围">各种码制带符号数的范围</a></li>
+        <li><a href="#浮点数">浮点数</a></li>
+      </ul>
+    </li>
+    <li><a href="#寻址方式">寻址方式</a></li>
+    <li><a href="#校验码">校验码</a>
+      <ul>
+        <li><a href="#奇偶校验码">奇偶校验码</a></li>
+        <li><a href="#海明码">海明码</a></li>
+        <li><a href="#循环冗余码">循环冗余码</a></li>
+      </ul>
+    </li>
+    <li><a href="#计算机指令集">计算机指令集</a></li>
+    <li><a href="#流水线技术">流水线技术</a></li>
+    <li><a href="#存储器">存储器</a>
+      <ul>
+        <li><a href="#缓存">缓存</a></li>
+        <li><a href="#缓存地址映射">缓存地址映射</a></li>
+      </ul>
+    </li>
+    <li><a href="#中断">中断</a>
+      <ul>
+        <li><a href="#输入输出控制方式">输入输出控制方式</a></li>
+      </ul>
+    </li>
+    <li><a href="#总线">总线</a></li>
+    <li><a href="#加密技术与认证技术">加密技术与认证技术</a>
+      <ul>
+        <li><a href="#加密技术">加密技术</a></li>
+        <li><a href="#认证技术">认证技术</a></li>
+        <li><a href="#数字证书">数字证书</a></li>
+        <li><a href="#加密算法">加密算法</a></li>
+      </ul>
+    </li>
+    <li><a href="#系统可靠度">系统可靠度</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    
+
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.31e346fe8b757cca42a655530e1c726ac0ba5ae10affbeb952a03a54d4f68549.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,2093 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.18e725f5bc5d83136e879a4c4d579207578d4c12ef2ac405096d3d7b10ecef10.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>数据结构篇 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="线性表, 栈, 队列, 树, 二叉树, 图, 拓扑排序" />
+  <meta name="description" content="复杂度 算法时间复杂度以算法中基本操附重复执行的次数（简称为频度）作为算法的时间度量。一般不必要精确计算出算法的时间复杂度，只要大致计算出相应" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据结构篇"/>
+<meta name="twitter:description" content="复杂度 算法时间复杂度以算法中基本操附重复执行的次数（简称为频度）作为算法的时间度量。一般不必要精确计算出算法的时间复杂度，只要大致计算出相应"/>
+<meta property="og:title" content="数据结构篇" />
+<meta property="og:description" content="复杂度 算法时间复杂度以算法中基本操附重复执行的次数（简称为频度）作为算法的时间度量。一般不必要精确计算出算法的时间复杂度，只要大致计算出相应" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/note/ruan-she/data-structure/" /><meta property="article:section" content="note" />
+<meta property="article:published_time" content="2023-04-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-04-08T00:00:00+00:00" />
+<meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93%E7%AF%87/" /><meta property="og:see_also" content="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/" /><meta property="og:see_also" content="/note/ruan-she/algorithm-design-analysis/" /><meta property="og:see_also" content="/note/ruan-she/computer-nework/" /><meta property="og:see_also" content="/note/ruan-she/software-engineering/" /><meta property="og:see_also" content="/note/ruan-she/structured-dev/" />
+
+<meta itemprop="name" content="数据结构篇">
+<meta itemprop="description" content="复杂度 算法时间复杂度以算法中基本操附重复执行的次数（简称为频度）作为算法的时间度量。一般不必要精确计算出算法的时间复杂度，只要大致计算出相应"><meta itemprop="datePublished" content="2023-04-08T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-04-08T00:00:00+00:00" />
+<meta itemprop="wordCount" content="14233">
+<meta itemprop="keywords" content="软考,数据结构,算法," />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="数据结构篇" />
+  <meta name="twitter:image:alt" content="数据结构篇" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.63881d543b8598f2443e93c3ece2d353658cb5b67788cb681ad9e28e39f01632.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDocsNav"
+      aria-expanded="false" aria-label="Toggle docs navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start justify-content-center ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/note/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+<aside class="docs-nav col-xxl-2" tabindex="-1" data-bs-hide="focusout">
+  <div class="offcanvas-xxl offcanvas-start" id="offcanvasDocsNav" aria-labelledby="offcanvasDocsNavLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="offcanvas-title h5" id="offcanvasDocsNavLabel">Browse docs</div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
+    </div>
+    <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/docker/"><span class="docs-nav-title">Docker</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-5f5eb8b7625d291e649e30c17bc4ba0a" aria-expanded="true" aria-controls="nav-5f5eb8b7625d291e649e30c17bc4ba0a">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-5f5eb8b7625d291e649e30c17bc4ba0a">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/"><span class="docs-nav-title">Spring</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-2d7f0f9b604a1409482311f84a5aaed9" aria-expanded="true" aria-controls="nav-2d7f0f9b604a1409482311f84a5aaed9">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-2d7f0f9b604a1409482311f84a5aaed9">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/"><span class="docs-nav-title">Java Web</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-1c10e578a03cb3d29b4aeadc274bad7e" aria-expanded="true" aria-controls="nav-1c10e578a03cb3d29b4aeadc274bad7e">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-1c10e578a03cb3d29b4aeadc274bad7e">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/jdbc/"><span class="docs-nav-title">JDBC</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/druid/"><span class="docs-nav-title">Druid</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/maven-base/"><span class="docs-nav-title">Maven 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/mybatis-base/"><span class="docs-nav-title">MyBatis</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/tomcat-base/"><span class="docs-nav-title">Tomcat</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/servlet/"><span class="docs-nav-title">Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/http-servlet/"><span class="docs-nav-title">HTTP Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/ajax-interaction/"><span class="docs-nav-title">Ajax</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/cookie-session/"><span class="docs-nav-title">Cookie and Session</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/java-web/filter/"><span class="docs-nav-title">Filter</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springframework/"><span class="docs-nav-title">Spring Framework</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springmvc/"><span class="docs-nav-title">SpringMVC</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e40b528ee0eb171cf492a5028feb54ef" aria-expanded="true" aria-controls="nav-e40b528ee0eb171cf492a5028feb54ef">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-e40b528ee0eb171cf492a5028feb54ef">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springmvc/springmvc-base/"><span class="docs-nav-title">SpringMVC 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springmvc/api-tools/"><span class="docs-nav-title">API 测试工具</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f2a7b71e208c33b72bbb79462ef38b2b" aria-expanded="true" aria-controls="nav-f2a7b71e208c33b72bbb79462ef38b2b">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-f2a7b71e208c33b72bbb79462ef38b2b">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/springboot-base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/maven-senior/"><span class="docs-nav-title">Maven 高级</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springboot/swagger_knife4j/"><span class="docs-nav-title">API 文档</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-7aaae3863713eea681871a69f7293d4a" aria-expanded="true" aria-controls="nav-7aaae3863713eea681871a69f7293d4a">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show" id="nav-7aaae3863713eea681871a69f7293d4a">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/introduction/"><span class="docs-nav-title">微服务简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/spring-cloud-config/"><span class="docs-nav-title">Spring 环境和配置</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/remote-call/"><span class="docs-nav-title">RestTemplate</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/eureka/"><span class="docs-nav-title">Eureka</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/nacos/"><span class="docs-nav-title">Nacos</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/nacos-deploy/"><span class="docs-nav-title">Nacos 部署</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/feign/"><span class="docs-nav-title">Feign</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/gateway/"><span class="docs-nav-title">Gateway</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/communications/"><span class="docs-nav-title">通讯方式</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/spring/springcloud/rabbit-mq/"><span class="docs-nav-title">RabbitMQ</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/"><span class="docs-nav-title">软件设计师</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-b7c207dd051559c699f4cb05e443c738" aria-expanded="true" aria-controls="nav-b7c207dd051559c699f4cb05e443c738">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-b7c207dd051559c699f4cb05e443c738">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/computer-system/"><span class="docs-nav-title">计算机系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/programming-language/"><span class="docs-nav-title">程序设计语言</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/"><span class="docs-nav-title">知识产权</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/data-base/"><span class="docs-nav-title">数据库</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/object-oriented/"><span class="docs-nav-title">面向对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/operating-system/"><span class="docs-nav-title">操作系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/structured-dev/"><span class="docs-nav-title">结构化开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/software-engineering/"><span class="docs-nav-title">软件工程</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/computer-nework/"><span class="docs-nav-title">计算机网络</span></a>
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/data-structure/"><span class="docs-nav-title">数据结构</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/note/ruan-she/algorithm-design-analysis/"><span class="docs-nav-title">算法设计与分析</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul></div>
+  </div>
+</aside><div class="col-xxl-7 ms-auto">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/note/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/note/ruan-she/">软件设计师</a></li><li class="breadcrumb-item active">数据结构篇</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">数据结构篇</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-04-08 00:00:00 &#43;0000 UTC。">2023年4月8日</span><span class="post-reading-time me-1 mb-1">29 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/ruan-she/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>软件设计师</a><a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">软考</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">数据结构</a><a href="/tags/%E7%AE%97%E6%B3%95/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">算法</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="复杂度" data-numberify>复杂度<a class="anchor ms-1" href="#复杂度"></a></h1>
+<p>算法时间复杂度以算法中基本操附重复执行的次数（简称为频度）作为算法的时间度量。一般不必要精确计算出算法的时间复杂度，只要大致计算出相应的数量级即可，使用大$O$表示法表示（空间复杂度也是）。</p>
+<ul>
+<li>加法规则：多项相加，保留最高阶项，并将系数化为1；</li>
+<li>乘法规则：多项相乘都保留，并将系数化为1。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="算法复杂度大小比较" src="/note/ruan-she/data-structure/1681099842666.png" loading="lazy" width="1014" height="100" />
+</picture>
+
+</p>
+<p>递归式的时间（空间）复杂度：</p>
+<p>$$
+递归的次数 \times 每次递归的时间（空间）复杂度
+$$</p>
+<h1 id="逻辑结构分类" data-numberify>逻辑结构分类<a class="anchor ms-1" href="#逻辑结构分类"></a></h1>
+<ul>
+<li>线性结构
+<ul>
+<li>线性表（一般线性表）</li>
+<li>特殊线性表
+<ul>
+<li>栈</li>
+<li>队列</li>
+<li>字符串</li>
+</ul>
+</li>
+<li>线性表的推广
+<ul>
+<li>数组</li>
+<li>广义表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>非线性结构
+<ul>
+<li>树结构
+<ul>
+<li>二叉树</li>
+<li>多叉树</li>
+</ul>
+</li>
+<li>图结构
+<ul>
+<li>有向图</li>
+<li>无向图</li>
+</ul>
+</li>
+<li>集合结构</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="线性表" data-numberify>线性表<a class="anchor ms-1" href="#线性表"></a></h1>
+<p><u>由 $n(n \geq 0)$ 个<strong>数据特性相同</strong>的元素构成的<strong>有限序列</strong>称为<strong>线性表</strong></u>。$n=0$ 时，称为空表。非空表的特点如下：</p>
+<ul>
+<li>存在唯一一个“第一个”元素。</li>
+<li>存在唯一一个“最后一个”元素。</li>
+<li>相邻元素之间存在序偶关系：
+<ul>
+<li>除第一个之外，结构中的每个数据元素均只有一个<strong>前驱</strong>；</li>
+<li>除最后一个之外，结构中的每个数据元素均只有一个<strong>后继</strong>。</li>
+</ul>
+</li>
+</ul>
+<p>线性表的存储结构分为：</p>
+<ul>
+<li>顺序存储；</li>
+<li>链式存储</li>
+</ul>
+<h2 id="顺序存储结构" data-numberify>顺序存储结构<a class="anchor ms-1" href="#顺序存储结构"></a></h2>
+<p>线性表的<strong>顺序存储</strong>是指用一组<strong>地址连续的存储单元</strong>依次存储线性表中的数据元素，从而使得逻辑上相邻的两个元素在物理位置上也相邻。在这种存储方式下，元素间的逻辑关系无须占用额外的空间来存储。</p>
+<p>其存储结构如图所示：</p>
+<p><picture><img class="img-fluid " alt="顺序表存储结构" src="/note/ruan-she/data-structure/uTools_1680610120418.png" loading="lazy" width="130" height="266" />
+</picture>
+
+</p>
+<p>假设线性表的每个元素占用的存储空间为$L$，$LOC(a_i)$为第$i$个元素的存储位置（$0 \le i \le n-1$，$n$为线性表的长度）：</p>
+<ul>
+<li>
+<p>第$i+1$个元素和第$i$个元素的存储位置满足：</p>
+<p>$$
+LOC(a_{i+1})=LOC(a_i)+L
+$$</p>
+</li>
+<li>
+<p>第$i$个元素的存储位置：</p>
+<p>$$
+LOC(a_i)=LOC(a_0) + i \times L
+$$</p>
+<p>如果下标从1开始：</p>
+<p>$$
+LOC(a_i)=LOC(a_1) + (i-1) \times L
+$$</p>
+</li>
+</ul>
+<p>顺序存储结构的线性表的特点：</p>
+<ul>
+<li>优点：<strong>可以随机存取表中的元素</strong>，不需要额外的存储空间来表达元素之间的逻辑关系；</li>
+<li>缺点：<strong>插入和删除操作不方便、效率低、比较耗时</strong>（<strong>插入和删除操作需要移动元素</strong>），顺序表的长度是固定的。</li>
+</ul>
+<p>在表为$n$的线性表中，有$n+1$个插入位置（不考虑插入是否会导致溢出）：</p>
+<ul>
+<li>
+<p>在第$i$个插入位置插入，需要移动$n+1-i$个元素。</p>
+<ul>
+<li>在第1个位置插入（$a_1$）需要移动$n$个元素；</li>
+<li>在第$n+1$个位置插入（$a_n$后面）不需要移动元素。</li>
+</ul>
+</li>
+<li>
+<p>设在第$i$个插入位置插入的概率为$p_i$，<u>等概率下</u>（假如这$n+1$个插入位置插入的概率相同）<u>插入</u>一个新元素需要移动的元素个数的<u>期望值$E_{insert}$</u>为：</p>
+<p>$$
+E_{insert} = \sum_{i=1}^{n+1}{ \Big( p_i \times (n-i+1) \Big) } = \cfrac{1}{n+1} \sum_{i=1}^{n+1}{(n-i+1)} = \cfrac{n+1}{2}
+$$</p>
+<p>$$
+p_i = \cfrac{1}{n+1}
+$$</p>
+<p>即，$E_{insert} = \cfrac{插入位置数-1}{2} = \cfrac{n+1}{2}$</p>
+</li>
+</ul>
+<p>在表长为$n$的线性表中删除元素时，共有$n$个可删除的元素：</p>
+<ul>
+<li>
+<p>删除第$i$个元素$a_i$需要移动$n-i$个元素。</p>
+<ul>
+<li>删除元素$a_1$需要移动$n-1$个元素；</li>
+<li>删除元素$a_n$不需要移动元素。</li>
+</ul>
+</li>
+<li>
+<p>设$a_i$被删除的概率为$q_i$，<u>等概率下删除元素</u>时需要移动的元素个数的<u>期望值$E_{delete}$</u>为：</p>
+<p>$$
+E_{delete} = \sum_{i=1}^{n}{\Big( q_i \times (n-i) \Big)} = \cfrac{1}{n} \sum_{i=1}^{n}{(n-i)} = \cfrac{n-1}{2}
+$$</p>
+<p>$$
+q_i = \cfrac{1}{n}
+$$</p>
+<p>即，$E_{delete} = \cfrac{删除位置数}{2} = \cfrac{n-1}{2}$</p>
+</li>
+</ul>
+<p><strong>插入操作时间复杂度</strong>：</p>
+<ul>
+<li>最好情况（在第$n+1$个位置插入）：$O(1)$；</li>
+<li>最坏情况（在第1个位置插入）：$O(n)$；</li>
+<li>平均复杂度：$O(n)$。</li>
+</ul>
+<p><strong>查找元素时间复杂度</strong>（根据下标查找）：$O(1)$。</p>
+<blockquote>
+<p>累加求和公式：</p>
+<p>$$
+\sum_{i=0}^{n} i = \cfrac{n(1+n)}{2}
+$$</p>
+<p>即等差数列求和中的：</p>
+<p>$$
+S_n = \cfrac{n(a_1 + a_n)}{2}
+$$</p>
+</blockquote>
+<h2 id="链式存储结构" data-numberify>链式存储结构<a class="anchor ms-1" href="#链式存储结构"></a></h2>
+<p>线性表的<strong>链式存储</strong>是指<strong>通过指针链接起来</strong>的结点来存储数据元素。</p>
+<p>其存储结构如下所示：</p>
+<p><picture><img class="img-fluid " alt="链式表存储结构" src="/note/ruan-she/data-structure/uTools_1680610469403.png" loading="lazy" width="403" height="49" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p><strong>数据域</strong>：用于存储数据元素的<strong>值</strong>；</p>
+</li>
+<li>
+<p><strong>指针域</strong>：用于存储当前元素的直接前驱或直接后继的<strong>位置信息</strong>（直接前或后驱的<strong>指针</strong>，称其为指针或链）。</p>
+<p>存储各数据元素的结点的<u>地址并不要求是连续的</u>，因此存储数据元素的同时必须存储元素之间的逻辑关系。</p>
+</li>
+</ul>
+<p>链式表的特点：</p>
+<ul>
+<li><u>结点空间只有在需要的时候才申请</u>，无须事先分配；</li>
+<li>长度不固定。</li>
+</ul>
+<p>链式表结点之间通过指针域构成一个链表，<u>若结点中只有一个指针域，则称为线性链表</u>。</p>
+<p><picture><img class="img-fluid " alt="链式表存储结构" src="/note/ruan-she/data-structure/uTools_1680610514354.png" loading="lazy" width="685" height="64" />
+</picture>
+
+</p>
+<p>上图中的Head：一个指向链表第一个结点的针，称为头指针。使用它就可以顺序地访问到表中的任意一个元素。</p>
+<p>插入和删除操作时间复杂度（带不带头节点的复杂度都一样）：</p>
+<ul>
+<li>最好情况（在$i=1$位置）：$O(1)$；</li>
+<li>最坏情况（在$n+1$位置插入/删除$n$位置）：$O(n)$</li>
+<li>平均复杂度：$O(n)$</li>
+</ul>
+<p>链表操作的时间复杂度取决于指针遍历。</p>
+<hr>
+<h1 id="栈" data-numberify>栈<a class="anchor ms-1" href="#栈"></a></h1>
+<p>栈是一种<strong>后入先出</strong>（Last In First Out，LIFO）的线性表。<u>栈只能通过访问它的一端来实现数据存储和检索。</u></p>
+<p>栈的基本操作有：</p>
+<ul>
+<li><strong>入栈</strong>：将元素置入栈顶；</li>
+<li><strong>出栈</strong>：将元素从栈顶中取出。</li>
+<li>读取栈顶元素</li>
+</ul>
+<p>栈的出栈顺序一定和入栈顺序<strong>相反</strong>。</p>
+<h2 id="顺序存储结构-1" data-numberify>顺序存储结构<a class="anchor ms-1" href="#顺序存储结构-1"></a></h2>
+<p>栈的顺序存储结构也称为<strong>顺序栈</strong>。</p>
+<p>顺序栈使用一个栈顶指针标记栈顶元素的索引位置。每次出栈时都需要重置栈顶指针，将栈顶指针向下移动，标记到新的栈顶元素。</p>
+<p>顺序栈的空间容量有限，所以每次入栈时都需要判断栈是否为满。</p>
+<h2 id="链式存储结构-1" data-numberify>链式存储结构<a class="anchor ms-1" href="#链式存储结构-1"></a></h2>
+<p>栈的链式存储结构称为<strong>链栈</strong>。链栈的头指针就是栈顶指针。</p>
+<p><picture><img class="img-fluid " alt="链栈的存储结构" src="/note/ruan-she/data-structure/uTools_1680676944766.png" loading="lazy" width="238" height="265" />
+</picture>
+
+</p>
+<h2 id="栈的应用" data-numberify>栈的应用<a class="anchor ms-1" href="#栈的应用"></a></h2>
+<p>栈的典型应用包括<strong>表达式求值、括号匹配</strong>等，在计算机语言的实现以及将递归过程转变为非递归过程的处理中，栈有重要的作用。</p>
+<hr>
+<h1 id="队列" data-numberify>队列<a class="anchor ms-1" href="#队列"></a></h1>
+<p>队列是一种<strong>先入先出</strong>（First In First Out，FIFO）的线性表。</p>
+<p><u>队列只允许在表的一端插入元素，在表的另一端删除元素。</u></p>
+<ul>
+<li><strong>队头</strong>（Front）：允许<strong>删除</strong>元素的一端；</li>
+<li><strong>队尾</strong>（Rear）：允许<strong>插入</strong>元素的一端。</li>
+</ul>
+<p>队列的基本操作有：</p>
+<ul>
+<li><strong>入队</strong>：将元素加入到队尾；</li>
+<li><strong>出队</strong>：将元素加入到对头。</li>
+</ul>
+<p>队列的入队顺序一定<strong>等于</strong>出队顺序。</p>
+<blockquote>
+<p>使用两个栈可以来模拟一个队列（从一个栈出栈后的元素入另一个栈后再出栈）。</p>
+</blockquote>
+<h2 id="顺序存储结构-2" data-numberify>顺序存储结构<a class="anchor ms-1" href="#顺序存储结构-2"></a></h2>
+<p>队列的顺序存储结构称为<strong>顺序队列</strong>。</p>
+<p>顺序队列设置两个指针：</p>
+<ul>
+<li>队头指针：指向对头元素的下标；</li>
+<li>队尾指针：指向队尾元素的下标。</li>
+</ul>
+<p>如果顺序队列只按照数组下标大小顺序来设置指针（对头指针的值永不大于队尾指针），那么在经过一段时间的操作后，对头指针有可能指向的并不是数组的第一个元素，此时队列的长度永远都到达不了数组的长度（空间无法被充分利用，实际使用的长度和逻辑长度不符）。</p>
+<p><picture><img class="img-fluid " alt="队列操作" src="/note/ruan-she/data-structure/uTools_1680677900098.png" loading="lazy" width="959" height="323" />
+</picture>
+
+</p>
+<p>为了解决这个问题，我们可以把数组想象为一个环型的结构（将最后一个元素和第一个元素连接起来，队头指针可以比队尾指针大）。如果此时队列的状态是上图中步骤$(e)$的状态，此时再插入元素，可以将元素放在数组索引0的位置，再让队尾指针始终保持在队列最后一个元素的索引之后即可。将这种队列称为<strong>循环队列</strong>，如：</p>
+<p><picture><img class="img-fluid " alt="循环队列" src="/note/ruan-she/data-structure/uTools_1680678225885.png" loading="lazy" width="907" height="202" />
+</picture>
+
+</p>
+<h2 id="链式存储结构-2" data-numberify>链式存储结构<a class="anchor ms-1" href="#链式存储结构-2"></a></h2>
+<p>队列的链式存储也称为<strong>链队列</strong>（<strong>链队</strong>）。这里为了便于操作，可以给链队列添加一个头结点，并令头指针指向头结点。因此，队列为空的判定条件是头指针和尾指针的值相同，且
+均指向头结点。</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/data-structure/uTools_1680678441791.png" loading="lazy" width="278" height="340" />
+</picture>
+
+</p>
+<h2 id="队列的应用" data-numberify>队列的应用<a class="anchor ms-1" href="#队列的应用"></a></h2>
+<p>队列结构常用于处理需要排队的场合，例如操作系统中处理打印任务的打印队列、离散事件的计算机模拟等。</p>
+<hr>
+<h1 id="串" data-numberify>串<a class="anchor ms-1" href="#串"></a></h1>
+<p><strong>串</strong>（<strong>字符串</strong>）是一种<strong>特殊的线性表</strong>，其<strong>数据元素为字符</strong>。</p>
+<p>串具有自身的特性，运算时常常把一个串作为一个整体来处理。</p>
+<p>串的基本概念和操作：</p>
+<ul>
+<li>
+<p><strong>空串</strong>：长度为0的串；</p>
+</li>
+<li>
+<p><strong>子串</strong>：由串中任意长度的连续字符构成的序列称为子串。含有子串的串称为主串。子串在主串中的位置是指子串首次出现时，该子串的第一个字符在主串中的位置。空串是任意串的子串。</p>
+</li>
+<li>
+<p><strong>串相等</strong>：指两个串长度相等且对应序号的字符也相同。</p>
+</li>
+<li>
+<p><strong>串比较</strong>：两个串比较大小时以字符的ASCⅡ码值（或其他字符编码集合）作为依据。</p>
+<p>实质上，比较操作从两个串的第一个字符开始进行，字符的码值大者所在的串为大；若其中一个串先结束，则以串长较大者为大。</p>
+</li>
+<li>
+<p>赋值：</p>
+<ul>
+<li>拷贝赋值：将一个串的值赋给另一个串；</li>
+<li>引用（地址）赋值：将一个串的引用（地址）赋给另一个串。那么这个串可以使用另一个串中的值，但是对这个串所做的操作，也会作用到另一个串。</li>
+</ul>
+</li>
+<li>
+<p><strong>连接串</strong>：将一个串插入到另一个串尾。</p>
+</li>
+<li>
+<p><strong>插入串</strong>：将一个串插入到另一个串的任意位置中。</p>
+</li>
+</ul>
+<h2 id="顺序存储结构-3" data-numberify>顺序存储结构<a class="anchor ms-1" href="#顺序存储结构-3"></a></h2>
+<p>串的顺序存储结构是一种定长的串（类似顺序表）。</p>
+<h2 id="链式存储结构-3" data-numberify>链式存储结构<a class="anchor ms-1" href="#链式存储结构-3"></a></h2>
+<p>串的链式存储结构可以方便地对串进行插入删除操作（类似链表）。</p>
+<h2 id="串的模式匹配" data-numberify>串的模式匹配<a class="anchor ms-1" href="#串的模式匹配"></a></h2>
+<p>子串的定位操作通常称为串的模式匹配。子串也称为模式串。</p>
+<p>有关串模式匹配算法的详细讲解可以查看：<a href="../%e7%bb%8f%e5%85%b8%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%8c%b9%e9%85%8d">经典字符串匹配</a></p>
+<h3 id="朴素的模式匹配算法" data-numberify>朴素的模式匹配算法<a class="anchor ms-1" href="#朴素的模式匹配算法"></a></h3>
+<p>朴素的模式匹配算法也称为布鲁特一福斯算法（即暴力匹配算法），其基本思想是从主串的第一个字符起与模式串的第一个字符比较，若相等，则继续逐一对字符进行后续的比较，否则从主串第二个字符起与模式串的第一个字符重新比较，直到模式串中每个字符依次和主串中一个连续的字符序列相等时为止，此时称为匹配成功。如果不能在主串中找到与模式串相同的子串，则匹配失败。</p>
+<p>设主串和模式串的长度分别为$n$和$m$，算法时间复杂度和比较次数：</p>
+<ul>
+<li>
+<p>最好情况：$O(m)$，次数为$m$；</p>
+</li>
+<li>
+<p>最坏情况：$O(n \times m)$，次数为$\cfrac{1}{2} m(n-m+2)$：</p>
+<p>$$
+\sum_{i=0}^{n-m}{p_i\big( (i+1) \times m \big)} = \cfrac{m}{n-m+1} \sum_{i=0}^{n-m}{(i+1)} = \cfrac{1}{2} m(n-m+2)
+$$</p>
+</li>
+<li>
+<p>平均：$O(n+m)$，次数为$\cfrac{1}{2} (n+m)$：</p>
+<p>$$
+\sum_{i=0}^{n-m}{p_i(i+m)} = \cfrac{1}{n-m+1} \sum_{i=0}^{n-m}{i+m} = \cfrac{1}{2} (n+m)
+$$</p>
+</li>
+</ul>
+<h3 id="kmp-算法" data-numberify>KMP 算法<a class="anchor ms-1" href="#kmp-算法"></a></h3>
+<p>KMP算法又称为改进的模式匹配算法。</p>
+<ul>
+<li>串的<strong>前缀</strong>：包含第一个字符，且不包含最后一个字符的子串；</li>
+<li>串的<strong>后缀</strong>：包含最后一个字符，且不包含第一个字符的子串。</li>
+<li>前缀集合：包含串的所有前缀的集合；</li>
+<li>后缀集合：包含串的所有后缀的集合。</li>
+</ul>
+<p>KMP的重点是求模式串字符的next值（失配指针$Next[\ i\ ]$），假设$a_{i-1}$为当前要求next值的模式串字符：</p>
+<ul>
+<li>
+<p>前缀集合：</p>
+<p>$$
+Prefix=\{p_0,p_0p_1,\cdots,p_0&hellip;p_{i-1}\}
+$$</p>
+</li>
+<li>
+<p>后缀集合：</p>
+<p>$$
+Postfix=\{p_{i-1},p_{i-2}p_{i-1},\cdots,p_1&hellip;p_{i-1}\}
+$$</p>
+</li>
+<li>
+<p>失配指针：</p>
+<p>$$
+Next[i] =
+\begin{cases}
+-1 &amp; 当\ i=0 时 \\
+max &amp; \{ k|0&lt;k&lt;i 且 &ldquo;p_0\cdots p_{k-1}&rdquo; = &ldquo;p_{i-k}\cdots p_{i-1}&rdquo; \} \\
+0 &amp; 其他情况
+\end{cases}
+$$</p>
+<p>即：</p>
+<ul>
+<li>$Next[0] = -1$；</li>
+<li>$Next[i] = maxLen(Prefix \cap Postfix)$</li>
+</ul>
+<p>可以解释为：</p>
+<p>$$
+Next[\ i\ ] = 前i个子串的最长相同前后缀的长度
+$$</p>
+<p>特殊情况：$Next[\ 1\ ] = 0$，因为其前缀集合和后缀集合都为空。</p>
+</li>
+</ul>
+<blockquote>
+<p>失配表是用来指示匹配失败后指针该如何移动的。</p>
+<p>失配表的建立跟要匹配的串没有任何关系，仅跟模式串有关。</p>
+</blockquote>
+<hr>
+<h1 id="多维数组" data-numberify>多维数组<a class="anchor ms-1" href="#多维数组"></a></h1>
+<p>多维数组是定长线性表在维数上的扩展，即线性表中的元素又是一个线性表。多维数组是一种“同构”的数据结构，其每个数据元素类型相同、结构一致。</p>
+<ul>
+<li>
+<p>一维数组：即线性表。</p>
+</li>
+<li>
+<p>二维数组（仅讨论顺序存储结构）：</p>
+<p>二维数组的存储结构（如下图），可以分为以行为主序（下图左边）和以列为主序（下图右边）两种。</p>
+<p><picture><img class="img-fluid " alt="" src="/note/ruan-she/data-structure/uTools_1680693946560.png" loading="lazy" width="451" height="448" />
+</picture>
+
+</p>
+<p>设：</p>
+<ul>
+<li>二维数组为$A[n,m]$，$n$为行数，$m$为列数；</li>
+<li>数组元素$a_{i,j},\ 0 \le i \le n-1,\ 0 \le j \le m-1$；</li>
+<li>$LOC(a_{i,j})$为元素$a_{i,j}$的地址；</li>
+<li>$L$为单个元素的存储空间大小。</li>
+</ul>
+<p>则有：</p>
+<ul>
+<li>
+<p>以行为主序优先存储：</p>
+<p>$$
+LOC(a_{i,j}) = LOC(a_{0,0}) + (i \times n + j) \times L
+$$</p>
+<p>如果下标从1开始（$1 \le i \le n,\ 1 \le j \le m$）：</p>
+<p>$$
+LOC(a_{i,j}) = LOC(a_{1,1}) + \big( (i-1) \times n + (j-1) \big) \times L
+$$</p>
+</li>
+<li>
+<p>以列为主序优先存储：</p>
+<p>$$
+LOC(a_{i,j}) = LOC(a_{0,0}) + (i + j \times m) \times L
+$$</p>
+<p>如果下标从1开始（$1 \le i \le n,\ 1 \le j \le m$）：</p>
+<p>$$
+LOC(a_{i,j}) = LOC(a_{1,1}) + \big( (i-1) + (j-1) \times m \big) \times L
+$$</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>优先存储说法问题：</p>
+<p>以行为主序优先存储的意思应该是在内存中按行存储。以列为主序优先存储的意思应该是在内存中按列存储。</p>
+<p>假设一个二维数组为：</p>
+<p>$$
+\begin{vmatrix}
+a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14} \\
+a_{21} &amp; a_{22} &amp; a_{23} &amp; a_{24} \\
+a_{31} &amp; a_{32} &amp; a_{33} &amp; a_{34} \\
+a_{41} &amp; a_{42} &amp; a_{43} &amp; a_{44} \\
+a_{51} &amp; a_{52} &amp; a_{53} &amp; a_{54}
+\end{vmatrix}
+$$</p>
+<p>按照以行为主序优先存储的公式，它在内存中应该是分为了5个地址连续的数组来存储。即内存中，$[a_{11},a_{12},a_{13},a_{14}]$为一个数组，其后再接一个数组$[a_{12},a_{22},a_{23},a_{24}]$，以此类推，在内存中按照列的元素作为一个连续的一维数组单位，再按照第1行后接第2行作为整个连续的二维数组。它们在内存中的地址顺序是：</p>
+<p>$$
+a_{11},a_{12},&hellip;,a_{14},\\
+a_{21},&hellip;,a_{24},\\
+a_{31},&hellip;,a_{34},\\
+a_{41},&hellip;,a_{44},\\
+a_{51},&hellip;,a_{54}
+$$</p>
+<p>那么以列为主序优先存储的地址顺序就为：</p>
+<p>$$
+a_{11},a_{21},&hellip;,a_{51},\\
+a_{12},&hellip;,a_{52},\\
+a_{13},&hellip;,a_{53},\\
+a_{14},&hellip;,a_{54}
+$$</p>
+</blockquote>
+<p>一般矩阵都用二维数组来表示，但是对于一些特殊矩阵，如对称矩阵、三角矩阵和对角矩阵。它们的非0元素的分布存在一定规律，所以可以将其压缩存储在一维数组中，并且它们的多个值相同的元素（按照对应特殊矩阵定义上的值相同，并非简单的值相同）只分配一个存储单位。</p>
+<h2 id="对称矩阵" data-numberify>对称矩阵<a class="anchor ms-1" href="#对称矩阵"></a></h2>
+<p>若矩阵$A_{n \times n}$中的元素特点为$a_{ij}=a_{ji}\ (1 \le i,j \le n)$，则称之为$n$阶对称矩阵。</p>
+<p>对称矩阵$A_{n \times n}$：</p>
+<p>$$
+\begin{vmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+a_{n1} &amp; a_{n2} &amp; \cdots &amp; a_{nn}
+\end{vmatrix}
+$$</p>
+<p>其中以对角线划分为三个区域：</p>
+<ul>
+<li>
+<p><strong>主对角线</strong>：$a{11},a_{22},\cdots,a_{nn}$，共有$n$个元素；</p>
+</li>
+<li>
+<p><strong>上三角区</strong>：对角线以上的所有元素，即：</p>
+<p>$$
+\begin{vmatrix}
+0 &amp; a_{12} &amp; a_{13} &amp; \cdots &amp; a_{1n} \\
+0 &amp; 0 &amp; a_{23} &amp; \cdots &amp; a_{2n} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; a_{(n-1)n} \\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0
+\end{vmatrix}
+$$</p>
+</li>
+<li>
+<p><strong>下三角区</strong>：对角线以下的所有元素，和上三角区的个数相等并且重复。</p>
+</li>
+</ul>
+<p>可以将对称矩阵中，$n^2$个元素压缩存储到$\cfrac{n(n+1)}{2}$个元素的存储空间中。一般是存储下三角区和对角线。</p>
+<p>假设将$n$阶对称矩阵$A_{n \times n}$压缩存储到一维数组$B\left[ \cfrac{n(n+1)}{2} \right]$，则$B[k]\ (1 \le k \le \cfrac{n(n+1)}{2})$与矩阵元素$a_{ij}(a_{ji})\ (1 \le i,j \le n)$之间存在一一对应关系（以行为主序）：</p>
+<p>$$
+k =
+\begin{cases}
+\cfrac{i(i-1)}{2} + j, &amp; 当\ i \ge j \\
+\cfrac{j(j-1)}{2} + i, &amp; 当\ i &lt; j
+\end{cases}
+$$</p>
+<p>如果下标从0开始（第一个元素为$a_{00}$，$0 \le k \le \cfrac{n(n+1)}{2} - 1$，并且$0 \le i,j \le n-1$）：</p>
+<p>$$
+k =
+\begin{cases}
+\cfrac{i(i+1)}{2} + j + 1, &amp; 当\ i \ge j \\
+\cfrac{j(j+1)}{2} + i + 1, &amp; 当\ i &lt; j
+\end{cases}
+$$</p>
+<blockquote>
+<p>为什么$length(B) = \cfrac{n(n+1)}{2}$（压缩存储的一维数组大小）：</p>
+<p>主对角线的元素的大小为$n$，下三角区的对角线大小分别为$n-1,n-2,&hellip;,1$。即：
+$$
+length(B) = \sum_{i=1}^{n}{i} = \cfrac{n(n+1)}{2}
+$$</p>
+</blockquote>
+<blockquote>
+<p>PS：《软件设计师教程（第五版）》中一维数组的下标$k$的取值范围错了：</p>
+<p><picture><img class="img-fluid " alt="对称矩阵" src="/note/ruan-she/data-structure/1680698007514.png" loading="lazy" width="999" height="344" />
+</picture>
+
+
+很明显不是$\left[ 1, \cfrac{n(n+1)}{2} \right)$，而应该是$\left[ 1, \cfrac{n(n+1)}{2} \right]$。</p>
+</blockquote>
+<h2 id="三对角矩阵" data-numberify>三对角矩阵<a class="anchor ms-1" href="#三对角矩阵"></a></h2>
+<p>对角矩阵是指矩阵中的<u>非0元素都集中在以主对角线为中心的带状区域中</u>，即除了主对角线上和直接在对角线上、下方若干条对角线上的元素外，其余的矩阵元素都为0。三对角矩阵是对角矩阵中的一种，包括主对角线和在主对角线上、下方的各一条对角为非0元素：</p>
+<p>$$
+\begin{vmatrix}
+a_{11} &amp; a_{12} &amp; 0      &amp; \cdots &amp; 0              &amp; 0          \\
+a_{21} &amp; a_{22} &amp; a_{23} &amp; \cdots &amp; 0              &amp; 0          \\
+0      &amp; a_{32} &amp; a_{33} &amp; \cdots &amp; 0              &amp; 0          \\
+0      &amp; 0      &amp; a_{43} &amp; \cdots &amp; 0              &amp; 0          \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots         &amp; \vdots     \\
+0      &amp; 0      &amp; 0      &amp; \cdots &amp; a_{(n-1)(n-1)} &amp; a_{(n-1)n} \\
+0      &amp; 0      &amp; 0      &amp; \cdots &amp; a_{n(n-1)}     &amp; a_{nn}
+\end{vmatrix}
+$$</p>
+<p>设有$n$阶三对角矩阵$A_{n \times n}$，将其非0元素$a_{ij}(a_{ji})\ (1 \le i,j \le n)$存储在一维数组$B[k](1 \le k \le 3 \times n - 2)$中，则元素位置之间的对应关系为：</p>
+<p>$$
+k = 3 \times (i-1) - 1 + j - i + 1 + 1 = 2i + j -2
+$$</p>
+<p>如果下标从0开始（$0 \le k \le 3(n-1)$，并且$0 \le i,j \le n-1$）：</p>
+<p>$$
+k = 3 \times i - 1 + j - i + 1 + 1 = 2i + j + 1
+$$</p>
+<h2 id="稀疏矩阵" data-numberify>稀疏矩阵<a class="anchor ms-1" href="#稀疏矩阵"></a></h2>
+<p>在一个矩阵中，若<u>非0元素的个数远远少于0元素的个数，且非0元素的分布<strong>没有规律</strong></u>，则称之为稀疏矩阵。</p>
+<p>对于稀疏矩阵，存储非0元素时<strong>必须同时存储其位置</strong>（即行号和列号），用<u>三元组$(i,j,a_{ij})$可唯一确定矩阵$A$中的一个元素</u>。</p>
+<p>可以用三元组表来存储这些三元组。稀疏矩阵的三元组表的顺序存储结构称为<strong>三元组顺序表</strong>，常用的三元组表的链式存储结构是<strong>十字链表</strong>。</p>
+<hr>
+<h1 id="树" data-numberify>树<a class="anchor ms-1" href="#树"></a></h1>
+<p><strong>树</strong>结构是一种<strong>非线性结构</strong>，该结构中的一个数据元素可以有<strong>两个或两个以上的直接后继</strong>元素。</p>
+<p><strong>树</strong>（Tree）是 $n(n\ge0)$ 个结点的有限集。</p>
+<ul>
+<li><strong>空树</strong>：$n=0$；</li>
+<li><strong>非空树</strong>：$n&gt;0$，
+<ul>
+<li>有且仅有一个<strong>根结点</strong>，</li>
+<li>除根节点外的其余结点可分为 $m(m&gt;0)$ 个互不相交的集合，即<strong>子树</strong>（SubTree）$T_1,T_2,\cdots,T_m$。</li>
+</ul>
+</li>
+</ul>
+<p>树的定义是<strong>递归</strong>的：</p>
+<ul>
+<li>一棵树由若干棵子树构成；</li>
+<li>子树又由更小的子树构成。</li>
+</ul>
+<h2 id="基本概念" data-numberify>基本概念<a class="anchor ms-1" href="#基本概念"></a></h2>
+<h3 id="术语" data-numberify>术语<a class="anchor ms-1" href="#术语"></a></h3>
+<ul>
+<li><strong>度</strong>：结点拥有的子树数。整个树的度是树内各结点度的最大值。</li>
+<li><strong>叶结点</strong>：度为 0 的结点，也称<strong>终端结点</strong>。</li>
+<li><strong>非终端结点</strong>：度不为 0 的结点，也称<strong>分支结点</strong>。</li>
+<li><strong>内部结点</strong>：除根节点外的非终端结点。</li>
+<li><strong>子节点</strong>：结点<u>子树的根结点</u>。</li>
+<li><strong>父结点</strong>：与子结点相连的上一层的唯一一个结点。</li>
+<li><strong>兄弟结点</strong>：同一个父节点的子节点之间互为兄弟。</li>
+<li><strong>祖先结点</strong>：从根结点到该结点所经分支上的所有结点（包括其父节点，但不包括其本身）。</li>
+<li><strong>子孙结点</strong>：以某结点为根的子树中的所有结点。</li>
+<li><strong>堂兄弟结点</strong>：父节点在同一层（但不是同一个）的结点互为堂兄弟。</li>
+<li><strong>层次</strong>：以根结点为第一层，根的子节点为第二层 …… 树中任意结点的层次等于其父节点的层次加 1。</li>
+<li><strong>树的高度</strong>：树中结点的最大层次，也称<strong>树的深度</strong>。</li>
+<li><strong>森林</strong>：是 $m(m\ge0)$ 棵互不相交的树的集合。树中每个结点的子树的集合即为森林。</li>
+</ul>
+<h3 id="树的类型" data-numberify>树的类型<a class="anchor ms-1" href="#树的类型"></a></h3>
+<ul>
+<li><strong>有序树</strong>：树中结点的各子树从左到右是有次序的，即不能互换。</li>
+<li><strong>无序树</strong>：树中结点的各子树相互之间可以互换，没有次序。</li>
+</ul>
+<h3 id="树的性质" data-numberify>树的性质<a class="anchor ms-1" href="#树的性质"></a></h3>
+<ul>
+<li>
+<p>设$n$个结点的树，$d_i \ (1 \le i \le n)$为该树中结点的度：</p>
+<p>$$
+n = (\sum_{i=1}^{n}{d_i})+1
+$$</p>
+</li>
+<li>
+<p>度为$m$的树中第$i$层上至多有$m^{i-1}$个结点（$i \ge 1$）。</p>
+</li>
+<li>
+<p>高度为$h$的$m$度树至多有$\cfrac{m^h-1}{m-1}$个结点。</p>
+</li>
+</ul>
+<h2 id="树的逻辑结构" data-numberify>树的逻辑结构<a class="anchor ms-1" href="#树的逻辑结构"></a></h2>
+<p>树可以用二元组 $Tree=(root,F)$ 表示。其中 $root$ 是根结点，$F$ 是 $m(m\ge0)$ 棵子树的森林，即 $F=(T_1,T_2,\cdots,T_m)$，其中 $T_i=(r_i,F_i)$ 为根 $root$ 的第 $i$ 棵子树。</p>
+<p>树根与其子树森林之间的关系：
+$$
+RF = \{ &lt;root,r_i&gt;|i=1,2,4,m,\quad m&gt;0 \}
+$$</p>
+<hr>
+<h1 id="二叉树" data-numberify>二叉树<a class="anchor ms-1" href="#二叉树"></a></h1>
+<p>二叉树是（$n \ge 0$）个结点的有限集合：</p>
+<ul>
+<li>空树：$n=0$；</li>
+<li>由一个根结点及两棵不相交的且分别称为左、右子树的二叉树所组成（两个子数顺序不可交换）。</li>
+</ul>
+<p>二叉树同样具有递归性质。</p>
+<p>二叉树的性质：</p>
+<ul>
+<li>
+<p>第$i$层（$i \ge 1$）上<u>最多</u>有$2^{i-1}$个结点。</p>
+<p>因为二叉树每个结点至多有两个分支（结点）。</p>
+</li>
+<li>
+<p>高度为$k$的二叉树最多有$2^k-1$个结点（$k \ge 1$）。</p>
+<p>每层结点都取最大值后累加：</p>
+<p>$$
+\sum_{i=1}^{k}{2^{i-1}} = 2^k - 1
+$$</p>
+<p>将深度为$k$且有$2^k-1$个结点的二叉树称为<strong>满二叉树</strong>。</p>
+<p>对满二叉树自上而下、从左至右进行编号（即层序遍历的顺序）。一个深度为$k$、有$n$个结点的二叉树，当且仅当其每一个结点都于深度为$k$的满二叉树中编号从1至$n$的结点一一对应时，称之为<strong>完全二叉树</strong>。</p>
+<blockquote>
+<p>完全二叉树有一个隐藏关系：$n &gt; 2^{k-1}-1$。即深度为$k$的完全二叉树，其结点数$n$必须要比深度为$k-1$的满二叉树至少多1个结点。</p>
+</blockquote>
+<blockquote>
+<p>深度为$k$的满二叉树结点数$n$和其第$k$层结点数$m$的关系：</p>
+<p>$$
+n = 2m-1
+$$</p>
+</blockquote>
+</li>
+<li>
+<p>任何一棵二叉树，若其终端结点数（度为0的结点数）为$n_0$，度2的结点数为$n_2$，则$n_0=n_2+1$。</p>
+<p>即：</p>
+<p>$$
+终端结点数（度0结点数）=度2结点数+1
+$$</p>
+</li>
+<li>
+<p>具有$n$个结点的完全二叉树的深度（高度）为：</p>
+<p>$$
+\lfloor \log_2{n} \rfloor + 1;
+$$</p>
+<p>或：</p>
+<p>$$
+\lceil \log_2{(n+1)} \rceil
+$$</p>
+</li>
+</ul>
+<p>二叉树形态总数（卡特兰数）：</p>
+<p>$$
+\cfrac{C^{n}_{2n}}{n+1}
+$$</p>
+<blockquote>
+<p>排列组合公式：</p>
+<p>$$
+A^n_m = m \times (m-1) \times \cdots \times (m-n+1)
+$$</p>
+<p>$m$是起点，$n$是次数。</p>
+<p>$$
+C^n_m = \cfrac{A^n_m}{A^n_n}
+$$</p>
+</blockquote>
+<h2 id="顺序存储结构-4" data-numberify>顺序存储结构<a class="anchor ms-1" href="#顺序存储结构-4"></a></h2>
+<p>用一组地址连续的存储单元存储二叉树中的结点。</p>
+<p>可以按照为完全二叉树编号的顺序（即层序遍历的顺序），将二叉树映射到顺序表中：</p>
+<p>若编号为$i$的结点（$i \ge 1$），则：</p>
+<ul>
+<li>$i=1$：根结点，没有双亲（父结点）；</li>
+<li>$i&gt;1$：双亲为$\left\lfloor \cfrac{i}{2} \right\rfloor$；</li>
+<li>$i \le \cfrac{n}{2}$：左孩子编号为$2i$；</li>
+<li>$i \le \cfrac{n-1}{2}$：右孩子编号为$2i+1$。</li>
+</ul>
+<p>完全二叉树适合采用顺序存储结构，而一般二叉树则不适合。</p>
+<h2 id="链式存储结构-4" data-numberify>链式存储结构<a class="anchor ms-1" href="#链式存储结构-4"></a></h2>
+<p>可以用<strong>三叉链表或二叉链表</strong>来存储二叉树（一个结点含有3个或2个指针，其中必须有两个指针来分别存储左子树和右子树的根结点）。链表的头指针指向二叉树根结点：</p>
+<p><picture><img class="img-fluid " alt="二叉树的链表存储结构" src="/note/ruan-she/data-structure/uTools_1680770614240.png" loading="lazy" width="980" height="337" />
+</picture>
+
+</p>
+<blockquote>
+<p>三叉链表仅仅是多了一个指向父结点的链表。</p>
+</blockquote>
+<p>设有$n$个结点的二叉树，则其<strong>空指针域数量</strong>：</p>
+<ul>
+<li>
+<p>对于二叉链表：</p>
+<ul>
+<li>总指针域个数：$2n$；</li>
+<li>分支数（子孙结点数，非空指针域个数）：$n-1$。</li>
+</ul>
+<p>可得：</p>
+<p>$$
+空指针域数=2n-(n-1)=n+1
+$$</p>
+</li>
+<li>
+<p>对于三叉链表：</p>
+<ul>
+<li>总指针域个数：$3n$；</li>
+<li>分支数（子孙结点数）：$n-1$；</li>
+<li>指向父结点且非空的指针域个数：$n-1$。</li>
+</ul>
+<p>即，非空指针域个数为：$2(n-1)$。</p>
+<p>可得：</p>
+<p>$$
+空指针域数=3n-2(n-1)=n+2
+$$</p>
+</li>
+</ul>
+<h2 id="遍历" data-numberify>遍历<a class="anchor ms-1" href="#遍历"></a></h2>
+<p>二叉树有以下遍历方法：</p>
+<ul>
+<li>
+<p>先序遍历：根左右</p>
+<ol>
+<li>访问根结点；</li>
+<li>先序遍历左子树；</li>
+<li>先序遍历右子树。</li>
+</ol>
+</li>
+<li>
+<p>中序遍历：左根右</p>
+<ol>
+<li>中序遍历左子树；</li>
+<li>访问根结点；</li>
+<li>中序遍历右子树。</li>
+</ol>
+</li>
+<li>
+<p>后序遍历：左右根</p>
+<ol>
+<li>后序遍历左子树；</li>
+<li>后序遍历右子树；</li>
+<li>访问根结点。</li>
+</ol>
+<p>后序遍历可以使用栈：</p>
+<ol>
+<li>根结点入栈；</li>
+<li>右子树（如果有的话）按照步骤1至3顺序入栈（先入根结点，然后入右子树，再入左子树）；</li>
+<li>左子树（如果有的话）按照步骤1至3顺序入栈（先入根结点，然后入右子树，再入左子树）；</li>
+<li>将栈中所有元素出栈，出栈顺序即为后序遍历的顺序。</li>
+</ol>
+</li>
+<li>
+<p>层序遍历：根据层序从上至下，从左到右遍历</p>
+<ol>
+<li>
+<p>访问根结点（第1层）；</p>
+</li>
+<li>
+<p>从左到右访问第2层所有结点；</p>
+</li>
+<li>
+<p>从左到右访问第3层所有结点；</p>
+<p>&hellip;</p>
+</li>
+</ol>
+<p>直至访问到最后一层的所有结点（从左到右）。</p>
+<p>层序遍历可以使用队列：</p>
+<ol>
+<li>将根结点入队；</li>
+<li>将对头元素出队，然后将其左右子结点（如果有的话）依序入队；</li>
+<li>重复步骤2直至所有元素出队，出队顺序即为层序遍历顺序。</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>二叉树的遍历实质上是对一个非线性结构进行线性化的过程，它使得每个结点（除第一个和最后一个）在这些线性序列中有且仅有一个直接前驱和直接后继。</p>
+</blockquote>
+<h2 id="平衡二叉树" data-numberify>平衡二叉树<a class="anchor ms-1" href="#平衡二叉树"></a></h2>
+<p>二叉树可以用于快速查找。例如比根结点小的在左子树，比根结点大的在右子树（二叉排序树）。那么每次查找，根据根结点就可以剔除一半的范围。</p>
+<p>但是如果二叉树左右子树的结点数量差别很大，那么每次查找并不一定能剔除一半的范围，查询效率大打折扣。</p>
+<p>设一个二叉树的左右子树高度之差的绝对值为$d$，那么</p>
+<ul>
+<li>不平衡的二叉树：$d &gt; 1$；</li>
+<li>平衡的二叉树：$d \le 1$。</li>
+</ul>
+<blockquote>
+<p>完全二叉树一定是平衡二叉树，平衡二叉树不一定是完全二叉树。</p>
+</blockquote>
+<h2 id="二叉排序树" data-numberify>二叉排序树<a class="anchor ms-1" href="#二叉排序树"></a></h2>
+<p>二叉排序树的定义：</p>
+<ul>
+<li><strong>左子树</strong>所有结点的关键字都<strong>小于</strong>根结点；</li>
+<li><strong>右子树</strong>所有根结点的关键字都<strong>大于</strong>根结点；</li>
+<li>左右子树也都是二叉排序树。</li>
+</ul>
+<p>二叉排序树的<strong>中序遍历</strong>（左根右）得到的是该二叉树的<strong>有序序列</strong>。</p>
+<h2 id="线索二叉树" data-numberify>线索二叉树<a class="anchor ms-1" href="#线索二叉树"></a></h2>
+<p>线索二叉树是在二叉树结点中保存了结点的前驱和后继的信息。</p>
+<p>如果使用指针来指向其前驱和后继，增加指针信息会降低存储空间的利用率。</p>
+<p>可以采用增加两个标志（<code>leftTag</code>和<code>rightTag</code>）来区分指针域指向的是左或右子结点还是前驱或后继：</p>
+<table>
+    <tr>
+        <td>leftTag</td>
+        <td>leftChild</td>
+        <td>data</td>
+        <td>rightChild</td>
+        <td>rightTag</td>
+    </tr>
+</table>
+<p>其中：</p>
+<p>$$
+leftTag =
+\begin{cases}
+True  &amp; leftChild指向结点左孩子 \\
+False &amp; leftChild指向结点的直接前驱
+\end{cases}
+$$</p>
+<p>$$
+rightTag =
+\begin{cases}
+True  &amp; rightChild指向结点右孩子 \\
+False &amp; rightChild指向结点的直接后继
+\end{cases}
+$$</p>
+<p>若二叉树的二叉链表采用以上所示的结点结构，则相应的链表称为线索链表，其中指向结点前驱、后继的指针称为线索。</p>
+<p>对二叉树以某种次序遍历使其成为线索二叉树的过程称为线索化。</p>
+<h2 id="哈夫曼树" data-numberify>哈夫曼树<a class="anchor ms-1" href="#哈夫曼树"></a></h2>
+<p>哈夫曼树即最优二叉树，是一类<strong>带权路径长度最短</strong>的树。</p>
+<ul>
+<li>
+<p><strong>路径</strong>：指从树中<strong>一个结点到另一个结点之间的通路</strong>；</p>
+</li>
+<li>
+<p><strong>路径长度</strong>：路径上的<strong>分支数目</strong>；</p>
+</li>
+<li>
+<p><strong>树的路径长度</strong>：指从树根到每一个叶子之间的路径长度之和；</p>
+</li>
+<li>
+<p><strong>结点的带权路径长度</strong>：从该结点到树根之间的<strong>路径长度</strong>与该结点<strong>权值</strong>的乘积；</p>
+</li>
+<li>
+<p><strong>树的带权路径长度</strong>：树中所有叶子结点的带权路径长度之和。</p>
+<p>设：</p>
+<ul>
+<li>带权叶子结点数：$n$；</li>
+<li>叶子结点的权值：$w_k$；</li>
+<li>叶子结点到根的路径长度：$l_k$。</li>
+</ul>
+<p>则树的带权路径长度为：</p>
+<p>$$
+WPL = \sum_{k=1}^{n}{w_kl_k}
+$$</p>
+</li>
+</ul>
+<p>哈夫曼树是指权值为$w_1,w_2,\cdots,w_n$的$n$个叶子结点的二叉树中，带权路径长度最小的二叉树。</p>
+<p>构造最优二叉树的哈夫曼算法：</p>
+<ol>
+<li>根据给定的$n$个权值$\{ w_1,w_2,\cdots,w_n \}$，构成$n$棵二叉树集合$F=\{T_1,T_2,\cdots,T_n\}$，每棵树$T_i$有且仅有一个带权为$w_i$的根结点。</li>
+<li>在$F$中选取2棵权值最小的树作为左、右子树，构造一棵新二叉树。新二叉树的根结点权值为其左右子树根结点权值之和。</li>
+<li>从$F$中删除这2棵树，并将新树加入到$F$中。</li>
+<li>重复步骤2、3直到$F$中仅含一棵树为止，这棵树便是哈夫曼树。</li>
+</ol>
+<p>哈夫曼算法并未规定哪棵树作为左或右子树，所以哈夫曼树并不唯一，但$WPL$值是唯一的。</p>
+<p>给定$n$个权值后，哈夫曼树的结点数$m$就确定了：</p>
+<p>$$
+m = 2 \times n - 1
+$$</p>
+<p>所以可用一维数组存储哈夫曼树。</p>
+<h3 id="哈夫曼编码" data-numberify>哈夫曼编码<a class="anchor ms-1" href="#哈夫曼编码"></a></h3>
+<p>哈夫曼编码是一种不等长的编码，它用哈夫曼算法来构造出最优前缀码：</p>
+<p>给定<strong>字符集</strong>$D=\{ d_1,d_2,\cdots,d_n \}$及<strong>字符的使用频率</strong>$W=\{w_1,w_2,\cdots,w_n\}$。</p>
+<p>构造<strong>最优前缀码</strong>的方法为：</p>
+<ol>
+<li>以$d_1,d_2,\cdots,d_n$作为叶子结点，$w_1,w_2,\cdots,w_n$作为叶子结点的权值，构造出一棵最优二叉树。</li>
+<li>将树中每个结点的左分支标上0，右分支标上1（左0右1）。</li>
+<li>每个叶子结点代表字符的编码就是从根到叶子的路径上组成的0、1串。</li>
+</ol>
+<p><picture><img class="img-fluid " alt="哈夫曼编码" src="/note/ruan-she/data-structure/uTools_1680836524813.png" loading="lazy" width="347" height="334" />
+</picture>
+
+</p>
+<p>其中，字符$a$字符$b$、$c$、$d$、$e$的编码分别为00、01、100、11、101。</p>
+<h3 id="压缩比" data-numberify>压缩比<a class="anchor ms-1" href="#压缩比"></a></h3>
+<p><picture><img class="img-fluid " alt="压缩比例题" src="/note/ruan-she/data-structure/uTools_1680959771881.png" loading="lazy" width="784" height="489" />
+</picture>
+
+</p>
+<ol>
+<li>
+<p>按照<u>出现频率</u>计算<u>加权平均长度</u>：</p>
+<p>$$
+加权平均长度 = \sum_{i=1}^{5}{字符i的位数 \times 字符i出现频率}
+$$</p>
+<p>即：</p>
+<p>$$
+1 \times 40% + 3 \times (10% + 20% + 16% + 14%) = 2.2
+$$</p>
+<p>压缩后平均长度为2.2。</p>
+</li>
+<li>
+<p>计算压缩比：</p>
+<p>$$
+压缩比 = \cfrac{压缩前编码长度 - 压缩后平均长度}{压缩前编码长度}
+$$</p>
+<p>即，</p>
+<ul>
+<li>
+<p>编码5个字符至少需要3位：$2^2 &lt; 5 &lt; 2^3$，所以压缩前编码长度为3；</p>
+</li>
+<li>
+<p>压缩比：</p>
+<p>$$
+\cfrac{3-2.2}{3} \approx 0.27
+$$</p>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>哈夫曼编码方案是基于贪心策略的。</p>
+</blockquote>
+<hr>
+<h1 id="图" data-numberify>图<a class="anchor ms-1" href="#图"></a></h1>
+<p>在图中，任意两个结点之间都可能有直接的关系，所以图中<u>一个结点的前驱结点和后继结点的数目是没有限制的</u>。</p>
+<p>图$G$是由集合$V$和$E$构成的二元组，记作$G=(V,E)$：</p>
+<ul>
+<li><strong>顶点</strong>：表示数据元素。$V$是图中顶点的非空有限集合。</li>
+<li><strong>边</strong>：表示数据元素之间的关系。$E$是图中边的有限集合。</li>
+</ul>
+<p>图可分为两种类型：</p>
+<ul>
+<li><strong>有向图</strong>：有向图顶点之间的关系称为弧（或有向边），用$&lt;v_i,v_j&gt;$表示，$v_i$是<strong>弧尾</strong>（始点或起点），$v_j$是<strong>弧头</strong>（终点，箭头指向的顶点），即有向边是指<u>从弧尾指向弧头</u>的一条边。$&lt;v_i,v_j&gt;$和$&lt;v_j,v_i&gt;$分别表示的是两条边。</li>
+<li><strong>无向图</strong>：无向图顶点之间的关系用$(v_i,v_j)$表示。$(v_i,v_j)$和$(v_j,v_i)$表示的是同一条边。</li>
+</ul>
+<h2 id="术语-1" data-numberify>术语<a class="anchor ms-1" href="#术语-1"></a></h2>
+<h3 id="完全图" data-numberify>完全图<a class="anchor ms-1" href="#完全图"></a></h3>
+<p><strong>完全图</strong>：</p>
+<ul>
+<li>
+<p><strong>无向完全图</strong>：指一个有$n$个顶点的无向图，其每一个顶点与其他$n-1$个顶点之间都有边。</p>
+<p>$n$个顶点的无向完全图共有$\cfrac{n(n-1)}{2}$条边：</p>
+<p>$$
+\sum_{i=1}^{n}{i} = \cfrac{n(n-1)}{2}
+$$</p>
+<p>假设$n$个顶点的无向完全图，为他们编上1到$n$的编号，按照编号顺序计算边，第1个顶点跟其他$n-1$个顶点有$n$条边；第2个顶点跟其他$n-1$个顶点也有$n$条边，除去1条跟第1个顶点相连的边，有$n-1$条不一样的边；第3个顶点出去2条跟第1和第2个顶点相连的边，有$n-2$条不一样的边……以此类推，得出上方公式。</p>
+</li>
+<li>
+<p><strong>有向完全图</strong>：指一个有$n$个顶点的有向图，以其每一个顶点为始点与其他$n-1$个顶点之间都有弧。</p>
+<p>$n$个顶点的有向完全图共有$n(n-1)$条边：</p>
+<p>$$
+\prod_{i=1}^{n}{n-1} = n(n-1)
+$$</p>
+<p>有向完全图的$n$个顶点都有$n-1$条以其他顶点作为终点的弧（出度为$n-1$），并且这$n$个顶点的$n-1$条弧都是不同的弧，所以可推出上方公式。</p>
+</li>
+</ul>
+<h3 id="度" data-numberify>度<a class="anchor ms-1" href="#度"></a></h3>
+<p><strong>度</strong>：顶点$v$的度是指关联于该顶点的边的数目，记作$D(v)$。</p>
+<p>若为有向图：</p>
+<ul>
+<li><strong>入度</strong>：以该顶点为终点的有向边的数目，记为$ID(v)$；</li>
+<li><strong>出度</strong>：以该顶点为起点的有向边的数目，记为$OD(v)$。</li>
+</ul>
+<p>有向图度与入度、出度的关系：</p>
+<p>$$
+D(v) = ID(v) + OD(v)
+$$</p>
+<p>对于所有的图，顶点数$n$、边数$e$与各顶点的度之间有：</p>
+<p>$$
+e = \cfrac{1}{2} \sum_{i=1}^{n}{D(v_i)}
+$$</p>
+<p>即，所有顶点的度数之和 $= 2e$。</p>
+<h3 id="路径" data-numberify>路径<a class="anchor ms-1" href="#路径"></a></h3>
+<p><strong>路径</strong>：</p>
+<ul>
+<li>
+<p>无向图$G$中的路径：从顶点$v_p$到顶点$v_q$的路径是指存在一个顶点序列$v_p,v_{i1},v_{i2},\cdot,v_{in},v_q$，使得$(v_p,v_{i1}),(v_{i1},v_{i2}),\cdots,(v_{in},v_q) \in E(G)$；</p>
+</li>
+<li>
+<p>无向图$G$中的路径：从顶点$v_p$到顶点$v_q$的路径是指存在一个顶点序列$v_p,v_{i1},v_{i2},\cdot,v_{in},v_q$，使得$&lt;v_p,v_{i1}&gt;,&lt;v_{i1},v_{i2}&gt;,\cdots,&lt;v_{in},v_q&gt; \in E(G)$。</p>
+<p>无向图中的路径也是有方向的。</p>
+</li>
+</ul>
+<h3 id="子图" data-numberify>子图<a class="anchor ms-1" href="#子图"></a></h3>
+<p><strong>子图</strong>：若有两个图$G=(V,E)$和$G&rsquo;=(V&rsquo;,E&rsquo;)$，如果$V&rsquo; \sube V$且$E&rsquo; \sube E$，则称$G&rsquo;$为$G$的子图。</p>
+<h3 id="连通图" data-numberify>连通图<a class="anchor ms-1" href="#连通图"></a></h3>
+<p>对于无向图：</p>
+<ul>
+<li><strong>连通</strong>：无向图中，若从顶点$v_i$到顶点$v_j$<u>有路径</u>，则称顶点$v_i$和顶点$v_j$是联通的。</li>
+<li><strong>连通图</strong>：若无向图中<u>任意两个顶点都是联通的</u>，称其为连通图。</li>
+<li><strong>连通分量</strong>：无向图$G$的<strong>极大连通子图</strong>称为$G$的连通分量。</li>
+</ul>
+<p>$n$个结点的连通图，它的边的取值范围是$[n-1,\cfrac{n(n-1)}{2}]$。</p>
+<p>对于有向图：</p>
+<ul>
+<li><strong>强连通图</strong>：在有向图$G$中，如果对于每一对顶点，$v_i,v_j\in V$ 且 $v_i \neq v_j$，从顶点$v_i$到顶点$v_j$和从顶点$v_j$到顶点$v_i$都存在路径，则称图$G$为强连通图。</li>
+<li><strong>强连通分量</strong>：有向图中的<strong>极大连通子图</strong>称为有向图的强连通分量。</li>
+</ul>
+<blockquote>
+<p>连通图是无向图中的一种，所以一般也称为无向连通图。</p>
+<p>强连通图是有向图的一种，一般也称为有向强连通图。</p>
+</blockquote>
+<h3 id="网" data-numberify>网<a class="anchor ms-1" href="#网"></a></h3>
+<p>边（或弧）带权值的图称为网。</p>
+<h3 id="有向树" data-numberify>有向树<a class="anchor ms-1" href="#有向树"></a></h3>
+<p>如果一个有向图恰<u>有一个顶点的入度为0（作为root），其余顶点的入度均为1</u>，则是一棵有向树。</p>
+<h2 id="基本存储结构" data-numberify>基本存储结构<a class="anchor ms-1" href="#基本存储结构"></a></h2>
+<p>图的基本存储结构有：</p>
+<ul>
+<li>邻接矩阵表示法：使用矩阵存储顶点关系，适合存储边比较多的图；</li>
+<li>邻接链表表示法：使用多个单链表存储顶点关系，适合存储边比较少的图。</li>
+</ul>
+<h3 id="邻接矩阵表示法" data-numberify>邻接矩阵表示法<a class="anchor ms-1" href="#邻接矩阵表示法"></a></h3>
+<p>图的邻接矩阵表示法是指<u>用矩阵来表示图中顶点之间的关系</u>。</p>
+<p>对于具有$n$个顶点的图$G=(V,E)$，其邻接矩阵是一个$n$阶方阵，且满足：</p>
+<p>$$
+A[i][j] =
+\begin{cases}
+1 &amp; 若(v_i,v_j)或&lt;v_i,v_j&gt;是E中的边 \\
+0 &amp; 若(v_i,v_j)或&lt;v_i,v_j&gt;不是E中的边
+\end{cases}
+$$</p>
+<blockquote>
+<p>即，横$i$竖$j$，横出竖入。</p>
+</blockquote>
+<p>无向图的邻接矩阵是对称矩阵，有向图的邻接矩阵则不一定对称。</p>
+<ul>
+<li>无向图：顶点$v_i$的度是邻接矩阵第$i$行（或列）中值不为0的元素个数；</li>
+<li>有向图：第$i$行的非0元素个数是顶点$v_i$的出度$OD(v_i)$；第$i$列的非0元素个数是顶点$v_i$的入度$ID(v_j)$。</li>
+</ul>
+<p>网（赋权图）的邻接矩阵定义（$W_{ij}$是边或弧上的权值）：</p>
+<p>$$
+A[i][j] =
+\begin{cases}
+W_{ij} &amp; 若(v_i,v_j)或&lt;v_i,v_j&gt; \in E \\
+\infin &amp; 若(v_i,v_j)或&lt;v_i,v_j&gt; \notin E
+\end{cases}
+$$</p>
+<p>邻接矩阵适合用于存储边比较多的图。</p>
+<h3 id="邻接链表表示法" data-numberify>邻接链表表示法<a class="anchor ms-1" href="#邻接链表表示法"></a></h3>
+<p>邻接链表表示法指的是<u>为图的每个顶点建立一个单链表</u>：</p>
+<ul>
+<li>
+<p>边结点（表结点）：</p>
+  <table>
+      <tr>
+          <td>adjvex</td>
+          <td>nextarc</td>
+          <td>info</td>
+      </tr>
+  </table>
+<ul>
+<li><code>adjvex</code>：指示与顶点$v_i$邻接的顶点的序号；</li>
+<li><code>nextarc</code>：指示下一条边或弧的结点；</li>
+<li><code>info</code>：存储与边或弧有关的信息，如权值等。</li>
+</ul>
+</li>
+<li>
+<p>表头结点（顶点结点）：</p>
+  <table>
+      <tr>
+          <td>data</td>
+          <td>firstarc</td>
+      </tr>
+  </table>
+<ul>
+<li><code>data</code>：存储顶点$v_i$的名或其他有关信息；</li>
+<li><code>firstarc</code>：指示链表中的第一个结点（邻接顶点）。</li>
+</ul>
+<p>表头结点通常以顺序存储结构存储，以便随机访问。</p>
+</li>
+</ul>
+<p>对于有向图，<strong>邻接链表</strong>存储的是以当前结点作为<strong>起点</strong>的弧；<strong>逆邻接链表</strong>存储的是以当前结点作为<strong>终点</strong>的弧。</p>
+<p>邻接链表适合用于存储边比较少的图。</p>
+<h2 id="遍历-1" data-numberify>遍历<a class="anchor ms-1" href="#遍历-1"></a></h2>
+<p>图的遍历是指<u>从某个项点出发，沿着某条搜索路径对图中的所有项点进行访问且只访问一次的过程</u>。</p>
+<h3 id="深度优先搜索" data-numberify>深度优先搜索<a class="anchor ms-1" href="#深度优先搜索"></a></h3>
+<p>深度优先搜索（Depth First Search，DFS）类似于树的先序遍历。从图$G$中任一结点$v$出发按深度优先搜索法进行遍历的步骤：</p>
+<ol>
+<li>设置搜索指针$p$，使$p$指向顶点$v$；</li>
+<li>访问$p$所指顶点，并使$p$指向与其<u>相邻接的且尚未被访问过</u>的顶点。</li>
+<li>若$p$所指顶点存在，则重复步骤2，否则执行步骤4。</li>
+<li>沿着访问的次序和方向回溯到最后一个有未被访问过的邻接顶点的顶点，并使$p$指向这个未被访问的顶点，然后重复步骤2到4，直到所有的项点均被访问为止。</li>
+</ol>
+<p>时间复杂度（$n$为顶点数，$e$为边数）：</p>
+<ul>
+<li>邻接矩阵：$O(n^2)$；</li>
+<li>邻接链表：$O(n+e)$。</li>
+</ul>
+<h3 id="广度优先搜索" data-numberify>广度优先搜索<a class="anchor ms-1" href="#广度优先搜索"></a></h3>
+<p>图的广度优先搜索（Breadth First Search，BFS）步骤为：</p>
+<ol>
+<li>从图中的某个顶点$v$出发；</li>
+<li>访问$v$后，依次访问$v$的各个未被访问过的邻接点；</li>
+<li>分别从$v$的邻接点出发，依次访问它们的邻接点；</li>
+<li>按照$v$的邻接点访问的先后顺序，重复步骤2到4，直到图中所有已被访问的项点的邻接点都被访问到；</li>
+<li>若此时还有未被访问的顶点，则另选图中的一个未被访问的项点作为起点，重复上述过程，直到图中所有的顶点都被访问到为止。</li>
+</ol>
+<p>广度优先搜索可以引入队列来保存已访问过的顶点序列。即，每当一个顶点被访问后，就将其放入队列中；当队头顶点出队时，就访问其未被访问的邻接点并令这些邻接顶点入队。每个顶点最多入队一次。</p>
+<p>广度和深度优先搜索遍历图的<u>时间复杂度相同</u>（$n$为顶点数，$e$为边数）：</p>
+<ul>
+<li>邻接矩阵：$O(n^2)$；</li>
+<li>邻接链表：$O(n+e)$。</li>
+</ul>
+<blockquote>
+<p>广度和深度优先搜索遍历图的不同之处在于：<u>顶点访问的次序不同</u>。</p>
+</blockquote>
+<h2 id="生成树" data-numberify>生成树<a class="anchor ms-1" href="#生成树"></a></h2>
+<p>连通图的生成树是该图的极小连通子图（都是$n-1$条边）。</p>
+<p>对于<strong>非连通图</strong>而言，每个连通分量中的顶点集和遍历时走过的边集一起构成若干棵生成树，把它们称为<strong>非连通图的生成树森林</strong>。</p>
+<ul>
+<li>
+<p>在图的生成树中任一加一条边，则必然形成回路。</p>
+<p>边数为$e$，$e \ge n$则必然形成回路。</p>
+</li>
+<li>
+<p>图的生成树不是唯一的。</p>
+<p>按深度和广度优先搜索进行遍历将得到不同的生成树，分别称为深度优先生成树和广度优先生成树。</p>
+</li>
+</ul>
+<h3 id="最小生成树" data-numberify>最小生成树<a class="anchor ms-1" href="#最小生成树"></a></h3>
+<p>连通网的生成树的边也带权，把生成树各边的权值总和称为生成树的权。<u>权值最小的生成树称为最小生成树</u>。</p>
+<h2 id="aov-网" data-numberify>AOV 网<a class="anchor ms-1" href="#aov-网"></a></h2>
+<p>一个大工程项目可以分为许多较小子工程（称为活动）。有向图中，用顶点表示活动，弧表示活动之间的优先级关系（活动进行时的制约关系），称这样的有向图为<u>以顶点表示活动的网</u>（Activity On Vertex network，AOV网）。</p>
+<p>在AOV网中：</p>
+<ul>
+<li>
+<p>从顶点$v_i$到$v_j$有一条有向路径：</p>
+<ul>
+<li>$v_i$是$v_j$的前驱，</li>
+<li>$v_j$是$v_i$的后继；</li>
+</ul>
+</li>
+<li>
+<p>$&lt;v_i,v_j&gt;$：</p>
+<ul>
+<li>$v_i$是$v_j$的直接前驱，</li>
+<li>$v_j$是$v_i$的直接后继。</li>
+</ul>
+</li>
+</ul>
+<p>AOV网中不应出现有向环。检测工程是否可行，首先应检查对应AOV网是否存在回路。不存在回路的有向图称为有向无环图（DAG，Directed Acycline Graph）。</p>
+<h2 id="拓扑排序" data-numberify>拓扑排序<a class="anchor ms-1" href="#拓扑排序"></a></h2>
+<p>检测AOV网是否是DAG的方法是对AOV网构造其<u>顶点的拓扑有序序列</u>。</p>
+<p>拓扑排序是将AOV网中的所有顶点排成一个线性序列的过程，并且该序列满足：若在AOV网中从顶点$v_i$到$v_j$有一条路径，则在该线性序列中，$v_i$必在$v_j$之前。对AOV网进行拓扑排序的方法如下：</p>
+<ol>
+<li>在AOV网中选择一个入度为0（没有前驱）的顶点且输出它。</li>
+<li>从网中删除该顶点及与该顶点有关的所有弧。</li>
+<li>重复上述两步，直到网中不存在入度为0的顶点为止。</li>
+</ol>
+<p>两种结果：</p>
+<ul>
+<li>所有顶点已输出，说明网中不存在回路。</li>
+<li>尚有未输出的顶点，剩余顶点均有前驱顶点，表面网中存在回路。</li>
+</ul>
+<p>有向无环图的拓扑序列中，顶点$v_i$在$v_j$之前，则：</p>
+<ul>
+<li>可能存在弧$&lt;v_i,v_j&gt;$，一定不存在弧$&lt;v_j,v_i&gt;$；</li>
+<li>可能存在$v_i$到$v_j$的路径，一定不存在$v_j$到$v_i$的路径。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="AOV网拓扑排序例子" src="/note/ruan-she/data-structure/uTools_1681115534531.png" loading="lazy" width="133" height="173" />
+</picture>
+
+</p>
+<p>上图拓扑排序的结果为：6,1,4,3,2,5（结果并不唯一）。</p>
+<blockquote>
+<p>当有向图中无环时，也可以利用深度优先遍历进行逆拓扑排序。</p>
+</blockquote>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/note/ruan-she/programming-language/">程序设计语言篇</a>
+    </div><div class="post-nav post-next">
+      <a href="/note/ruan-she/operating-system/">操作系统篇</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/02/%E7%BB%8F%E5%85%B8%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/">
+    经典查找算法
+  </a>
+  <div class="post-meta mb-0">
+    2022年2月27日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/01/%E7%BB%8F%E5%85%B8%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">
+    经典字符串匹配
+  </a>
+  <div class="post-meta mb-0">
+    2022年1月21日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/01/%E4%B8%A4%E6%95%B0%E4%BA%A4%E6%8D%A2%E7%AE%97%E6%B3%95/">
+    两数交换算法
+  </a>
+  <div class="post-meta mb-0">
+    2022年1月16日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/01/%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+    经典排序算法
+  </a>
+  <div class="post-meta mb-0">
+    2022年1月12日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
+  <div class="container">
+    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#复杂度">复杂度</a></li>
+    <li><a href="#逻辑结构分类">逻辑结构分类</a></li>
+    <li><a href="#线性表">线性表</a>
+      <ul>
+        <li><a href="#顺序存储结构">顺序存储结构</a></li>
+        <li><a href="#链式存储结构">链式存储结构</a></li>
+      </ul>
+    </li>
+    <li><a href="#栈">栈</a>
+      <ul>
+        <li><a href="#顺序存储结构-1">顺序存储结构</a></li>
+        <li><a href="#链式存储结构-1">链式存储结构</a></li>
+        <li><a href="#栈的应用">栈的应用</a></li>
+      </ul>
+    </li>
+    <li><a href="#队列">队列</a>
+      <ul>
+        <li><a href="#顺序存储结构-2">顺序存储结构</a></li>
+        <li><a href="#链式存储结构-2">链式存储结构</a></li>
+        <li><a href="#队列的应用">队列的应用</a></li>
+      </ul>
+    </li>
+    <li><a href="#串">串</a>
+      <ul>
+        <li><a href="#顺序存储结构-3">顺序存储结构</a></li>
+        <li><a href="#链式存储结构-3">链式存储结构</a></li>
+        <li><a href="#串的模式匹配">串的模式匹配</a>
+          <ul>
+            <li><a href="#朴素的模式匹配算法">朴素的模式匹配算法</a></li>
+            <li><a href="#kmp-算法">KMP 算法</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#多维数组">多维数组</a>
+      <ul>
+        <li><a href="#对称矩阵">对称矩阵</a></li>
+        <li><a href="#三对角矩阵">三对角矩阵</a></li>
+        <li><a href="#稀疏矩阵">稀疏矩阵</a></li>
+      </ul>
+    </li>
+    <li><a href="#树">树</a>
+      <ul>
+        <li><a href="#基本概念">基本概念</a>
+          <ul>
+            <li><a href="#术语">术语</a></li>
+            <li><a href="#树的类型">树的类型</a></li>
+            <li><a href="#树的性质">树的性质</a></li>
+          </ul>
+        </li>
+        <li><a href="#树的逻辑结构">树的逻辑结构</a></li>
+      </ul>
+    </li>
+    <li><a href="#二叉树">二叉树</a>
+      <ul>
+        <li><a href="#顺序存储结构-4">顺序存储结构</a></li>
+        <li><a href="#链式存储结构-4">链式存储结构</a></li>
+        <li><a href="#遍历">遍历</a></li>
+        <li><a href="#平衡二叉树">平衡二叉树</a></li>
+        <li><a href="#二叉排序树">二叉排序树</a></li>
+        <li><a href="#线索二叉树">线索二叉树</a></li>
+        <li><a href="#哈夫曼树">哈夫曼树</a>
+          <ul>
+            <li><a href="#哈夫曼编码">哈夫曼编码</a></li>
+            <li><a href="#压缩比">压缩比</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#图">图</a>
+      <ul>
+        <li><a href="#术语-1">术语</a>
+          <ul>
+            <li><a href="#完全图">完全图</a></li>
+            <li><a href="#度">度</a></li>
+            <li><a href="#路径">路径</a></li>
+            <li><a href="#子图">子图</a></li>
+            <li><a href="#连通图">连通图</a></li>
+            <li><a href="#网">网</a></li>
+            <li><a href="#有向树">有向树</a></li>
+          </ul>
+        </li>
+        <li><a href="#基本存储结构">基本存储结构</a>
+          <ul>
+            <li><a href="#邻接矩阵表示法">邻接矩阵表示法</a></li>
+            <li><a href="#邻接链表表示法">邻接链表表示法</a></li>
+          </ul>
+        </li>
+        <li><a href="#遍历-1">遍历</a>
+          <ul>
+            <li><a href="#深度优先搜索">深度优先搜索</a></li>
+            <li><a href="#广度优先搜索">广度优先搜索</a></li>
+          </ul>
+        </li>
+        <li><a href="#生成树">生成树</a>
+          <ul>
+            <li><a href="#最小生成树">最小生成树</a></li>
+          </ul>
+        </li>
+        <li><a href="#aov-网">AOV 网</a></li>
+        <li><a href="#拓扑排序">拓扑排序</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    
+
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.31e346fe8b757cca42a655530e1c726ac0ba5ae10affbeb952a03a54d4f68549.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>
