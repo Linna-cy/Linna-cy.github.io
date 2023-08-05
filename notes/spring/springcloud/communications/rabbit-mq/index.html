@@ -1,0 +1,1274 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.6b61554f17f090342973618ab58e8a4a23eefcb21afe3fc8f2ea9175c3b73105.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RabbitMQ | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="RabbitMQ官网：https://www.rabbitmq.com/。 官方文档：https://rabbitmq.com/documen" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="RabbitMQ"/>
+<meta name="twitter:description" content="RabbitMQ官网：https://www.rabbitmq.com/。 官方文档：https://rabbitmq.com/documen"/>
+<meta property="og:title" content="RabbitMQ" />
+<meta property="og:description" content="RabbitMQ官网：https://www.rabbitmq.com/。 官方文档：https://rabbitmq.com/documen" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/notes/spring/springcloud/communications/rabbit-mq/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2023-08-03T08:10:45+00:00" />
+<meta property="article:modified_time" content="2023-08-03T08:10:45+00:00" />
+<meta property="og:see_also" content="/notes/spring/springcloud/communications/spring-amqp/" /><meta property="og:see_also" content="/notes/spring/springcloud/communications/introduction/" /><meta property="og:see_also" content="/notes/spring/springmvc/api-tools/" /><meta property="og:see_also" content="/notes/spring/springcloud/eureka/" /><meta property="og:see_also" content="/notes/spring/springcloud/feign/" />
+
+<meta itemprop="name" content="RabbitMQ">
+<meta itemprop="description" content="RabbitMQ官网：https://www.rabbitmq.com/。 官方文档：https://rabbitmq.com/documen"><meta itemprop="datePublished" content="2023-08-03T08:10:45+00:00" />
+<meta itemprop="dateModified" content="2023-08-03T08:10:45+00:00" />
+<meta itemprop="wordCount" content="2589">
+<meta itemprop="keywords" content="Java,Maven,SpringCloud," />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="RabbitMQ" />
+  <meta name="twitter:image:alt" content="RabbitMQ" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.9022119742bb928827e13c11dfb589e920226c063d87853fd687fa6182346cc6.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown py-1 py-xxl-1 col-6 col-xxl-auto">
+    <a class="nav-link px-0 px-xxl-1" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-globe"></i>
+        <span class="d-xxl-none">语言</span>
+    </a>
+    <ul class="language-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+        <li>
+        <a class="dropdown-item active" href="/">
+            简体中文
+        </a>
+        </li>
+        <li>
+        <a class="dropdown-item" href="/en/">
+            
+        </a>
+        </li></ul>
+</li>
+<li class="nav-item py-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/spring/">Spring</a></li><li class="breadcrumb-item text-surface"><a href="/notes/spring/springcloud/">Spring Cloud</a></li><li class="breadcrumb-item text-surface"><a href="/notes/spring/springcloud/communications/">异步通讯</a></li><li class="breadcrumb-item active">RabbitMQ</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+  
+  
+  <a class="action action-toc d-none d-xxl-block" href="#postTOC" role="button" title="目录">
+    <i class="fas fa-fw fa-list-alt"></i>
+  </a>
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title my-2">RabbitMQ</h1>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-08-03 08:10:45 &#43;0000 UTC。">2023年8月3日</span><span class="post-reading-time me-1 mb-1">6 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Spring</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/springcloud/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">SpringCloud</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><p>RabbitMQ官网：<a href="https://www.rabbitmq.com/" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方文档：<a href="https://rabbitmq.com/documentation.html" target="_blank" rel="noopener noreferrer">https://rabbitmq.com/documentation.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方Demo：<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/getstarted.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+<h1 id="部署-rabbitmq" data-numberify>部署 RabbitMQ<a class="anchor ms-1" href="#部署-rabbitmq"></a></h1>
+<p>使用Docker来部署RabbitMQ只需要两个步骤：</p>
+<ol>
+<li>
+<p><code>pull</code> RabbitMQ镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull rabbitmq:3-management
+</span></span></code></pre></div><p>RabbitMQ通过插件的方式提供了一个可视化界面。在RabbitMQ官方的镜像中，带<code>management</code>版本的就是集成了该可视化插件的镜像。</p>
+<p>通过Docker官方的镜像源来<code>pull</code> RabbitMQ镜像可能会有点慢，可以使用一些国内的镜像源：</p>
+<p>提供方          |镜像URL
+中国区官方镜像  |<code>https://registry.docker-cn.com</code>
+清华源          |<code>https://docker.mirrors.ustc.edu.cn</code>
+阿里源          |<code>https://cr.console.aliyun.com</code>
+腾讯源          |<code>https://mirror.ccs.tencentyun.com</code>
+网易源          |<code>http://hub-mirror.c.163.com</code>
+道客镜像站      |<code>http://f1361db2.m.daocloud.io</code></p>
+</li>
+<li>
+<p>启动RabbitMQ容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">RABBITMQ_DEFAULT_USER</span><span class="o">=</span>linner <span class="se">\ </span>  <span class="c1"># RabbitMQ用户名（默认为guest）</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">RABBITMQ_DEFAULT_PASS</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>  <span class="c1"># RabbitMQ密码（默认为guest）</span>
+</span></span><span class="line"><span class="cl">    --name rabbitmq-server <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --hostname rabbitmq <span class="se">\ </span>              <span class="c1"># 域名，单机下可忽略，通常用于集群部署时</span>
+</span></span><span class="line"><span class="cl">    -p 15672:15672 <span class="se">\ </span>                   <span class="c1"># 可视化管理界面端口</span>
+</span></span><span class="line"><span class="cl">    -p 5672:5672 <span class="se">\ </span>                     <span class="c1"># 服务端口</span>
+</span></span><span class="line"><span class="cl">    -d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    rabbitmq:3-management
+</span></span></code></pre></div></li>
+</ol>
+<p>启动容器后，进入<a href="http://localhost:15672/" target="_blank" rel="noopener noreferrer">http://localhost:15672/<i class="fas fa-external-link-square-alt ms-1"></i></a>即可进入RabbitMQ管理界面。</p>
+<p>使用以下命令查看RabbitMQ日志：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker logs rabbitmq-server <span class="c1"># 替换成你容器的名称</span>
+</span></span></code></pre></div><hr>
+<h1 id="rabbitmq-结构" data-numberify>RabbitMQ 结构<a class="anchor ms-1" href="#rabbitmq-结构"></a></h1>
+<p>RabbitMQ的基本结构如下：</p>
+<p><picture><img class="img-fluid " alt="RabbitMQ的基本结构" src="/notes/spring/springcloud/communications/rabbit-mq/image-20210717162752376.png" loading="lazy" width="1401" height="610" />
+</picture>
+
+</p>
+<p>在RabbitMQ中有几个概念：</p>
+<ul>
+<li><code>channel</code>：操作RabbitMQ的工具。</li>
+<li><code>exchange</code>：路由消息到队列中。</li>
+<li><code>queue</code>：缓存消息。</li>
+<li><code>virtual host</code>：虚拟主机，是对<code>queue</code>、<code>exchange</code>等资源的逻辑分组。</li>
+</ul>
+<p>RabbitMQ中的角色主要有：</p>
+<ul>
+<li>Publisher：生产者。将消息发送给Queue（队列）或Exchange（交换机）。</li>
+<li>Consumer：消费者。从Queue获取消息，并做响应的处理。</li>
+<li>Exchange：交换机。负责消息路由，将从Publisher接受到的消息分发到不同的Queues上。</li>
+<li>Queue：队列。用于从Publishers或Exchange接收消息并存储。</li>
+<li>Virtual Host：虚拟主机。隔离不同用户的Exchange、Queue，消息的隔离。</li>
+</ul>
+<hr>
+<h1 id="消息模型" data-numberify>消息模型<a class="anchor ms-1" href="#消息模型"></a></h1>
+<p>RabbitMQ官方文档中给出了5个Demo，它们分别对应几种不同的用法：</p>
+<ul>
+<li>
+<p>基本消息队列（Basic Queue）：</p>
+<p><picture><img class="img-fluid " alt="Basic Queue" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691056818833.png" loading="lazy" width="286" height="158" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>工作消息队列（Work Queue）：</p>
+<p><picture><img class="img-fluid " alt="Work Queue" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691056877775.png" loading="lazy" width="258" height="231" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>发布与订阅（Publish and Subscribe）。</p>
+<p>根据交换机类型的不同，可分为三种：</p>
+<ul>
+<li>
+<p>Fanout Exchange（广播）：</p>
+<p><picture><img class="img-fluid " alt="Fanout Exchange" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691057092864.png" loading="lazy" width="272" height="182" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>Direct Exchange（路由）：</p>
+<p><picture><img class="img-fluid " alt="Direct Exchange" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691057130360.png" loading="lazy" width="262" height="212" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>Topic Exchange（主题）：</p>
+<p><picture><img class="img-fluid " alt="Topic Exchange" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691057168656.png" loading="lazy" width="276" height="209" />
+</picture>
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="rabbitmq-依赖" data-numberify>RabbitMQ 依赖<a class="anchor ms-1" href="#rabbitmq-依赖"></a></h1>
+<p>使用RabbitMQ之前需要先导入依赖。可以导入Spring AMQP的依赖，其中包含了RabbitMQ的依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!-- AMQP依赖，包含RabbitMQ --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-amqp<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>对于RabbitMQ来说，Publisher和Consumer都是使用这个依赖，所以这个依赖坐标可以放在它们的父工程中。</p>
+<hr>
+<h1 id="基本消息队列" data-numberify>基本消息队列<a class="anchor ms-1" href="#基本消息队列"></a></h1>
+<p>最基础的消息队列模型只包含三种角色：</p>
+<ul>
+<li><strong>Publisher</strong>：消息发布者，将消息发送到队列Queue。</li>
+<li><strong>Queue</strong>：消息队列，负责接受并缓存Publisher发送的消息。</li>
+<li><strong>Consumer</strong>：订阅队列，处理Queue中的消息。</li>
+</ul>
+<p>Queue由RabbitMQ实现，需要由我们实现的角色为Publisher和Consumer。</p>
+<p>实现基本消息队列可以使用RabbitMQ的原生接口来模拟。创建两个Spring模块<code>Publisher</code>和<code>Consumer</code>来模拟消息的发送和接收：</p>
+<ul>
+<li>
+<p>在<code>Publisher</code>模块中创建<code>PublisherTest</code>测试类来模拟消息发送：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PublisherTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSendMessage</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1. 建立连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConnectionFactory</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1.1. 设置连接参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">);</span>   <span class="c1">// 主机地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5672</span><span class="o">);</span>          <span class="c1">// 端口号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setVirtualHost</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">);</span>    <span class="c1">// 虚拟主机
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;linner&#34;</span><span class="o">);</span>  <span class="c1">// 账号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>  <span class="c1">// 密码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 1.2. 建立连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">newConnection</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 2. 创建通道Channel
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 3. 创建队列
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">queueName</span> <span class="o">=</span> <span class="s">&#34;simple.queue&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channel</span><span class="o">.</span><span class="na">queueDeclare</span><span class="o">(</span><span class="n">queueName</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 4. 发送消息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&#34;Hello RabbitMQ!&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channel</span><span class="o">.</span><span class="na">basicPublish</span><span class="o">(</span><span class="s">&#34;&#34;</span><span class="o">,</span> <span class="n">queueName</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;发送消息成功：[&#34;</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 5. 关闭通道和连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">channel</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">connection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>在<code>Consumer</code>模块中创建<code>ConsumerTest</code>来模拟消息接收：</p>
+<blockquote>
+<p>注：接收消息需要在<code>main()</code>中创建回调函数。不能使用一般的测试方法。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span>  <span class="nc">ConsumerTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1. 创建连接工厂，建立连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConnectionFactory</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1.1. 设置连接参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">);</span>   <span class="c1">// 主机地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5672</span><span class="o">);</span>          <span class="c1">// 端口号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setVirtualHost</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">);</span>    <span class="c1">// 虚拟主机
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;linner&#34;</span><span class="o">);</span>  <span class="c1">// 用户名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>  <span class="c1">// 密码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 1.2. 建立连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">newConnection</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 2. 创建通道Channel
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 3. 创建队列
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">queueName</span> <span class="o">=</span> <span class="s">&#34;simple.queue&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channel</span><span class="o">.</span><span class="na">queueDeclare</span><span class="o">(</span><span class="n">queueName</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 4. 订阅消息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">channel</span><span class="o">.</span><span class="na">basicConsume</span><span class="o">(</span><span class="n">queueName</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="k">new</span> <span class="n">DefaultConsumer</span><span class="o">(</span><span class="n">channel</span><span class="o">){</span>
+</span></span><span class="line"><span class="cl">            <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleDelivery</span><span class="o">(</span><span class="n">String</span> <span class="n">consumerTag</span><span class="o">,</span> <span class="n">Envelope</span> <span class="n">envelope</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">AMQP</span><span class="o">.</span><span class="na">BasicProperties</span> <span class="n">properties</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">body</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 5. 处理消息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;接收到消息：[&#34;</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;等待接收消息......&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>模拟过程：</p>
+<ol>
+<li>
+<p>先给<code>testSendMessage()</code>打个断点，然后再以调试模式启动<code>PublisherTest</code>，逐条执行。可以在RabbitMQ管理界面中发现创建了对应的连接、通道和消息队列。并且，进入队列后可以发现有一条消息在准备中。</p>
+<p>MQ连接：</p>
+<p><picture><img class="img-fluid " alt="RabbitMQ 连接" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073342130.png" loading="lazy" width="968" height="562" />
+</picture>
+
+</p>
+<p>MQ通道：</p>
+<p><picture><img class="img-fluid " alt="RabbitMQ 通道" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073381002.png" loading="lazy" width="1430" height="436" />
+</picture>
+
+</p>
+<p>消息队列（Read项为1，表示有1条准备消息）：</p>
+<p><picture><img class="img-fluid " alt="消息队列" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073449245.png" loading="lazy" width="1156" height="471" />
+</picture>
+
+</p>
+<p>准备中的消息：</p>
+<p><picture><img class="img-fluid " alt="准备中的消息" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073499794.png" loading="lazy" width="547" height="524" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>此时启动<code>Consumer</code>，可以发现有一条新的连接和新的通道。并且消息队列中的准备消息变为0。</p>
+<p>新的MQ连接：</p>
+<p><picture><img class="img-fluid " alt="新的 RabbitMQ 连接" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073659703.png" loading="lazy" width="917" height="141" />
+</picture>
+
+</p>
+<p>新的MQ通道：</p>
+<p><picture><img class="img-fluid " alt="新的 RabbitMQ 通道" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073733155.png" loading="lazy" width="1414" height="117" />
+</picture>
+
+</p>
+<p>消息队列：</p>
+<p><picture><img class="img-fluid " alt="消息队列" src="/notes/spring/springcloud/communications/rabbit-mq/uTools_1691073860449.png" loading="lazy" width="1138" height="114" />
+</picture>
+
+</p>
+<p>在<code>Consumer</code>的控制台中可以发现打印了一条新消息：</p>
+<pre tabindex="0"><code>接收到消息：[Hello RabbitMQ!]
+</code></pre></li>
+<li>
+<p>再次启动<code>PublisherTest</code>，<code>Consumer</code>控制台再次打印一条消息：</p>
+<pre tabindex="0"><code>接收到消息：[Hello RabbitMQ!]
+</code></pre></li>
+</ol>
+<p>在搭建基本消息队列的过程中，创建队列之前的操作对于Publisher和Consumer来说是一致的。建立连接这个过程对于Publisher和Consumer来说都是必要的，之所以它们都要创建队列，是为了防止队列不存在的情况发生。它们的流程中不同的是Publisher创建队列后是为了发送消息，Consumer创建队列后是为了接收消息。</p>
+<p>创建基本消息队列的流程大致可总结为：</p>
+<ol>
+<li>建立连接（Connection）。
+<ol>
+<li>创建连接工厂；</li>
+<li>设置连接参数；</li>
+<li>最后再建立连接。</li>
+</ol>
+</li>
+<li>利用Connection创建通道（Channel）。</li>
+<li>利用Channel声明消息队列。</li>
+<li>利用Channel在指定的消息队列中发送消息或订阅消息。
+<ul>
+<li>对于Publisher来说，需要在消息队列中发送消息。发送完消息后，需要按顺序关闭通道和连接。</li>
+<li>对于Consumer来说，需要在消息队列中接收消息。</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/notes/spring/springcloud/communications/introduction/">通讯方式</a>
+    </div><div class="post-nav post-next">
+      <a href="/notes/spring/springcloud/communications/spring-amqp/">Spring AMQP</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/communications/introduction/">
+    通讯方式
+  </a>
+  <div class="post-meta mb-0">
+    2023年8月3日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/eureka/">
+    Eureka
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/feign/">
+    Feign
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/gateway/">
+    Gateway
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/notes/spring/springcloud/nacos/">
+    Nacos
+  </a>
+  <div class="post-meta mb-0">
+    2023年6月26日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        信息
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Linner" src="/images/avatar.jpg" loading="lazy" data-viewer-invisible width="460" height="460" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Linner</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>中国 广东</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于我</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+</nav>
+</div>
+  </div>
+</div>
+
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                分栏
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomySeriesTab" data-bs-toggle="tab" data-bs-target="#taxonomySeries" 
+                            type="button" role="tab" aria-controls="taxonomySeries" aria-selected="true">
+                            专栏
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomySeries" role="tabpanel" aria-labelledby="taxonomySeriesTab" tabindex="0">
+                        <a href="/series/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">29</span>
+                        </a>
+                        <a href="/series/ruan-she/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="软件设计师">
+                            软件设计师
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/series/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/note/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="笔记">
+                            笔记
+                            <span class="badge badge-sm text-secondary bg-white ms-1">56</span>
+                        </a>
+                        <a href="/categories/memo/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="备忘录">
+                            备忘录
+                            <span class="badge badge-sm text-secondary bg-white ms-1">11</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">27</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">23</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">9</span>
+                        </a>
+                        <a href="/tags/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/tomcat/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Tomcat">
+                            Tomcat
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags/%E7%AE%97%E6%B3%95/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="算法">
+                            算法
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">39</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">67</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="/archives/2023/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">40</span>
+    </a>
+
+    <a href="/archives/2022/" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">27</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="featured-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#featured-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="featured-posts"
+                  aria-selected="true">
+                  精选文章
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="featured-posts"
+                role="tabpanel"
+                aria-labelledby="featured-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/nacos-deploy/">
+        Nacos 部署
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年7月24日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+              <div
+                class="tab-pane"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/communications/spring-amqp/">
+        Spring AMQP
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月4日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/communications/rabbit-mq/">
+        RabbitMQ
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月3日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/spring/springcloud/communications/introduction/">
+        通讯方式
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月3日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/docker/docker-compose/">
+        Docker Compose
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月2日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/notes/docker/dockerfile/">
+        Dockerfile
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          2023年8月1日
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#部署-rabbitmq">部署 RabbitMQ</a></li>
+    <li><a href="#rabbitmq-结构">RabbitMQ 结构</a></li>
+    <li><a href="#消息模型">消息模型</a></li>
+    <li><a href="#rabbitmq-依赖">RabbitMQ 依赖</a></li>
+    <li><a href="#基本消息队列">基本消息队列</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.f2012d2334fde1a075a42447cf31c2e122ca6669d2b6e98c1c788b9e3117ab01.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>
