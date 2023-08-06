@@ -16,6 +16,63 @@
       
       <guid>/blog/2022/02/mysql-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
       <description><![CDATA[Ubuntu MySQL 8 安装： 首先更新本地存储库索引： sudo apt update 从 APT 存储库安装 MySQL： sudo apt install MySQL-server -y 查看 MySQL 版本，验证是否安装成功： mysql --version 检查 MySQL 是否正在运行： systemctl status mysql.service 如]]></description>
+      <content:encoded><![CDATA[<h1 id="ubuntu" data-numberify>Ubuntu<a class="anchor ms-1" href="#ubuntu"></a></h1>
+<p>MySQL 8 安装：</p>
+<ol>
+<li>
+<p>首先更新本地存储库索引：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
+</span></span></code></pre></div></li>
+<li>
+<p>从 APT 存储库安装 MySQL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install MySQL-server -y
+</span></span></code></pre></div></li>
+<li>
+<p>查看 MySQL 版本，验证是否安装成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql --version
+</span></span></code></pre></div></li>
+<li>
+<p>检查 MySQL 是否正在运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl status mysql.service
+</span></span></code></pre></div></li>
+</ol>
+<p>如果服务未运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl start mysql
+</span></span></code></pre></div><hr>
+<p>MySQL 安装完成后需要更改密码。</p>
+<ol>
+<li>
+<p>查看默认账户和密码：</p>
+<p>执行后找到 <code>user</code> 和 <code>password</code>，如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/mysql/debian.cnf
+</span></span></code></pre></div><p>或：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cat /etc/mysql/debian.cnf
+</span></span></code></pre></div><p>找到如下：</p>
+<pre tabindex="0"><code class="language-纯文本" data-lang="纯文本">user     = debian-sys-maint
+password = 12E0cDBeusG6vANp
+</code></pre></li>
+<li>
+<p>使用默认账户登录：</p>
+<p>然后输入默认密码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -udebian-sys-maint -p
+</span></span></code></pre></div><pre tabindex="0"><code class="language-纯文本" data-lang="纯文本">12E0cDBeusG6vANp
+</code></pre></li>
+<li>
+<p>输入以下命令修改 root 密码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="w"> </span><span class="n">identified</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">mysql_native_password</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;your_password&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>修改完成后执行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">FLUSH</span><span class="w"> </span><span class="k">privileges</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">QUIT</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>最后重启 MySQL 后就可以使用 root 用户了：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo service mysql restart
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -uroot -p
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
     </item>
     
   </channel>

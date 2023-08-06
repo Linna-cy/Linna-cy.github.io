@@ -7,7 +7,97 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
-</copyright><atom:link href="/docs/node-js/index.xml" rel="self" type="application/rss+xml" />
+</copyright>
+    <lastBuildDate>Sun, 06 Aug 2023 06:48:14 +0000</lastBuildDate><atom:link href="/docs/node-js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js 介绍</title>
+      <link>/docs/node-js/introduction/</link>
+      <pubDate>Sun, 06 Aug 2023 06:48:14 +0000</pubDate>
+      
+      <guid>/docs/node-js/introduction/</guid>
+      <description><![CDATA[Node.js是一个基于Chrome V8引擎的JavaScript运行环境。 浏览器可以当作是JavaScript的前端运行环境；Node.j]]></description>
+      <content:encoded><![CDATA[<p>Node.js是一个基于Chrome V8引擎的JavaScript运行环境。</p>
+<p>浏览器可以当作是JavaScript的前端运行环境；Node.js可以看作是JavaScript的后端运行环境。但是在Node.js中无法调用DOM和BOM等浏览器内置API。</p>
+<p>Node.js的安装这里就不介绍了，推荐使用NVM来管理Node.js：<a href="/blog/2023/08/nvm-%e5%ae%89%e8%a3%85/">NVM安装</a>。</p>
+<p>查看Node.js的版本：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">node -v
+</span></span></code></pre></div><p>升级<code>npm</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo npm install npm -g
+</span></span></code></pre></div><p>使用淘宝镜像安装<code>cnpm</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo npm install -g cnpm --registry<span class="o">=</span>https://registry.npmmirror.com
+</span></span></code></pre></div><hr>
+<h1 id="npm" data-numberify>NPM<a class="anchor ms-1" href="#npm"></a></h1>
+<p>NPM（Node Package Manager）是 Node.js 的包管理工具，用于在 Node.js 环境中安装、管理和共享代码模块。NPM 是随同 Node.js 一起安装的，默认集成在 Node.js 安装包中。它通过命令行接口提供了一系列命令，用于管理 Node.js 应用程序所需的模块，同时也可以在前端开发中使用。</p>
+<p>以下是 NPM 的一些重要功能和用途：</p>
+<ul>
+<li>模块管理：NPM 允许开发者轻松地安装、更新和删除 Node.js 模块。</li>
+<li>依赖管理：通过在项目的 <code>package.json</code> 文件中定义依赖项和版本范围，NPM 可以管理项目所需的各个模块的版本依赖关系。这样，当共享项目时，其他开发者可以执行 <code>npm install</code> 命令安装项目所需的模块及其指定的版本。</li>
+<li>脚本管理：NPM 允许在项目的 <code>package.json</code> 文件中定义脚本命令，开发者可以使用 <code>npm run &lt;script&gt;</code> 命令来运行这些脚本。这方便了开发者在项目中自定义和组织各种构建、测试、部署等任务。</li>
+<li>模块共享：NPM 是一个庞大的开源模块生态系统，开发者可以将自己编写的模块发布到 NPM 供其他开发者使用。通过 <code>npm publish</code> 命令，开发者可以将自己的模块发布到 NPM 上，并通过 <code>npm install</code> 命令在其他项目中安装和使用这些模块。</li>
+</ul>
+<p>NPM模块管理命令：</p>
+<ul>
+<li>
+<p>安装模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm install &lt;package-name&gt;      <span class="c1"># 本地安装</span>
+</span></span><span class="line"><span class="cl">npm install &lt;package-name&gt; -g   <span class="c1"># 全局安装</span>
+</span></span></code></pre></div><ul>
+<li>
+<p>本地安装：将安装包放在 <code>./node_modules</code> 下（运行 <code>npm</code> 命令时所在的目录），如果没有 <code>node_modules</code> 目录，会在当前执行 <code>npm</code> 命令的目录下生成 <code>node_modules</code> 目录。</p>
+<p>本地安装的NPM包可以通过 <code>require()</code> 来引入本地安装的包。</p>
+</li>
+<li>
+<p>全局安装：将安装包放在 <code>/usr/local</code> 下或者 <code>node</code> 的安装目录。</p>
+<p>全局安装的NPM包可以直接在命令行使用。</p>
+</li>
+<li>
+<p><code>npm</code>：</p>
+<p>在一个包文件夹内执行<code>npm link</code>可以在全局文件内创建一个指向执行<code>npm link</code>命令目录的符号链接。</p>
+<p>其它目录下执行 <code>npm link package-name</code> 命令，将会创建一个从全局安装的 <code>package-name</code> NPM包到当前文件内 <code>node_modules</code> 目录下的符号链接。包的名称可能有作用域前缀，如果有，<code>package-name</code> 也要对应加上。</p>
+</li>
+</ul>
+<blockquote>
+<p>如果出现以下错误：</p>
+<pre tabindex="0"><code>npm err! Error: connect ECONNREFUSED 127.0.0.1:8087
+</code></pre><p>可以关闭代理：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm config <span class="nb">set</span> proxy null
+</span></span></code></pre></div></blockquote>
+</li>
+<li>
+<p>卸载模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm uninstall package-name
+</span></span></code></pre></div><p>卸载后，可以到 <code>/node_modules/</code> 目录下查看包是否还存在，或者使用以下命令查看：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm ls
+</span></span></code></pre></div></li>
+<li>
+<p>搜索模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm search express
+</span></span></code></pre></div></li>
+</ul>
+<p><code>cnpm</code>的用法与<code>npm</code>类似，例如安装模块可以使用<code>cnpm install</code>，卸载模块可以使用<code>npm uninstall</code>。更多<code>cnpm</code>的用法可以查看 <a href="https://npmmirror.com/" target="_blank" rel="noopener noreferrer">npmmirror 镜像站<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+<h1 id="hello-nodejs" data-numberify>Hello Node.js<a class="anchor ms-1" href="#hello-nodejs"></a></h1>
+<p>使用Node.js运行JavaScript，首先需要创建一个<code>.js</code>文件。例如<code>hello.js</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Hello Node.js!&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>然后在终端中运行<code>node</code>命令来运行该JS文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">node hello.js
+</span></span></code></pre></div><hr>
+<h1 id="导入模块" data-numberify>导入模块<a class="anchor ms-1" href="#导入模块"></a></h1>
+<p>Node.js中，导入模块使用下方语法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;module-name&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
+<h1 id="repl-交互式解释器" data-numberify>REPL 交互式解释器<a class="anchor ms-1" href="#repl-交互式解释器"></a></h1>
+<p>Node.js REPL（Read Eval Print Loop，交互式解释器）是Node.js的终端交互式解释器，类似Python那样。</p>
+<p>使用Node REPL的方法是在终端直接使用<code>node</code>命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ node
+</span></span><span class="line"><span class="cl">&gt; console.log<span class="o">(</span><span class="s2">&#34;Hello Node.js!&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Hello Node.js!
+</span></span><span class="line"><span class="cl">undefined
+</span></span><span class="line"><span class="cl">&gt; <span class="m">1</span> + <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">5</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
   </channel>
 </rss>
 

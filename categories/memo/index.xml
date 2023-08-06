@@ -16,6 +16,44 @@
       
       <guid>/blog/2023/08/nvm-%E5%AE%89%E8%A3%85/</guid>
       <description><![CDATA[Debian 安装 NVM NVM（Node Version Manager）是一个用于管理 Node.js 版本的工具。它允许你在同一台机器上同时安装和切换不同的 Node.js 版本，以便于在不同项目中使]]></description>
+      <content:encoded><![CDATA[<h1 id="debian-安装-nvm" data-numberify>Debian 安装 NVM<a class="anchor ms-1" href="#debian-安装-nvm"></a></h1>
+<p>NVM（Node Version Manager）是一个用于管理 Node.js 版本的工具。它允许你在同一台机器上同时安装和切换不同的 Node.js 版本，以便于在不同项目中使用特定的 Node.js 版本。</p>
+<p>NVM 支持在 Linux、macOS、和 Windows 系统上使用，并且与不同的 Shell（如 Bash、Zsh）兼容。</p>
+<p>在Debian上安装NVM的步骤如下（Ubuntu同理）：</p>
+<ol>
+<li>
+<p>安装NVM之前，需要先安装依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt upgrade
+</span></span><span class="line"><span class="cl">sudo apt install curl build-essential gnupg2 -y
+</span></span></code></pre></div></li>
+<li>
+<p>下载并执行NVM的安装脚本：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh <span class="p">|</span> bash
+</span></span></code></pre></div><p>如果你要指定安装NVM的版本，可以修改以下命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh <span class="p">|</span> bash
+</span></span></code></pre></div><p>将<code>v0.38.0</code>换成你所需的版本即可。</p>
+</li>
+<li>
+<p>等待下载，并且脚本执行成功后，重新加载终端的配置信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">source</span> .bashrc
+</span></span></code></pre></div><p>如果你使用的是ZSH，可以：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">source</span> .zshrc
+</span></span></code></pre></div><p>不同的终端，重新加载对应的配置文件即可。</p>
+</li>
+</ol>
+<hr>
+<h1 id="安装脚本无法下载的问题" data-numberify>安装脚本无法下载的问题<a class="anchor ms-1" href="#安装脚本无法下载的问题"></a></h1>
+<p>如果遇到NVM的<code>install.sh</code>无法下载的问题，例如<code>curl</code>报以下错误：</p>
+<pre tabindex="0"><code>curl: (6) Could not resolve host: raw.githubusercontent.com
+</code></pre><p>多半是域名污染导致的。就算你使用科学的方法，也不一定能下载成功，还是会报一样的错误。</p>
+<p>解决这种问题可以先从域名IP查询网站上查询IP：<a href="https://www.ipaddress.com/" target="_blank" rel="noopener noreferrer">https://www.ipaddress.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>然后将查询到的IP通过本地的<code>hosts</code>文件来解析。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vim /etc/hosts
+</span></span></code></pre></div><p>然后加入以下内容：</p>
+<pre tabindex="0"><code>185.199.108.133 raw.githubusercontent.com
+</code></pre><p>上方的<code>185.199.108.133</code>这个IP，替换成你查询到的结果即可。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -25,6 +63,35 @@
       
       <guid>/docs/spring/springmvc/api-tools/</guid>
       <description><![CDATA[Postman Apifox（作者也在用） Apifox和Postman差不多，但是比Postman更易用。界面美观、支持中文。而且设置接口参数也很方便，还]]></description>
+      <content:encoded><![CDATA[<h1 id="postman" data-numberify>Postman<a class="anchor ms-1" href="#postman"></a></h1>
+<p><a href="https://www.postman.com/" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Postman" src="/docs/spring/springmvc/api-tools/96bff51802e8a43c.png" loading="lazy" width="1800" height="1095" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<h1 id="apifox作者也在用" data-numberify>Apifox（作者也在用）<a class="anchor ms-1" href="#apifox作者也在用"></a></h1>
+<p><a href="https://apifox.com/" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Apifox" src="/docs/spring/springmvc/api-tools/dark-purple.png" loading="lazy" width="2600" height="1646" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<blockquote>
+<p>Apifox和Postman差不多，但是比Postman更易用。界面美观、支持中文。而且设置接口参数也很方便，还能自动生成随机的参数。支持将接口导出为HTML、Markdown、PDF等格式。在编写API测试时，还能用它来编写Markdown文档来进一步说明。</p>
+<p>支持多种导入方式：</p>
+<p><picture><img class="img-fluid " alt="Apifox数据导入方式" src="/docs/spring/springmvc/api-tools/uTools_1690465592640.png" loading="lazy" width="1255" height="210" />
+</picture>
+
+</p>
+<p>缺点就是每次开机第一次打开Apifox都需要等待一段时间的加载（也有可能是我机械硬盘太慢了）。</p>
+</blockquote>
+<h1 id="swaggerknife4j" data-numberify>Swagger（Knife4j）<a class="anchor ms-1" href="#swaggerknife4j"></a></h1>
+<p>Swagger是一款用于Java的API文档自动生成的框架。</p>
+<p>Knife4j是Swagger的增强UI实现。并且Swagger和Knife4j可以无缝切换。</p>
+<p>Knife4j（Swagger）的Maven依赖坐标如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>knife4j-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.0.2<span class="nt">&lt;/version&gt;</span> <span class="c">&lt;!-- 版本号 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div>]]></content:encoded>
     <enclosure url="/images/dark-purple.png" length="285763" type="image/.png" />
     </item>
     
@@ -35,6 +102,283 @@
       
       <guid>/docs/spring/springcloud/nacos-deploy/</guid>
       <description><![CDATA[本地部署 Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问Nacos项目仓库，你可以选择将该项目clone到本]]></description>
+      <content:encoded><![CDATA[<h1 id="本地部署" data-numberify>本地部署<a class="anchor ms-1" href="#本地部署"></a></h1>
+<p>Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问<a href="https://github.com/alibaba/nacos" target="_blank" rel="noopener noreferrer">Nacos项目仓库<i class="fas fa-external-link-square-alt ms-1"></i></a>，你可以选择将该项目<code>clone</code>到本地自己打包后部署，也可以选择直接访问<a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener noreferrer">Nacos的Releases页面<i class="fas fa-external-link-square-alt ms-1"></i></a>下载已经打包好的项目压缩文件进行部署。你也可以访问<a href="https://nacos.io/zh-cn/" target="_blank" rel="noopener noreferrer">Nacos官网<i class="fas fa-external-link-square-alt ms-1"></i></a>查看如何部署。</p>
+<ul>
+<li>
+<p><code>clone</code>到本地：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git clone https://github.com/alibaba/nacos
+</span></span></code></pre></div></li>
+<li>
+<p>访问<a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener noreferrer">Nacos的Releases页面<i class="fas fa-external-link-square-alt ms-1"></i></a>：</p>
+<p><picture><img class="img-fluid " alt="Nacos的Releases页面" src="/docs/spring/springcloud/nacos-deploy/uTools_1690139609912.png" loading="lazy" width="1715" height="946" />
+</picture>
+
+</p>
+<p>选择自己想要的版本（如<code>2.2.3</code>）进行下载：</p>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/springcloud/nacos-deploy/uTools_1690139697680.png" loading="lazy" width="1021" height="252" />
+</picture>
+
+</p>
+<p>无论是选择下载<code>.zip</code>还是<code>.tar.gz</code>后缀的压缩包都可以。但是在Linux环境下选择下载<code>.tar.gz</code>为佳。</p>
+<p>Linux中解压<code>.tar.gz</code>的命令如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tar -zxvf 压缩包文件名.tar.gz
+</span></span></code></pre></div></li>
+</ul>
+<p>将下载好的压缩包解压到任意非中文目录下。解压好的目录结构大致如下：</p>
+<p><picture><img class="img-fluid " alt="Nacos目录结构" src="/docs/spring/springcloud/nacos-deploy/uTools_1690140191883.png" loading="lazy" width="116" height="198" />
+</picture>
+
+</p>
+<ul>
+<li>
+<p><code>target</code>：存放Nacos<code>jar</code>包的目录。</p>
+</li>
+<li>
+<p><code>logs</code>：存放日志文件。</p>
+</li>
+<li>
+<p><code>conf</code>：存放项目的配置文件（如<code>application.properties</code>等）以及搭建存放Nacos配置信息的数据库的<code>.sql</code>脚本文件（如<code>nacos-mysql.sql</code>等）。</p>
+</li>
+<li>
+<p><code>bin</code>：存放启动和关闭Nacos Server的脚本文件以及一些其它的文件。</p>
+<p>在Windows系统中启动和关闭Nacos使用的是<code>.cmd</code>文件，即<code>startup.cmd</code>和<code>shutdown.cmd</code>，分别对应启动和关闭。在Linux系统中使用的是<code>.sh</code>文件，<code>startup.sh</code>启动，<code>shutdown.sh</code>关闭。</p>
+<p>使用<code>startup.cmd</code>或<code>startup.sh</code>默认为集群模式，可以添加参数<code>-m standalone</code>使用单机模式启动。</p>
+<p>Windows系统：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bat" data-lang="bat"><span class="line"><span class="cl"><span class="k">cd</span> Nacos的路径\bin
+</span></span><span class="line"><span class="cl">.\startup.cmd -m standalone
+</span></span></code></pre></div><p>Linux系统：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> Nacos的路径/bin
+</span></span><span class="line"><span class="cl">./startup.sh -m standalone
+</span></span></code></pre></div></li>
+</ul>
+<blockquote>
+<p>在Windows系统和Linux系统上进行本地简单地部署Nacos并没有区别，这里不再分别进行赘述。</p>
+</blockquote>
+<p>访问<a href="http://localhsot:8848/nacos" target="_blank" rel="noopener noreferrer">http://localhsot:8848/nacos<i class="fas fa-external-link-square-alt ms-1"></i></a>即可。默认的用户名和密码均为<code>nacos</code>。</p>
+<p>启动成功后的Nacos大概长这样子：</p>
+<p><picture><img class="img-fluid " alt="Nacos 页面" src="/docs/spring/springcloud/nacos-deploy/uTools_1690143487422.png" loading="lazy" width="1919" height="682" />
+</picture>
+
+</p>
+<hr>
+<h1 id="基于-mysql-数据库部署" data-numberify>基于 MySQL 数据库部署<a class="anchor ms-1" href="#基于-mysql-数据库部署"></a></h1>
+<p>Nacos可以使用MySQL数据库存放配置信息。首先需要确保你的电脑上有MySQL。</p>
+<blockquote>
+<p>注意：使用MySQL搭建Nacos的数据库，推荐使用MySQL 5，因为Nacos的MySQL驱动版本可以不支持MySQL 8。如果非要使用MySQL 8，可以在Nacos中升级MySQL的驱动。</p>
+</blockquote>
+<p>首先在MySQL中新建一个数据库：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">nacos</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">USE</span><span class="w"> </span><span class="n">nacos</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">source</span><span class="w"> </span><span class="s2">&#34;Nacos的路径/bin/mysql-schema.sql&#34;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>创建成功后的Nacos数据库如下：</p>
+<p><picture><img class="img-fluid " alt="Nacos数据库的表" src="/docs/spring/springcloud/nacos-deploy/uTools_1690142171755.png" loading="lazy" width="184" height="290" />
+</picture>
+
+</p>
+<p>接着修改在<code>conf</code>目录里的<code>application.properties</code>文件（如果没有，就将<code>application.properties.example</code>文件复制一份，改名为<code>application.properties</code>）。需要修改的配置如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 数据源</span>
+</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 数据库数量</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 连接第1个数据库的url（替换成自己的）</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 连接第1个数据库的用户和密码（替换成自己的）</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 数据库驱动（如果其它配置正确，但无法启动时，修改该配置）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># db.driver-class-name=com.mysql.cj.jdbc.Driver</span>
+</span></span></code></pre></div><p>接下来重启Nacos即可：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./shutdown.sh <span class="c1"># 也可以直接 CTRL+C 结束</span>
+</span></span><span class="line"><span class="cl">./startup.sh -m standalone
+</span></span></code></pre></div><hr>
+<h1 id="部署-nacos-集群" data-numberify>部署 Nacos 集群<a class="anchor ms-1" href="#部署-nacos-集群"></a></h1>
+<p>在本地部署Nacos集群首先将Nacos整个应用目录复制，要在集群中部署几个Nacos就复制几份。接着再分别修改它们的配置文件<code>application.properties</code>。</p>
+<p>例如要部署两个Nacos，做负载均衡：</p>
+<p>第一个Nacos的配置文件可以如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 服务端口</span>
+</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">8841</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 数据库配置</span>
+</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://localhost:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
+</span></span></code></pre></div><p>第二个Nacos的配置文件可以如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 服务端口</span>
+</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">8842</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 数据库配置</span>
+</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
+</span></span></code></pre></div><blockquote>
+<p>因为是部署在本地（即一台机器上），所以两个Nacos的端口不能相同（否则会发生冲突）。</p>
+</blockquote>
+<p>接着使用<code>startup.cmd</code>或<code>startup.sh</code>分别启动这两个Nacos（这里要使用集群模式启动，Nacos默认使用集群模式启动，所以不能加上<code>-m standalone</code>参数）。</p>
+<p>此时分别访问这两个服务（例如使用<a href="http://localhost:8841/nacos" target="_blank" rel="noopener noreferrer">http://localhost:8841/nacos<i class="fas fa-external-link-square-alt ms-1"></i></a>和<a href="http://localhost:8842/nacos" target="_blank" rel="noopener noreferrer">http://localhost:8842/nacos<i class="fas fa-external-link-square-alt ms-1"></i></a>访问），都能正常使用。</p>
+<p>最后需要给这个Nacos集群加个路由（例如使用Nginx）。Nginx的配置如下：</p>
+<pre tabindex="0"><code># Nacos 集群
+upstream nacos-cluster {
+    server nacos-cluster-test-1:8848;
+    server nacos-cluster-test-2:8848;
+}
+
+# Nacos 服务
+server {
+    listen 8849;
+
+    server_name localhost;
+
+    location /nacos {
+        proxy_pass http://nacos-cluster;
+    }
+}
+</code></pre><p>添加完配置后重启Nginx即可，这里不做赘述。</p>
+<p>配置完后访问<a href="http://localhsot:8848/nacos" target="_blank" rel="noopener noreferrer">http://localhsot:8849/nacos<i class="fas fa-external-link-square-alt ms-1"></i></a>即可。</p>
+<hr>
+<h1 id="基于-docker-部署" data-numberify>基于 Docker 部署<a class="anchor ms-1" href="#基于-docker-部署"></a></h1>
+<p>使用Docker部署，首先需要下载Nacos的镜像。Nacos官方提供了对应的镜像<code>nacos/nacos-server</code>。使用下方命令下载该容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull nacos/nacos-server
+</span></span></code></pre></div><blockquote>
+<p>上方的命令拉取（下载）的是版本为<code>latest</code>。要拉取对应版本的镜像，可以查看Docker官方提供的网站<a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">hub.docker.com<i class="fas fa-external-link-square-alt ms-1"></i></a>，在其中搜索<code>nacos-server</code>并点击<code>tags</code>查找对应的版本（<a href="https://hub.docker.com/r/nacos/nacos-server/tags" target="_blank" rel="noopener noreferrer">点击快速查找Nacos Server版本<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>例如拉取<code>v1.4.6</code>版本的<code>nacos/nacos-server</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull nacos/nacos-server:v1.4.6
+</span></span></code></pre></div></blockquote>
+<p><code>nacos/nacos-server</code>拉取完成后就可以创建对应容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name nacos-server <span class="se">\ </span><span class="c1"># 容器名称</span>
+</span></span><span class="line"><span class="cl">    -p 8848:8848 <span class="se">\ </span><span class="c1"># 端口映射，分号左边为本地端口，分号右边为容器的内部端口</span>
+</span></span><span class="line"><span class="cl">    --privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">MODE</span><span class="o">=</span>standalone <span class="se">\ </span><span class="c1"># 指定为单机模式（使用Docker创建的Docker容器默认也为集群模式，所以需要指定单机模式）</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">PREFER_HOST_MODE</span><span class="o">=</span>hostname <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/nacos/nacos-server/logs:/home/nacos/logs <span class="se">\ </span><span class="c1"># 文件挂载，分号左边为本地目录，分号右边为容器内部的目录，这里是进行日志文件目录映射</span>
+</span></span><span class="line"><span class="cl">    -v /home/nacos/nacos-server/conf/:/home/nacos/conf/ <span class="se">\ </span><span class="c1"># 配置文件映射</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">JVM_XMS</span><span class="o">=</span>256m -e <span class="nv">JVM_XMX</span><span class="o">=</span>256m <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    nacos/nacos-server <span class="se">\ </span><span class="c1"># 创建容器所使用的镜像</span>
+</span></span><span class="line"><span class="cl">    /usr/sbin/init
+</span></span></code></pre></div><p>访问<a href="http://localhsot:8848/nacos" target="_blank" rel="noopener noreferrer">http://localhsot:8848/nacos<i class="fas fa-external-link-square-alt ms-1"></i></a>即可。默认的用户名和密码均为<code>nacos</code>。</p>
+<p>如果是在Windows中使用Docker Desktop部署，目录映射的路径应该这样写：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bat" data-lang="bat"><span class="line"><span class="cl">docker run -d \
+</span></span><span class="line"><span class="cl">    --name nacos-server \
+</span></span><span class="line"><span class="cl">    -p 8848:8848 \
+</span></span><span class="line"><span class="cl">    --privileged=true \
+</span></span><span class="line"><span class="cl">    -e MODE=standalone \
+</span></span><span class="line"><span class="cl">    -e PREFER_HOST_MODE=hostname \
+</span></span><span class="line"><span class="cl">    -v /d/docker-volume/nacos/nacos-server/logs:/home/nacos/logs \
+</span></span><span class="line"><span class="cl">    -v /d/docker-volume/nacos/nacos-server/conf/:/home/nacos/conf/ \
+</span></span><span class="line"><span class="cl">    -e JVM_XMS=256m -e JVM_XMX=256m \
+</span></span><span class="line"><span class="cl">    nacos/nacos-server \
+</span></span><span class="line"><span class="cl">    /usr/sbin/init
+</span></span></code></pre></div><hr>
+<h1 id="基于-docker-使用-mysql-部署" data-numberify>基于 Docker 使用 MySQL 部署<a class="anchor ms-1" href="#基于-docker-使用-mysql-部署"></a></h1>
+<p>根据如上方法创建Nacos容器，然后修改映射到本地的配置文件。例如修改<code>/home/nacos/nacos-server/conf</code>下的<code>application.properties</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 数据库配置（根据你的配置环境修改）</span>
+</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://localhost:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
+</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
+</span></span></code></pre></div><blockquote>
+<p>注：这个MySQL需要使用<code>mysql-schema.sql</code>创建<code>nacos</code>数据库。</p>
+</blockquote>
+<p>如果MySQL也是使用Docker创建的，可以给Nacos容器和MySQL容器添加一个Docker Network，并将它们都加入这个Network中：</p>
+<ol>
+<li>
+<p>创建Docker Network：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker network create nacos-network
+</span></span></code></pre></div></li>
+<li>
+<p>分别将Nacos容器和MySQL容器加入Docker Network（假设MySQL的容器名为<code>mysql</code>）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker network connect nacos-network nacos-server
+</span></span><span class="line"><span class="cl">docker network connect nacos-network mysql
+</span></span></code></pre></div></li>
+</ol>
+<p>之后在加入这个Network的容器中，可以将它们的容器名当作IP地址来使用。所以在<code>nacos-server</code>中可以将<code>db.url</code>修改为如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://mysql:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
+</span></span></code></pre></div><p>其实使用Docker部署并使用MySQL数据库还有一个简便的方法（按照上述方法直接修改配置文件可能不生效），可以在创建容器的Docker命令中通过<code>nacos-server</code>提供的环境变量直接指定MySQL服务的配置信息（<code>nacos-server</code>容器在创建时会自动生成对应的配置文件）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name nacos-server <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 8848:8848 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --network nacos-network<span class="se">\ </span><span class="c1"># 在创建容器时指定Network</span>
+</span></span><span class="line"><span class="cl">    --privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">SPRING_DATASOURCE_PLATFORM</span><span class="o">=</span>mysql <span class="se">\ </span><span class="c1"># 指定数据源类型为MySQL</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_SERVICE_HOST</span><span class="o">=</span>mysql <span class="se">\ </span><span class="c1"># MySQL服务器的地址（这里加入了Network所以可以直接使用容器名称来当Host）</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_SERVICE_PORT</span><span class="o">=</span><span class="m">3306</span> <span class="se">\ </span><span class="c1"># MySQL服务端口</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_SERVICE_USER</span><span class="o">=</span>root <span class="se">\ </span><span class="c1"># MySQL用户名</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_SERVICE_PASSWORD</span><span class="o">=</span>root <span class="se">\ </span><span class="c1"># MySQL密码</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_SERVICE_DB_NAME</span><span class="o">=</span>nacos <span class="se">\ </span><span class="c1"># MySQL的数据库名称</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">PREFER_HOST_MODE</span><span class="o">=</span>hostname <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /d/27120/docker-volume/nacos/%name%/logs:/home/nacos/logs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /d/27120/docker-volume/nacos/%name%/conf/:/home/nacos/conf/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">JVM_XMS</span><span class="o">=</span>256m -e <span class="nv">JVM_XMX</span><span class="o">=</span>256m <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    nacos/nacos-server <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /usr/sbin/init
+</span></span></code></pre></div><blockquote>
+<p>使用Docker创建的MySQL容器同样需要创建<code>nacos</code>数据库。可以通过其它文件传输方式传输到容器中（这种方式适用于你有一个已经在运行的MySQL容器）。</p>
+<p>在容器中创建数据库可以在本机输入命令（假设<code>mysql-schema.sql</code>导入到了容器的<code>root</code>目录中）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -proot -e <span class="s2">&#34;CREATE DATABASE nacos; USE nacos; SOURCE /root/mysql-schema.sql;&#34;</span>
+</span></span></code></pre></div><p>上方命令第一个<code>mysql</code>是指容器名称，第二个是指容器中的<code>mysql</code>命令。</p>
+<p>或者是在本地使用Docker登录MySQL后进行操作：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> mysql mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 然后输入你的密码，回车</span>
+</span></span><span class="line"><span class="cl">mysql&gt; CREATE DATABASE nacos<span class="p">;</span>
+</span></span><span class="line"><span class="cl">mysql&gt; USE nacos<span class="p">;</span>
+</span></span><span class="line"><span class="cl">mysql&gt; SOURCE /root/mysql-schema.sql<span class="p">;</span>
+</span></span></code></pre></div></blockquote>
+<p>推荐使用Dockerfile方式创建一个包含<code>nacos</code>数据库的MySQL容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> mysql:5.7</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span>
+</span></span><span class="line"><span class="cl"><span class="k">ENV</span> <span class="nv">LANG</span><span class="o">=</span>C.UTF-8<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./mysql-schema.sql /docker-entrypoint-initdb.d<span class="err">
+</span></span></span></code></pre></div><p>这是利用MySQL镜像的机制。MySQL容器在创建时会自动执行<code>/docker-entrypoint-initdb.d</code>目录下的<code>.sh</code>、<code>.sql</code>等文件。因为Nacos官方提供的<code>mysql-schema.sql</code>中并没有创建数据库和使用数据库的SQL语句，所以在创建容器之前还需要对<code>mysql-schema.sql</code>稍加修改。在<code>mysql-schema.sql</code>里面最上方添加这么两句：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nacos</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="n">USE</span><span class="w"> </span><span class="n">nacos</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>需要注意的是这里的数据库名称要和创建<code>nacos-server</code>时配置的一致。</p>
+<p>然后将<code>mysql-schema.sql</code>复制到与Dockerfile同级的目录中（或者你也可以在Dockerfile将<code>mysql-schema.sql</code>的路径修改到你想要的位置）。接着使用<code>docker build</code>命令构建镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker build -f .<span class="se">\D</span>ockerfile . -t linner/mysql-nacos
+</span></span></code></pre></div><p>最后使用<code>docker run</code>运行容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -id --name mysql-nacos -p 3306:3306 linner/nacos-mysql
+</span></span></code></pre></div><blockquote>
+<p>因为一些配置在Dockerfile提前设置过了，所以这条构建MySQL容器的命令十分简洁。</p>
+</blockquote>
+<hr>
+<h1 id="基于-docker-搭建-nacos-集群" data-numberify>基于 Docker 搭建 Nacos 集群<a class="anchor ms-1" href="#基于-docker-搭建-nacos-集群"></a></h1>
+<p>基于Docker搭建Nacos集群，首先可以创建一个用于创建集群模式Nacos的脚本<code>create_nacos.sh</code>（使用MySQL）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">name</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">port</span><span class="o">=</span><span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name <span class="nv">$name</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p <span class="nv">$port</span>:8848 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --network nacos-network <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">SPRING_DATASOURCE_PLATFORM</span><span class="o">=</span>mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">MYSQL_SERVICE_HOST</span><span class="o">=</span>mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">MYSQL_SERVICE_PORT</span><span class="o">=</span><span class="m">3306</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">MYSQL_SERVICE_USER</span><span class="o">=</span>root <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">MYSQL_SERVICE_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">MYSQL_SERVICE_DB_NAME</span><span class="o">=</span>nacos_config <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">PREFER_HOST_MODE</span><span class="o">=</span>hostname <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/nacos/<span class="nv">$name</span>/logs:/home/nacos/logs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/nacos/<span class="nv">$name</span>/conf/:/home/nacos/conf/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">JVM_XMS</span><span class="o">=</span>256m -e <span class="nv">JVM_XMX</span><span class="o">=</span>256m <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    nacos/nacos-server <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /usr/sbin/init
+</span></span></code></pre></div><p>例如创建两个Nacos容器（在本地创建两个容器，端口不能重复）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./create_nacos.sh nacos1 <span class="m">8841</span>
+</span></span><span class="line"><span class="cl">./create_nacos.sh nacos2 <span class="m">8842</span>
+</span></span></code></pre></div><p>接着将它们加入<code>nacos-network</code>后重启（如果这两个Nacos容器没有停止运行的话，可以忽略）：</p>
+<pre tabindex="0"><code>docker restart nacos1
+docker restart nacos2
+</code></pre><p>接着配置Nginx的方法和之前描述的方式类似。如果Nginx是使用Docker创建的，也可以将该Nginx容器加入<code>nacos-network</code>，然后直接使用容器的名称作为Host即可。</p>
+<p>最后访问Nginx即可。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -44,6 +388,21 @@
       
       <guid>/blog/2023/03/%E7%91%9E%E5%90%89%E5%A4%96%E5%8D%96%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/</guid>
       <description><![CDATA[项目笔记 项目笔记仓库：https://gitee.com/linner_cheng/reggie_note B站视频：黑马程序员Java项目实]]></description>
+      <content:encoded><![CDATA[<h1 id="项目笔记" data-numberify>项目笔记<a class="anchor ms-1" href="#项目笔记"></a></h1>
+<p>项目笔记仓库：<a href="https://gitee.com/linner_cheng/reggie_note" target="_blank" rel="noopener noreferrer">https://gitee.com/linner_cheng/reggie_note<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<p>B站视频：<a href="https://www.bilibili.com/video/BV13a411q753/?p=190&amp;spm_id_from=333.1007.top_right_bar_window_history.content.click" target="_blank" rel="noopener noreferrer">黑马程序员Java项目实战《瑞吉外卖》<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<hr>
+<h1 id="项目基础功能开发" data-numberify>项目基础功能开发<a class="anchor ms-1" href="#项目基础功能开发"></a></h1>
+<p><a href="https://gitee.com/linner_cheng/reggie_note/tree/v1.0/" target="_blank" rel="noopener noreferrer">项目基础功能开发<i class="fas fa-external-link-square-alt ms-1"></i></a>。包含项目前台和后台功能开发还有项目部署。</p>
+<hr>
+<h1 id="redis" data-numberify>Redis<a class="anchor ms-1" href="#redis"></a></h1>
+<p><a href="https://gitee.com/linner_cheng/reggie_note/tree/redis/" target="_blank" rel="noopener noreferrer">Redis<i class="fas fa-external-link-square-alt ms-1"></i></a>。包含Jedis和Spirng data redis。</p>
+<hr>
+<h1 id="项目优化" data-numberify>项目优化<a class="anchor ms-1" href="#项目优化"></a></h1>
+<p><a href="https://gitee.com/linner_cheng/reggie_note/tree/v1.1/" target="_blank" rel="noopener noreferrer">Redis缓存<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p><a href="https://gitee.com/linner_cheng/reggie_note/tree/v1.2/" target="_blank" rel="noopener noreferrer">Sharding-JDBC读写分离<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p><a href="https://gitee.com/linner_cheng/reggie_note/tree/v1.3/" target="_blank" rel="noopener noreferrer">Swagger API文档<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -53,6 +412,26 @@
       
       <guid>/blog/2022/09/linux-%E7%BB%88%E7%AB%AF%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%AE%BE%E7%BD%AE/</guid>
       <description><![CDATA[Ubuntu 安装中文支持： apt-get install language-pack-zh-hans -y 查看系统语言包： locale -a 修改~/.bashrc，加入： export LC_ALL=zh_CN.UTF-8 export LANG=zh_CN.UTF-8 修改/etc/default/locale： LANG=&#34;zh_CN.UTF-8&#34; Debian 安装loc]]></description>
+      <content:encoded><![CDATA[<h1 id="ubuntu" data-numberify>Ubuntu<a class="anchor ms-1" href="#ubuntu"></a></h1>
+<p>安装中文支持：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get install language-pack-zh-hans -y
+</span></span></code></pre></div><p>查看系统语言包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">locale -a
+</span></span></code></pre></div><p>修改<code>~/.bashrc</code>，加入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span></code></pre></div><p>修改<code>/etc/default/locale</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span></code></pre></div><h1 id="debian" data-numberify>Debian<a class="anchor ms-1" href="#debian"></a></h1>
+<p>安装<code>locales</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install locales -y
+</span></span></code></pre></div><p>安装完成后可能会提示设置<code>locales</code>，如果安装完之后想要更改相关设置或者没有提示设置，可以使用如下命令重新设置<code>locales</code>相关信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dpkg-reconfigure locales
+</span></span></code></pre></div><h1 id="zsh" data-numberify>ZSH<a class="anchor ms-1" href="#zsh"></a></h1>
+<p>修改<code>~/.zshrc</code>，加入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
@@ -62,6 +441,233 @@
       
       <guid>/docs/spring/java-web/tomcat-base/</guid>
       <description><![CDATA[Tomcat基本使用 Tomcat安装 访问Tomcat官网下载。Tomcat是绿色版，直接解压即可。 启动Tomcat 以Windows系统为例，]]></description>
+      <content:encoded><![CDATA[<h1 id="tomcat基本使用" data-numberify>Tomcat基本使用<a class="anchor ms-1" href="#tomcat基本使用"></a></h1>
+<h2 id="tomcat安装" data-numberify>Tomcat安装<a class="anchor ms-1" href="#tomcat安装"></a></h2>
+<p>访问<a href="https://tomcat.apache.org/" target="_blank" rel="noopener noreferrer">Tomcat官网<i class="fas fa-external-link-square-alt ms-1"></i></a>下载。Tomcat是绿色版，直接解压即可。</p>
+<h2 id="启动tomcat" data-numberify>启动Tomcat<a class="anchor ms-1" href="#启动tomcat"></a></h2>
+<p>以Windows系统为例，运行Tomcat目录下 <code>bin\startup.bat</code> 启动脚本即可完成启动。</p>
+<p>启动后，通过浏览器访问 <code>http://localhost:8080</code>能看到Apache Tomcat的内容就说明Tomcat已经启动成功。</p>
+<p>Windows系统下启动的过程中，如果控制台有中文乱码，需要修改<code>conf/logging.prooperties</code>。</p>
+<p>将</p>
+<pre tabindex="0"><code>java.util.logging.ConsoleHandler.encoding = UTF-8
+</code></pre><p>修改为</p>
+<pre tabindex="0"><code>java.util.logging.ConsoleHandler.encoding = GBK
+</code></pre><h2 id="关闭tomcat" data-numberify>关闭Tomcat<a class="anchor ms-1" href="#关闭tomcat"></a></h2>
+<p>关闭Tomcat不应该直接关闭运行窗口来强制关闭。应该运行<code>bin\shutdown.bat</code>或<code>ctrl+c</code>来正常关闭。</p>
+<h2 id="修改端口" data-numberify>修改端口<a class="anchor ms-1" href="#修改端口"></a></h2>
+<p>Tomcat默认的端口是8080，通过修改 <code>conf/server.xml</code> 来修改端口号：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;Connector</span> <span class="na">port=</span><span class="s">&#34;8080&#34;</span> <span class="na">protocol=</span><span class="s">&#34;HTTP/1.1&#34;</span> <span class="na">connectionTimeout=</span><span class="s">&#34;20000&#34;</span> <span class="na">redirectPort=</span><span class="s">&#34;8443&#34;</span><span class="nt">&gt;</span>
+</span></span></code></pre></div><h2 id="部署" data-numberify>部署<a class="anchor ms-1" href="#部署"></a></h2>
+<p>Tomcat部署项目： 将项目放置到<code>webapps</code>目录下，即部署完成。</p>
+<p>一般JavaWeb项目会被打包称<code>wa</code>r包，然后将<code>war</code>包放到<code>webapps</code>目录下，Tomcat会自动解压缩。</p>
+<hr>
+<h1 id="maven-创建-web-项目" data-numberify>Maven 创建 Web 项目<a class="anchor ms-1" href="#maven-创建-web-项目"></a></h1>
+<p>使用Maven工具能更加简单快捷的创建Web项目。</p>
+<h2 id="maven-web-项目结构" data-numberify>Maven Web 项目结构<a class="anchor ms-1" href="#maven-web-项目结构"></a></h2>
+<ul>
+<li>📁<code>project_name</code> &mdash; 项目主目录
+<ul>
+<li>📁<code>src</code> &mdash; 源代码和测试代码文件目录
+<ul>
+<li>📁<code>main</code> &mdash; 源代码文件目录
+<ul>
+<li>📁<code>java</code> &mdash; 源代码Java文件目录</li>
+<li>📁<code>resourcs</code> &mdash; 源代码配置文件目录</li>
+<li>❗📁<code>webapp</code> 或 <code>web</code> &mdash; Web项目核心目录
+存放web配置文件和web项目代码 (<code>html</code>, <code>css</code>, <code>javascript</code>等)
+<ul>
+<li>❗📁<code>WEB-INF</code> &mdash; Web项目核心目录
+<ul>
+<li>📄<code>web.xml</code> &mdash; Web项目配置文件</li>
+</ul>
+</li>
+<li>其它目录或文件，如 <code>index.html</code>、<code>html</code>、<code>css</code>、<code>js</code>等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>📁<code>test</code> &mdash; 测试代码文件目录
+<ul>
+<li>📁<code>java</code> &mdash; 测试代码Java文件目录</li>
+<li>📁<code>resource</code> &mdash; 测试代码配置</li>
+</ul>
+</li>
+<li>📄<code>pom.xml</code> &mdash; 项目核心配置文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>开发完成部署的 Maven Web 项目结构：</p>
+<ul>
+<li>📁<code>project_name</code> &mdash; 项目访问路径（虚拟目录）
+<ul>
+<li>❗📁<code>WEB-INF</code> &mdash; Web项目核心目录
+<ul>
+<li>📁<code>classes</code> &mdash; Java字节码文件
+编译后的Java字节码文件和<code>resources</code>的资源文件，会被放到该目录下
+包括<code>pom.xml</code>中依赖坐标对应的jar包</li>
+<li>📁<code>lib</code> &mdash; 项目所需jar包</li>
+<li>📄<code>web.xml</code> &mdash; Web项目配置文件</li>
+<li>其它目录或文件，如 <code>index.html</code>、<code>html</code>、<code>css</code>、<code>js</code>等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="创建-maven-web-项目" data-numberify>创建 Maven Web 项目<a class="anchor ms-1" href="#创建-maven-web-项目"></a></h2>
+<p>创建方式有两种：使用骨架和不使用骨架</p>
+<p>使用骨架大致步骤如下：</p>
+<ol>
+<li>创建Maven项目</li>
+<li><mark>选择使用Web项目骨架</mark></li>
+</ol>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627227650406.png" loading="lazy" width="998" height="789" />
+</picture>
+
+</p>
+<ol start="3">
+<li>
+<p>输入Maven项目坐标创建项目</p>
+</li>
+<li>
+<p>确认Maven相关的配置信息后，完成项目创建</p>
+</li>
+<li>
+<p><mark>删除pom.xml中多余内容</mark>
+<picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627228584625.png" loading="lazy" width="1255" height="550" />
+</picture>
+
+</p>
+</li>
+<li>
+<p>补齐Maven Web项目缺失的目录结构</p>
+<p>最终目录结构如下：</p>
+<ul>
+<li>📁<code>project_name</code>
+<ul>
+<li>📁<code>src</code>
+<ul>
+<li>📁<code>main</code>
+<ul>
+<li>📁<code>java</code></li>
+<li>📁<code>resourcs</code></li>
+<li>📁<code>webapp</code>
+<ul>
+<li>📁<code>WEB-INF</code>
+<ul>
+<li>📄<code>web.xml</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>📄<code>pom.xml</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627204022604.png" loading="lazy" width="1603" height="556" />
+</picture>
+
+</p>
+<p>不使用骨架大致步骤如下：</p>
+<ol>
+<li>创建Maven项目</li>
+<li>选择<mark>不使用Web项目骨架</mark></li>
+</ol>
+<p>按照正常的方式创建，不勾选<code>Create from archetype</code></p>
+<ol start="3">
+<li>
+<p>输入Maven项目坐标创建项目</p>
+</li>
+<li>
+<p><mark>在pom.xml设置打包方式为war</mark></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;project&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ...... --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;groupId&gt;</span>......<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;artifactId&gt;</span>.......<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;vesion&gt;</span>.......<span class="nt">&lt;/vesion&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;packaging&gt;</span>war<span class="nt">&lt;/packaging&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ...... --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/project&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><mark>补齐Maven Web项目缺失webapp的目录结构</mark></p>
+</li>
+</ol>
+<p>文件&ndash;&gt;项目结构&ndash;&gt;Facet中按<code>+</code>然后选择<code>Web</code>，选择当前项目</p>
+<p>修改webapp目录，并补齐Maven Web项目缺失<code>WEB-INF/web.xml</code>的目录结构，即可完成构建</p>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627204076090.png" loading="lazy" width="1686" height="533" />
+</picture>
+
+</p>
+<hr>
+<h1 id="在idea中使用tomcat" data-numberify>在IDEA中使用Tomcat<a class="anchor ms-1" href="#在idea中使用tomcat"></a></h1>
+<p>在IDEA中集成使用Tomcat有两种方式，分别是集成本地Tomcat和Tomcat Maven插件。</p>
+<h2 id="集成本地tomcat" data-numberify>集成本地Tomcat<a class="anchor ms-1" href="#集成本地tomcat"></a></h2>
+<ol>
+<li>右上角 编辑运行/调试配置 对话框&ndash;&gt;编辑配置&ndash;&gt;<code>+</code>&ndash;&gt;Tomcat服务器&ndash;&gt;<code>本地</code></li>
+</ol>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627229992900.png" loading="lazy" width="1115" height="686" />
+</picture>
+
+</p>
+<ol start="2">
+<li>指定本地Tomcat的具体路径</li>
+</ol>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627230313062.png" loading="lazy" width="1347" height="866" />
+</picture>
+
+</p>
+<ol start="3">
+<li>将开发项目部署项目到Tomcat中</li>
+</ol>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627230913259.png" loading="lazy" width="877" height="775" />
+</picture>
+
+</p>
+<blockquote>
+<p><code>xxx.war</code> 和 <code>xxx.war exploded</code> 这两种部署项目模式的区别：</p>
+<ul>
+<li>war模式是将WEB工程打成war包，把war包发布到Tomcat服务器上</li>
+<li>war exploded模式是将WEB工程以当前文件夹的位置关系发布到Tomcat服务器上</li>
+</ul>
+<p>war模式部署成功后，Tomcat的webapps目录下会有部署的项目内容</p>
+<p>war exploded模式部署成功后，Tomcat的webapps目录下没有，而使用的是项目的target目录下的内容进行部署</p>
+<p>建议选war模式进行部署，更符合项目部署的实际情况</p>
+</blockquote>
+<p><picture><img class="img-fluid " alt="" src="/docs/spring/java-web/tomcat-base/1627205657117.png" loading="lazy" width="1591" height="625" />
+</picture>
+
+</p>
+<h2 id="tomcat-maven插件" data-numberify>Tomcat Maven插件<a class="anchor ms-1" href="#tomcat-maven插件"></a></h2>
+<ol>
+<li>
+<p>在<code>pom.xml</code>中添加Tomcat插件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;build&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;plugins&gt;</span>
+</span></span><span class="line"><span class="cl">    	<span class="c">&lt;!--Tomcat插件 --&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;plugin&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>org.apache.tomcat.maven<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>tomcat7-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>2.2<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/plugin&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/plugins&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/build&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用Maven Helper插件快速启动项目，选中项目，右键 &ndash;&gt;Run Maven &ndash;&gt; tomcat7:run</p>
+</li>
+</ol>
+<blockquote>
+<p>安装Maven Helper插件：File &ndash;&gt; Settings &ndash;&gt; Plugins &ndash;&gt; Maven Helper &mdash;&gt; Install，重启IDEA</p>
+</blockquote>
+]]></content:encoded>
     </item>
     
     <item>
@@ -71,6 +677,22 @@
       
       <guid>/blog/2022/08/ssh-%E5%85%AC%E9%92%A5%E9%85%8D%E7%BD%AE/</guid>
       <description><![CDATA[创建.ssh目录并生成公钥: ssh-keygen -t rsa 所有选项全部回车, 使用默认选项即可. 然后切换到用户目录下的.ssh目录: cd ~/.ssh 该目录下默认有三个文件: id_rsa: 用户]]></description>
+      <content:encoded><![CDATA[<p>创建<code>.ssh</code>目录并生成公钥:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t rsa
+</span></span></code></pre></div><p>所有选项全部回车, 使用默认选项即可.</p>
+<p>然后切换到用户目录下的<code>.ssh</code>目录:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> ~/.ssh
+</span></span></code></pre></div><p>该目录下默认有三个文件:</p>
+<ul>
+<li><code>id_rsa</code>: 用户私钥, 不要复制发送给任何人.</li>
+<li><code>id_rsa.pub</code>: 公钥, 将里面内容发送给客户端.</li>
+<li><code>authorized_keys</code>: 信任的公钥.</li>
+</ul>
+<p>只需要将<code>id_rsa.pub</code>里的内容以 (<code>ssh-rsa</code>开头的一行内容) 复制到客户端的<code>authorized_keys</code>的目录下即可.</p>
+<p>接着在客户端使用:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh username@ip -p port
+</span></span></code></pre></div><p>即可连接到服务器.</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -80,6 +702,51 @@
       
       <guid>/blog/2022/07/code-server-%E9%83%A8%E7%BD%B2/</guid>
       <description><![CDATA[下载code-server： wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz 可以访问code-server GitHub 页面获取下载连接。 解压： tar -zxvf code-server-4.5.1-linux-amd64.tar.gz 将解压后的文件移动到/opt目录下，并重命名：]]></description>
+      <content:encoded><![CDATA[<ol>
+<li>
+<p>下载code-server：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz
+</span></span></code></pre></div><p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面" target="_blank" rel="noopener noreferrer">code-server GitHub 页面<i class="fas fa-external-link-square-alt ms-1"></i></a>获取下载连接。</p>
+</li>
+<li>
+<p>解压：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz
+</span></span></code></pre></div></li>
+<li>
+<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mv code-server-4.5.1-linux-amd64 /opt/code-server
+</span></span></code></pre></div></li>
+<li>
+<p>创建软链到<code>/usr/bin</code>目录下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln -s /opt/code-server/code-server /usr/bin/code-server
+</span></span></code></pre></div></li>
+<li>
+<p>修改配置文件<code>~/.config/code-server/config.yaml</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.config/code-server/config.yaml
+</span></span></code></pre></div></li>
+<li>
+<p>添加code-server服务：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /lib/systemd/system/codeweb.service
+</span></span></code></pre></div><p>写入如下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>The nginx HTTP and reverse proxy server
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target remote-fs.target nss-lookup.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/code-server
+</span></span><span class="line"><span class="cl"><span class="nv">KillSignal</span><span class="o">=</span>SIGQUIT
+</span></span><span class="line"><span class="cl"><span class="nv">TimeoutStopSec</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
+</span></span><span class="line"><span class="cl"><span class="nv">PrivateTmp</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StandardOutput</span><span class="o">=</span>syslog
+</span></span><span class="line"><span class="cl"><span class="nv">StandardError</span><span class="o">=</span>inherit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
     </item>
     
     <item>
@@ -89,6 +756,123 @@
       
       <guid>/blog/2022/07/%E6%90%AD%E5%BB%BA-frp-%E6%9C%8D%E5%8A%A1/</guid>
       <description><![CDATA[下载frp： wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz 或者访问frp项目获取自己需要的版本。 解压： tar -zxvf frp_0.44.0_linux_amd64.tar.gz 进入目录后，配置frps.ini和frpc.ini： cd frp_0.44.0_linux_amd64 服务端： vim frps.ini 将文件]]></description>
+      <content:encoded><![CDATA[<ol>
+<li>
+<p>下载frp：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz
+</span></span></code></pre></div><p>或者访问<a href="https://github.com/fatedier/frp/" title="frp项目" target="_blank" rel="noopener noreferrer">frp项目<i class="fas fa-external-link-square-alt ms-1"></i></a>获取自己需要的版本。</p>
+</li>
+<li>
+<p>解压：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zxvf frp_0.44.0_linux_amd64.tar.gz
+</span></span></code></pre></div></li>
+<li>
+<p>进入目录后，配置<code>frps.ini</code>和<code>frpc.ini</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> frp_0.44.0_linux_amd64
+</span></span></code></pre></div><ul>
+<li>
+<p>服务端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim frps.ini
+</span></span></code></pre></div><p>将文件按照下面修改：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># frp监听的端口，默认是7000，可以改成其他的</span>
+</span></span><span class="line"><span class="cl"><span class="nv">bind_port</span> <span class="o">=</span> <span class="m">7000</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 授权码，请改成更复杂的</span>
+</span></span><span class="line"><span class="cl"><span class="nv">token</span> <span class="o">=</span> <span class="m">123456</span>  <span class="c1"># 这个token之后在客户端会用到</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># frp管理后台端口，请按自己需求更改</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dashboard_port</span> <span class="o">=</span> <span class="m">7500</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># frp管理后台用户名和密码，请改成自己的</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dashboard_user</span> <span class="o">=</span> admin
+</span></span><span class="line"><span class="cl"><span class="nv">dashboard_pwd</span> <span class="o">=</span> admin
+</span></span><span class="line"><span class="cl"><span class="nv">enable_prometheus</span> <span class="o">=</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># frp日志配置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">log_file</span> <span class="o">=</span> /var/log/frps.log
+</span></span><span class="line"><span class="cl"><span class="nv">log_level</span> <span class="o">=</span> info
+</span></span><span class="line"><span class="cl"><span class="nv">log_max_days</span> <span class="o">=</span> <span class="m">3</span>
+</span></span></code></pre></div></li>
+<li>
+<p>客户端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim frpc.ini
+</span></span></code></pre></div><p>将文件按照下面修改：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 客户端配置</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">server_addr</span> <span class="o">=</span> 服务器ip
+</span></span><span class="line"><span class="cl"><span class="nv">server_port</span> <span class="o">=</span> <span class="m">7000</span> <span class="c1"># 与frps.ini的bind_port一致</span>
+</span></span><span class="line"><span class="cl"><span class="nv">token</span> <span class="o">=</span> <span class="m">52010</span>  <span class="c1"># 与frps.ini的token一致</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置ssh服务</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ssh<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="o">=</span> tcp
+</span></span><span class="line"><span class="cl"><span class="nv">local_ip</span> <span class="o">=</span> 127.0.0.1 <span class="c1"># 默认本地ip</span>
+</span></span><span class="line"><span class="cl"><span class="nv">local_port</span> <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="nv">remote_port</span> <span class="o">=</span> <span class="m">6000</span>  <span class="c1"># 这个自定义，之后再ssh连接的时候要用</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置http服务，可用于小程序开发、远程调试等，如果没有可以不写下面的</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>web<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="o">=</span> http
+</span></span><span class="line"><span class="cl"><span class="nv">local_ip</span> <span class="o">=</span> 127.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">local_port</span> <span class="o">=</span> <span class="m">8080</span>
+</span></span><span class="line"><span class="cl"><span class="nv">subdomain</span> <span class="o">=</span> test.hijk.pw  <span class="c1"># web域名</span>
+</span></span><span class="line"><span class="cl"><span class="nv">remote_port</span> <span class="o">=</span> 自定义的远程服务器端口，例如8080
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>接着需要在防火墙开启相应的端口。</p>
+</li>
+<li>
+<p>启动服务：</p>
+<ul>
+<li>
+<p>服务端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./frps -s frps.ini
+</span></span></code></pre></div><p>或者配置<code>frps.server</code>文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /lib/systemd/system/frps.service
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>The nginx HTTP and reverse proxy server
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target remote-fs.target nss-lookup.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据实际情况修改这条命令或者将frps、frps.ini移动到相应位置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/frps -c /etc/frp/frps.ini
+</span></span><span class="line"><span class="cl"><span class="nv">KillSignal</span><span class="o">=</span>SIGQUIT
+</span></span><span class="line"><span class="cl"><span class="nv">TimeoutStopSec</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
+</span></span><span class="line"><span class="cl"><span class="nv">PrivateTmp</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StandardOutput</span><span class="o">=</span>syslog
+</span></span><span class="line"><span class="cl"><span class="nv">StandardError</span><span class="o">=</span>inherit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div></li>
+<li>
+<p>客户端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./frpc -c frpc.ini
+</span></span></code></pre></div><p>如果是Linux也可以配置<code>frpc.service</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Frp Client Service
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="c1">#User=nobody</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
+</span></span><span class="line"><span class="cl"><span class="nv">RestartSec</span><span class="o">=</span>5s
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据实际情况修改以下两条命令或者将frps、frps.ini移动到相应位置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/frpc -c /etc/frp/frpc.ini
+</span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/usr/bin/frpc reload -c /etc/frp/frpc.ini
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ol>
+<p>更多请见<a href="https://frps.cn/11.html" title="Frp官方文档" target="_blank" rel="noopener noreferrer">Frp官方文档<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -98,6 +882,63 @@
       
       <guid>/blog/2022/02/mysql-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
       <description><![CDATA[Ubuntu MySQL 8 安装： 首先更新本地存储库索引： sudo apt update 从 APT 存储库安装 MySQL： sudo apt install MySQL-server -y 查看 MySQL 版本，验证是否安装成功： mysql --version 检查 MySQL 是否正在运行： systemctl status mysql.service 如]]></description>
+      <content:encoded><![CDATA[<h1 id="ubuntu" data-numberify>Ubuntu<a class="anchor ms-1" href="#ubuntu"></a></h1>
+<p>MySQL 8 安装：</p>
+<ol>
+<li>
+<p>首先更新本地存储库索引：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
+</span></span></code></pre></div></li>
+<li>
+<p>从 APT 存储库安装 MySQL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install MySQL-server -y
+</span></span></code></pre></div></li>
+<li>
+<p>查看 MySQL 版本，验证是否安装成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql --version
+</span></span></code></pre></div></li>
+<li>
+<p>检查 MySQL 是否正在运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl status mysql.service
+</span></span></code></pre></div></li>
+</ol>
+<p>如果服务未运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl start mysql
+</span></span></code></pre></div><hr>
+<p>MySQL 安装完成后需要更改密码。</p>
+<ol>
+<li>
+<p>查看默认账户和密码：</p>
+<p>执行后找到 <code>user</code> 和 <code>password</code>，如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/mysql/debian.cnf
+</span></span></code></pre></div><p>或：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cat /etc/mysql/debian.cnf
+</span></span></code></pre></div><p>找到如下：</p>
+<pre tabindex="0"><code class="language-纯文本" data-lang="纯文本">user     = debian-sys-maint
+password = 12E0cDBeusG6vANp
+</code></pre></li>
+<li>
+<p>使用默认账户登录：</p>
+<p>然后输入默认密码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -udebian-sys-maint -p
+</span></span></code></pre></div><pre tabindex="0"><code class="language-纯文本" data-lang="纯文本">12E0cDBeusG6vANp
+</code></pre></li>
+<li>
+<p>输入以下命令修改 root 密码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="w"> </span><span class="n">identified</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">mysql_native_password</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;your_password&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>修改完成后执行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">FLUSH</span><span class="w"> </span><span class="k">privileges</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">QUIT</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>最后重启 MySQL 后就可以使用 root 用户了：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo service mysql restart
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -uroot -p
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
     </item>
     
     <item>
@@ -107,6 +948,55 @@
       
       <guid>/blog/2022/01/ubuntu-%E5%AE%89%E8%A3%85-oh-my-zsh/</guid>
       <description><![CDATA[oh-my-zsh主页： https://ohmyz.sh/ 安装并设置zsh 安装zsh： sudo apt install zsh 查看系统中所有的shell： cat /etc/shells # /etc/shells: valid login shells /bin/sh /bin/bash /usr/bin/bash /bin/rbash /usr/bin/rbash /bin/dash /usr/bin/dash /usr/bin/tmux /usr/bin/screen /bin/zsh /usr/bin/zsh 将zsh设置为]]></description>
+      <content:encoded><![CDATA[<p>oh-my-zsh主页： <a href="https://ohmyz.sh/" title="https://ohmyz.sh/" target="_blank" rel="noopener noreferrer">https://ohmyz.sh/<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<h1 id="安装并设置zsh" data-numberify>安装并设置zsh<a class="anchor ms-1" href="#安装并设置zsh"></a></h1>
+<p>安装zsh：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install zsh
+</span></span></code></pre></div><p>查看系统中所有的shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/shells
+</span></span></code></pre></div><pre tabindex="0"><code class="language-纯文本" data-lang="纯文本"># /etc/shells: valid login shells
+/bin/sh
+/bin/bash
+/usr/bin/bash
+/bin/rbash
+/usr/bin/rbash
+/bin/dash
+/usr/bin/dash
+/usr/bin/tmux
+/usr/bin/screen
+/bin/zsh
+/usr/bin/zsh
+</code></pre><p>将zsh设置为默认的shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chsh -s /bin/zsh
+</span></span></code></pre></div><p>重新连接到Ubuntu，然后查看当前默认shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$SHELL</span>
+</span></span></code></pre></div><p>如果显示<code>/bin/zsh</code>则配置成功。</p>
+<hr>
+<h1 id="安装-oh-my-zsh" data-numberify>安装 oh-my-zsh<a class="anchor ms-1" href="#安装-oh-my-zsh"></a></h1>
+<p>下载install.sh：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh
+</span></span></code></pre></div><p>给install.sh添加权限：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod +x install.sh
+</span></span></code></pre></div><p>执行install.sh：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./install.sh
+</span></span></code></pre></div><blockquote>
+<p>📌在执行install.sh之前还需要安装git。否则会报错。</p>
+<p>安装git：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install git
+</span></span></code></pre></div></blockquote>
+<hr>
+<h1 id="配置zsh" data-numberify>配置zsh<a class="anchor ms-1" href="#配置zsh"></a></h1>
+<p>zsh的配置文件为：<code>~/.zshrc</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.zshrc
+</span></span></code></pre></div><h2 id="修改主题" data-numberify>修改主题<a class="anchor ms-1" href="#修改主题"></a></h2>
+<p>主题配置项为：<code>ZSH_THEME</code>。</p>
+<p>默认主题配置为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ZSH_THEME=&#34;robbyrussell&#34;
+</span></span></code></pre></div><p>可以修改为其中之一：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ZSH_THEME=&#34;ys&#34;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ZSH_THEME=&#34;geoffgarside&#34;
+</span></span></code></pre></div><p>还可以访问<a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes" title="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes" target="_blank" rel="noopener noreferrer">https://github.com/ohmyzsh/ohmyzsh/wiki/Themes<i class="fas fa-external-link-square-alt ms-1"></i></a> 查看更多主题。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -116,6 +1006,12 @@
       
       <guid>/blog/2022/01/vbs-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C-bat/</guid>
       <description><![CDATA[假设有三个 bat 程序需要后台运行（称为 A.bat、B.bat、C.bat）： Set ws = CreateObject(&#34;Wscript.Shell&#34;) ws.run &#34;cmd /c A.bat&#34;,0 ws.run &#34;cmd /c B.bat&#34;,0 ws.run &#34;cmd /c C.bat&#34;,0]]></description>
+      <content:encoded><![CDATA[<p>假设有三个 bat 程序需要后台运行（称为 <code>A.bat</code>、<code>B.bat</code>、<code>C.bat</code>）：</p>
+<pre tabindex="0"><code class="language-vbs" data-lang="vbs">Set ws = CreateObject(&#34;Wscript.Shell&#34;)
+ws.run &#34;cmd /c A.bat&#34;,0
+ws.run &#34;cmd /c B.bat&#34;,0
+ws.run &#34;cmd /c C.bat&#34;,0
+</code></pre>]]></content:encoded>
     </item>
     
   </channel>

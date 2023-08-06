@@ -16,6 +16,922 @@
       
       <guid>/blog/2022/01/python-%E8%BF%9B%E9%98%B6-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%AF%87/</guid>
       <description><![CDATA[正则表达式语法 —— Python 正则表达式是一个特殊的字符序列，能方便地检查一个字符串是否与某种模式匹配。 正则表达式可以拼接。 正则表达式可以包含普通或者]]></description>
+      <content:encoded><![CDATA[<h1 id="正则表达式语法--python" data-numberify>正则表达式语法 —— Python<a class="anchor ms-1" href="#正则表达式语法--python"></a></h1>
+<p>正则表达式是一个特殊的字符序列，能方便地检查一个字符串是否与某种模式匹配。</p>
+<ul>
+<li>
+<p>正则表达式可以拼接。</p>
+</li>
+<li>
+<p>正则表达式可以包含普通或者特殊字符。</p>
+<ul>
+<li>
+<p>绝大部分普通字符，是最简单的正则表达式。它们就匹配自身。</p>
+</li>
+<li>
+<p>特殊字符既可以表示它的普通含义， 也可以影响它旁边的正则表达式的解释。</p>
+</li>
+<li>
+<p>重复修饰符（<code>*</code>、<code>+</code>、<code>?</code>、<code>{m,n}</code>, 等）不能直接嵌套。避免了非贪婪后缀 <code>?</code> 修饰符，和其他实现中的修饰符产生的多义性。要应用一个内层重复嵌套，可以使用括号。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="特殊字符" data-numberify>特殊字符<a class="anchor ms-1" href="#特殊字符"></a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>（点）在默认模式，匹配除了换行的任意字符。                                                                                                                                                                                                                                <br>如果指定了标签 <code>DOTALL</code>，它将匹配包括换行符的任意字符。</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td>转义特殊字符（允许你匹配 <code>'*'</code>、<code>'?'</code>，或者其他正则表达式中使用的特殊字符），或者表示一个特殊序列。</td>
+</tr>
+<tr>
+<td><code>[…]</code></td>
+<td>用于表示一个字符集合。<br> 字符可以单独列出：<code>[abc]</code>，匹配 <code>'a'</code>、<code>'b'</code>、<code>'c'</code>。<br>可以表示字符范围，通过用 <code>'-'</code> 将两个字符连起来：<code>[a-z]</code> 将匹配任何小写 ASCII 字符； 可以指定多个范围：<code>[a-zA-Z]</code> 将匹配所有英文字符。 如果 <code>-</code> 进行了转义 （比如 <code>[a-z]</code>）或者它的位置在首位或者末尾（如 <code>[-a]</code> 或 <code>[a-]</code>），它就只表示普通字符 <code>'-'</code>。  <br>特殊字符在集合中，失去它的特殊含义：<code>[(+*)]</code> 只会匹配这几个文法字符 <code>'('</code>、<code>'+'</code>、<code>'*'</code> 或 <code>')'</code>。 <br>字符类如 <code>\w</code> 或者 <code>\S</code> 在集合内可以接受，它们可以匹配的字符由 <code>ASCII</code> 或者 <code>LOCALE</code> 模式决定。<br> 不在集合范围内的字符可以通过取反（<code>'^'</code> 作为首字符）来进行匹配：<code>[^a]</code> 将匹配除了 <code>'a'</code> 之外的所有字符。 <code>'^'</code> 如果不在集合首位，就没有特殊含义。<br>在集合内要匹配一个字符 <code>']'</code>，有两种方法，要么将它进行转义，要么就把它放到集合首位（如 <code>[()[]{}]</code> 和 <code>[]()[{}]</code>）。                                                                                      <br>嵌套集合和集合操作支持可能在未来添加。如果有多以的情况发生，将会抛出 <code>FutureWarning</code>。</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td><code>A|B</code>， <code>A</code> 和 <code>B</code> 可以是任意正则表达式，创建一个正则表达式，匹配 <code>A</code> 或者 <code>B</code>。任意个正则表达式可以用 <code>'|'</code> 连接。它可以在集合或组合内使用。 <code>'|'</code> 操作符绝不贪婪：扫描目标字符串时，由 <code>'|'</code> 分隔开的正则样式从左到右进行匹配。当一个样式完全匹配时，这个分支就被接受。即，一旦 <code>A</code> 匹配成功， <code>B</code> 就不再进行匹配，即便它能产生一个更好的匹配。 如果要匹配 <code>'|'</code> 字符，使用 <code>|</code>， 或者把它包含在字符集里 <code>[|]</code>。</td>
+</tr>
+<tr>
+<td><code>(…)</code></td>
+<td>（组合），匹配括号内的任意正则表达式，并标识出组合的开始和结尾。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="定位符" data-numberify>定位符<a class="anchor ms-1" href="#定位符"></a></h3>
+<p>定位符用来描述字符串或单词的边界。</p>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td>（插入符号）匹配字符串的开头， 并且在 <code>MULTILINE</code> 模式也匹配换行后的首个符号。</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配字符串尾或者在字符串尾的换行符的前一个字符，在 <code>MULTILINE</code> 模式下也会匹配换行符之前的文本。<br>在 <code>'foo1\nfoo2\n'</code> 中搜索 <code>foo.$</code>，通常匹配 <code>'foo2'</code>，但在 <code>MULTILINE</code> 模式下可以匹配到 <code>'foo1'</code>。<br> 在 <code>'foo\n'</code> 中搜索 <code>$</code> 会找到两个（空的）匹配：一个在换行符之前，一个在字符串的末尾。</td>
+</tr>
+<tr>
+<td><code>\A</code></td>
+<td>只匹配字符串的开始。相当于默认模式下的 <code>^</code>。</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>匹配一个单词边界。即，匹配空字符串，但只在单词开始或结尾的位置。<br>通常 <code>\b</code> 定义为 <code>\w</code> 和 <code>\W</code> 字符之间，或者 <code>\w</code> 和字符串开始/结尾的边界。<br>如果使用了 <code>LOCALE</code> 标志，则词的边界由当前语言区域设置。<br> 在字符集合内表示退格（如 <code>[\b]</code>）。</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>非单词边界匹配。即，匹配除了单词边界外的任何其他位置。<code>\B</code> 是 <code>\b</code> 的取非。<br>如果使用了 <code>LOCALE</code> 标志，则词的边界由当前语言区域设置。</td>
+</tr>
+<tr>
+<td><code>\Z</code></td>
+<td>只匹配字符串尾。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="重复修饰符限定符" data-numberify>重复修饰符（限定符）<a class="anchor ms-1" href="#重复修饰符限定符"></a></h3>
+<ul>
+<li>
+<p><code>{m}</code></p>
+<p>对其之前的正则式指定匹配 m 个重复；少于 m 的话就会导致匹配失败。</p>
+</li>
+</ul>
+<p>贪婪修饰符：</p>
+<ul>
+<li>
+<p><code>*</code></p>
+<p>对它前面的正则式匹配 0 到任意次重复， 尽量多地匹配字符串。
+等价于：<code>{0,}</code>。</p>
+</li>
+<li>
+<p><code>+</code></p>
+<p>对它前面的子表达式匹配 1 到任意次重复， 尽量多地匹配字符串。
+等价于：<code>{1,}</code>。</p>
+</li>
+<li>
+<p><code>?</code></p>
+<p>对它前面的子表达式匹配 0 到 1 次重复， 尽量多地匹配字符串。
+等价于：<code>{0,1}</code>。</p>
+</li>
+<li>
+<p><code>{m,}</code></p>
+<p>对它前面的子表达式进行 m 到任意次重复， 尽量多地匹配字符串。</p>
+</li>
+<li>
+<p><code>{m,n}</code>（中间不要有空白字符）</p>
+<p>对它前面的子表达式进行 m 到 n 次匹配，在 m 和 n 之间取尽量多。</p>
+</li>
+</ul>
+<p>非贪婪修饰符：</p>
+<ul>
+<li>
+<p><code>*?</code>、<code>+?</code>、<code>??</code>、<code>{m,}?</code>、<code>{m,n}?</code>：</p>
+<p>在修饰符之后添加 <code>?</code> 将使样式以非贪婪方式，或者 :dfn: 最小方式进行匹配； 尽量少的字符将会被匹配。</p>
+</li>
+</ul>
+<hr>
+<h3 id="扩展标记法" data-numberify>扩展标记法<a class="anchor ms-1" href="#扩展标记法"></a></h3>
+<ul>
+<li>
+<p><code>(?…)``'?'</code> 仅跟随 <code>'('</code> 并无含义。<code>'?'</code> 后面的第一个字符决定了这个构建采用什么样的语法。这种扩展通常并不创建新的组合； <code>(?P&lt;name&gt;...)</code> 是唯一的例外。</p>
+</li>
+<li>
+<p><code>(?aiLmsux)</code></p>
+<p>在 <code>(?</code> 后带 <code>'a'</code>、 <code>'i'</code>、<code>'L'</code>、<code>'m'</code>、<code>'s'</code>、<code>'u'</code>、<code>'x'</code> 中的一个或多个。<code>(?aimsx)</code> 将会匹配空字符串。</p>
+<p>这些字符代表内联标记（与 <code>re</code> 模块中的 RegexFlag 标志常量对应）。</p>
+<ul>
+<li>
+<p><code>'a'</code> —— <code>re.A</code> 模式；</p>
+</li>
+<li>
+<p><code>'i'</code> —— <code>re.I</code> 模式；</p>
+</li>
+<li>
+<p><code>'L'</code> —— <code>re.L</code> 模式；</p>
+</li>
+<li>
+<p><code>'m'</code> —— <code>re.M</code> 模式；</p>
+</li>
+<li>
+<p><code>'s'</code> —— <code>re.S</code> 模式；</p>
+</li>
+<li>
+<p><code>'u'</code> —— <code>re.U</code> 模式；</p>
+</li>
+<li>
+<p><code>'x'</code> —— <code>re.X</code> 模式。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>(?:…)</code></p>
+<p>正则括号的非捕获版本。 匹配在括号内的任何正则表达式，但该分组所匹配的子字符串不能在执行匹配后被获取或是之后在模式中被引用。</p>
+</li>
+<li>
+<p><code>(?aiLmsux-imsx:…)``'?'</code> 后面 <code>'-'</code> 前面带 <code>'a'</code>、 <code>'i'</code>、<code>'L'</code>、<code>'m'</code>、<code>'s'</code>、<code>'u'</code>、<code>'x'</code> 中的 0 个或多个。<code>'-'</code> 后面 <code>':'</code> 前面带 <code>'i'</code>、<code>'m'</code>、<code>'s'</code>、<code>'x'</code> 中的一到多个。表示设置或者去除（<code>'-'</code> 后指定去除的标记）相应标记。</p>
+<p>与 <code>(?aiLmsux)</code> 一样，这些字符分别代表了不同的内联标记。</p>
+<p><code>'a'</code>、<code>'L'</code> 和 <code>'u'</code> 作为内联标记是相互排斥的， 所以它们不能结合在一起，或者跟随 <code>'-'</code> 。 当他们中的某个出现在内联组中，它就覆盖了括号组内的匹配模式。Python3.7 接受 <code>'a'</code>、<code>'L'</code> 和 <code>'u'</code> 存在于一个组合。
+这种方式只覆盖组合内匹配，括号外的匹配模式不受影响。</p>
+</li>
+<li>
+<p><code>(?P&lt;name&gt;…)</code></p>
+<p>（命名组合）类似正则组合，但是匹配到的子串组在外部可以通过定义的 <code>name</code> 来获取的（也可以通过数字获取）。组合名必须是有效的 Python 标识符，并且每个组合名只能用一个正则表达式定义，只能定义一次。
+命名组合可以在三种上下文中引用：</p>
+<table>
+<thead>
+<tr>
+<th><strong>引用组合 &ldquo;quote&rdquo; 的上下文</strong></th>
+<th><strong>引用方法</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在正则式自身内</td>
+<td><code>(?P=quote)</code> 或 <code>\1</code></td>
+</tr>
+<tr>
+<td>处理匹配对象 <code>m</code></td>
+<td><code>m.group('quote')</code> 或 <code>m.end('quote')</code>（等）</td>
+</tr>
+<tr>
+<td>传递到 <code>re.sub()</code> 里的 <code>repl</code> 参数中</td>
+<td><code>\g&lt;quote&gt;</code> 或 <code>\g&lt;1&gt;</code> 或 <code>\1</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><code>(?P=name)</code></p>
+<p>反向引用一个命名组合；它匹配前面名为 <code>name</code> 的命名组中匹配到的串同样的字串（如上所示）。</p>
+</li>
+<li>
+<p><code>(?#…)</code></p>
+<p>注释，里面的内容会被忽略。</p>
+</li>
+<li>
+<p><code>(?=…)</code></p>
+<p>lookahead assertion，匹配 <code>…</code> 的内容，但是并不消费样式的内容。如，<code>abc(?=def)</code> 当 <code>'abc'</code> 后面是 <code>'def'</code> 的时候，才匹配 <code>'abc'</code>。</p>
+</li>
+<li>
+<p><code>(?!…)</code></p>
+<p>negative lookahead assertion（前视取反），匹配 <code>…</code> 不符合的情况。如，<code>abc(?!def)</code> 当 <code>'abc'</code> 后面不是 <code>'def'</code> 的时候，才匹配 <code>'abc'</code>。</p>
+</li>
+<li>
+<p><code>(?&lt;=…)</code></p>
+<p>:dfn:positive lookbehind assertion（正向后视断定），匹配字符串的当前位置，它的前面匹配 <code>…</code> 的内容到当前位置。如，<code>(?&lt;=abc)def</code> 当 <code>'def'</code> 前面是 <code>'abc'</code> 时匹配 <code>'def'</code>，该样式是从 <code>'d'</code> 开始往回搜索的。
+包含的匹配样式必须是定长的（ <code>abc</code> 或 <code>a|b</code> 是允许的，但是 <code>a*</code> 和 <code>a{3,4}</code> 不可以）。</p>
+</li>
+<li>
+<p><code>(?&lt;!…)</code></p>
+<p>negative lookbehind assertion （后视断定取非），匹配当前位置之前不是 <code>…</code> 的样式。</p>
+<p>包含的样式匹配必须是定长的。</p>
+<p>由 negative lookbehind assertion 开始的样式可以从字符串搜索开始的位置进行匹配。</p>
+</li>
+<li>
+<p><code>(?(id/name)yes-pattern|no-pattern)</code></p>
+<p>如果给定的 <code>id</code> 或 <code>name</code> 存在，将会尝试匹配 <code>yes-pattern</code> ，否则就尝试匹配 <code>no-pattern</code>（<code>no-pattern</code> 可选，可以被忽略）。</p>
+</li>
+</ul>
+<hr>
+<h3 id="普通字符" data-numberify>\\+普通字符<a class="anchor ms-1" href="#普通字符"></a></h3>
+<p><code>\</code> + （ASCII 数字或字母）：</p>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\number</code></td>
+<td>匹配数字代表的组合。每个正则表达式中的括号是一个组合，组合从 <code>1</code> 开始编号。<br> 如：<code>(.+) \1</code> 匹配 <code>'the the'</code> 或者 <code>'55 55'</code>。<br> 这个特殊序列只能用于匹配前面 99 个组合。<br> 如果 <code>number</code> 的第一个数位是 0， 或者 <code>number</code> 是三个八进制数，它将不会被看作是一个组合，而是八进制的数字值。</td>
+</tr>
+<tr>
+<td><code>\A</code></td>
+<td>只匹配字符串开始。</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>（单词边界定位符）匹配空字符串，但只在单词开始或结尾的位置。<br> 在字符集合内表示退格（如 <code>[\b]</code>）。</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>（非单词边界定位符）匹配空字符串，但不能在词的开头或者结尾。</td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td>对于 Unicode（str）样式：<br> 匹配任何 Unicode 十进制数（就是在 Unicode 字符目录 [Nd] 里的字符，包括了 <code>[0-9]</code> ，和很多其他的数字字符）。如果设置了 <code>ASCII</code> 标志，就只匹配 <code>[0-9]</code> 。<br> 对于8位（bytes）样式：<br> 匹配任何十进制数（<code>[0-9]</code>）。</td>
+</tr>
+<tr>
+<td><code>\D</code></td>
+<td>匹配任何非十进制数字的字符（<code>\d</code> 取非）。<br> 如果设置了 <code>ASCII</code> 标志，就相当于 <code>[^0-9]</code> 。</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>对于 Unicode（str）样式：<br> 匹配任何 Unicode 空白字符（包括 <code>[ \t\n\r\f\v]</code> ，还有很多其他字符，比如不同语言排版规则约定的不换行空格）。如果 <code>ASCII</code> 被设置，就只匹配 <code>[ \t\n\r\f\v]</code> 。<br>对于8位（bytes）样式：<br> 匹配ASCII中的空白字符（<code>[ \t\n\r\f\v]</code>） 。</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>匹配任何非空白字符（<code>\s</code> 取非）。<br> 如果设置了 <code>ASCII</code> 标志，就相当于 <code>[^ \t\n\r\f\v]</code> 。</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>对于 Unicode（str）样式：<br> 匹配 Unicode 词语的字符，包含了可以构成词语的绝大部分字符，也包括数字和下划线。如果设置了 <code>ASCII</code> 标志，就只匹配 <code>[a-zA-Z0-9_]</code> 。<br>对于8位（bytes）样式：<br> 匹配 ASCII 字符中的数字和字母和下划线，就是 <code>[a-zA-Z0-9_]</code> 。如果设置了 <code>LOCALE</code> 标记，就匹配当前语言区域的数字和字母和下划线。</td>
+</tr>
+<tr>
+<td><code>\W</code></td>
+<td>匹配非单词字符的字符（与 <code>\w</code> 正相反）。<br> 如果使用了 <code>ASCII</code> 标志，就等价于 <code>[^a-zA-Z0-9_]</code>。<br>如果使用了 <code>LOCALE</code> 标志，则会匹配当前区域中既非字母数字也非下划线的字符。</td>
+</tr>
+<tr>
+<td><code>\Z</code></td>
+<td>只匹配字符串尾。<br>如果普通字符不是 ASCII 数位或者 ASCII 字母，那么正则样式将匹配第二个字符（如，<code>\$</code> 匹配字符 <code>'$'</code>）。</td>
+</tr>
+</tbody>
+</table>
+<p>绝大部分 Python 的标准转义字符也被正则表达式分析器支持：</p>
+<pre tabindex="0"><code class="language-纯文本" data-lang="纯文本">\a      \b      \f      \n
+\N      \r      \t      \u
+\U      \v      \x      \\
+</code></pre><p><code>'\u'</code>、<code>'\U'</code> 和 <code>'\N'</code> 转义序列只在 Unicode 模式中可被识别。 在 bytes 模式中它们会导致错误。未知的 ASCII 字母转义序列保留在未来使用，会被当作错误来处理。</p>
+<p>八进制转义包含为一个有限形式。如果首位数字是 0， 或者有三个八进制数位，那么就认为它是八进制转义。其他的情况，就看作是组引用。对于字符串文本，八进制转义最多有三个数位长。</p>
+<hr>
+<h1 id="re-模块" data-numberify>re 模块<a class="anchor ms-1" href="#re-模块"></a></h1>
+<p>Python 的 <code>re</code> 模块提供了与 Perl 语言类似的正则表达式匹配操作。</p>
+<hr>
+<h2 id="函数" data-numberify>函数<a class="anchor ms-1" href="#函数"></a></h2>
+<h3 id="匹配一项" data-numberify>匹配一项<a class="anchor ms-1" href="#匹配一项"></a></h3>
+<p>在 <code>re</code> 模块中，有三个函数用于查找并返回一个匹配对象：</p>
+<ol>
+<li>
+<p><code>re.match()</code> —— 返回一个从字符串的起始位置匹配的对象。</p>
+</li>
+<li>
+<p><code>re.search()</code> —— 返回整个字符串中任意位置第一个成功的匹配。</p>
+</li>
+<li>
+<p><code>re.fullmatch()</code> —— 整个字符串与正则表达式完全匹配。</p>
+</li>
+</ol>
+<hr>
+<h4 id="match-函数" data-numberify>match() 函数<a class="anchor ms-1" href="#match-函数"></a></h4>
+<p><code>re.match()</code> 尝试从字符串的起始位置匹配一个模式，其语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p>返回值：</p>
+<p>匹配成功，<code>re.match()</code> 函数返回一个匹配对象（<code>Match</code>）；否则返回 <code>None</code>。</p>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>  <span class="c1"># 在起始位置匹配</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;abc&#39;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;efg&#39;</span><span class="p">,</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>  <span class="c1"># 不在起始位置匹配</span>
+</span></span><span class="line"><span class="cl"><span class="kc">None</span>
+</span></span></code></pre></div><hr>
+<h4 id="search-函数" data-numberify>search() 函数<a class="anchor ms-1" href="#search-函数"></a></h4>
+<p><code>re.search()</code> 扫描整个字符串并返回第一个成功的匹配，其语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>参数用法与 <code>re.match()</code> 类似。匹配成功，<code>re.search()</code> 方法返回一个匹配对象（<code>Match</code>）；否则返回 <code>None</code>。</p>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>  <span class="c1"># 在起始位置匹配</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;abc&#39;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;efg&#39;</span><span class="p">,</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>  <span class="c1"># 不在起始位置匹配</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;efg&#39;</span><span class="o">&gt;</span>
+</span></span></code></pre></div><hr>
+<h4 id="fullmatch-函数" data-numberify>fullmatch() 函数<a class="anchor ms-1" href="#fullmatch-函数"></a></h4>
+<p><code>fullmatch()</code> 将整个字符串与正则表达式匹配，其语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>参数用法与 <code>re.match()</code> 类似。如果 <code>string</code> 与 <code>pattern</code> 完全匹配，那么返回一个匹配对象（<code>Match</code>）；否则返回 <code>None</code>。</p>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>    <span class="c1"># 在起始位置匹配</span>
+</span></span><span class="line"><span class="cl"><span class="kc">None</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s1">&#39;abcdefg&#39;</span><span class="p">,</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>  <span class="c1"># 匹配整个字符串</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;abcdefg&#39;</span><span class="o">&gt;</span>
+</span></span></code></pre></div><hr>
+<h3 id="匹配多项" data-numberify>匹配多项<a class="anchor ms-1" href="#匹配多项"></a></h3>
+<p>有两个函数用于查找并返回匹配的多个匹配对象：</p>
+<ol>
+<li>
+<p><code>re.findall</code> —— 在字符串的任意位置匹配，并返回一个包含了所有匹配对象的列表。</p>
+</li>
+<li>
+<p><code>re.finditer</code> —— 在字符串的任意位置匹配，并返回一个包含了所有匹配对象的迭代器。</p>
+</li>
+</ol>
+<hr>
+<h4 id="finall" data-numberify>finall()<a class="anchor ms-1" href="#finall"></a></h4>
+<p><code>finall()</code> 在字符串中找到正则表达式所匹配的所有子串，其语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p>返回值：</p>
+<p>返回一个列表，包含了所有匹配对象；如果没有任何匹配项，则返回空列表。</p>
+<hr>
+<h4 id="finditer" data-numberify>finditer()<a class="anchor ms-1" href="#finditer"></a></h4>
+<p>与 <code>finall()</code> 类似，其语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>该函数返回的是迭代器。</p>
+<p>如果可能存在大量的匹配项的话，建议使用 <code>finditer()</code>。</p>
+<hr>
+<h3 id="split-正则分割" data-numberify>split() 正则分割<a class="anchor ms-1" href="#split-正则分割"></a></h3>
+<p><code>re.split()</code> 按照能够匹配的子串对字符串进行分割，其语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">[,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">])</span>
+</span></span></code></pre></div><p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>maxsplit</code></td>
+<td>最大分割次数，<code>maxsplit=1</code> 分割一次，默认为 <code>0</code>，不限制次数。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p>返回值：</p>
+<p>返回一个用 <code>patterm</code> 模式匹配的字符分割的字符串列表。如果查找不到任何匹配，则返回一个仅包含 <code>string</code> 的列表。</p>
+<p><code>str</code> 模块下也有一个 <code>split()</code> 函数，但它并不支持正则分割。</p>
+<hr>
+<h3 id="替换" data-numberify>替换<a class="anchor ms-1" href="#替换"></a></h3>
+<p>有两个替换函数：<code>re.sub()</code> 和 <code>re.subn()</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>匹配的正则表达式。</td>
+</tr>
+<tr>
+<td><code>repl</code></td>
+<td>替换内容，可以是字符串，也可以是函数。如果 <code>repl</code> 为函数，只能有一个匹配对象作为参数。</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>要匹配的字符串。</td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td>最大替换次数。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。</td>
+</tr>
+</tbody>
+</table>
+<p><code>repl</code> 替换掉 <code>string</code> 中被 <code>pattern</code> 匹配的字符。</p>
+<p>返回值：</p>
+<p><code>re.sub()</code> 返回一个替换后的字符串。如果 <code>string</code> 中没有任何匹配项，则返回 <code>string</code>。</p>
+<p><code>re.subn()</code> 返回一个元组，包含了替换后的字符串和替换次数：<code>(str, n)</code>。</p>
+<hr>
+<h3 id="excape-转义函数" data-numberify>excape() 转义函数<a class="anchor ms-1" href="#excape-转义函数"></a></h3>
+<p><code>re.exvape()</code> 函数可以转义参数 <code>pattern</code> 中的特殊字符。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">exvape</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+</span></span></code></pre></div><p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="s1">&#39;http://www.python.org&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span>\<span class="o">.</span><span class="n">python</span>\<span class="o">.</span><span class="n">org</span>
+</span></span></code></pre></div><p>Python3.3：<code>_</code> 不再被转义。</p>
+<p>Python3.7：只有在正则表达式中具有特殊含义的字符才会被转义。 因此， <code>!</code>、<code>&quot;</code>、<code>%</code>、<code>'</code>、<code>,</code>、<code>/</code>、<code>:</code>、<code>;</code>&lt;&rsquo;、<code>=</code>&gt;&rsquo;、<code>@</code> 和 ` 将不再会被转义。</p>
+<p>使用 <code>re.exvape()</code> 函数很容易出现转义错误的问题，所以并不建议使用它转义。</p>
+<hr>
+<h3 id="purge-清除正则表达式缓存" data-numberify>purge() 清除正则表达式缓存<a class="anchor ms-1" href="#purge-清除正则表达式缓存"></a></h3>
+<p><code>re.purge()</code> 用于清除正则表达式的缓存。它没有参数，没有返回值。</p>
+<hr>
+<h2 id="regexflag-标志常量" data-numberify>RegexFlag 标志常量<a class="anchor ms-1" href="#regexflag-标志常量"></a></h2>
+<ul>
+<li>
+<p>re.ASCII：</p>
+<ul>
+<li>
+<p>简写：<code>re.A</code>。</p>
+</li>
+<li>
+<p>让 <code>\w</code>, <code>\W</code>, <code>\b</code>, <code>\B</code>, <code>\d</code>, <code>\D</code>, <code>\s</code> 和 <code>\S</code> 只匹配 ASCII 编码支持的字符，而不是 Unicode。这只对 Unicode 样式（Python3 默认）有效，会被 byte 样式忽略。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\w+&#39;</span><span class="p">,</span> <span class="s1">&#39;中文字符和ASCII&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;ASCII&#39;</span><span class="o">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>对应内联标记：<code>(?a)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.DEBUG：</p>
+<ul>
+<li>
+<p>显示编译时的 debug 信息，没有内联标记。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*&#39;</span><span class="p">,</span> <span class="s1">&#39;显示debug信息&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">MAX_REPEAT</span> <span class="mi">0</span> <span class="n">MAXREPEAT</span>
+</span></span><span class="line"><span class="cl">  <span class="n">ANY</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;显示debug信息&#39;</span><span class="o">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>对应内联标记：<code>(?i)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.IGNORECASE：</p>
+<ul>
+<li>
+<p>简写：<code>re.I</code>。</p>
+</li>
+<li>
+<p>进行忽略大小写匹配。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[a-z]&#39;</span><span class="p">,</span> <span class="s1">&#39;大写字母：ABCDE 小写字母：abcde&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">]</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>re.LOCALE：</p>
+<ul>
+<li>
+<p>简写：<code>re.L</code>。</p>
+</li>
+<li>
+<p>语言依赖，由当前语言区域决定 <code>\w</code>, <code>\W</code>, <code>\b</code>, <code>\B</code> 和大小写敏感匹配。这个标记只能对 byte 样式有效。这个标记官方并不推荐使用，因为语言区域机制很不可靠，它一次只能处理一个 “习惯”，而且只对 8 位字节有效。</p>
+</li>
+<li>
+<p>对应内联标记：<code>(?L)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.MULTILINE：</p>
+<ul>
+<li>
+<p>简写：<code>re.M</code>。</p>
+</li>
+<li>
+<p>多行模式，样式字符 <code>'^'</code> 匹配每一个行开始（字符串的开始和换行符后紧跟的符号）；样式字符 <code>'$'</code> 匹配每一个行结尾（字符串结尾和换行符前面的符号）。</p>
+<p>默认情况下不支持换行符特性，<code>'^'</code> 匹配字符串开始，<code>'$'</code> 匹配字符串结尾。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^.*$&#39;</span><span class="p">,</span> <span class="s1">&#39;第1行</span><span class="se">\n</span><span class="s1">第2行</span><span class="se">\n</span><span class="s1">第3行&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="s1">&#39;第1行&#39;</span><span class="p">,</span> <span class="s1">&#39;第2行&#39;</span><span class="p">,</span> <span class="s1">&#39;第3行&#39;</span><span class="p">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p>对应内联标记：<code>(?m)</code>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.DOTALL：</p>
+<ul>
+<li>
+<p>简写：<code>re.S</code>。</p>
+</li>
+<li>
+<p>让 <code>'.'</code> 特殊字符匹配全部字符，包括换行符。</p>
+<p>默认情况下，<code>'.'</code> 仅匹配除了换行符的其他任意字符。</p>
+</li>
+<li>
+<p>对应内联标记：<code>(?s)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.VERBOSE：</p>
+<ul>
+<li>
+<p>简写：<code>re.X</code>。</p>
+</li>
+<li>
+<p>冗长模式，允许在正则表达式中换行和添加注释。
+该模式下空白符号会被忽略，除非在一个字符集合中或者由反斜杠转义，或者在 <code>*?</code>、<code>(?:</code>、<code>(?P&lt;…&gt;</code> 分组之内。
+当一个行内有 <code>#</code> 不在字符集和转义序列，那么它之后的所有字符都是注释。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;\d +  # the integral part
+</span></span></span><span class="line"><span class="cl"><span class="s1">...               \.    # the decimal point
+</span></span></span><span class="line"><span class="cl"><span class="s1">...               \d *  # some fractional digits&#39;&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>           <span class="s1">&#39;圆周率：3.14&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;3.14&#39;</span><span class="o">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>对应内联标记：<code>(?x)</code> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.UNICODE：</p>
+<ul>
+<li>
+<p>简写：<code>re.U</code>。</p>
+</li>
+<li>
+<p>匹配 Unicode 编码支持的字符，是 Python3 默认的字符串模式。虽然保留着，但对 Python3 来说是个冗余的常量。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>re.TEMPLATE：</p>
+<ul>
+<li>
+<p>简写：<code>re.T</code>。</p>
+</li>
+<li>
+<p><code>re</code> 模块的源码是这样描述该常量的（官方文档中并没有具体的描述）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">TEMPLATE</span> <span class="o">=</span> <span class="n">T</span> <span class="o">=</span> <span class="n">sre_compile</span><span class="o">.</span><span class="n">SRE_FLAG_TEMPLATE</span> <span class="c1"># disable backtracking</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="正则对象-pattern" data-numberify>正则对象 Pattern<a class="anchor ms-1" href="#正则对象-pattern"></a></h2>
+<p>使用 <code>compile()</code> 和 <code>template()</code> 可以将正则表达式编译为正则表达式对象（Pattern，正则对象）。</p>
+<p><code>re.compile()</code> 的语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern</code></td>
+<td>要转化为正则对象的正则表达式。</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>标志位，用于控制正则表达式的匹配方式。 可以通过位的 OR（<code>'|'</code>）操作来结合多个模式。</td>
+</tr>
+</tbody>
+</table>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">pattern_obj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;abc&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">pattern_obj</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;abc&#39;</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>使用正则对象和函数：</p>
+<ol>
+<li>
+<p>正则对象和函数是一致的。</p>
+<p>模块的底层实现中，<code>re.compile()</code> 与其他 <code>re</code> 函数内部调用的是同一个函数 <code>re._compile()</code>。</p>
+</li>
+<li>
+<p>如果需要多次使用某个正则表达式的话，使用 <code>re.compile()</code> 和保存这个正则对象以便复用，可以让程序更加高效。通过 <code>re.compile()</code> 编译后的样式，和模块级的函数会被缓存。</p>
+</li>
+</ol>
+<hr>
+<h3 id="正则对象方法" data-numberify>正则对象方法<a class="anchor ms-1" href="#正则对象方法"></a></h3>
+<p>正则对象支持以下方法：</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pattern.search(string[, pos[, endpos]])</code></td>
+<td>扫描整个 <code>string</code> 寻找第一个匹配的位置， 并返回一个相应的匹配对象（<code>Match</code>）。如果没有匹配，就返回 <code>None</code>。<br><code>pos</code> —— 字符串中开始搜索的位置索引，默认为 <code>0</code>，它不完全等价于字符串切片。<code>^</code> 样式字符匹配行开头，但不会匹配索引规定开始的位置。<br><code>endpos</code> —— 字符串搜索的结束。只有从 <code>pos</code> 到 <code>endpos - 1</code> 的字符会被匹配。<br>如果 <code>endpos</code> 小于 <code>pos</code>，就不会有匹配产生。<br>pattern_obj.search(string, 0, 50)<code>等价于</code>pattern_obj.search(string[:50], 0)`。</td>
+</tr>
+<tr>
+<td><code>Pattern.match(string[, pos[, endpos]])</code></td>
+<td>如果 <code>string</code> 的开始位置能够找到这个正则样式 <code>Pattern</code> 的任意个匹配，就返回一个相应的匹配对象（<code>Match</code>）。如果不匹配，就返回 <code>None</code>。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围，与 <code>Pattern.search()</code> 含义相同。</td>
+</tr>
+<tr>
+<td><code>Pattern.fullmatch(string[, pos[, endpos]])</code></td>
+<td>如果整个 <code>string</code> 匹配这个正则表达式，就返回一个相应的匹配对象（<code>Match</code>）。如果不匹配，就返回 <code>None</code>。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围。</td>
+</tr>
+<tr>
+<td><code>Pattern.findall(string[, pos[, endpos]])</code></td>
+<td>类似 <code>re.findall()</code>，使用了编译后样式，在 <code>string</code> 中找到 <code>Pattern</code> 所匹配的所有子串，以列表形式返回所有匹配项。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围。</td>
+</tr>
+<tr>
+<td><code>Pattern.finditer(string[, pos[, endpos]])</code></td>
+<td>类似函数 <code>finiter()</code> ， 使用了编译后样式，在 <code>string</code> 中找到 <code>Pattern</code> 所匹配的所有子串，以迭代器形式返回所有匹配项。<br>可选参数 <code>pos</code> 和 <code>endpos</code> 指定 <code>string</code> 的查找范围。</td>
+</tr>
+<tr>
+<td><code>Pattern.split(string, maxsplit=0)</code></td>
+<td>等价于 <code>split()</code> 函数，使用了编译后的样式，按照能够匹配的子串对字符串进行分割。<br> <code>maxsplit</code> —— 最大分割次数。</td>
+</tr>
+<tr>
+<td><code>Pattern.sub(repl, string, count=0)</code></td>
+<td>等价于 <code>sub()</code> 函数，使用了编译后的样式，使用 <code>repl</code> 替换掉 <code>string</code> 中被 <code>Pattern</code> 匹配的字符。<br><code>count</code> —— 最大替换次数。<br>返回一个替换后的字符串。如果 <code>string</code> 中没有任何匹配项，则返回 <code>string</code>。</td>
+</tr>
+<tr>
+<td><code>Pattern.subn(repl, string, count=0)</code></td>
+<td>等价于 <code>subn()</code> 函数，使用了编译后的样式，使用 <code>repl</code> 替换掉 <code>string</code> 中被 <code>Pattern</code> 匹配的字符。<br><code>count</code> —— 最大替换次数。<br>返回一个元组，包含了替换后的字符串和替换次数。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="正则对象属性" data-numberify>正则对象属性<a class="anchor ms-1" href="#正则对象属性"></a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pattern.flags</code></td>
+<td>正则匹配标记。<br>可以传递给 <code>compile()</code> 的参数。任何 <code>(?…)</code> 内联标记，隐性标记（<code>re.U</code>）的结合。</td>
+</tr>
+<tr>
+<td><code>Pattern.groups</code></td>
+<td>捕获到的模式串中组的数量。</td>
+</tr>
+<tr>
+<td><code>Pattern.groupindex</code></td>
+<td>映射由 <code>(?P&lt;id&gt;)</code> 定义的命名符号组合和数字组合的字典。如果没有符号组，那字典就是空的。</td>
+</tr>
+<tr>
+<td><code>Pattern.pattern</code></td>
+<td>编译对象的原始样式字符串。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="匹配对象" data-numberify>匹配对象<a class="anchor ms-1" href="#匹配对象"></a></h2>
+<p>匹配对象（Match）是调用 <code>re</code> 模块中的函数或方法匹配后返回的对象。</p>
+<p>匹配对象总是有一个布尔值 <code>True</code>。如果没有匹配的话 <code>re.match()</code> 和 <code>re.search()</code> 返回 <code>None</code>。可以简单的用 <code>if</code> 语句来判断是否匹配：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="kc">True</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="kc">False</span>
+</span></span></code></pre></div><hr>
+<h3 id="匹配对象方法" data-numberify>匹配对象方法<a class="anchor ms-1" href="#匹配对象方法"></a></h3>
+<p>匹配对象支持以下方法：</p>
+<ul>
+<li>
+<p><code>Match.expand(template)</code>：</p>
+<ul>
+<li>对 <code>template</code> 进行反斜杠（<code>'\'</code>）转义替换并且返回。</li>
+</ul>
+</li>
+<li>
+<p><code>Match.group([group1, ...])</code>：</p>
+<ul>
+<li>
+<p>返回一个或者多个匹配的子组。</p>
+</li>
+<li>
+<p>如果只有一个参数，结果就是一个字符串；
+如果有多个参数，结果就是一个元组（每个参数对应一个项）；
+如果没有参数，<code>group1</code> 默认为 <code>0</code>（整个匹配都被返回）。</p>
+</li>
+<li>
+<p>如果一个 <code>groupN</code> 参数值为 <code>0</code>，相应的返回值就是整个匹配字符串；
+如果它是一个范围 [1..99]，结果就是相应的括号组字符串。</p>
+</li>
+<li>
+<p>如果一个组号是负数，或者大于样式中定义的组数，会抛出一个 <code>IndexError</code>。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+) (\w+)&#39;</span><span class="p">,</span> <span class="s1">&#39;Python PHP Java C++&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>    <span class="c1"># 返回整个匹配</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;Python PHP&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># 返回第一个括号组</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;Python&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    <span class="c1"># 返回第二个括号组</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;PHP&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># 多个参数返回一个元组</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;Python&#39;</span><span class="p">,</span> <span class="s1">&#39;PHP&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>如果正则表达式使用了 <code>(?P&lt;name&gt;…)</code> 语法， <code>groupN</code> 参数可以是索引值，也可以是组名。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;name_1&gt;\w+) (?P&lt;name_2&gt;\w+)&#39;</span><span class="p">,</span> <span class="s1">&#39;Python PHP&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name_1&#39;</span><span class="p">,</span> <span class="s1">&#39;name_2&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;Python&#39;</span><span class="p">,</span> <span class="s1">&#39;PHP&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;Python&#39;</span><span class="p">,</span> <span class="s1">&#39;PHP&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>如果一个组包含在样式的一部分，并被匹配多次，就返回最后一个匹配。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(..)+&#39;</span><span class="p">,</span> <span class="s1">&#39;a1b2c3&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;c3&#39;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><code>Match.getitem(g)</code>：</p>
+<ul>
+<li>
+<p>Python3.6 新增功能。</p>
+</li>
+<li>
+<p>等价于 <code>m.group(g)</code>，允许更方便地引用一个匹配。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;name_1&gt;\w+) (?P&lt;name_2&gt;\w+)&#39;</span><span class="p">,</span> <span class="s1">&#39;Python PHP&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;Python PHP&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;Python&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;PHP&#39;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><code>Match.groups(default=None)</code>：</p>
+<ul>
+<li>
+<p>返回一个元组，包含所有匹配的子组，在样式中出现的从 1 到任意多的组合。<code>default</code> 参数用于不参与匹配的情况，默认为 <code>None</code>。</p>
+</li>
+<li>
+<p>Example：
+使小数部分可选，那么不是所有的组都会参与到匹配当中。这些组合默认会返回一个 <code>None</code> ，除非指定了 <code>default</code> 参数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)\.(\d+)&#39;</span><span class="p">,</span> <span class="s1">&#39;3.14&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;14&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;(\d+)\.?(\d+)?&#34;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>    <span class="c1"># 第二个子组默认为 None</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>  <span class="c1"># 第二个子组被设置为指定的默认值 &#39;0&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><code>Match.groupdict(default=None)</code>：</p>
+<ul>
+<li>
+<p>返回一个字典，包含了所有的命名子组。key 就是组名。 <code>default</code> 参数用于不参与匹配的组合；默认为 <code>None</code>。</p>
+</li>
+<li>
+<p>Example：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;name_1&gt;\w+) (?P&lt;name_2&gt;\w+)&#39;</span><span class="p">,</span> <span class="s1">&#39;Python PHP&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s1">&#39;name_1&#39;</span><span class="p">:</span> <span class="s1">&#39;Python&#39;</span><span class="p">,</span> <span class="s1">&#39;name_2&#39;</span><span class="p">:</span> <span class="s1">&#39;PHP&#39;</span><span class="p">}</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><code>Match.start([group])</code> 和 <code>Match.end([group])</code>：</p>
+<ul>
+<li>
+<p>返回 <code>group</code> 匹配到的字串在原字符串的开始和结束索引。<code>group</code> 默认为 <code>0</code>（意思是整个匹配的子串）。如果 <code>group</code> 存在，但未产生匹配，就返回 <code>-1</code> 。</p>
+</li>
+<li>
+<p>从 email 地址中移除掉 <code>remove_this</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&#34;tony@tiremove_thisger.net&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&#34;remove_this&#34;</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">email</span><span class="p">[:</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span> <span class="o">+</span> <span class="n">email</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;tony@tiger.net&#39;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><code>Match.span([group])</code>：</p>
+<ul>
+<li>对于一个匹配 <code>m</code> ， 返回一个二元组 <code>(m.start(group), m.end(group))</code> 。
+如果 <code>group</code> 没有在这个匹配中，就返回 <code>(-1, -1)</code> 。
+<code>group</code> 默认为 <code>0</code>，就是整个匹配。</li>
+</ul>
+</li>
+</ul>
+<hr>
+]]></content:encoded>
     </item>
     
   </channel>

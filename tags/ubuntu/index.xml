@@ -16,6 +16,26 @@
       
       <guid>/blog/2022/09/linux-%E7%BB%88%E7%AB%AF%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%AE%BE%E7%BD%AE/</guid>
       <description><![CDATA[Ubuntu 安装中文支持： apt-get install language-pack-zh-hans -y 查看系统语言包： locale -a 修改~/.bashrc，加入： export LC_ALL=zh_CN.UTF-8 export LANG=zh_CN.UTF-8 修改/etc/default/locale： LANG=&#34;zh_CN.UTF-8&#34; Debian 安装loc]]></description>
+      <content:encoded><![CDATA[<h1 id="ubuntu" data-numberify>Ubuntu<a class="anchor ms-1" href="#ubuntu"></a></h1>
+<p>安装中文支持：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get install language-pack-zh-hans -y
+</span></span></code></pre></div><p>查看系统语言包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">locale -a
+</span></span></code></pre></div><p>修改<code>~/.bashrc</code>，加入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span></code></pre></div><p>修改<code>/etc/default/locale</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span></code></pre></div><h1 id="debian" data-numberify>Debian<a class="anchor ms-1" href="#debian"></a></h1>
+<p>安装<code>locales</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install locales -y
+</span></span></code></pre></div><p>安装完成后可能会提示设置<code>locales</code>，如果安装完之后想要更改相关设置或者没有提示设置，可以使用如下命令重新设置<code>locales</code>相关信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dpkg-reconfigure locales
+</span></span></code></pre></div><h1 id="zsh" data-numberify>ZSH<a class="anchor ms-1" href="#zsh"></a></h1>
+<p>修改<code>~/.zshrc</code>，加入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
@@ -25,6 +45,22 @@
       
       <guid>/blog/2022/08/ssh-%E5%85%AC%E9%92%A5%E9%85%8D%E7%BD%AE/</guid>
       <description><![CDATA[创建.ssh目录并生成公钥: ssh-keygen -t rsa 所有选项全部回车, 使用默认选项即可. 然后切换到用户目录下的.ssh目录: cd ~/.ssh 该目录下默认有三个文件: id_rsa: 用户]]></description>
+      <content:encoded><![CDATA[<p>创建<code>.ssh</code>目录并生成公钥:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t rsa
+</span></span></code></pre></div><p>所有选项全部回车, 使用默认选项即可.</p>
+<p>然后切换到用户目录下的<code>.ssh</code>目录:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> ~/.ssh
+</span></span></code></pre></div><p>该目录下默认有三个文件:</p>
+<ul>
+<li><code>id_rsa</code>: 用户私钥, 不要复制发送给任何人.</li>
+<li><code>id_rsa.pub</code>: 公钥, 将里面内容发送给客户端.</li>
+<li><code>authorized_keys</code>: 信任的公钥.</li>
+</ul>
+<p>只需要将<code>id_rsa.pub</code>里的内容以 (<code>ssh-rsa</code>开头的一行内容) 复制到客户端的<code>authorized_keys</code>的目录下即可.</p>
+<p>接着在客户端使用:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh username@ip -p port
+</span></span></code></pre></div><p>即可连接到服务器.</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -34,6 +70,51 @@
       
       <guid>/blog/2022/07/code-server-%E9%83%A8%E7%BD%B2/</guid>
       <description><![CDATA[下载code-server： wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz 可以访问code-server GitHub 页面获取下载连接。 解压： tar -zxvf code-server-4.5.1-linux-amd64.tar.gz 将解压后的文件移动到/opt目录下，并重命名：]]></description>
+      <content:encoded><![CDATA[<ol>
+<li>
+<p>下载code-server：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz
+</span></span></code></pre></div><p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面" target="_blank" rel="noopener noreferrer">code-server GitHub 页面<i class="fas fa-external-link-square-alt ms-1"></i></a>获取下载连接。</p>
+</li>
+<li>
+<p>解压：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz
+</span></span></code></pre></div></li>
+<li>
+<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mv code-server-4.5.1-linux-amd64 /opt/code-server
+</span></span></code></pre></div></li>
+<li>
+<p>创建软链到<code>/usr/bin</code>目录下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln -s /opt/code-server/code-server /usr/bin/code-server
+</span></span></code></pre></div></li>
+<li>
+<p>修改配置文件<code>~/.config/code-server/config.yaml</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.config/code-server/config.yaml
+</span></span></code></pre></div></li>
+<li>
+<p>添加code-server服务：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /lib/systemd/system/codeweb.service
+</span></span></code></pre></div><p>写入如下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>The nginx HTTP and reverse proxy server
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target remote-fs.target nss-lookup.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/code-server
+</span></span><span class="line"><span class="cl"><span class="nv">KillSignal</span><span class="o">=</span>SIGQUIT
+</span></span><span class="line"><span class="cl"><span class="nv">TimeoutStopSec</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
+</span></span><span class="line"><span class="cl"><span class="nv">PrivateTmp</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StandardOutput</span><span class="o">=</span>syslog
+</span></span><span class="line"><span class="cl"><span class="nv">StandardError</span><span class="o">=</span>inherit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
     </item>
     
     <item>
@@ -43,6 +124,123 @@
       
       <guid>/blog/2022/07/%E6%90%AD%E5%BB%BA-frp-%E6%9C%8D%E5%8A%A1/</guid>
       <description><![CDATA[下载frp： wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz 或者访问frp项目获取自己需要的版本。 解压： tar -zxvf frp_0.44.0_linux_amd64.tar.gz 进入目录后，配置frps.ini和frpc.ini： cd frp_0.44.0_linux_amd64 服务端： vim frps.ini 将文件]]></description>
+      <content:encoded><![CDATA[<ol>
+<li>
+<p>下载frp：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz
+</span></span></code></pre></div><p>或者访问<a href="https://github.com/fatedier/frp/" title="frp项目" target="_blank" rel="noopener noreferrer">frp项目<i class="fas fa-external-link-square-alt ms-1"></i></a>获取自己需要的版本。</p>
+</li>
+<li>
+<p>解压：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zxvf frp_0.44.0_linux_amd64.tar.gz
+</span></span></code></pre></div></li>
+<li>
+<p>进入目录后，配置<code>frps.ini</code>和<code>frpc.ini</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> frp_0.44.0_linux_amd64
+</span></span></code></pre></div><ul>
+<li>
+<p>服务端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim frps.ini
+</span></span></code></pre></div><p>将文件按照下面修改：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># frp监听的端口，默认是7000，可以改成其他的</span>
+</span></span><span class="line"><span class="cl"><span class="nv">bind_port</span> <span class="o">=</span> <span class="m">7000</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 授权码，请改成更复杂的</span>
+</span></span><span class="line"><span class="cl"><span class="nv">token</span> <span class="o">=</span> <span class="m">123456</span>  <span class="c1"># 这个token之后在客户端会用到</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># frp管理后台端口，请按自己需求更改</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dashboard_port</span> <span class="o">=</span> <span class="m">7500</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># frp管理后台用户名和密码，请改成自己的</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dashboard_user</span> <span class="o">=</span> admin
+</span></span><span class="line"><span class="cl"><span class="nv">dashboard_pwd</span> <span class="o">=</span> admin
+</span></span><span class="line"><span class="cl"><span class="nv">enable_prometheus</span> <span class="o">=</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># frp日志配置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">log_file</span> <span class="o">=</span> /var/log/frps.log
+</span></span><span class="line"><span class="cl"><span class="nv">log_level</span> <span class="o">=</span> info
+</span></span><span class="line"><span class="cl"><span class="nv">log_max_days</span> <span class="o">=</span> <span class="m">3</span>
+</span></span></code></pre></div></li>
+<li>
+<p>客户端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim frpc.ini
+</span></span></code></pre></div><p>将文件按照下面修改：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 客户端配置</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">server_addr</span> <span class="o">=</span> 服务器ip
+</span></span><span class="line"><span class="cl"><span class="nv">server_port</span> <span class="o">=</span> <span class="m">7000</span> <span class="c1"># 与frps.ini的bind_port一致</span>
+</span></span><span class="line"><span class="cl"><span class="nv">token</span> <span class="o">=</span> <span class="m">52010</span>  <span class="c1"># 与frps.ini的token一致</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置ssh服务</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ssh<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="o">=</span> tcp
+</span></span><span class="line"><span class="cl"><span class="nv">local_ip</span> <span class="o">=</span> 127.0.0.1 <span class="c1"># 默认本地ip</span>
+</span></span><span class="line"><span class="cl"><span class="nv">local_port</span> <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="nv">remote_port</span> <span class="o">=</span> <span class="m">6000</span>  <span class="c1"># 这个自定义，之后再ssh连接的时候要用</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置http服务，可用于小程序开发、远程调试等，如果没有可以不写下面的</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>web<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="o">=</span> http
+</span></span><span class="line"><span class="cl"><span class="nv">local_ip</span> <span class="o">=</span> 127.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">local_port</span> <span class="o">=</span> <span class="m">8080</span>
+</span></span><span class="line"><span class="cl"><span class="nv">subdomain</span> <span class="o">=</span> test.hijk.pw  <span class="c1"># web域名</span>
+</span></span><span class="line"><span class="cl"><span class="nv">remote_port</span> <span class="o">=</span> 自定义的远程服务器端口，例如8080
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>接着需要在防火墙开启相应的端口。</p>
+</li>
+<li>
+<p>启动服务：</p>
+<ul>
+<li>
+<p>服务端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./frps -s frps.ini
+</span></span></code></pre></div><p>或者配置<code>frps.server</code>文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /lib/systemd/system/frps.service
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>The nginx HTTP and reverse proxy server
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target remote-fs.target nss-lookup.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据实际情况修改这条命令或者将frps、frps.ini移动到相应位置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/frps -c /etc/frp/frps.ini
+</span></span><span class="line"><span class="cl"><span class="nv">KillSignal</span><span class="o">=</span>SIGQUIT
+</span></span><span class="line"><span class="cl"><span class="nv">TimeoutStopSec</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
+</span></span><span class="line"><span class="cl"><span class="nv">PrivateTmp</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StandardOutput</span><span class="o">=</span>syslog
+</span></span><span class="line"><span class="cl"><span class="nv">StandardError</span><span class="o">=</span>inherit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div></li>
+<li>
+<p>客户端：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./frpc -c frpc.ini
+</span></span></code></pre></div><p>如果是Linux也可以配置<code>frpc.service</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Frp Client Service
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="c1">#User=nobody</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
+</span></span><span class="line"><span class="cl"><span class="nv">RestartSec</span><span class="o">=</span>5s
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据实际情况修改以下两条命令或者将frps、frps.ini移动到相应位置</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/frpc -c /etc/frp/frpc.ini
+</span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/usr/bin/frpc reload -c /etc/frp/frpc.ini
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ol>
+<p>更多请见<a href="https://frps.cn/11.html" title="Frp官方文档" target="_blank" rel="noopener noreferrer">Frp官方文档<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -52,6 +250,55 @@
       
       <guid>/blog/2022/01/ubuntu-%E5%AE%89%E8%A3%85-oh-my-zsh/</guid>
       <description><![CDATA[oh-my-zsh主页： https://ohmyz.sh/ 安装并设置zsh 安装zsh： sudo apt install zsh 查看系统中所有的shell： cat /etc/shells # /etc/shells: valid login shells /bin/sh /bin/bash /usr/bin/bash /bin/rbash /usr/bin/rbash /bin/dash /usr/bin/dash /usr/bin/tmux /usr/bin/screen /bin/zsh /usr/bin/zsh 将zsh设置为]]></description>
+      <content:encoded><![CDATA[<p>oh-my-zsh主页： <a href="https://ohmyz.sh/" title="https://ohmyz.sh/" target="_blank" rel="noopener noreferrer">https://ohmyz.sh/<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<h1 id="安装并设置zsh" data-numberify>安装并设置zsh<a class="anchor ms-1" href="#安装并设置zsh"></a></h1>
+<p>安装zsh：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install zsh
+</span></span></code></pre></div><p>查看系统中所有的shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/shells
+</span></span></code></pre></div><pre tabindex="0"><code class="language-纯文本" data-lang="纯文本"># /etc/shells: valid login shells
+/bin/sh
+/bin/bash
+/usr/bin/bash
+/bin/rbash
+/usr/bin/rbash
+/bin/dash
+/usr/bin/dash
+/usr/bin/tmux
+/usr/bin/screen
+/bin/zsh
+/usr/bin/zsh
+</code></pre><p>将zsh设置为默认的shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chsh -s /bin/zsh
+</span></span></code></pre></div><p>重新连接到Ubuntu，然后查看当前默认shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$SHELL</span>
+</span></span></code></pre></div><p>如果显示<code>/bin/zsh</code>则配置成功。</p>
+<hr>
+<h1 id="安装-oh-my-zsh" data-numberify>安装 oh-my-zsh<a class="anchor ms-1" href="#安装-oh-my-zsh"></a></h1>
+<p>下载install.sh：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh
+</span></span></code></pre></div><p>给install.sh添加权限：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod +x install.sh
+</span></span></code></pre></div><p>执行install.sh：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./install.sh
+</span></span></code></pre></div><blockquote>
+<p>📌在执行install.sh之前还需要安装git。否则会报错。</p>
+<p>安装git：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install git
+</span></span></code></pre></div></blockquote>
+<hr>
+<h1 id="配置zsh" data-numberify>配置zsh<a class="anchor ms-1" href="#配置zsh"></a></h1>
+<p>zsh的配置文件为：<code>~/.zshrc</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.zshrc
+</span></span></code></pre></div><h2 id="修改主题" data-numberify>修改主题<a class="anchor ms-1" href="#修改主题"></a></h2>
+<p>主题配置项为：<code>ZSH_THEME</code>。</p>
+<p>默认主题配置为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ZSH_THEME=&#34;robbyrussell&#34;
+</span></span></code></pre></div><p>可以修改为其中之一：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ZSH_THEME=&#34;ys&#34;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ZSH_THEME=&#34;geoffgarside&#34;
+</span></span></code></pre></div><p>还可以访问<a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes" title="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes" target="_blank" rel="noopener noreferrer">https://github.com/ohmyzsh/ohmyzsh/wiki/Themes<i class="fas fa-external-link-square-alt ms-1"></i></a> 查看更多主题。</p>
+]]></content:encoded>
     </item>
     
   </channel>

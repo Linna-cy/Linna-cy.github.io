@@ -16,6 +16,35 @@
       
       <guid>/docs/spring/springmvc/api-tools/</guid>
       <description><![CDATA[Postman Apifox（作者也在用） Apifox和Postman差不多，但是比Postman更易用。界面美观、支持中文。而且设置接口参数也很方便，还]]></description>
+      <content:encoded><![CDATA[<h1 id="postman" data-numberify>Postman<a class="anchor ms-1" href="#postman"></a></h1>
+<p><a href="https://www.postman.com/" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Postman" src="/docs/spring/springmvc/api-tools/96bff51802e8a43c.png" loading="lazy" width="1800" height="1095" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<h1 id="apifox作者也在用" data-numberify>Apifox（作者也在用）<a class="anchor ms-1" href="#apifox作者也在用"></a></h1>
+<p><a href="https://apifox.com/" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Apifox" src="/docs/spring/springmvc/api-tools/dark-purple.png" loading="lazy" width="2600" height="1646" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<blockquote>
+<p>Apifox和Postman差不多，但是比Postman更易用。界面美观、支持中文。而且设置接口参数也很方便，还能自动生成随机的参数。支持将接口导出为HTML、Markdown、PDF等格式。在编写API测试时，还能用它来编写Markdown文档来进一步说明。</p>
+<p>支持多种导入方式：</p>
+<p><picture><img class="img-fluid " alt="Apifox数据导入方式" src="/docs/spring/springmvc/api-tools/uTools_1690465592640.png" loading="lazy" width="1255" height="210" />
+</picture>
+
+</p>
+<p>缺点就是每次开机第一次打开Apifox都需要等待一段时间的加载（也有可能是我机械硬盘太慢了）。</p>
+</blockquote>
+<h1 id="swaggerknife4j" data-numberify>Swagger（Knife4j）<a class="anchor ms-1" href="#swaggerknife4j"></a></h1>
+<p>Swagger是一款用于Java的API文档自动生成的框架。</p>
+<p>Knife4j是Swagger的增强UI实现。并且Swagger和Knife4j可以无缝切换。</p>
+<p>Knife4j（Swagger）的Maven依赖坐标如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>knife4j-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.0.2<span class="nt">&lt;/version&gt;</span> <span class="c">&lt;!-- 版本号 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div>]]></content:encoded>
     <enclosure url="/images/dark-purple.png" length="285763" type="image/.png" />
     </item>
     
@@ -26,6 +55,270 @@
       
       <guid>/docs/spring/springboot/swagger_knife4j/</guid>
       <description><![CDATA[导入依赖 Knife4j的依赖坐标如下： &lt;dependency&gt; &lt;groupId&gt;com.github.xiaoymin&lt;/groupId&gt; &lt;artifactId&gt;knife4j-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;3.0.2&lt;/version&gt; &lt;/dependency&gt; 配置类 编写（或修改）配置类： @Configuration @EnableSwagger2 // 开启Swagger2 @EnableKnife4j // 开启Knife4j public class WebMvcConfig extends WebMvcConfigurationSupport { @Bean public]]></description>
+      <content:encoded><![CDATA[<h1 id="导入依赖" data-numberify>导入依赖<a class="anchor ms-1" href="#导入依赖"></a></h1>
+<p>Knife4j的依赖坐标如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>knife4j-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.0.2<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="配置类" data-numberify>配置类<a class="anchor ms-1" href="#配置类"></a></h1>
+<p>编写（或修改）配置类：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Configuration</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@EnableSwagger2</span> <span class="c1">// 开启Swagger2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nd">@EnableKnife4j</span>  <span class="c1">// 开启Knife4j
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebMvcConfig</span> <span class="kd">extends</span> <span class="n">WebMvcConfigurationSupport</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Bean</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Docket</span> <span class="nf">createRestApi</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 设置文档类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="k">new</span> <span class="n">Docket</span><span class="o">(</span><span class="n">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">apiInfo</span><span class="o">())</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">select</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 设置Controller的包名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">.</span><span class="na">apis</span><span class="o">(</span><span class="n">RequestHandlerSelectors</span><span class="o">.</span><span class="na">basePackage</span><span class="o">(</span><span class="s">&#34;com.linner.reggie.controller&#34;</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">any</span><span class="o">())</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * API文档描述
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">ApiInfo</span> <span class="nf">apiInfo</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">ApiInfoBuilder</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 文档标题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">.</span><span class="na">title</span><span class="o">(</span><span class="s">&#34;瑞吉外卖&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 文档版本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">.</span><span class="na">version</span><span class="o">(</span><span class="s">&#34;1.0&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 文档描述
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">&#34;瑞吉外卖接口文档&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 设置静态资源映射
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;p&gt;放行静态页面资源&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param registry
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addResourceHandlers</span><span class="o">(</span><span class="n">ResourceHandlerRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// API文档的静态资源映射
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">registry</span><span class="o">.</span><span class="na">addResourceHandler</span><span class="o">(</span><span class="s">&#34;doc.html&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">addResourceLocations</span><span class="o">(</span><span class="s">&#34;classpath:/META-INF/resources/&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">registry</span><span class="o">.</span><span class="na">addResourceHandler</span><span class="o">(</span><span class="s">&#34;/webjars/**&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">addResourceLocations</span><span class="o">(</span><span class="s">&#34;classpath:/META-INF/resources/webjars/&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><hr>
+<h1 id="资源放行" data-numberify>资源放行<a class="anchor ms-1" href="#资源放行"></a></h1>
+<p>放行文档静态页面请求。必须确保以下静态资源路径可以被访问，不被拦截：</p>
+<pre tabindex="0"><code>/doc.html
+/webjars/**
+/swagger-resources
+/v2/api-docs
+</code></pre><hr>
+<h1 id="api-文档注解" data-numberify>API 文档注解<a class="anchor ms-1" href="#api-文档注解"></a></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">注解</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>@Api</code></td>
+<td>用在请求的类上（例如Controller，使用<code>tags</code>元素指定文档的标签。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>@ApiModel</code></td>
+<td>用在类上（例如实体类），表示一个返回响应数据的信息。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>@ApiModelProperty</code></td>
+<td>用在属性上，描述响应类（实体类）的属性。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>@ApiOperation</code></td>
+<td>用在请求的方法上，说明方法的用途、作用。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>@ApiImplicitParams</code></td>
+<td>用在请求的方法上，表示一组参数说明。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>@ApiImplicitParam</code></td>
+<td>用在<code>@ApiImplicitParams</code>注解中，指定一个请求参数的各个方面。<br>如果只用说明一个参数的话，<code>@ApiImplicitParam</code>可以单独用在方法上。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意：@ApiImplicitParam不能对实体类进行定义，否则访问API文档时/v2/api-docs会出现接口异常（500状态码）。</p>
+</blockquote>
+<hr>
+<h1 id="示例" data-numberify>示例<a class="anchor ms-1" href="#示例"></a></h1>
+<p>标识响应数据信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> 菜品
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Data</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@ApiModel</span><span class="o">(</span><span class="s">&#34;菜品&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dish</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">1L</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品ID&#34;</span><span class="o">)</span>     <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//菜品名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品名称&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//菜品分类id
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品分类ID&#34;</span><span class="o">)</span> <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">categoryId</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//菜品价格
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品价格&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">BigDecimal</span> <span class="n">price</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//商品码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;商品码&#34;</span><span class="o">)</span>     <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">code</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//图片
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品图片&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">image</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//描述信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;描述信息&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">description</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//0 停售 1 起售
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;商品状态&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Integer</span> <span class="n">status</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//顺序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;展示顺序&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类属性的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Integer</span> <span class="n">sort</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>标识请求类：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 菜品管理
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@RestController</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/dish&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Api</span><span class="o">(</span><span class="n">tags</span> <span class="o">=</span> <span class="s">&#34;菜品管理&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DishController</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Autowired</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">DishService</span> <span class="n">dishService</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Autowired</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">DishFlavorService</span> <span class="n">dishFlavorService</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Autowired</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">CategoryService</span> <span class="n">categoryService</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Autowired</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">RedisTemplate</span> <span class="n">redisTemplate</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 新增菜品
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param dishDto
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@PostMapping</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@ApiOperation</span><span class="o">(</span><span class="s">&#34;新增菜品&#34;</span><span class="o">)</span>   <span class="c1">// 标识API方法，对API请求进行说明
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">R</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">save</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">DishDto</span> <span class="n">dishDto</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 清理某个分类下面的菜品缓存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getRedisKey</span><span class="o">(</span><span class="n">dishDto</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">redisTemplate</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">dishService</span><span class="o">.</span><span class="na">saveWithFlavor</span><span class="o">(</span><span class="n">dishDto</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">R</span><span class="o">.</span><span class="na">success</span><span class="o">(</span><span class="s">&#34;新增菜品成功&#34;</span><span class="o">);</span>   <span class="c1">// 返回一个请求成功的响应体信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 菜品信息分页查询
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param page
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param pageSize
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&#34;/page&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@ApiOperation</span><span class="o">(</span><span class="s">&#34;菜品信息分页查询&#34;</span><span class="o">)</span>   <span class="c1">// 标识API方法，对API请求进行说明
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiImplicitParams</span><span class="o">({</span>    <span class="c1">// 标识API方法，对API请求参数进行说明
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">             * @ApiImplicitParam 对请求参数进行具体的说明，它的属性有：
+</span></span></span><span class="line"><span class="cl"><span class="cm">             * - name：标识请求参数的名称，与API方法的参数名对应
+</span></span></span><span class="line"><span class="cl"><span class="cm">             * - value：对name对应的参数进行说明
+</span></span></span><span class="line"><span class="cl"><span class="cm">             * - required：对name对应的参数是否为必须的请求参数进行说明
+</span></span></span><span class="line"><span class="cl"><span class="cm">             *   - true：值为true表示该参数是请求时必须携带的
+</span></span></span><span class="line"><span class="cl"><span class="cm">             *   - false：值为false表示在进行请求时，可以不必携带该参数
+</span></span></span><span class="line"><span class="cl"><span class="cm">             */</span>
+</span></span><span class="line"><span class="cl">            <span class="nd">@ApiImplicitParam</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;page&#34;</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;页码&#34;</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="o">),</span>
+</span></span><span class="line"><span class="cl">            <span class="nd">@ApiImplicitParam</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;pageSize&#34;</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;每页展示数据条数&#34;</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="o">),</span>
+</span></span><span class="line"><span class="cl">            <span class="nd">@ApiImplicitParam</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;name&#34;</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;要搜索的菜品名称&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">})</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">R</span><span class="o">&lt;</span><span class="n">Page</span><span class="o">&gt;</span> <span class="nf">page</span><span class="o">(</span><span class="kt">int</span> <span class="n">page</span><span class="o">,</span> <span class="kt">int</span> <span class="n">pageSize</span><span class="o">,</span> <span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 构造分页构造器对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Page</span><span class="o">&lt;</span><span class="n">Dish</span><span class="o">&gt;</span> <span class="n">pageInfo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Page</span><span class="o">&lt;&gt;(</span><span class="n">page</span><span class="o">,</span> <span class="n">pageSize</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Page</span><span class="o">&lt;</span><span class="n">DishDto</span><span class="o">&gt;</span> <span class="n">dishDtoPage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Page</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 条件构造器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">LambdaQueryWrapper</span><span class="o">&lt;</span><span class="n">Dish</span><span class="o">&gt;</span> <span class="n">queryWrapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LambdaQueryWrapper</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 添加过滤条件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="n">name</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">Dish</span><span class="o">::</span><span class="n">getName</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 添加排序条件（降序排序）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">orderByDesc</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getUpdateTime</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// isDeleted不为1（为1表示被删除）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 执行分页查询
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">dishService</span><span class="o">.</span><span class="na">page</span><span class="o">(</span><span class="n">pageInfo</span><span class="o">,</span> <span class="n">queryWrapper</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 对象拷贝
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">BeanUtils</span><span class="o">.</span><span class="na">copyProperties</span><span class="o">(</span><span class="n">pageInfo</span><span class="o">,</span> <span class="n">dishDtoPage</span><span class="o">,</span> <span class="s">&#34;records&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">Dish</span><span class="o">&gt;</span> <span class="n">records</span> <span class="o">=</span> <span class="n">pageInfo</span><span class="o">.</span><span class="na">getRecords</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">DishDto</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">records</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">((</span><span class="n">item</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">DishDto</span> <span class="n">dishDto</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DishDto</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">BeanUtils</span><span class="o">.</span><span class="na">copyProperties</span><span class="o">(</span><span class="n">item</span><span class="o">,</span> <span class="n">dishDto</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">Long</span> <span class="n">categoryId</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="na">getCategoryId</span><span class="o">();</span> <span class="c1">// 分类id
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Category</span> <span class="n">category</span> <span class="o">=</span> <span class="n">categoryService</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">categoryId</span><span class="o">);</span>    <span class="c1">// 根据id查询分类对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">category</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">String</span> <span class="n">categoryName</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">dishDto</span><span class="o">.</span><span class="na">setCategoryName</span><span class="o">(</span><span class="n">categoryName</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">dishDto</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}).</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">dishDtoPage</span><span class="o">.</span><span class="na">setRecords</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">R</span><span class="o">.</span><span class="na">success</span><span class="o">(</span><span class="n">dishDtoPage</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 根据id查询菜品全部信息（包括口味）
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param id
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&#34;/{id}&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@ApiOperation</span><span class="o">(</span><span class="s">&#34;根据id查询菜品全部信息（包括口味）&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 如果方法仅有一个参数，可以使用一个@ApiImplicitParam标识，无需使用@ApiImplicitParams
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nd">@ApiImplicitParam</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;id&#34;</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;要查询的菜品ID&#34;</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">R</span><span class="o">&lt;</span><span class="n">DishDto</span><span class="o">&gt;</span> <span class="nf">get</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="n">Long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">DishDto</span> <span class="n">dishDto</span> <span class="o">=</span> <span class="n">dishService</span><span class="o">.</span><span class="na">getByIdWithFlavor</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">R</span><span class="o">.</span><span class="na">success</span><span class="o">(</span><span class="n">dishDto</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><blockquote>
+<p>更多详细用法，请参考：<a href="https://gitee.com/linner_cheng/reggie_note/tree/v1.3/" target="_blank" rel="noopener noreferrer">瑞吉外卖项目 Knife4j 笔记<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+</blockquote>
+]]></content:encoded>
     </item>
     
   </channel>

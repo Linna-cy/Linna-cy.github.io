@@ -16,6 +16,60 @@
       
       <guid>/docs/docker/docker-compose/</guid>
       <description><![CDATA[介绍 Docker Compose是一个文本文件，用于定义和运行多容器 Docker应用程序的工具。通过Compose，可以使用YML文件来配置应用程序需要]]></description>
+      <content:encoded><![CDATA[<h1 id="介绍" data-numberify>介绍<a class="anchor ms-1" href="#介绍"></a></h1>
+<p>Docker Compose是一个文本文件，用于定义和运行多容器 Docker应用程序的工具。通过Compose，可以使用YML文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</p>
+<p>Compose使用的三个步骤：</p>
+<ul>
+<li>使用Dockerfile定义应用程序的环境。</li>
+<li>使用<code>docker-compose.yml</code>定义构成应用程序的服务，这样它们可以在隔离环境中一起运行。</li>
+<li>最后，执行<code>docker-compose up</code>命令来启动并运行整个应用程序。</li>
+</ul>
+<p><code>docker-compose.yml</code>的配置案例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">version: &#34;3.8&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">  mysql</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">    image: mysql:5.7.25</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="m">123456</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">    volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;/tmp/mysql/data:/var/lib/mysql&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;/tmp/mysql/conf/hmy.cnf:/etc/mysql/conf.d/hmy.cnf&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">  web</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">    build: .</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">    ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;8090:8090&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>上方的<code>docker-compose.yml</code>描述了一个项目，其中包含两个容器：</p>
+<ul>
+<li><code>mysql</code>：一个基于<code>mysql:5.7.25</code>镜像构建的容器，并且挂载了两个目录。</li>
+<li><code>web</code>：一个基于<code>docker build</code>临时构建的镜像容器，映射端口为<code>8090</code>。</li>
+</ul>
+<p>Docker Compose的详细语法可参考官网<a href="https://docs.docker.com/compose/compose-file/" target="_blank" rel="noopener noreferrer">Compose file reference<i class="fas fa-external-link-square-alt ms-1"></i></a>或者菜鸟教程的<a href="https://www.runoob.com/docker/docker-compose.html" target="_blank" rel="noopener noreferrer">Docker Compose<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p><code>docker-compose.yml</code>可以看做是将多个<code>docker run</code>命令写到一个文件，只是语法稍有差异。</p>
+<p>将<code>docker-compose.yml</code>和Dockerfile放置在同一个工作目录中，然后执行以下命令启动程序：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker-compose up
+</span></span></code></pre></div><p>命令执行成功后Docker Compose会自动帮你构建所需的镜像。</p>
+<p>如果想在后台执行该服务可以加上<code>-d</code>参数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker-compose up -d
+</span></span></code></pre></div><hr>
+<h1 id="安装" data-numberify>安装<a class="anchor ms-1" href="#安装"></a></h1>
+<p>Linux上可以从Github上下载Compose的二进制包来使用，最新发行的版本地址：<a href="https://github.com/docker/compose/releases" target="_blank" rel="noopener noreferrer">https://github.com/docker/compose/releases<i class="fas fa-external-link-square-alt ms-1"></i></a>。运行以下命令以下载 Docker Compose 的当前稳定版本：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo curl -L <span class="s2">&#34;https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">&#34;</span> -o /usr/local/bin/docker-compose
+</span></span></code></pre></div><p>如果要安装其他版本的Compose，请替换URL中的<code>v2.2.2</code>。</p>
+<blockquote>
+<p>Docker Compose存放在 GitHub，不太稳定。可以通过执行下面的命令，高速安装Docker Compose：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -L https://get.daocloud.io/docker/compose/releases/download/v2.4.1/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt; /usr/local/bin/docker-compose
+</span></span></code></pre></div></blockquote>
+<p>将可执行权限应用于二进制文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo chmod +x /usr/local/bin/docker-compose
+</span></span></code></pre></div><p>创建软链：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+</span></span></code></pre></div><p>测试是否安装成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker-compose version
+</span></span></code></pre></div><blockquote>
+<p>注意： 对于Alpine，需要以下依赖包：<code>py-pip</code>，<code>python-dev</code>，<code>libffi-dev</code>，<code>openssl-dev</code>，<code>gcc</code>，<code>libc-dev和make</code>。</p>
+<p>MacOS和Windows的Docker Desktop已经包含Compose和其他Docker应用程序，所以无需再进行安装。</p>
+</blockquote>
+]]></content:encoded>
     </item>
     
     <item>
@@ -25,6 +79,110 @@
       
       <guid>/docs/docker/dockerfile/</guid>
       <description><![CDATA[常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile]]></description>
+      <content:encoded><![CDATA[<p>常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。</p>
+<h1 id="镜像结构" data-numberify>镜像结构<a class="anchor ms-1" href="#镜像结构"></a></h1>
+<p>镜像是将应用程序及其需要的系统函数库、环境、配置、依赖打包而成。</p>
+<p>以MySQL镜像的组成结构为例：</p>
+<p><picture><img class="img-fluid " alt="MySQL镜像的组成结构" src="/docs/docker/dockerfile/image-20210731175806273.png" loading="lazy" width="2956" height="1674" />
+</picture>
+
+</p>
+<p>镜像就是在系统函数库、运行环境基础上，添加应用程序文件、配置文件、依赖文件等组合，然后编写好启动脚本打包在一起形成的文件。构建镜像，其实就是实现上述打包的过程。</p>
+<h1 id="语法" data-numberify>语法<a class="anchor ms-1" href="#语法"></a></h1>
+<p>构建自定义的镜像时，并不需要一个个文件去拷贝，打包。我们只需要告诉Docker，镜像的组成，需要哪些BaseImage、需要拷贝什么文件、需要安装什么依赖、启动脚本是什么。Dockerfile就是描述上述信息的文件。Docker会通过Dockerfile构建镜像。</p>
+<p>Dockerfile是一个文本文件，其中包含一个个的指令(Instruction），用指令来说明要执行什么操作来构建镜像。每一个指令都会形成一层Layer。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>FROM</code></td>
+<td style="text-align:left">指定基础镜像。必须在Dockerfile的第一行指定。</td>
+<td style="text-align:left"><code>FORM centos:6</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ENV</code></td>
+<td style="text-align:left">设置环境变量。在使用<code>docker run</code>时可以通过<code>-e</code>重设环境变量值。</td>
+<td style="text-align:left"><code>ENV key=value</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>COPY</code></td>
+<td style="text-align:left">拷贝本地文件到镜像的指定目录。</td>
+<td style="text-align:left">复制当前目录下的<code>mysql-5.7.rpm</code>到镜像的<code>/tmp</code>目录：<br><code>COPY ./mysql-5.7.rpm /tmp</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>RUN</code></td>
+<td style="text-align:left">执行Linux的Shell命令，一般是安装过程的命令。<code>RUN</code>在<code>docker build</code>时执行。</td>
+<td style="text-align:left"><code>RUN yum install gcc</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>EXPOSE</code></td>
+<td style="text-align:left">指定容器运行时监听的端口。</td>
+<td style="text-align:left"><code>EXPOSE 8080</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>CMD</code></td>
+<td style="text-align:left">（可以被覆盖）指定容器创建时的默认命令。<code>CMD</code>在<code>docker run</code>时执行。</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ENTRYPOINT</code></td>
+<td style="text-align:left">(不可被覆盖）镜像中应用的启动命令，容器运行时调用。</td>
+<td style="text-align:left"><code>ENTRYPOINT java -jar xxx.jar</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>VOLUME</code></td>
+<td style="text-align:left">为容器创建挂载点或声明卷。</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>WORKDIR</code></td>
+<td style="text-align:left">设置后续指令的工作目录。</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>USER</code></td>
+<td style="text-align:left">指定后续指令的用户上下文。</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SHELL</code></td>
+<td style="text-align:left">覆盖Docker中默认的Shell，用于RUN、CMD和ENTRYPOINT指令。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>更新详细语法说明，请参考官网文档：<a href="https://docs.docker.com/engine/reference/builder" target="_blank" rel="noopener noreferrer">Dockerfile reference<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>在使用Ubuntu、Debian这样的容器的时候，我们可能没办法使用它们的<code>systemctl</code>命令。这是因为它们在启动时默认没有初始化系统（<code>init</code>进程没有运行）。新的Debian和Ubuntu镜像中移除了<code>init</code>软件包，我们可以通过Dockerfile在创建一个包含<code>init</code>软件包的Debian镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> debian:latest</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 设置环境变量</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">APT_ETC_DIR</span><span class="o">=</span>/etc/apt <span class="nv">SOURCES_LIST_PATH</span><span class="o">=</span>./sources.list<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 将在本地配置好的镜像源文件拷贝到镜像</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> <span class="nv">$SOURCES_LIST_PATH</span> <span class="nv">$APT_DIR</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 更换镜像源</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> apt-get update<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装init软件包</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get install init -y<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装ssh</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get install -y openssh-server<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get clean all<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 暴露端口</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 22</span><span class="err">
+</span></span></span></code></pre></div><p>接着通过<code>docker build</code>命令构建镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker build -f ./Dockerfile . -t linner/debian
+</span></span></code></pre></div><p>然后使用以下命令运行容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -ti <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name my-debian <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">SOURCES_LIST_PATH</span><span class="o">=</span>/etc/apt/sources.list <span class="se">\ </span>   <span class="c1"># 把本地上使用的镜像源配置拷贝到容器中</span>
+</span></span><span class="line"><span class="cl">    linner/debian <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /sbin/init      <span class="c1"># 启动时运行init</span>
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
@@ -34,6 +192,160 @@
       
       <guid>/docs/docker/container-options/</guid>
       <description><![CDATA[容器状态 Docker容器一般会有以下三种状态： 运行：进程正常运行。 暂停：进程暂停，CPU不再运行，但不会释放内存。 停止：进程终止，回收进程占]]></description>
+      <content:encoded><![CDATA[<h1 id="容器状态" data-numberify>容器状态<a class="anchor ms-1" href="#容器状态"></a></h1>
+<p>Docker容器一般会有以下三种状态：</p>
+<ul>
+<li><strong>运行</strong>：进程正常运行。</li>
+<li><strong>暂停</strong>：进程暂停，CPU不再运行，但不会释放内存。</li>
+<li><strong>停止</strong>：进程终止，回收进程占用的内存、CPU等资源。</li>
+</ul>
+<p>相关的命令如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>docker run</code></td>
+<td style="text-align:left">创建并运行一个容器，正常情况下处于运行状态。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker pause</code></td>
+<td style="text-align:left">让一个运行的容器暂停。例如<code>docker pause my-debian</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker unpause</code></td>
+<td style="text-align:left">让一个容器从暂停状态恢复运行。例如<code>docker unpause my-debian</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker stop</code></td>
+<td style="text-align:left">停止一个运行的容器。例如<code>docker stop my-debian</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker start</code></td>
+<td style="text-align:left">让一个停止的容器再次运行。例如<code>docker start my-debian</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker rm</code></td>
+<td style="text-align:left">删除一个容器。例如<code>docker rm my-debian</code>。</td>
+</tr>
+</tbody>
+</table>
+<p><code>docker pause</code>、<code>docker unpause</code>、<code>docker stop</code>、<code>docker start</code>和<code>docker rm</code>的用法十分相似，都是在命令后面指定要操作的容器名称或者容器ID（Container ID）。</p>
+<h1 id="创建容器" data-numberify>创建容器<a class="anchor ms-1" href="#创建容器"></a></h1>
+<p>创建容器使用<code>docker run</code>命令。可以使用<code>docker run --help</code>查看它的用法。</p>
+<p>如果要创建一个<code>debian</code>容器，可以使用以下命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -ti <span class="se">\ </span>   <span class="c1"># 参数 -ti 表示使用终端交互式操作</span>
+</span></span><span class="line"><span class="cl">    --name my-debian <span class="se">\ </span> <span class="c1"># --name 指定容器的名称</span>
+</span></span><span class="line"><span class="cl">    -p 8088:80 <span class="se">\ </span>   <span class="c1"># -p 指定映射的端口，将容器的80端口映射到本地8088</span>
+</span></span><span class="line"><span class="cl">    -v /home/debian:/root <span class="se">\ </span><span class="c1"># -v 代表挂载，将本地的/home/deian目录挂载到容器的/root目录</span>
+</span></span><span class="line"><span class="cl">    debian:latest <span class="se">\ </span><span class="c1"># 指定创建容器的镜像</span>
+</span></span><span class="line"><span class="cl">    /bin/bash       <span class="c1"># 容器运行的命令，这里指运行容器的bash终端程序（也就是常见的命令行窗口）</span>
+</span></span></code></pre></div><p>运行该命令会进入创建好的Debian容器中（默认是进入<code>/</code>目录），输入<code>exit</code>可以退出Debian终端。</p>
+<p>容器挂载目录和端口映射的语法类似，它们都使用<code>:</code>符号分隔宿主机和容器。<code>:</code>左边的是宿主机的目录地址或端口号，<code>:</code>右边的是容器的目录地址或端口号。它们的语法如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">操作</th>
+<th style="text-align:center">命令参数语法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">挂载目录</td>
+<td style="text-align:center"><code>-v [宿主机目录或数据卷名称]:[容器目录]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">端口映射</td>
+<td style="text-align:center"><code>-p [宿主机可用端口号]:[容器应用端口号]</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：在使用<code>docker run</code>指令时，如果指定的镜像未<code>pull</code>，但在镜像仓库中存在，<u><code>docker run</code>会自动从仓库中拉取镜像</u>。</p>
+</blockquote>
+<p>大部分情况下容器是在后台运行的，可以通过使用<code>-d</code>指定容器的运行模式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -tid --name my-debian debian:latest /bin/bash
+</span></span></code></pre></div><p>加了<code>-d</code>参数就不会进入容器里面。</p>
+<blockquote>
+<p>注：Docker容器和镜像一样，它们除了ID之外都有一个易于使用的标识。Docker容器的标识就是<code>NAME</code>。容器的名称在Docker中标识唯一的一个容器，但是容器的名称可以为空（在<code>docker run</code>时不指定<code>--name</code>）。名称为空的容器需要使用容器ID来对其进行操作。</p>
+</blockquote>
+<h1 id="操作容器内部" data-numberify>操作容器内部<a class="anchor ms-1" href="#操作容器内部"></a></h1>
+<p>在后台运行的容器，我们想要进入容器内部或者在容器运行时运行一些其它命令，可以使用<code>docker exec</code>命令。</p>
+<p>例如要进入在后台运行的<code>my-debian</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> -ti my-debian /bin/bash
+</span></span></code></pre></div><p>又或者假设你在<code>my-debian</code>中装了MySQL，但是启动容器时MySQL Server并没有启动，此时你可以运行以下命令重启MySQL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> -tid my-debian systemctl restart mysql
+</span></span></code></pre></div><h1 id="查看容器" data-numberify>查看容器<a class="anchor ms-1" href="#查看容器"></a></h1>
+<p>查看所有正在运行的Docker容器有3种方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker ps
+</span></span><span class="line"><span class="cl">docker container ls
+</span></span><span class="line"><span class="cl">docker container ps
+</span></span></code></pre></div><p>查看Docker所有的容器（包括停止运行的容器）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker ps -a
+</span></span><span class="line"><span class="cl">docker container ls -a
+</span></span><span class="line"><span class="cl">docker container ps -a
+</span></span></code></pre></div><h1 id="数据卷" data-numberify>数据卷<a class="anchor ms-1" href="#数据卷"></a></h1>
+<p>在给容器挂载目录之前可以创建一个数据卷，这个数据卷也是在宿主机上的一个文件夹，这个文件夹的路径由Docker确定。一旦完成数据卷挂载，对容器中被挂载目录的一切操作都会作用在数据卷对应的宿主机目录。</p>
+<p>数据卷的作用是将容器与数据分离，解耦合，方便操作容器内数据，保证数据安全。</p>
+<p>数据卷操作命令是<code>docker volume</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker volume <span class="o">[</span>COMMAND<span class="o">]</span>
+</span></span></code></pre></div><p>数据卷操作：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>docker volume create</code></td>
+<td style="text-align:left">创建数据卷。例如创建一个存放静态页面的数据卷：<code>docker volume create html</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker volume ls</code></td>
+<td style="text-align:left">查看所有数据卷。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker volume inspect</code></td>
+<td style="text-align:left">查看数据卷详细信息，包括关联的宿主机目录位置。例如查看上面创建的<code>html</code>数据卷：<code>docker volume inspect html</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker volume rm</code></td>
+<td style="text-align:left">删除指定数据卷。删除<code>html</code>数据卷<code>docker volume rm html</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>docker volume prune</code></td>
+<td style="text-align:left">删除所有未使用的数据卷。</td>
+</tr>
+</tbody>
+</table>
+<p>假设要将<code>html</code>数据卷挂载到<code>nginx</code>上，可以这样使用：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name nginx-test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v html:/usr/share/nginx/html <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 8080:80 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    nginx
+</span></span></code></pre></div><blockquote>
+<p>注：如果创建容器时发现<code>/usr/share/nginx</code>目录不存在，可以使用<code>Dockerfile</code>先行创建目录。</p>
+</blockquote>
+<p>例如创建一个MySQL容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -id --name %name% <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 3306:3306 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/docker/mysql/lib:/var/lib/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/docker/mysql/conf.d:/etc/mysql/conf.d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/docker/mysql/log:/var/log/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/docker/mysql/my.cnf:/etc/my.cnf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>          <span class="c1"># 设置环境变量</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span><span class="c1"># 某些容器创建时是通过环境变量来配置</span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>       <span class="c1"># 这些是mysql命令的参数，与Docker无关</span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
@@ -43,6 +355,51 @@
       
       <guid>/docs/docker/images-options/</guid>
       <description><![CDATA[拉取镜像 在使用容器前，需要先获取相对应的镜像。例如要在Docker中安装MySQL 5.7，需要先获取MySQL 5.7的Docker镜像。相应]]></description>
+      <content:encoded><![CDATA[<h1 id="拉取镜像" data-numberify>拉取镜像<a class="anchor ms-1" href="#拉取镜像"></a></h1>
+<p>在使用容器前，需要先获取相对应的镜像。例如要在Docker中安装MySQL 5.7，需要先获取MySQL 5.7的Docker镜像。相应的命令为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull mysql:5.7
+</span></span></code></pre></div><p>命令的本质意思为，从Docker镜像仓库中获取版本为5.7的MySQL镜像。</p>
+<p>在Docker中镜像的标识由两部分组成：</p>
+<ul>
+<li>
+<p><strong>Repository</strong>：通常是由镜像主要运行的软件名称组成。例如Tomcat的镜像的Repository就是<code>tomcat</code>。</p>
+</li>
+<li>
+<p><strong>Tag</strong>：通常代表镜像的版本。在没有显式指定Tag的情况下，Docker会给Tag一个默认值<code>latest</code>，代表当前镜像的最新版本。</p>
+<p>例如拉取MySQL最新版本的镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull mysql
+</span></span></code></pre></div><blockquote>
+<p>在Docker中，没有指定Tag的情况下，都是指使用<code>latest</code>。</p>
+</blockquote>
+</li>
+</ul>
+<p>每个<code>[repository]:[tag]</code>标识了唯一的一个镜像。</p>
+<p>镜像除了<code>[repository]:[tag]</code>这个标识外，还有一个镜像ID（Image ID）。但通常使用镜像时都是使用<code>[repository]:[tag]</code>这个标识。</p>
+<h1 id="查找镜像" data-numberify>查找镜像<a class="anchor ms-1" href="#查找镜像"></a></h1>
+<p>在我们不知道要使用的镜像的具体名称时，除了可以去<a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">Docker Hub<i class="fas fa-external-link-square-alt ms-1"></i></a>上查找外，还可以通过使用<code>docker search</code>命令搜索。例如搜索<code>nginx</code>相关的镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker search nginx
+</span></span></code></pre></div><p>这个命令会将镜像仓库中包含<code>nginx</code>字符的镜像一一列举出来。</p>
+<p><code>docker search</code>查找的是镜像仓库上的镜像。如果要查看本地镜像，可以使用<code>docker images</code>命令。<code>docker images</code>命令会列出你本地上所有的镜像，并且列出镜像的<code>REPOSITORY</code>、<code>TAG</code>、<code>IMAGE ID</code>等信息。</p>
+<h1 id="删除镜像" data-numberify>删除镜像<a class="anchor ms-1" href="#删除镜像"></a></h1>
+<p>拉取到本地或者自己创建的镜像，可以使用<code>docker rmi</code>命令来删除。例如删除<code>mysql:5.7</code>镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker rmi mysql:5.7
+</span></span></code></pre></div><h1 id="镜像的保存和载入" data-numberify>镜像的保存和载入<a class="anchor ms-1" href="#镜像的保存和载入"></a></h1>
+<p>创建在Docker中的镜像，默认情况下是不能移动的。但是可以通过使用<code>docker save</code>命令将镜像导出到磁盘中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker save -o <span class="o">[</span>保存的目标文件路径名称<span class="o">]</span> <span class="o">[</span>镜像名称<span class="o">]</span>
+</span></span></code></pre></div><p>例如导出<code>mysql:latest</code>到磁盘：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker save -o mysql_latest.tar mysql:latest
+</span></span></code></pre></div><blockquote>
+<p>导出的镜像是一个<code>tar</code>（压缩）包。</p>
+</blockquote>
+<p>将导出的镜像载入Docker可以使用<code>docker load</code>命令：</p>
+<pre tabindex="0"><code class="language-shel" data-lang="shel">docker load -i [镜像tar包名]
+</code></pre><p>例如将导出的<code>mysql_latest.tar</code>导入Docker：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker load -i mysql_latest.tar
+</span></span></code></pre></div><blockquote>
+<p>注：在使用tar包导入镜像时，Docker会在tar包中读取镜像的Repository和Tag等信息。由于<code>[repository]:[tag]</code>标识唯一的一个镜像。所以在导入<code>mysql_latest.tar</code>之前需要先在Docker中删掉<code>mysql:latest</code>镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker rmi mysql
+</span></span></code></pre></div></blockquote>
+]]></content:encoded>
     </item>
     
     <item>
@@ -52,6 +409,28 @@
       
       <guid>/docs/docker/docker-hub/</guid>
       <description><![CDATA[DockerHub是一个官方的Docker镜像的托管平台，里面存放了人们配置好的镜像。这样的平台称为Docker Registry。 国内也有这]]></description>
+      <content:encoded><![CDATA[<p>DockerHub是一个官方的Docker镜像的托管平台，里面存放了人们配置好的镜像。这样的平台称为Docker Registry。</p>
+<p>国内也有这样的Docker仓库，它们被称为Docker的镜像仓库或镜像源。这些镜像源都是与Docker官方仓库同步的。</p>
+<p>例如导入腾讯的镜像源：</p>
+<ol>
+<li>
+<p>修改<code>/etc/docker/daemon.json</code>配置文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vim /etc/docker/daemon.json
+</span></span></code></pre></div></li>
+<li>
+<p>添加以下内容，并保存：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;registry-mirrors&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;https://mirror.ccs.tencentyun.com&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>重启Docker：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo systemctl restart docker
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
     </item>
     
     <item>
@@ -61,6 +440,90 @@
       
       <guid>/docs/docker/introduction/</guid>
       <description><![CDATA[分布式系统的部署问题 大多数Web服务都是运行在Linux系统之上，因为Linux开源、免费、安全、稳定等等。Linux计算机的架构大致如图：]]></description>
+      <content:encoded><![CDATA[<h1 id="分布式系统的部署问题" data-numberify>分布式系统的部署问题<a class="anchor ms-1" href="#分布式系统的部署问题"></a></h1>
+<p>大多数Web服务都是运行在Linux系统之上，因为Linux开源、免费、安全、稳定等等。Linux计算机的架构大致如图：</p>
+<p><picture><img class="img-fluid " alt="Linux计算机架构" src="/docs/docker/introduction/image-20210731144820638.png" loading="lazy" width="2350" height="1314" />
+</picture>
+
+</p>
+<ul>
+<li>计算机硬件：例如CPU、内存、磁盘等。</li>
+<li>系统内核：所有Linux发行版的内核都是Linux。内核可以与计算机硬件交互，对外提供内核指令，用于操作计算机硬件。</li>
+<li>系统应用：操作系统本身提供的应用、函数库。这些函数库是对内核指令的封装，使系统用起来更加方便。</li>
+</ul>
+<p>应用与Linux计算机交互过程大致为：</p>
+<ol>
+<li>应用调用操作系统应用（函数库），实现各种功能。</li>
+<li>系统函数库是对内核指令集的封装，会调用内核指令。</li>
+<li>内核指令操作计算机硬件。</li>
+</ol>
+<p>Linux的发行版有很多很多，例如Debain、Ubuntu、CentOS等等。虽然这些都是属于Linxu系统（基于Linux内核），但是它们的操作系统不同，可能会导致软件无法从一个Linux系统移植到另一个Linux系统上。例如，在Ubuntu上运行的软件不一定能移植到CentOS上。</p>
+<p>在系统内核相同的情况下，一个应用无法从一个系统移植到另一个系统运行的原因是：不同操作系统提供的系统应用有所不同，那么相应的函数库也会有所差异。软件移植到另外一个系统，由于某些函数库不匹配或不存在，导致软件无法运行。</p>
+<p>并且在使用微服务这种分布式架构中，服务是部署在多台服务器上的，每个服务都有它自己依赖的组件和环境等，而它们运行的环境不一定一致，就容易出现各种问题。例如服务部署时所需的函数库、依赖各不相同，有时还会出现冲突。这些都给部署造成很大的麻烦。</p>
+<hr>
+<h1 id="docker-简介" data-numberify>Docker 简介<a class="anchor ms-1" href="#docker-简介"></a></h1>
+<p>Docker就是用来解决这些部署时产生的问题。</p>
+<p>Docker是一款运行在Linux上的软件，它使用的是Linux内核来分隔进程，让各进程能相互独立运行。并且通过这种独立性，封装成一个个独立的容器。每个容器可以当作是一个独立的运行环境。Docker还提供了基于镜像的部署模式，可以将容器打包成镜像，或者通过镜像创建容器。在Docker中的两个基本概念：</p>
+<ul>
+<li>
+<p><strong>镜像</strong>（<strong>Image</strong>）：Docker将应用程序及其所需的Libs（函数库）、Deps（依赖）、配置等文件（包括应用）打包在一起，称为<strong>镜像</strong>。这个镜像包含了应用运行所需的完整环境配置。</p>
+<p>一切应用最终都是代码组成，都是硬盘中的一个个的字节形成的<strong>文件</strong>。只有运行时，才会加载到内存，形成进程。<strong>镜像</strong>就是把一个应用在硬盘上的文件、及其运行环境、部分系统函数库文件一起打包形成的文件包。这个文件包是只读的。</p>
+</li>
+<li>
+<p><strong>容器</strong>（<strong>Container</strong>）：镜像中的应用程序运行后形成的进程就是<strong>容器</strong>。Docker会给容器进程做隔离，对外不可见，避免应用之间互相打扰，防止不同依赖之间的冲突。</p>
+<p><strong>容器</strong>就是将这些文件中编写的程序、函数加载到内存中运行，形成进程，只不过要隔离起来。因此一个镜像可以启动多次，形成多个容器进程。</p>
+<blockquote>
+<p>Docker容器就像是使用镜像安装完成的、可以运行的操作系统。当然Docker容器跟操作系统也并不一样，但是使用起来差别不大。</p>
+</blockquote>
+</li>
+</ul>
+<p>Docker和虚拟机的差别如下：</p>
+<ul>
+<li>虚拟机（Virtual Machine）：在操作系统中模拟硬件设备，然后运行另一个操作系统。</li>
+<li>Docker：仅仅是封装函数库，并没有模拟完整的操作系统。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="Docker和虚拟机的架构" src="/docs/docker/introduction/image-20210731145914960.png" loading="lazy" width="2246" height="1292" />
+</picture>
+
+</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">Docker</th>
+<th style="text-align:center">虚拟机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">性能</td>
+<td style="text-align:center">接近原生</td>
+<td style="text-align:center">性能较差</td>
+</tr>
+<tr>
+<td style="text-align:center">硬盘占用</td>
+<td style="text-align:center">较小，一般为MB</td>
+<td style="text-align:center">较大，一般为GB</td>
+</tr>
+<tr>
+<td style="text-align:center">启动</td>
+<td style="text-align:center">较快，一般为秒级</td>
+<td style="text-align:center">较慢，一般为分钟级</td>
+</tr>
+</tbody>
+</table>
+<p>Docker是一个CS架构的程序，由两部分组成：</p>
+<ul>
+<li><strong>服务端</strong>（<strong>Server</strong>）：Docker守护进程，负责处理Docker指令，管理镜像、容器等。</li>
+<li><strong>客户端</strong>（<strong>Client</strong>）：通过命令或RestAPI向Docker服务端发送指令。可以在本地或远程向服务端发送指令。</li>
+<li><strong>仓库</strong>（<strong>Repository</strong>）：仓库可看成一个代码控制中心，用来保存镜像。</li>
+</ul>
+<p>其架构如图所示：</p>
+<p><picture><img class="img-fluid " alt="Docker程序架构" src="/docs/docker/introduction/image-20210731154257653.png" loading="lazy" width="2634" height="1070" />
+</picture>
+
+</p>
+]]></content:encoded>
     </item>
     
   </channel>
