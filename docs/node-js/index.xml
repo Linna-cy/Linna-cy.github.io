@@ -10,7 +10,7 @@
 </copyright>
     <lastBuildDate>Sun, 06 Aug 2023 07:35:26 +0000</lastBuildDate><atom:link href="/docs/node-js/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>FS 文件系统模块</title>
+      <title>文件系统模块</title>
       <link>/docs/node-js/node-fs/</link>
       <pubDate>Sun, 06 Aug 2023 07:35:26 +0000</pubDate>
       
@@ -77,9 +77,10 @@
 Program ended...
 -------------
 Read test.txt success!
-Writes new content...
+Hello Node.js!
 -------------
-</code></pre></li>
+</code></pre><p>可以发现异步地文件读取，不会立即执行回调函数，而是直接执行下一条指令，直到文件读取成功才执行回调。</p>
+</li>
 <li>
 <p><code>readFileSync()</code>：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">readFileSync</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;fs&#34;</span><span class="p">);</span>
@@ -89,7 +90,8 @@ Writes new content...
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">fileData</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;-------------&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Readed Success!&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">fileContent</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="nx">fileData</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 没有指定字符集的话是返回一个 Buffer 对象，所以要将其转为 String
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">fileContent</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="nx">fileData</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fileContent</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;-------------&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -101,7 +103,7 @@ Writes new content...
 <pre tabindex="0"><code>Program started...
 -------------
 Readed Success!
-Writes new content...
+Hello Node.js!
 -------------
 Program ended...
 </code></pre></li>
@@ -137,7 +139,115 @@ Program ended...
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div><p><code>fs.writeFile()</code>也有与<code>fs.readFile()</code>类似的即时函数<code>fs.writeFileSync()</code>，作用与<code>fs.readFileSync()</code>类似。</p>
 <hr>
+<h1 id="路径动态拼接问题" data-numberify>路径动态拼接问题<a class="anchor ms-1" href="#路径动态拼接问题"></a></h1>
+<p>在使用<code>fs</code>模块操作文件时，如果提供的操作路径是以<code>./</code>或<code>../</code>开头的相对路径时，很容易出现路径动态拼接错误的问题。</p>
+<p>演示路径动态拼接问题：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">readFile</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;./test.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Reading Success!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span></code></pre></div><p>切换到上层目录，执行该JS，会发现报错：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl">$ node js/path-problem.js
+</span></span><span class="line"><span class="cl">ENOENT: no such file or directory, open <span class="s1">&#39;./test.txt&#39;</span>
+</span></span></code></pre></div><p>这是因为代码在运行的时候，会<u>以执行Node命令时所处的目录</u>，动态拼接出被操作文件的完整路径。</p>
+<p>在使用<code>fs</code>模块操作文件时，可以通过<code>__dirname</code>直接提供完整的路径，不要提供以<code>./</code>或<code>../</code>开头的相对路径，从而防止路径动态拼接的问题。</p>
+<p>修改如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">readFile</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 出现路径拼接问题，是因为使用了 &#39;./&#39; 或 &#39;../&#39; 之类的相对路径
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Node在运行JS时，会将这类相对路径进行处理，使用当前JS文件所在的目录拼接在打开的文件路径上
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * __dirname 表示当前JS文件所处的目录
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">readFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/test.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Reading Success!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>再次执行，文件可以成功打开。</p>
+<hr>
+<h1 id="path-模块处理路径" data-numberify>Path 模块处理路径<a class="anchor ms-1" href="#path-模块处理路径"></a></h1>
+<p><code>path</code>模块是Node.js官方提供的、用来处理路径的模块。它提供了一系列的方法和属性，用来满足用户对路径的处理需求。</p>
+<p>常用的方法有：</p>
+<ul>
+<li><code>path.join()</code>：将多个路径片段拼接成一个完整的路径字符串。</li>
+<li><code>path.basename()</code>：从路径字符串中，将文件名解析出来。</li>
+<li><code>path.extname()</code>：从路径字符串中，将文件名扩展名解析出来。</li>
+</ul>
+<p>使用之前需要先导入<code>path</code>模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>path.join()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// path.join() 将参数列表中的字符串进行路径拼接，并返回拼接结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">pathStr</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;/dir1&#39;</span><span class="p">,</span> <span class="s1">&#39;dir2/dir3&#39;</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">,</span> <span class="s1">&#39;./dir4&#39;</span><span class="p">,</span> <span class="s1">&#39;dir5&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pathStr</span><span class="p">);</span>
+</span></span></code></pre></div><p>输出结果如下：</p>
+<pre tabindex="0"><code>/dir1/dir2/dir4/dir5
+</code></pre><blockquote>
+<p>注：<code>path.join()</code>方法仅用于路径拼接，相当于路径字符串的处理，不对路径的存在与否进行检查。</p>
+</blockquote>
+<p>利用<code>path.join()</code>替代<code>+</code>号拼接路径：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">readFile</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">join</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">readFile</span><span class="p">(</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;test.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>path.basename()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">fpath</span> <span class="o">=</span> <span class="s1">&#39;/var/local/html/blog/index.html&#39;</span> <span class="c1">// 文件存放路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 根据路径解析文件（目录）名
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">fullName</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">fpath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">nameWithoutExt</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">fpath</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fullName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nameWithoutExt</span><span class="p">);</span>
+</span></span></code></pre></div><p>输出结果如下：</p>
+<pre tabindex="0"><code>index.html
+index
+</code></pre><p><code>path.basename(path[, ext])</code>参数和返回值：</p>
+<ul>
+<li>
+<p><code>path</code>（必选）：表示要解析的路径字符串。</p>
+</li>
+<li>
+<p><code>ext</code>（可选）：表示文件扩展名（后缀）。</p>
+<p>经过测试后你会发现，<code>path.basename()</code>只是将最后一段字符串解析出来，然后将其后缀中与<code>ext</code>相同的部分去除后返回。</p>
+</li>
+<li>
+<p>返回值：路径中的最后一部分（有可能是文件名，也有可能是目录名）。当指定扩展名时，返回的有可能是不包含扩展名的名称。</p>
+</li>
+</ul>
+<p>与<code>path.join()</code>类似<code>path.basename()</code>仅仅是做关于路径的字符串解析，并不关心实际上是否存在这样的路径。<code>path.basename()</code>解析到的不仅是文件名，还可以是目录名。并且<code>path.basename()</code>在解析后缀时，如果当前路径的<code>basename</code>没有相应的后缀，<code>path.basename()</code>会将整个<code>basename</code>返回。</p>
+<p><code>path.extname()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">fpath</span> <span class="o">=</span> <span class="s1">&#39;/var/local/html/blog/index.html&#39;</span> <span class="c1">// 文件存放路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">extName</span> <span class="o">=</span>  <span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">fpath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">extName</span><span class="p">);</span>
+</span></span></code></pre></div><p>输出结果为：</p>
+<pre tabindex="0"><code>.html
+</code></pre><hr>
 <h1 id="案例" data-numberify>案例<a class="anchor ms-1" href="#案例"></a></h1>
+<h2 id="案例1" data-numberify>案例1<a class="anchor ms-1" href="#案例1"></a></h2>
 <p>使用fs文件系统模块，将文件中的考试数据，整理到新的文件中。</p>
 <p>创建一个<code>score.txt</code>文件，内容如下：</p>
 <pre tabindex="0"><code>小红=99 小白=100 小黄=70 小黑=66 小绿=88
@@ -181,42 +291,158 @@ Program ended...
 小黄: 70
 小黑: 66
 小绿: 88
-</code></pre><hr>
-<h1 id="路径动态拼接问题" data-numberify>路径动态拼接问题<a class="anchor ms-1" href="#路径动态拼接问题"></a></h1>
-<p>在使用<code>fs</code>模块操作文件时，如果提供的操作路径是以<code>./</code>或<code>../</code>开头的相对路径时，很容易出现路径动态拼接错误的问题。</p>
-<p>演示路径动态拼接问题：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">readFile</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</code></pre><h2 id="案例2" data-numberify>案例2<a class="anchor ms-1" href="#案例2"></a></h2>
+<p>使用<code>fs</code>和<code>path</code>模块将下方HTML文件拆分成对应的<code>html</code>、<code>css</code>和<code>js</code>文件，并写入到<code>clock</code>目录下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;./test.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;X-UA-Compatible&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;ie=edge&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>index首页<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">html</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">body</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">background-image</span><span class="p">:</span> <span class="nb">linear-gradient</span><span class="p">(</span><span class="kc">to</span> <span class="kc">bottom</span> <span class="kc">right</span><span class="p">,</span> <span class="kc">red</span><span class="p">,</span> <span class="kc">gold</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Reading Success!&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span></code></pre></div><p>切换到上层目录，执行该JS，会发现报错：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> ..
-</span></span><span class="line"><span class="cl">$ node js/path-problem.js
-</span></span><span class="line"><span class="cl">ENOENT: no such file or directory, open <span class="s1">&#39;./test.txt&#39;</span>
-</span></span></code></pre></div><p>这是因为代码在运行的时候，会<u>以执行Node命令时所处的目录</u>，动态拼接出被操作文件的完整路径。</p>
-<p>在使用<code>fs</code>模块操作文件时，可以通过<code>__dirname</code>直接提供完整的路径，不要提供以<code>./</code>或<code>../</code>开头的相对路径，从而防止路径动态拼接的问题。</p>
-<p>修改如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">readFile</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 出现路径拼接问题，是因为使用了 &#39;./&#39; 或 &#39;../&#39; 之类的相对路径
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * Node在运行JS时，会将这类相对路径进行处理，使用当前JS文件所在的目录拼接在打开的文件路径上
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nx">readFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/test.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="nc">box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">width</span><span class="p">:</span> <span class="mi">400</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">height</span><span class="p">:</span> <span class="mi">250</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">background-color</span><span class="p">:</span> <span class="nb">rgba</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">border-radius</span><span class="p">:</span> <span class="mi">6</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">left</span><span class="p">:</span> <span class="mi">50</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">top</span><span class="p">:</span> <span class="mi">40</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">transform</span><span class="p">:</span> <span class="nb">translate</span><span class="p">(</span><span class="mi">-50</span><span class="kt">%</span><span class="p">,</span> <span class="mi">-50</span><span class="kt">%</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">box-shadow</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="mi">1</span><span class="kt">px</span> <span class="mi">10</span><span class="kt">px</span> <span class="mh">#fff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">text-shadow</span><span class="p">:</span> <span class="mi">0</span><span class="kt">px</span> <span class="mi">1</span><span class="kt">px</span> <span class="mi">30</span><span class="kt">px</span> <span class="kc">white</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="k">display</span><span class="p">:</span> <span class="kc">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">justify-content</span><span class="p">:</span> <span class="kc">space-around</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">align-items</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">font-size</span><span class="p">:</span> <span class="mi">70</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">user-select</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c">/* 盒子投影 */</span>
+</span></span><span class="line"><span class="cl">      <span class="kp">-webkit-</span><span class="n">box-reflect</span><span class="p">:</span> <span class="kc">below</span> <span class="mi">0</span><span class="kt">px</span> <span class="kp">-webkit-</span><span class="nf">gradient</span><span class="p">(</span><span class="kc">linear</span><span class="p">,</span> <span class="kc">left</span> <span class="kc">top</span><span class="p">,</span> <span class="kc">left</span> <span class="kc">bottom</span><span class="p">,</span> <span class="nf">from</span><span class="p">(</span><span class="kc">transparent</span><span class="p">),</span> <span class="nf">color-stop</span><span class="p">(</span><span class="mi">0</span><span class="kt">%</span><span class="p">,</span> <span class="kc">transparent</span><span class="p">),</span> <span class="nf">to</span><span class="p">(</span><span class="nb">rgba</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">.2</span><span class="p">)));</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Reading Success!&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;box&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;HH&#34;</span><span class="p">&gt;</span>00<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>:<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;mm&#34;</span><span class="p">&gt;</span>00<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>:<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;ss&#34;</span><span class="p">&gt;</span>00<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 定时器，每隔 1 秒执行 1 次
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">setInterval</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">dt</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">HH</span> <span class="o">=</span> <span class="nx">dt</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">mm</span> <span class="o">=</span> <span class="nx">dt</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">ss</span> <span class="o">=</span> <span class="nx">dt</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 为页面上的元素赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#HH&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">padZero</span><span class="p">(</span><span class="nx">HH</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#mm&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">padZero</span><span class="p">(</span><span class="nx">mm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#ss&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">padZero</span><span class="p">(</span><span class="nx">ss</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span> <span class="mi">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 补零函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">function</span> <span class="nx">padZero</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">n</span> <span class="o">&gt;</span> <span class="mi">9</span> <span class="o">?</span> <span class="nx">n</span> <span class="o">:</span> <span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="nx">n</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>html-handle.js</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 1.1 导入 fs 和 path 模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 1.2 定义正则表达式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">regStyle</span> <span class="o">=</span> <span class="sr">/&lt;style&gt;[\s\S]*&lt;\/style&gt;/</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">regScript</span> <span class="o">=</span> <span class="sr">/&lt;script&gt;[\s\S]*&lt;\/script&gt;/</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 1.3 设置目录名并创建目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">DIR_NAME</span> <span class="o">=</span> <span class="s1">&#39;clock&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">DIR_NAME</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdirSync</span><span class="p">(</span><span class="nx">DIR_NAME</span><span class="p">)</span>  <span class="c1">// 即时调用，防止目录不存在
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 2.1 读取文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2.2 读取失败时
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2.3 读取成功后，调用对应的3个方法解析出css，js和html文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">resolveCSS</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">resolveJS</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">resolveHTML</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><p>再次执行，文件可以成功打开。</p>
-]]></content:encoded>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 3.1 处理 CSS 样式文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">resolveCSS</span><span class="p">(</span><span class="nx">htmlStr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 3.2 使用正则提取页面的 &lt;style&gt;&lt;/style&gt;标签
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">regStr</span> <span class="o">=</span> <span class="nx">regStyle</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">htmlStr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 3.3 将提取出来的字符串，进行替换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// console.log(regStr);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">newCSS</span> <span class="o">=</span> <span class="nx">regStr</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;style&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/style&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// console.log(newCSS);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 3.4 将提取的样式写入到新文件中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">fullPath</span> <span class="o">=</span>  <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="nx">DIR_NAME</span><span class="p">,</span> <span class="s1">&#39;index.css&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">fullPath</span><span class="p">,</span> <span class="nx">newCSS</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Writing css successful!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 4.1 处理 JS 样式文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">resolveJS</span><span class="p">(</span><span class="nx">htmlStr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 4.2 使用正则提取页面的 &lt;script&gt;&lt;/script&gt;标签
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">regStr</span> <span class="o">=</span> <span class="nx">regScript</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">htmlStr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 4.3 将提取出来的字符串，进行替换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">newJS</span> <span class="o">=</span> <span class="nx">regStr</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;script&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/script&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 4.4 将提取的样式写入到新文件中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">fullPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="nx">DIR_NAME</span><span class="p">,</span> <span class="s1">&#39;index.js&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">fullPath</span><span class="p">,</span> <span class="nx">newJS</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Writing js successful!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 5. 处理 html 文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">resolveHTML</span><span class="p">(</span><span class="nx">htmlStr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 5.1 将内嵌的 &lt;style&gt; 和 &lt;script&gt; 替换为外联的 &lt;link&gt; 和 &lt;script&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">newHTML</span> <span class="o">=</span> <span class="nx">htmlStr</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">regStyle</span><span class="p">,</span> <span class="s1">&#39;&lt;link rel=&#34;stylesheet&#34; href=&#34;index.css&#34; /&gt;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">regScript</span><span class="p">,</span> <span class="s1">&#39;&lt;script src=&#34;index.js&#34;&gt;&lt;/script&gt;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 5.2 将替换完成之后的 html 代码，写入到 index.html 中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">fullPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="nx">DIR_NAME</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">fullPath</span><span class="p">,</span> <span class="nx">newHTML</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Writing html successful!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
