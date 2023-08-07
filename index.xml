@@ -8,7 +8,69 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Sun, 06 Aug 2023 07:35:26 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Aug 2023 14:46:07 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>事件循环</title>
+      <link>/docs/node-js/node-event/</link>
+      <pubDate>Sun, 06 Aug 2023 14:46:07 +0000</pubDate>
+      
+      <guid>/docs/node-js/node-event/</guid>
+      <description><![CDATA[Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。 Node.js 几乎每一个 API 都是支持回调函]]></description>
+      <content:encoded><![CDATA[<p>Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。</p>
+<p>Node.js 几乎每一个 API 都是支持回调函数的。</p>
+<p>Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。</p>
+<p>Node.js 单线程类似进入一个<code>while(true)</code>的事件循环，直到没有事件观察者时退出。每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数。</p>
+<hr>
+<h1 id="事件驱动程序" data-numberify>事件驱动程序<a class="anchor ms-1" href="#事件驱动程序"></a></h1>
+<p>Node.js 使用事件驱动模型。在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数：</p>
+<p><picture><img class="img-fluid " alt="事件驱动流程" src="/docs/node-js/node-event/uTools_1691333689230.png" loading="lazy" width="626" height="252" />
+</picture>
+
+</p>
+<p>这套流程有点类似于观察者模式，事件相当于一个主题（Subject），而所有注册到这个事件上的处理函数相当于观察者（Observer）。当主题发生改变（事件触发）时，通知观察者进行更新（触发相应的回调函数）。</p>
+<hr>
+<h1 id="事件模块" data-numberify>事件模块<a class="anchor ms-1" href="#事件模块"></a></h1>
+<p>Node.js 有多个内置的事件，可以通过引入 <code>events</code> 模块，并通过实例化 <code>EventEmitter</code> 类来绑定和监听事件，如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 引入 events 模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 创建 EventEmitter 对象
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * EventEmitter可用于注册事件处理和触发事件
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">eventEmitter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 绑定 data_received 事件处理程序
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * eventEmitter.on() 方法：
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * - 参数1：绑定的事件名称
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * - 参数2：触发事件时执行的回调函数
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">DATA_RECEIVED</span> <span class="o">=</span> <span class="s1">&#39;data_received&#39;</span> 
+</span></span><span class="line"><span class="cl"><span class="nx">eventEmitter</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">DATA_RECEIVED</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Receiving Successful!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 绑定 connection 事件处理程序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">CONNECTION</span> <span class="o">=</span> <span class="s1">&#39;connection&#39;</span> 
+</span></span><span class="line"><span class="cl"><span class="nx">eventEmitter</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">CONNECTION</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Connected Successful!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 触发 data_received 事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">eventEmitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="nx">DATA_RECEIVED</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 触发 connection 事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">eventEmitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="nx">CONNECTION</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Executed...&#39;</span><span class="p">);</span>
+</span></span></code></pre></div><p>执行结果如下：</p>
+<pre tabindex="0"><code>Connected Successful!
+Receiving Successful!
+Executed...
+</code></pre>]]></content:encoded>
+    </item>
+    
     <item>
       <title>文件系统模块</title>
       <link>/docs/node-js/node-fs/</link>
