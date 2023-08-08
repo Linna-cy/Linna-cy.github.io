@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dockerfile | Linner&#39;s Blog</title>
+    <title>MySQL 分库搭建 | Linner&#39;s Blog</title>
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
@@ -13,27 +13,27 @@
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
 <meta name="keywords" content="Linner Blog 博客" />
-  <meta name="description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile" />
+  <meta name="description" content="搭建MySQL主从数据库，首先需要满足以下条件： 至少两台以上服务器（可用虚拟机模拟）； 两台服务器中MySQL的版本一致。 最好是使用刚安装的M" />
     <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Dockerfile"/>
-<meta name="twitter:description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile"/>
-<meta property="og:title" content="Dockerfile" />
-<meta property="og:description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile" />
+<meta name="twitter:title" content="MySQL 分库搭建"/>
+<meta name="twitter:description" content="搭建MySQL主从数据库，首先需要满足以下条件： 至少两台以上服务器（可用虚拟机模拟）； 两台服务器中MySQL的版本一致。 最好是使用刚安装的M"/>
+<meta property="og:title" content="MySQL 分库搭建" />
+<meta property="og:description" content="搭建MySQL主从数据库，首先需要满足以下条件： 至少两台以上服务器（可用虚拟机模拟）； 两台服务器中MySQL的版本一致。 最好是使用刚安装的M" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/docs/docker/dockerfile/" /><meta property="article:section" content="docs" />
-<meta property="article:published_time" content="2023-08-01T14:26:03+00:00" />
-<meta property="article:modified_time" content="2023-08-01T14:26:03+00:00" />
-<meta property="og:see_also" content="/docs/docker/docker-compose/" /><meta property="og:see_also" content="/docs/docker/container-options/" /><meta property="og:see_also" content="/docs/docker/images-options/" /><meta property="og:see_also" content="/docs/docker/docker-hub/" /><meta property="og:see_also" content="/docs/docker/introduction/" />
+<meta property="og:url" content="/docs/spring/springboot/mysql-sharding/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2023-07-28T07:20:31+00:00" />
+<meta property="article:modified_time" content="2023-07-28T07:20:31+00:00" />
+<meta property="og:see_also" content="/docs/spring/springcloud/communications/spring-amqp/" /><meta property="og:see_also" content="/docs/spring/springcloud/communications/rabbit-mq/" /><meta property="og:see_also" content="/docs/spring/springcloud/communications/introduction/" /><meta property="og:see_also" content="/docs/spring/springmvc/api-tools/" /><meta property="og:see_also" content="/docs/spring/springcloud/eureka/" />
 
-<meta itemprop="name" content="Dockerfile">
-<meta itemprop="description" content="常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile"><meta itemprop="datePublished" content="2023-08-01T14:26:03+00:00" />
-<meta itemprop="dateModified" content="2023-08-01T14:26:03+00:00" />
-<meta itemprop="wordCount" content="1151">
-<meta itemprop="keywords" content="Docker," />
+<meta itemprop="name" content="MySQL 分库搭建">
+<meta itemprop="description" content="搭建MySQL主从数据库，首先需要满足以下条件： 至少两台以上服务器（可用虚拟机模拟）； 两台服务器中MySQL的版本一致。 最好是使用刚安装的M"><meta itemprop="datePublished" content="2023-07-28T07:20:31+00:00" />
+<meta itemprop="dateModified" content="2023-07-28T07:20:31+00:00" />
+<meta itemprop="wordCount" content="1926">
+<meta itemprop="keywords" content="数据库,MySQL,环境搭建,SQL,Docker," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
-  <meta property="og:image:alt" content="Dockerfile" />
-  <meta name="twitter:image:alt" content="Dockerfile" />
+  <meta property="og:image:alt" content="MySQL 分库搭建" />
+  <meta name="twitter:image:alt" content="MySQL 分库搭建" />
   <link rel="manifest" href="/manifest.json">
 
 <link data-precache rel="stylesheet" href="/assets/main/bundle.min.35bc0a8dd714bc1427b0d25082aaf1f62ba032282409bb5fcfd11cd3b67c16ad.css" crossorigin="anonymous">
@@ -307,14 +307,14 @@ Linner
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
     </div>
     <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/"><span class="docs-nav-title">Docker</span></a>
-            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-9381102fbed42e351f5da17ba517eda6" aria-expanded="true" aria-controls="nav-9381102fbed42e351f5da17ba517eda6">
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-9381102fbed42e351f5da17ba517eda6" aria-expanded="false" aria-controls="nav-9381102fbed42e351f5da17ba517eda6">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-9381102fbed42e351f5da17ba517eda6">
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-9381102fbed42e351f5da17ba517eda6">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
@@ -326,7 +326,7 @@ Linner
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
-        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
         </li></ul>
             </div>
@@ -355,14 +355,14 @@ Linner
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/"><span class="docs-nav-title">Spring</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b" aria-expanded="false" aria-controls="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b" aria-expanded="true" aria-controls="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
           <div class="py-1 d-flex justify-content-between align-items-center ms-3">
@@ -417,14 +417,14 @@ Linner
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-10d78731ccb52607bab03f5768d951d8" aria-expanded="false" aria-controls="nav-10d78731ccb52607bab03f5768d951d8">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-10d78731ccb52607bab03f5768d951d8" aria-expanded="true" aria-controls="nav-10d78731ccb52607bab03f5768d951d8">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-10d78731ccb52607bab03f5768d951d8">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-10d78731ccb52607bab03f5768d951d8">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/springboot-base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
@@ -432,7 +432,7 @@ Linner
           <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
-        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/mysql-sharding/"><span class="docs-nav-title">MySQL 分库搭建</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
@@ -534,7 +534,7 @@ Linner
 </aside><div class="col-xxl-7 ms-auto">
   <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body pb-0">
-    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/docker/">Docker</a></li><li class="breadcrumb-item active">Dockerfile</li></ol>
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/spring/">Spring</a></li><li class="breadcrumb-item text-surface"><a href="/docs/spring/springboot/">Spring Boot</a></li><li class="breadcrumb-item active">MySQL 分库搭建</li></ol>
   </div>
 </nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
   <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
@@ -569,13 +569,13 @@ Linner
   </div>
 </div><article class="row card component mb-4 post">
 <div class="card-header ">
-    <h1 class="card-title post-title my-2">Dockerfile</h1>
+    <h1 class="card-title post-title my-2">MySQL 分库搭建</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-08-01 14:26:03 &#43;0000 UTC。">2023年8月1日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
-      <i class="fas fa-fw fa-columns me-1"></i>Docker</a><a href="/tags/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Docker</a>
+  <span class="post-date me-1 mb-1" title="创建于 2023-07-28 07:20:31 &#43;0000 UTC。">2023年7月28日</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/memo/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>备忘录</a><a href="/series/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Spring</a><a href="/tags/docker/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Docker</a><a href="/tags/mysql/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">MySQL</a><a href="/tags/sql/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">SQL</a><a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">环境搭建</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">数据库</a>
 </div>
 
 <div class="mt-2 mb-3 d-block d-xxl-none">
@@ -584,110 +584,147 @@ Linner
         </div>
     <hr class="text-secondary">
 </div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
-        <div id="post-content-body"><p>常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。</p>
-<h1 id="镜像结构" data-numberify>镜像结构<a class="anchor ms-1" href="#镜像结构"></a></h1>
-<p>镜像是将应用程序及其需要的系统函数库、环境、配置、依赖打包而成。</p>
-<p>以MySQL镜像的组成结构为例：</p>
-<p><picture><img class="img-fluid " alt="MySQL镜像的组成结构" src="/docs/docker/dockerfile/image-20210731175806273.png" loading="lazy" width="2956" height="1674" />
-</picture>
-
-</p>
-<p>镜像就是在系统函数库、运行环境基础上，添加应用程序文件、配置文件、依赖文件等组合，然后编写好启动脚本打包在一起形成的文件。构建镜像，其实就是实现上述打包的过程。</p>
-<h1 id="语法" data-numberify>语法<a class="anchor ms-1" href="#语法"></a></h1>
-<p>构建自定义的镜像时，并不需要一个个文件去拷贝，打包。我们只需要告诉Docker，镜像的组成，需要哪些BaseImage、需要拷贝什么文件、需要安装什么依赖、启动脚本是什么。Dockerfile就是描述上述信息的文件。Docker会通过Dockerfile构建镜像。</p>
-<p>Dockerfile是一个文本文件，其中包含一个个的指令(Instruction），用指令来说明要执行什么操作来构建镜像。每一个指令都会形成一层Layer。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">指令</th>
-<th style="text-align:left">说明</th>
-<th style="text-align:left">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>FROM</code></td>
-<td style="text-align:left">指定基础镜像。必须在Dockerfile的第一行指定。</td>
-<td style="text-align:left"><code>FORM centos:6</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>ENV</code></td>
-<td style="text-align:left">设置环境变量。在使用<code>docker run</code>时可以通过<code>-e</code>重设环境变量值。</td>
-<td style="text-align:left"><code>ENV key=value</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>COPY</code></td>
-<td style="text-align:left">拷贝本地文件到镜像的指定目录。</td>
-<td style="text-align:left">复制当前目录下的<code>mysql-5.7.rpm</code>到镜像的<code>/tmp</code>目录：<br><code>COPY ./mysql-5.7.rpm /tmp</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>RUN</code></td>
-<td style="text-align:left">执行Linux的Shell命令，一般是安装过程的命令。<code>RUN</code>在<code>docker build</code>时执行。</td>
-<td style="text-align:left"><code>RUN yum install gcc</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>EXPOSE</code></td>
-<td style="text-align:left">指定容器运行时监听的端口。</td>
-<td style="text-align:left"><code>EXPOSE 8080</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>CMD</code></td>
-<td style="text-align:left">（可以被覆盖）指定容器创建时的默认命令。<code>CMD</code>在<code>docker run</code>时执行。</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>ENTRYPOINT</code></td>
-<td style="text-align:left">(不可被覆盖）镜像中应用的启动命令，容器运行时调用。</td>
-<td style="text-align:left"><code>ENTRYPOINT java -jar xxx.jar</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>VOLUME</code></td>
-<td style="text-align:left">为容器创建挂载点或声明卷。</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>WORKDIR</code></td>
-<td style="text-align:left">设置后续指令的工作目录。</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>USER</code></td>
-<td style="text-align:left">指定后续指令的用户上下文。</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>SHELL</code></td>
-<td style="text-align:left">覆盖Docker中默认的Shell，用于RUN、CMD和ENTRYPOINT指令。</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>更新详细语法说明，请参考官网文档：<a href="https://docs.docker.com/engine/reference/builder" target="_blank" rel="noopener noreferrer">Dockerfile reference<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
-<p>在使用Ubuntu、Debian这样的容器的时候，我们可能没办法使用它们的<code>systemctl</code>命令。这是因为它们在启动时默认没有初始化系统（<code>init</code>进程没有运行）。新的Debian和Ubuntu镜像中移除了<code>init</code>软件包，我们可以通过Dockerfile在创建一个包含<code>init</code>软件包的Debian镜像：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> debian:latest</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 设置环境变量</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">APT_ETC_DIR</span><span class="o">=</span>/etc/apt <span class="nv">SOURCES_LIST_PATH</span><span class="o">=</span>./sources.list<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 将在本地配置好的镜像源文件拷贝到镜像</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> <span class="nv">$SOURCES_LIST_PATH</span> <span class="nv">$APT_DIR</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 更换镜像源</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> apt-get update<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装init软件包</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get install init -y<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装ssh</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get install -y openssh-server<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get clean all<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 暴露端口</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 22</span><span class="err">
-</span></span></span></code></pre></div><p>接着通过<code>docker build</code>命令构建镜像：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker build -f ./Dockerfile . -t linner/debian
-</span></span></code></pre></div><p>然后使用以下命令运行容器：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -ti <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name my-debian <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">SOURCES_LIST_PATH</span><span class="o">=</span>/etc/apt/sources.list <span class="se">\ </span>   <span class="c1"># 把本地上使用的镜像源配置拷贝到容器中</span>
-</span></span><span class="line"><span class="cl">    linner/debian <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    /sbin/init      <span class="c1"># 启动时运行init</span>
-</span></span></code></pre></div></div>
+        <div id="post-content-body"><p>搭建MySQL主从数据库，首先需要满足以下条件：</p>
+<ul>
+<li>至少两台以上服务器（可用虚拟机模拟）；</li>
+<li>两台服务器中MySQL的版本一致。</li>
+</ul>
+<blockquote>
+<p>最好是使用刚安装的MySQL并且没有任何修改。</p>
+<p>如果要配置从库的MySQL服务器中有数据库存在（或者是要给主库配置新的从库），还需要将该服务器中数据库的结构及其数据导出，并且导入到从库服务器中，保持主库和从库的状态一致（非常重要！！！）。</p>
+</blockquote>
+<hr>
+<h1 id="修改数据库配置" data-numberify>修改数据库配置<a class="anchor ms-1" href="#修改数据库配置"></a></h1>
+<p>假设你已经满足了以上条件，准备开始配置主库。</p>
+<p>修改主库的配置文件<code>/etc/my.cnf</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vim /etc/my.cnf
+</span></span></code></pre></div><p>增加（修改）以下内容：</p>
+<pre tabindex="0"><code>[mysqld]
+# 主库Master
+log-bin=mysql-bin   # [必须] 启用二进制日志
+server-id=100       # [必须] 服务器唯一ID（默认是1，一般取IP最后一段）
+</code></pre><p>接着修改从库配置文件<code>/etc/my.cnf</code>（方法与上类似）：</p>
+<pre tabindex="0"><code>[mysqld]
+# 从库Slave
+log-bin=mysql-bin   # [可选] 启用二进制日志
+server-id=101       # [必须] 服务器唯一ID
+</code></pre><p>分别重启两台服务器的MySQL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">service mysqld restart<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">systemctl restart mysql<span class="p">;</span>
+</span></span></code></pre></div><hr>
+<h1 id="授权" data-numberify>授权<a class="anchor ms-1" href="#授权"></a></h1>
+<p>在主服务器上建立帐户并给从库授权：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 登录你的主服务器MySQL</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">GRANT</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;mysync&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;123456&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">-- 一般不用root账号进行授权
+</span></span></span></code></pre></div><ul>
+<li><code>%</code>：表示所有客户端都可连接，只要账号、密码正确即可。可以使用具体的IP地址代替以加强安全。</li>
+<li><code>mysync</code>：表示使用客户端上<code>mysync</code>这个账号进行登录。</li>
+<li><code>IDENTIFIED BY '123456'</code>：表示使用<code>123456</code>作为密码登录。</li>
+</ul>
+<p>授权成功后，使用以下命令查询Master的状态：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>会返回如下信息：</p>
+<pre tabindex="0"><code>+------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000013 |      157 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)
+</code></pre><blockquote>
+<p>注：执行完成后不要再操作主服务器MySQL，防止主服务器状态值变化。</p>
+</blockquote>
+<p>配置从服务器Slave：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 登录你的从服务器MySQL</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">master_host</span><span class="o">=</span><span class="s1">&#39;192.168.145.100&#39;</span><span class="p">,</span><span class="w">      </span><span class="c1">-- 主库IP地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span><span class="w">                   </span><span class="c1">-- 主库MySQL端口号（默认就是3306，可以移除）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_user</span><span class="o">=</span><span class="s1">&#39;mysync&#39;</span><span class="p">,</span><span class="w">               </span><span class="c1">-- 使用主库的mysync用户登录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_password</span><span class="o">=</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span><span class="w">           </span><span class="c1">-- 使用123456作为登录密码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_log_file</span><span class="o">=</span><span class="s1">&#39;mysql-bin.000013&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">-- 主库的日志文件（与上方查询的结果要一致）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_log_pos</span><span class="o">=</span><span class="mi">157</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- 主库的Position（与上方查询的结果要一致）
+</span></span></span></code></pre></div><p>查询从库复制功能状态：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">SLAVE</span><span class="w"> </span><span class="n">STATUS</span><span class="err">\</span><span class="k">G</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>注：查询从库复制功能状态时，不要直接使用<code>SHOW SLAVE STATUS;</code>查询。这样查询的结果是一张用字符组织起来的表（十分冗长）。使用<code>SHOW SLAVE STATUS\G</code>输出更加易读。</p>
+</blockquote>
+<p>如果查询结果中有以下内容，说明配置成功：</p>
+<pre tabindex="0"><code>Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+</code></pre><hr>
+<h1 id="使用-docker-搭建" data-numberify>使用 Docker 搭建<a class="anchor ms-1" href="#使用-docker-搭建"></a></h1>
+<p>如果想要在一台主机上模拟MySQL分库。可以使用Docker。</p>
+<p>拉取MySQL镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull mysql
+</span></span></code></pre></div><blockquote>
+<p>可以根据你的需要指定MySQL镜像的版本，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull mysql:5.7
+</span></span></code></pre></div></blockquote>
+<p>在Docker中，两个镜像相互连接需要使用Docker Network，我们可以创建一个让MySQL可以互相访问的Network：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker network create mysql-network
+</span></span></code></pre></div><p>首先创建一个MySQL容器，用于获取它的配置文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ docker run -id --name mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>                  <span class="c1"># 设置时区</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>        <span class="c1"># 设置root用户的密码</span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\ </span>                                <span class="c1"># 创建时使用的镜像</span>
+</span></span><span class="line"><span class="cl">    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>       <span class="c1"># 设置字符集</span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span><span class="line"><span class="cl">$ docker cp mysql:/etc/my.cnf /home/mysql/my.cnf <span class="c1"># 将mysql容器中的/etc/my.cnf复制到本地</span>
+</span></span><span class="line"><span class="cl">$ mkdir /home/mysql/master
+</span></span><span class="line"><span class="cl">$ mkdir /home/mysql/slave_1
+</span></span><span class="line"><span class="cl">$ cp /home/mysql/my.cnf /home/mysql/master
+</span></span><span class="line"><span class="cl">$ cp /home/mysql/my.cnf /home/mysql/slave_1
+</span></span></code></pre></div><p>创建Master容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -id --name mysql-master <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 3306:3306 <span class="se">\ </span>                         <span class="c1"># 端口映射</span>
+</span></span><span class="line"><span class="cl">    -v /home/mysql/master/data:/var/lib/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/master/conf:/etc/mysql/conf.d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/master/log:/var/log/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/master/my.cnf:/etc/my.cnf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --network mysql-network <span class="se">\ </span>              <span class="c1"># 指定Network</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span></code></pre></div><blockquote>
+<p>注：上方命令在创建容器时，将容器中的<code>/etc/my.cnf</code>挂载到本地的<code>/home/mysql/master/my.cnf</code>文件上。在创建容器前需确保<code>/home/mysql/master</code>目录中有<code>my.cnf</code>这个文件。在挂载成功后，可以直接修改本地的<code>my.cnf</code>文件。</p>
+</blockquote>
+<p>测试连接Master：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> -ti mysql-master mysql -uroot -p123456
+</span></span></code></pre></div><p>创建Slave容器的步骤与Master类似：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ docker run -id --name mysql-slave-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 3316:3306 <span class="se">\ </span>                         <span class="c1"># 端口映射（注意不要端口冲突）</span>
+</span></span><span class="line"><span class="cl">    -v /home/mysql/slave_1/data:/var/lib/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/slave_1/conf:/etc/mysql/conf.d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/slave_1/log:/var/log/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/slave_1/my.cnf:/etc/my.cnf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --network mysql-network <span class="se">\ </span>              <span class="c1"># 指定Network</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span><span class="line"><span class="cl">$ docker <span class="nb">exec</span> -ti mysql-slave-1 mysql -uroot -p123456
+</span></span></code></pre></div><p>最后按照上方配置和授权的步骤即可搭建成功。</p>
+<hr>
+<h1 id="读写分离" data-numberify>读写分离<a class="anchor ms-1" href="#读写分离"></a></h1>
+<p>在一般的生产环境中，使用一台数据服务器进行写操作（一般很少进行写操作，所以一台就够了）。这台进行写操作的服务器就是主库。进行读操作则可以根据网站的浏览量配置对应数量的专门用于读取数据的数据服务器。这些进行读操作的服务器就是从库，所以需要配置多台从服务器。</p>
+<hr>
+<h1 id="使用过程中的一些问题" data-numberify>使用过程中的一些问题<a class="anchor ms-1" href="#使用过程中的一些问题"></a></h1>
+<p>查询从库的状态，从库忽然<code>Slave_SQL_Running: No</code>。这是运行过程中的同步故障。出现该问题原因可能有：</p>
+<ul>
+<li>程序可能在Slave上进行了写操作（应该极力避免此种情况发生）。</li>
+<li>可能是Slave机器重起后，事务回滚造成的（一般是这种情况）。</li>
+</ul>
+<p>解决事务回滚造成的<code>Slave_SQL_Running: No</code>，进入MySQL，运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="n">STOP</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">SQL_SLAVE_SKIP_COUNTER</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>如果还是<code>Slave_SQL_Running: No</code>，有可能是<code>CHANGE MASTER</code>时信息出现错误。可以回到主服务器中运行<code>SHOW MASTER STATUS;</code>查看日志文件和Position是否与从库的一致。然后再在从库中重新<code>CHANGE MASTER</code>。</p>
+</div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -717,10 +754,7 @@ Linner
 </div></div><div class="card-footer">
   <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
       <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
-      <a href="/docs/docker/container-options/">Docker 容器操作</a>
-    </div><div class="post-nav post-next">
-      <a href="/docs/docker/docker-compose/">Docker Compose</a>
-      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+      <a href="/docs/spring/springboot/swagger_knife4j/">Swagger（Knife4j） API 文档</a>
     </div></div>
 </div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
     <div class="card-header">
@@ -748,62 +782,11 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/docker/images-options/">
-    Docker 镜像操作
+  <a class="post-title" href="/blog/2022/02/mysql-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+    MySQL 环境配置
   </a>
   <div class="post-meta mb-0">
-    2023年8月1日
-
-  </div>
-</div>
-
-          </div><div class="col-12 col-md-6 col-lg-4 me-2">
-            <div class="post-card card card-body p-0 border-0 surface">
-  
-  <div
-    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
-    NO IMAGE
-  </div>
-
-  <a class="post-title" href="/docs/docker/docker-hub/">
-    Docker Hub
-  </a>
-  <div class="post-meta mb-0">
-    2023年8月1日
-
-  </div>
-</div>
-
-          </div><div class="col-12 col-md-6 col-lg-4 me-2">
-            <div class="post-card card card-body p-0 border-0 surface">
-  
-  <div
-    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
-    NO IMAGE
-  </div>
-
-  <a class="post-title" href="/docs/docker/introduction/">
-    Docker 简介
-  </a>
-  <div class="post-meta mb-0">
-    2023年8月1日
-
-  </div>
-</div>
-
-          </div><div class="col-12 col-md-6 col-lg-4 me-2">
-            <div class="post-card card card-body p-0 border-0 surface">
-  
-  <div
-    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
-    NO IMAGE
-  </div>
-
-  <a class="post-title" href="/docs/spring/springboot/mysql-sharding/">
-    MySQL 分库搭建
-  </a>
-  <div class="post-meta mb-0">
-    2023年7月28日
+    2022年2月20日
 
   </div>
 </div>
@@ -821,6 +804,57 @@ Linner
   </a>
   <div class="post-meta mb-0">
     2023年7月24日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/spring/java-web/druid/">
+    Druid 数据库连接池
+  </a>
+  <div class="post-meta mb-0">
+    2022年8月14日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2022/01/sql-%E8%AF%AD%E5%8F%A5/">
+    SQL 语句
+  </a>
+  <div class="post-meta mb-0">
+    2022年1月11日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/">
+    软考图类汇总篇
+  </a>
+  <div class="post-meta mb-0">
+    2023年5月20日
 
   </div>
 </div>
@@ -867,8 +901,11 @@ Linner
     <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#镜像结构">镜像结构</a></li>
-    <li><a href="#语法">语法</a></li>
+    <li><a href="#修改数据库配置">修改数据库配置</a></li>
+    <li><a href="#授权">授权</a></li>
+    <li><a href="#使用-docker-搭建">使用 Docker 搭建</a></li>
+    <li><a href="#读写分离">读写分离</a></li>
+    <li><a href="#使用过程中的一些问题">使用过程中的一些问题</a></li>
   </ul>
 </nav>
     </div>

@@ -8,7 +8,157 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Sat, 20 May 2023 13:29:14 +0800</lastBuildDate><atom:link href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jul 2023 07:20:31 +0000</lastBuildDate><atom:link href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL 分库搭建</title>
+      <link>/docs/spring/springboot/mysql-sharding/</link>
+      <pubDate>Fri, 28 Jul 2023 07:20:31 +0000</pubDate>
+      
+      <guid>/docs/spring/springboot/mysql-sharding/</guid>
+      <description><![CDATA[搭建MySQL主从数据库，首先需要满足以下条件： 至少两台以上服务器（可用虚拟机模拟）； 两台服务器中MySQL的版本一致。 最好是使用刚安装的M]]></description>
+      <content:encoded><![CDATA[<p>搭建MySQL主从数据库，首先需要满足以下条件：</p>
+<ul>
+<li>至少两台以上服务器（可用虚拟机模拟）；</li>
+<li>两台服务器中MySQL的版本一致。</li>
+</ul>
+<blockquote>
+<p>最好是使用刚安装的MySQL并且没有任何修改。</p>
+<p>如果要配置从库的MySQL服务器中有数据库存在（或者是要给主库配置新的从库），还需要将该服务器中数据库的结构及其数据导出，并且导入到从库服务器中，保持主库和从库的状态一致（非常重要！！！）。</p>
+</blockquote>
+<hr>
+<h1 id="修改数据库配置" data-numberify>修改数据库配置<a class="anchor ms-1" href="#修改数据库配置"></a></h1>
+<p>假设你已经满足了以上条件，准备开始配置主库。</p>
+<p>修改主库的配置文件<code>/etc/my.cnf</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vim /etc/my.cnf
+</span></span></code></pre></div><p>增加（修改）以下内容：</p>
+<pre tabindex="0"><code>[mysqld]
+# 主库Master
+log-bin=mysql-bin   # [必须] 启用二进制日志
+server-id=100       # [必须] 服务器唯一ID（默认是1，一般取IP最后一段）
+</code></pre><p>接着修改从库配置文件<code>/etc/my.cnf</code>（方法与上类似）：</p>
+<pre tabindex="0"><code>[mysqld]
+# 从库Slave
+log-bin=mysql-bin   # [可选] 启用二进制日志
+server-id=101       # [必须] 服务器唯一ID
+</code></pre><p>分别重启两台服务器的MySQL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">service mysqld restart<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">systemctl restart mysql<span class="p">;</span>
+</span></span></code></pre></div><hr>
+<h1 id="授权" data-numberify>授权<a class="anchor ms-1" href="#授权"></a></h1>
+<p>在主服务器上建立帐户并给从库授权：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 登录你的主服务器MySQL</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">GRANT</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;mysync&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;123456&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">-- 一般不用root账号进行授权
+</span></span></span></code></pre></div><ul>
+<li><code>%</code>：表示所有客户端都可连接，只要账号、密码正确即可。可以使用具体的IP地址代替以加强安全。</li>
+<li><code>mysync</code>：表示使用客户端上<code>mysync</code>这个账号进行登录。</li>
+<li><code>IDENTIFIED BY '123456'</code>：表示使用<code>123456</code>作为密码登录。</li>
+</ul>
+<p>授权成功后，使用以下命令查询Master的状态：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>会返回如下信息：</p>
+<pre tabindex="0"><code>+------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000013 |      157 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)
+</code></pre><blockquote>
+<p>注：执行完成后不要再操作主服务器MySQL，防止主服务器状态值变化。</p>
+</blockquote>
+<p>配置从服务器Slave：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 登录你的从服务器MySQL</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">master_host</span><span class="o">=</span><span class="s1">&#39;192.168.145.100&#39;</span><span class="p">,</span><span class="w">      </span><span class="c1">-- 主库IP地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span><span class="w">                   </span><span class="c1">-- 主库MySQL端口号（默认就是3306，可以移除）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_user</span><span class="o">=</span><span class="s1">&#39;mysync&#39;</span><span class="p">,</span><span class="w">               </span><span class="c1">-- 使用主库的mysync用户登录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_password</span><span class="o">=</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span><span class="w">           </span><span class="c1">-- 使用123456作为登录密码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_log_file</span><span class="o">=</span><span class="s1">&#39;mysql-bin.000013&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">-- 主库的日志文件（与上方查询的结果要一致）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="n">master_log_pos</span><span class="o">=</span><span class="mi">157</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- 主库的Position（与上方查询的结果要一致）
+</span></span></span></code></pre></div><p>查询从库复制功能状态：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">SLAVE</span><span class="w"> </span><span class="n">STATUS</span><span class="err">\</span><span class="k">G</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>注：查询从库复制功能状态时，不要直接使用<code>SHOW SLAVE STATUS;</code>查询。这样查询的结果是一张用字符组织起来的表（十分冗长）。使用<code>SHOW SLAVE STATUS\G</code>输出更加易读。</p>
+</blockquote>
+<p>如果查询结果中有以下内容，说明配置成功：</p>
+<pre tabindex="0"><code>Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+</code></pre><hr>
+<h1 id="使用-docker-搭建" data-numberify>使用 Docker 搭建<a class="anchor ms-1" href="#使用-docker-搭建"></a></h1>
+<p>如果想要在一台主机上模拟MySQL分库。可以使用Docker。</p>
+<p>拉取MySQL镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull mysql
+</span></span></code></pre></div><blockquote>
+<p>可以根据你的需要指定MySQL镜像的版本，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker pull mysql:5.7
+</span></span></code></pre></div></blockquote>
+<p>在Docker中，两个镜像相互连接需要使用Docker Network，我们可以创建一个让MySQL可以互相访问的Network：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker network create mysql-network
+</span></span></code></pre></div><p>首先创建一个MySQL容器，用于获取它的配置文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ docker run -id --name mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>                  <span class="c1"># 设置时区</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>        <span class="c1"># 设置root用户的密码</span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\ </span>                                <span class="c1"># 创建时使用的镜像</span>
+</span></span><span class="line"><span class="cl">    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>       <span class="c1"># 设置字符集</span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span><span class="line"><span class="cl">$ docker cp mysql:/etc/my.cnf /home/mysql/my.cnf <span class="c1"># 将mysql容器中的/etc/my.cnf复制到本地</span>
+</span></span><span class="line"><span class="cl">$ mkdir /home/mysql/master
+</span></span><span class="line"><span class="cl">$ mkdir /home/mysql/slave_1
+</span></span><span class="line"><span class="cl">$ cp /home/mysql/my.cnf /home/mysql/master
+</span></span><span class="line"><span class="cl">$ cp /home/mysql/my.cnf /home/mysql/slave_1
+</span></span></code></pre></div><p>创建Master容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -id --name mysql-master <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 3306:3306 <span class="se">\ </span>                         <span class="c1"># 端口映射</span>
+</span></span><span class="line"><span class="cl">    -v /home/mysql/master/data:/var/lib/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/master/conf:/etc/mysql/conf.d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/master/log:/var/log/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/master/my.cnf:/etc/my.cnf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --network mysql-network <span class="se">\ </span>              <span class="c1"># 指定Network</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span></code></pre></div><blockquote>
+<p>注：上方命令在创建容器时，将容器中的<code>/etc/my.cnf</code>挂载到本地的<code>/home/mysql/master/my.cnf</code>文件上。在创建容器前需确保<code>/home/mysql/master</code>目录中有<code>my.cnf</code>这个文件。在挂载成功后，可以直接修改本地的<code>my.cnf</code>文件。</p>
+</blockquote>
+<p>测试连接Master：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker <span class="nb">exec</span> -ti mysql-master mysql -uroot -p123456
+</span></span></code></pre></div><p>创建Slave容器的步骤与Master类似：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ docker run -id --name mysql-slave-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 3316:3306 <span class="se">\ </span>                         <span class="c1"># 端口映射（注意不要端口冲突）</span>
+</span></span><span class="line"><span class="cl">    -v /home/mysql/slave_1/data:/var/lib/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/slave_1/conf:/etc/mysql/conf.d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/slave_1/log:/var/log/mysql <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /home/mysql/slave_1/my.cnf:/etc/my.cnf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --network mysql-network <span class="se">\ </span>              <span class="c1"># 指定Network</span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123456</span> <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    mysql <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --character-set-server<span class="o">=</span>utf8mb4 <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">    --collation-server<span class="o">=</span>utf8mb4_general_ci
+</span></span><span class="line"><span class="cl">$ docker <span class="nb">exec</span> -ti mysql-slave-1 mysql -uroot -p123456
+</span></span></code></pre></div><p>最后按照上方配置和授权的步骤即可搭建成功。</p>
+<hr>
+<h1 id="读写分离" data-numberify>读写分离<a class="anchor ms-1" href="#读写分离"></a></h1>
+<p>在一般的生产环境中，使用一台数据服务器进行写操作（一般很少进行写操作，所以一台就够了）。这台进行写操作的服务器就是主库。进行读操作则可以根据网站的浏览量配置对应数量的专门用于读取数据的数据服务器。这些进行读操作的服务器就是从库，所以需要配置多台从服务器。</p>
+<hr>
+<h1 id="使用过程中的一些问题" data-numberify>使用过程中的一些问题<a class="anchor ms-1" href="#使用过程中的一些问题"></a></h1>
+<p>查询从库的状态，从库忽然<code>Slave_SQL_Running: No</code>。这是运行过程中的同步故障。出现该问题原因可能有：</p>
+<ul>
+<li>程序可能在Slave上进行了写操作（应该极力避免此种情况发生）。</li>
+<li>可能是Slave机器重起后，事务回滚造成的（一般是这种情况）。</li>
+</ul>
+<p>解决事务回滚造成的<code>Slave_SQL_Running: No</code>，进入MySQL，运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="n">STOP</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">SQL_SLAVE_SKIP_COUNTER</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>如果还是<code>Slave_SQL_Running: No</code>，有可能是<code>CHANGE MASTER</code>时信息出现错误。可以回到主服务器中运行<code>SHOW MASTER STATUS;</code>查看日志文件和Position是否与从库的一致。然后再在从库中重新<code>CHANGE MASTER</code>。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>软考图类汇总篇</title>
       <link>/blog/2023/05/%E8%BD%AF%E8%80%83%E5%9B%BE%E7%B1%BB%E6%B1%87%E6%80%BB%E7%AF%87/</link>
