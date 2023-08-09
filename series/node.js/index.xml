@@ -819,14 +819,8 @@ index
 <p>Node.js的安装这里就不介绍了，推荐使用NVM来管理Node.js：<a href="/blog/2023/08/nvm-%e5%ae%89%e8%a3%85/">NVM安装</a>。</p>
 <p>查看Node.js的版本：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">node -v
-</span></span></code></pre></div><p>给<code>npm</code>设置淘宝镜像：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm config <span class="nb">set</span> registry http://registry.npmmirror.com
-</span></span></code></pre></div><p>查看当前包下载服务器地址：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm config get registry
 </span></span></code></pre></div><p>升级<code>npm</code>：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo npm install npm -g
-</span></span></code></pre></div><p>使用淘宝镜像安装<code>cnpm</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo npm install -g cnpm --registry<span class="o">=</span>https://registry.npmmirror.com
 </span></span></code></pre></div><hr>
 <h1 id="npm" data-numberify>NPM<a class="anchor ms-1" href="#npm"></a></h1>
 <p>NPM（Node Package Manager）是 Node.js 的包管理工具，用于在 Node.js 环境中安装、管理和共享代码模块。NPM 是随同 Node.js 一起安装的，默认集成在 Node.js 安装包中。它通过命令行接口提供了一系列命令，用于管理 Node.js 应用程序所需的模块，同时也可以在前端开发中使用。</p>
@@ -885,6 +879,40 @@ index
 </span></span></code></pre></div></li>
 </ul>
 <p><code>cnpm</code>的用法与<code>npm</code>类似，例如安装模块可以使用<code>cnpm install</code>，卸载模块可以使用<code>npm uninstall</code>。更多<code>cnpm</code>的用法可以查看 <a href="https://npmmirror.com/" target="_blank" rel="noopener noreferrer">npmmirror 镜像站<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+<h1 id="设置-npm-镜像源" data-numberify>设置 NPM 镜像源<a class="anchor ms-1" href="#设置-npm-镜像源"></a></h1>
+<p>有两种方式可以加快<code>npm</code>下载包的速度：</p>
+<ul>
+<li>
+<p>为<code>npm</code>设置淘宝镜像源（推荐）：</p>
+<p>给<code>npm</code>设置淘宝镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm config <span class="nb">set</span> registry http://registry.npmmirror.com
+</span></span></code></pre></div><p>查看当前包下载服务器地址：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm config get registry
+</span></span></code></pre></div></li>
+<li>
+<p>使用淘宝提供的<code>cnpm</code>包管理器：</p>
+<p>使用淘宝镜像安装<code>cnpm</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo npm install -g cnpm --registry<span class="o">=</span>https://registry.npmmirror.com
+</span></span></code></pre></div></li>
+</ul>
+<p><code>npm</code>镜像的提供者不止一家，如果要方便地切换多个镜像源，可以使用<code>nrm</code>镜像管理工具：</p>
+<ul>
+<li>
+<p>安装<code>nrm</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm install nrm -g
+</span></span></code></pre></div></li>
+<li>
+<p>查看所有可用的镜像源：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nrm ls
+</span></span></code></pre></div></li>
+<li>
+<p>切换镜像源：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nrm use source-name
+</span></span></code></pre></div><p>例如切换淘宝镜像：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nrm use taobao
+</span></span></code></pre></div></li>
+</ul>
 <hr>
 <h1 id="hello-nodejs" data-numberify>Hello Node.js<a class="anchor ms-1" href="#hello-nodejs"></a></h1>
 <p>使用Node.js运行JavaScript，首先需要创建一个<code>.js</code>文件。例如<code>hello.js</code>：</p>
