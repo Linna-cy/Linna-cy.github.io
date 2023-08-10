@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>VS Code on Linner&#39;s Blog</title>
+    <link>/tags/vs-code/</link>
+    <description>Recent content in VS Code on Linner&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
+</copyright>
+    <lastBuildDate>Thu, 10 Aug 2023 08:40:27 +0000</lastBuildDate><atom:link href="/tags/vs-code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VS Code 中英字符对齐</title>
+      <link>/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/</link>
+      <pubDate>Thu, 10 Aug 2023 08:40:27 +0000</pubDate>
+      
+      <guid>/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/</guid>
+      <description><![CDATA[在VS Code中，编写代码或者Markdown时，中文字符与英文字符通常是无法对齐的。可以通过使用Ubuntu Mono字体，让VS Code的]]></description>
+      <content:encoded><![CDATA[<p>在VS Code中，编写代码或者Markdown时，中文字符与英文字符通常是无法对齐的。可以通过使用Ubuntu Mono字体，让VS Code的中英字符能够对齐。</p>
+<p>Ubuntu Mono字体可以从<a href="https://github.com/powerline/fonts" target="_blank" rel="noopener noreferrer">https://github.com/powerline/fonts<i class="fas fa-external-link-square-alt ms-1"></i></a>下载。可以直接通过网页下载其<code>zip</code>压缩包，或者将其<code>clone</code>到本地：</p>
+<pre tabindex="0"><code>git clone https://github.com/powerline/fonts
+</code></pre><p>如果是在Windows上安装该字体，可以找到项目下的<code>UbuntuMono</code>文件夹，直接双击打开<code>.ttf</code>文件，根据显示的内容提示，就能完成安装。</p>
+<p>找到<code>UbuntuMono</code>文件夹并打开，双击打开下方红框中所有<code>.tff</code>文件进行安装：</p>
+<p><picture><img class="img-fluid " alt="uTools_1691657594650.png" src="/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/uTools_1691657594650.png" loading="lazy" width="391" height="222" />
+</picture>
+
+</p>
+<p><picture><img class="img-fluid " alt="uTools_1691657696387.png" src="/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/uTools_1691657696387.png" loading="lazy" width="1424" height="746" />
+</picture>
+
+</p>
+<p>然后根据界面中显示的字体名称，修改VS Code的字体：</p>
+<p><picture><img class="img-fluid " alt="uTools_1691657808584.png" src="/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/uTools_1691657808584.png" loading="lazy" width="392" height="164" />
+</picture>
+
+</p>
+<p>打开VS Code的设置，搜索<code>@id:editor.fontFamily</code>，然后将<code>Ubuntu Mono</code>字体加入后即修改成功：</p>
+<p><picture><img class="img-fluid " alt="uTools_1691657918498.png" src="/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/uTools_1691657918498.png" loading="lazy" width="704" height="127" />
+</picture>
+
+</p>
+<p>如果要根据某种语言设置字体，可以在VS Code中按下 Ctrl+Shift+P，然后在打开的输入框中搜索<code>settings.json</code>：</p>
+<p><picture><img class="img-fluid " alt="uTools_1691658592418.png" src="/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/uTools_1691658592418.png" loading="lazy" width="745" height="165" />
+</picture>
+
+</p>
+<p>Default Settings是VS Code默认的配置；Workspace Settings是当前工作区的配置（也就是当前工作目录）；User Settings是当前登录用户的配置；Markdown PDF这个配置是因为我已经进行过配置，所以才会显示。根据你的需要进行选择即可，这里我选择修改User Settings。</p>
+<p>然后在打开的<code>settings.json</code>文件夹中按Ctrl+F查找<code>&quot;[markdown]&quot;</code>这个设置项（如果没有的话就自己创建）。在<code>&quot;[markdown]&quot;</code>项下，新增或修改如下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="s2">&#34;[markdown]&#34;</span><span class="err">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;editor.fontFamily&#34;</span><span class="p">:</span> <span class="s2">&#34;Ubuntu Mono derivative Powerline&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="err">,</span>
+</span></span></code></pre></div><p>如果觉得字体太小，可以：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="s2">&#34;[markdown]&#34;</span><span class="err">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;editor.fontFamily&#34;</span><span class="p">:</span> <span class="s2">&#34;Ubuntu Mono derivative Powerline&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;editor.fontSize&#34;</span><span class="p">:</span> <span class="mi">17</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="err">,</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>
+
