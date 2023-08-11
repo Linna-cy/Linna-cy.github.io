@@ -8,7 +8,122 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 08 Aug 2023 08:17:55 +0000</lastBuildDate><atom:link href="/docs/node-js/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Aug 2023 15:11:28 +0000</lastBuildDate><atom:link href="/docs/node-js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Express</title>
+      <link>/docs/node-js/express/</link>
+      <pubDate>Thu, 10 Aug 2023 15:11:28 +0000</pubDate>
+      
+      <guid>/docs/node-js/express/</guid>
+      <description><![CDATA[Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex]]></description>
+      <content:encoded><![CDATA[<p>Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Express中文网地址为<a href="https://www.expressjs.com.cn/" target="_blank" rel="noopener noreferrer">https://www.expressjs.com.cn/<i class="fas fa-external-link-square-alt ms-1"></i></a>，官网地址为<a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer">https://expressjs.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>使用Node.js提供的原生<code>http</code>模块也一样可以创建Web服务器。只不过<code>http</code>模块用起来很麻烦、开发效率低，而Express在基于<code>http</code>的基础上进行了进一步的封装，能极大提高开发效率。</p>
+<p>安装Express 4.17.2版本：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i express@4.17.2
+</span></span></code></pre></div><p>使用Express的基本步骤如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建 Web 服务器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 监听 80 端口，服务器启动成功后执行回调函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Express server running at http://127.0.0.1&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>启动服务器，程序会先执行<code>app.listen()</code>方法中的回调函数。</p>
+<hr>
+<h1 id="get-和-post-请求" data-numberify>GET 和 POST 请求<a class="anchor ms-1" href="#get-和-post-请求"></a></h1>
+<p>在Express中，请求方式并不需要自己使用Request对象去判断，可以直接调用Express提供的方法：</p>
+<ul>
+<li>
+<p><code>app.get()</code>：监听 GET 请求。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 监听客户端 GET /user 请求
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 参数1：客户端请求的 URL 地址
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 参数2：请求对应的处理函数
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *      - req: Request 对象，包含了请求相关的属性与方法
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *      - res: Response 对象，包含了响应相关的属性与方法
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/uer&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 向客户端发送 JSON 对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">id</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="s1">&#39;20&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">gender</span><span class="o">:</span> <span class="s1">&#39;man&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>app.post()</code>：监听 POST 请求。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 监听客户端 POST /login 请求
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * post() 方法的参数与 get() 方法类似
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 向客户端发送文本消息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录成功!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>在Express中，可以使用Response对象的<code>send()</code>方法向客户端响应数据，响应的数据可以是JSON、文本、HTML等等。</p>
+<hr>
+<h1 id="获取请求参数" data-numberify>获取请求参数<a class="anchor ms-1" href="#获取请求参数"></a></h1>
+<p>获取查询参数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 使用 request.query 对象，获取查询（路径）参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 获取具体的查询参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">name</span> <span class="o">||</span> <span class="o">!</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录失败! 请输入用户名密码!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">==</span> <span class="s1">&#39;admin&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">password</span> <span class="o">==</span> <span class="s1">&#39;123456&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录成功!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录失败! 用户名或密码不正确!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>获取动态参数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user/:id&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 动态参数使用 &#34;:&#34; + 参数名 定义
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 使用 request.params 对象获取动态（URL）参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 向客户端发送 JSON 对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">id</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="s1">&#39;20&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">gender</span><span class="o">:</span> <span class="s1">&#39;man&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><hr>
+<h1 id="托管静态资源" data-numberify>托管静态资源<a class="anchor ms-1" href="#托管静态资源"></a></h1>
+<p>Express中使用<code>express.static()</code>和<code>app.use()</code>方法可以方便地托管静态资源。例如，托管存放静态资源的<code>public</code>目录：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 使用 express.static() 方法托管静态资源
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * express.static() 需要使用 app.use() 方法，并将其作为参数放入 app.use() 中
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 在进行访问时，默认直接在根路径下请求资源，无需使用 public 作为请求路径
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 并且 public 下的 index.html 会作为 GET / 请求时默认响应的页面
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 注：public 目录需要与当前 .js 文件同级
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">))</span>
+</span></span></code></pre></div><p><code>express.static()</code>可以通过多次调用来托管多个静态目录：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 可以多次使用 express.static() 托管多个静态资源
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 在访问静态资源时，express.static() 会根据目录的添加顺序查找所需的文件
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">))</span>
+</span></span></code></pre></div><p>Express托管静态目录时，可以指定访问当前资源的路径前缀：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * app.use() 可以使用路径前缀来访问静态资源
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 只需要将 路径前缀 作为 参数1，将 express.static() 方法作为 参数2 即可
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/static&#39;</span><span class="p">,</span> <span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;static&#39;</span><span class="p">))</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
     <item>
       <title>NPM 与包</title>
       <link>/docs/node-js/npm-and-package/</link>
