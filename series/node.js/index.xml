@@ -8,13 +8,29 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 10 Aug 2023 15:11:28 +0000</lastBuildDate><atom:link href="/series/node.js/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Aug 2023 13:01:59 +0000</lastBuildDate><atom:link href="/series/node.js/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Node.js Express 模块</title>
-      <link>/docs/node-js/express/</link>
+      <title>Node.js Nodemon 模块</title>
+      <link>/docs/node-js/nodemon/</link>
+      <pubDate>Sat, 12 Aug 2023 13:01:59 +0000</pubDate>
+      
+      <guid>/docs/node-js/nodemon/</guid>
+      <description><![CDATA[Nodemon是一种监听项目文件变动，让项目文件在修改时可以自动重启项目的工具。使用Nodemon时，当代码被修改，Nodemon会自动帮我]]></description>
+      <content:encoded><![CDATA[<p>Nodemon是一种监听项目文件变动，让项目文件在修改时可以自动重启项目的工具。使用Nodemon时，当代码被修改，Nodemon会自动帮我们重启项目，极大方便了开发和调试。</p>
+<p>Nodemon项目地址：<a href="https:/www.npmjs.com/package/nodemon">https:/www.npmjs.com/package/nodemon</a>。</p>
+<p>使用Nodemon时，一般是在全局进行安装：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i nodemon -g
+</span></span></code></pre></div><p>安装完Nodemon后，可以使用<code>nodemon</code>命令来启动项目，这样当项目文件被修改时，<code>nodemon</code>会自动完成项目的重启。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nodemon app.js
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Node.js Express 模块基础</title>
+      <link>/docs/node-js/express/express-base/</link>
       <pubDate>Thu, 10 Aug 2023 15:11:28 +0000</pubDate>
       
-      <guid>/docs/node-js/express/</guid>
+      <guid>/docs/node-js/express/express-base/</guid>
       <description><![CDATA[Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex]]></description>
       <content:encoded><![CDATA[<p>Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Express中文网地址为<a href="https://www.expressjs.com.cn/" target="_blank" rel="noopener noreferrer">https://www.expressjs.com.cn/<i class="fas fa-external-link-square-alt ms-1"></i></a>，官网地址为<a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer">https://expressjs.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
 <p>使用Node.js提供的原生<code>http</code>模块也一样可以创建Web服务器。只不过<code>http</code>模块用起来很麻烦、开发效率低，而Express在基于<code>http</code>的基础上进行了进一步的封装，能极大提高开发效率。</p>
@@ -84,7 +100,8 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录失败! 用户名或密码不正确!&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><p>获取动态参数：</p>
+</span></span></code></pre></div><p>例如，使用 POST <code>http://localhost/login?name=admin&amp;password=123456</code> 进行请求时，可以通过<code>req.query['name']</code>和<code>req.query['password']</code>获取<code>name=admin</code>和<code>password=123456</code>这两个参数。然后将获取到的参数进行判断。</p>
+<p>获取动态参数：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user/:id&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 动态参数使用 &#34;:&#34; + 参数名 定义
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 使用 request.params 对象获取动态（URL）参数
@@ -97,7 +114,8 @@
 </span></span><span class="line"><span class="cl">        <span class="nx">gender</span><span class="o">:</span> <span class="s1">&#39;man&#39;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><hr>
+</span></span></code></pre></div><p>例如，使用 GET <code>http://localhost/user/1</code> 进行请求时，通过<code>req.params['id']</code>获取URL中这个<code>:id</code>参数。</p>
+<hr>
 <h1 id="托管静态资源" data-numberify>托管静态资源<a class="anchor ms-1" href="#托管静态资源"></a></h1>
 <p>Express中使用<code>express.static()</code>和<code>app.use()</code>方法可以方便地托管静态资源。例如，托管存放静态资源的<code>public</code>目录：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
