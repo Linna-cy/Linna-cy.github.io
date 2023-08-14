@@ -8,13 +8,101 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 10 Aug 2023 15:11:28 +0000</lastBuildDate><atom:link href="/docs/node-js/express/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Aug 2023 13:32:52 +0000</lastBuildDate><atom:link href="/docs/node-js/express/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js Express 路由</title>
+      <link>/docs/node-js/express/router/</link>
+      <pubDate>Sat, 12 Aug 2023 13:32:52 +0000</pubDate>
+      
+      <guid>/docs/node-js/express/router/</guid>
+      <description><![CDATA[路由的类型 在Express中，路由指的是客户端的请求与服务器处理函数之间的映射关系。Express中的路由分三部分组成： app.METHOD(PATH, HANDLER) METHOD：请]]></description>
+      <content:encoded><![CDATA[<h1 id="路由的类型" data-numberify>路由的类型<a class="anchor ms-1" href="#路由的类型"></a></h1>
+<p>在Express中，路由指的是客户端的请求与服务器处理函数之间的映射关系。Express中的路由分三部分组成：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">METHOD</span><span class="p">(</span><span class="nx">PATH</span><span class="p">,</span> <span class="nx">HANDLER</span><span class="p">)</span>
+</span></span></code></pre></div><ul>
+<li><code>METHOD</code>：请求的类型。</li>
+<li><code>PATH</code>：请求的URL地址。</li>
+<li><code>HANDLER</code>：请求的处理（回调）函数。</li>
+</ul>
+<hr>
+<h1 id="路由的匹配过程" data-numberify>路由的匹配过程<a class="anchor ms-1" href="#路由的匹配过程"></a></h1>
+<p>每当一个请求到达服务器之后，需要先经过路由的匹配，只有匹配成功之后，才会调用对应的处理函数。</p>
+<p>在匹配时，Express会按照路由被定义的顺序进行匹配，如果请求的类型和请求的URL同时匹配成功，则Express会将这次请求，转
+交给对应的函数进行处理。</p>
+<p>关于路由的基本使用，已经在 <a href="/docs/node-js/express/express-base/">Express 基础</a> 中进行了介绍。</p>
+<hr>
+<h1 id="路由的模块化使用" data-numberify>路由的模块化使用<a class="anchor ms-1" href="#路由的模块化使用"></a></h1>
+<p>为了方使对路由进行模块化的管理，Express不建议将路由直接挂载到<code>app</code>上，而是推荐将路由抽离为单独的模块。</p>
+<p>将路由抽离为单独模块的步骤如下：</p>
+<ol>
+<li>创建路由模块对应的 <code>.js</code> 文件。</li>
+<li>调用 <code>express.Router()</code> 函数创建路由对象。</li>
+<li>向路由对象上挂载具体的路由。</li>
+<li>使用 <code>module.exports</code> 向外共享路由对象。</li>
+<li>使用 <code>app.use()</code> 函数注册路由模块。</li>
+</ol>
+<p>例如，为<code>user</code>模块创建一个路由对象：</p>
+<ol>
+<li>
+<p>新建一个<code>app.js</code>文件，获取<code>app</code>对象，并使用<code>app.listen()</code>方法监听端口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1/&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+<li>
+<p>为<code>user</code>API请求创建一个<code>user.js</code>模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * User路由模块
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建路由对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">express</span><span class="p">.</span><span class="nx">Router</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 使用 router 对象挂载具体的路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user/list&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Get users list...&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/user/add&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Add new user...&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 向外导出路由对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span>
+</span></span></code></pre></div></li>
+<li>
+<p>在<code>app.js</code>中，导入<code>user.js</code>模块，并使用<code>app.use()</code>函数注册<code>user.js</code>模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 导入并注册路由模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./user&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * app.use() 可用来注册全局中间件
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * app.use() 还可以为路由模块添加路由前缀，例如：
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * app.use(&#39;/api&#39;, router)
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">router</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Server running at http://127.0.0.1/&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+</ol>
+<p>接着启动服务器，使用对应方式进行请求。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Node.js Express 模块基础</title>
-      <link>/docs/node-js/express/express-base/</link>
+      <link>/docs/node-js/express/base/</link>
       <pubDate>Thu, 10 Aug 2023 15:11:28 +0000</pubDate>
       
-      <guid>/docs/node-js/express/express-base/</guid>
+      <guid>/docs/node-js/express/base/</guid>
       <description><![CDATA[Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex]]></description>
       <content:encoded><![CDATA[<p>Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Express中文网地址为<a href="https://www.expressjs.com.cn/" target="_blank" rel="noopener noreferrer">https://www.expressjs.com.cn/<i class="fas fa-external-link-square-alt ms-1"></i></a>，官网地址为<a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer">https://expressjs.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
 <p>使用Node.js提供的原生<code>http</code>模块也一样可以创建Web服务器。只不过<code>http</code>模块用起来很麻烦、开发效率低，而Express在基于<code>http</code>的基础上进行了进一步的封装，能极大提高开发效率。</p>
