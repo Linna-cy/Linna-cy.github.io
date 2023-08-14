@@ -32,7 +32,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div><p>启动服务器，程序会先执行<code>app.listen()</code>方法中的回调函数。</p>
 <hr>
-<h1 id="get-和-post-请求" data-numberify>GET 和 POST 请求<a class="anchor ms-1" href="#get-和-post-请求"></a></h1>
+<h1 id="请求处理" data-numberify>请求处理<a class="anchor ms-1" href="#请求处理"></a></h1>
 <p>在Express中，请求方式并不需要自己使用Request对象去判断，可以直接调用Express提供的方法：</p>
 <ul>
 <li>
@@ -67,6 +67,8 @@
 </span></span></code></pre></div></li>
 </ul>
 <p>在Express中，可以使用Response对象的<code>send()</code>方法向客户端响应数据，响应的数据可以是JSON、文本、HTML等等。</p>
+<p>Express支持所有关于HTTP的请求，可以通过使用<code>app.METHOD()</code>来指定请求方式。例如DELETE请求使用<code>app.delete()</code>。</p>
+<p>Express还支持通过<code>app.all()</code>来匹配所有请求方式。</p>
 <hr>
 <h1 id="获取请求参数" data-numberify>获取请求参数<a class="anchor ms-1" href="#获取请求参数"></a></h1>
 <p>获取查询参数：</p>
