@@ -2475,13 +2475,13 @@ docker restart nacos2
 </li>
 </ol>
 <h1 id="跨域问题处理" data-numberify>跨域问题处理<a class="anchor ms-1" href="#跨域问题处理"></a></h1>
-<p>跨域是指发送与当前服务的域名（或端口）不一致的请求。</p>
+<p>跨域是指发送与当前服务的域名（或端口、协议）不一致的请求。</p>
 <p>跨域问题的产生原因是浏览器不允许Ajax请求对域名不同或端口不同的服务发起请求。例如：</p>
 <ul>
 <li>域名不同： <code>www.taobao.com</code>和<code>www.taobao.org</code>，<code>www.linner.asia</code>和<code>blog.linner.asia</code>。</li>
 <li>域名相同，端口不同：<code>localhost:8080</code>和<code>localhost8081</code>。</li>
 </ul>
-<p>解决方案之一就是CORS。Gateway为我们提供了使用CORS处理跨域问题的方法，只需修改<code>application.yml</code>即可：</p>
+<p>解决方案之一就是CORS（JSONP只支持GET请求，不推荐）。Gateway为我们提供了使用CORS处理跨域问题的方法，只需修改<code>application.yml</code>即可：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
