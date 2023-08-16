@@ -720,7 +720,7 @@ Get user by id 1...
 <p>接着启动服务器，使用对应方式进行请求。</p>
 <hr>
 <h1 id="跨域请求问题" data-numberify>跨域请求问题<a class="anchor ms-1" href="#跨域请求问题"></a></h1>
-<p>跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许Ajax请求对域名不同或端口不同的服务发起请求。</p>
+<p>跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求。</p>
 <p>演示跨域问题：</p>
 <ul>
 <li>
@@ -799,7 +799,124 @@ Get user by id 1...
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div></li>
 </ul>
-<p>只要页面打开的协议、地址或端口与服务器不同，浏览器就会阻止该请求的发送。主流的解决方案就是CORS。</p>
+<p>只要页面打开的协议、地址或端口与服务器不同，浏览器就会阻止该请求的发送。主流的解决方案有CORS。</p>
+<p>在Express中，可以通过使用<code>cors</code>这个第三方中间件来解决跨域问题：</p>
+<ol>
+<li>
+<p>安装<code>cors</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i cors
+</span></span></code></pre></div></li>
+<li>
+<p>导入<code>cors</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>注册<code>cors</code>中间件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">())</span>
+</span></span></code></pre></div><blockquote>
+<p>注：<code>cors</code>中间件要在所有路由之前注册。</p>
+</blockquote>
+</li>
+</ol>
+<p>完整示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 导入并注册 cors 中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/book&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Server running at http://127.0.0.1/&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><hr>
+<h1 id="cors" data-numberify>CORS<a class="anchor ms-1" href="#cors"></a></h1>
+<p>CORS（Cross-Origin Resource Sharing，跨域资源共享）由<u>一系列HTTP响应头组成</u>，这些HTTP响应头决定浏览器是否阻止前端JS代码跨域获取资源。</p>
+<p>浏览器的同源安全策路默认会阻止网页“跨域”获取资源。但如果接口服务器配置了CORS相关的HTTP响应头，就可以解除浏览器端的跨域访问限制。相当于服务器告诉浏览器我同意其它“域”来使用我的接口。</p>
+<p>CORS的注意事项：</p>
+<ul>
+<li>CORS主要在服务器端进行配置。客户端浏览器无须做任何额外的配置，即可请求开启了CORS的接口。</li>
+<li>CORS在浏览器中有兼容性。只有支持XMLHttpRequest Level2的浏览器，才能正常访问开启了CORS的服务端接口（例如：IE10+、Chrome4+、FireFox3.5+）。</li>
+</ul>
+<p>与CORS相关的响应头，基本上都是以<code>Access-Control-Allow-</code>开头。常见的CORS相关响应头有：</p>
+<ul>
+<li>
+<p><code>Access-Control-Allow-Origin</code>：</p>
+<pre tabindex="0"><code>Access-Control-Allow-Origin: &lt;origin&gt; | *
+</code></pre><p>其中，<code>origin</code>参数的值指定了允许访问该资源的外域URL；如果要允许所有网站进行跨域请求，可以使用<code>*</code>符号。</p>
+<p>例如在服务端设置仅允许<code>https://blog.linner.asia</code>进行跨域请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;https://blog.linner.asia&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Access-Control-Allow-Headers</code>：</p>
+<p>默认情况下，CORS仅支持客户端向服务器发送如下的9种请求头：</p>
+<p><code>Accept</code>、<code>Accept-Language</code>、<code>Content-Language</code>、<code>DPR</code>、<code>Downlink</code>、<code>Save-Data</code>、<code>Viewport-Width</code>、<code>Width</code>、<code>Content-Type</code>（值仅限于<code>text/plain</code>、<code>multipart/form-data</code>、<code>application/x-wwnw-form-urlencoded</code>三者之）。</p>
+<p>如果客户端向服务器发送了额外的请求头信息，则需要在服务器端，通过<code>Access-Control-Allow-Headers</code>对额外的请求头进行声明；否则这次请求将会失败。</p>
+<p>例如在服务器中通过设置<code>Access-Control-Allow-Headers</code>来允许客户端发送<code>Content-Type</code>和<code>XCustom-Header</code>请求头：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="sb">`Access-Control-Allow-Headers`</span><span class="p">,</span> <span class="s1">&#39;Content-Type, XCustom-Header&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><blockquote>
+<p>注：<code>res.setHeader()</code>中设置<code>Access-Control-Allow-Headers</code>时，多个请求头之间使用<code>,</code>分隔。</p>
+</blockquote>
+</li>
+<li>
+<p><code>Access-Control-Allow-Methods</code>：</p>
+<p>默认情况下，CORS仅支持客户端发起GET、POST、HEAD请求。如果客户端希望通过PUT、DELETE等方式请求服务器的资源，则需要在服务器端。通过<code>Access-Control-Allow-Methods</code>来指明实际请求所允许使用的HTTP方法，</p>
+<ul>
+<li>
+<p>只允许 POST、GET、DELETE、HEAD 请求（多个请求之间使用<code>,</code>分隔）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;POST, GET, DELETE, HEAD&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用<code>*</code>符号允许所有的 HTTP 请求：</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>客户端在请求CORS接口时，根据请求方式和请求头的不同，可以将CORS的请求分为两大类，分别是：</p>
+<ul>
+<li>
+<p><strong>简单请求</strong>：</p>
+<p>同时满足以下两大条件的请求，就属于简单请求：</p>
+<ul>
+<li>
+<p>请求方式必须是 GET、POST、HEAD 之一。</p>
+</li>
+<li>
+<p>HTTP头部信息不超过以下几种字段：</p>
+<p>无自定义头部字段、<code>Accept</code>、<code>Accept-Language</code>、<code>Content-Language</code>、<code>DPR</code>、<code>Downlink</code>、<code>Save-Data</code>、<code>Viewport-Width</code>、<code>Width</code>、<code>Content-Type</code>（值仅限于<code>text/plain</code>、<code>multipart/form-data</code>、<code>application/x-wwnw-form-urlencoded</code>三者之）。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>预检请求</strong>：</p>
+<p>只要符合以下任一条件的请求，都需要进行预检请求：</p>
+<ul>
+<li>请求方式为 GET、POST、HEAD 之外的请求类型。</li>
+<li>请求头中包含了自定义头部字段。</li>
+<li>发送的请求数据包含<code>application/json</code>格式的数据。</li>
+</ul>
+<p>在浏览器与服务器正式通信之前，浏览器会先发送<code>OPTION</code>请求进行预检，以获知服务器是否允许该实际请求，所以这一次的<code>OPTION</code>请求被称为“预检请求”。服务器成功响应预检请求后，才会发送真正的请求，井且携带真实数据。</p>
+</li>
+</ul>
 ]]></content:encoded>
     </item>
     
