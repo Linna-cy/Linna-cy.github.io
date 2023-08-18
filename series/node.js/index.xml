@@ -40,7 +40,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnGET&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">                    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost/user&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost/get&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">                    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Zhangsan&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">                        <span class="nx">age</span><span class="o">:</span> <span class="mi">20</span>
@@ -54,7 +54,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnPOST&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">                    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost/book&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost/post&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">                    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;人间失格&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">                        <span class="nx">author</span><span class="o">:</span> <span class="s1">&#39;太宰治&#39;</span>
@@ -76,14 +76,14 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/get&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/post&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span><span class="p">,</span>
@@ -96,7 +96,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div></li>
 </ul>
-<p>只要页面打开的协议、地址或端口与服务器不同，浏览器就会阻止该请求的发送。主流的解决方案有CORS。</p>
+<p>只要页面打开的协议、地址或端口与服务器不同，浏览器就会阻止该请求的发送。解决方案有CORS和JSONP等，推荐使用CORS，因为JSONP仅支持GET请求。</p>
 <p>在Express中，可以通过使用<code>cors</code>这个第三方中间件来解决跨域问题：</p>
 <ol>
 <li>
@@ -125,18 +125,18 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/get&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;GET请求成功!&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span>
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/book&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/post&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;POST请求成功!&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span>
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
@@ -214,9 +214,96 @@
 </ul>
 <p>在浏览器与服务器正式通信之前，浏览器会先发送<code>OPTION</code>请求进行预检，以获知服务器是否允许该实际请求，所以这一次的<code>OPTION</code>请求被称为“预检请求”。服务器成功响应预检请求后，才会发送真正的请求，井且携带真实数据。</p>
 <p>特点：客户端与服务器之间会发生两次请求，OPTION预检请求成功之后，才会发起真正的请求。</p>
+<p>演示：</p>
+<ul>
+<li>
+<p>在HTML中添加以下按钮和Ajax请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;btnDELETE&#34;</span><span class="p">&gt;</span>DELETE<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 测试DELETE接口（演示预检请求）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnDELETE&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://127.0.0.1/delete&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;1&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div></li>
+<li>
+<p>在Express Server中添加以下接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s1">&#39;/delete&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;DELETE请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>在Edge、Firefox等能显示预检请求的浏览器（Google Chrome需要在<a href="chrome://flags/#out-of-blink-cors" target="_blank" rel="noopener noreferrer">chrome://flags/#out-of-blink-cors<i class="fas fa-external-link-square-alt ms-1"></i></a>中开启显示预检请求）中打开HTML页面，点击DELETE按钮发起请求。然后在开发者工具的网络监测中可以看到发送了一条大小为0的OPTION预检请求。</p>
 </li>
 </ul>
-]]></content:encoded>
+<hr>
+<h1 id="jsonp-接口" data-numberify>JSONP 接口<a class="anchor ms-1" href="#jsonp-接口"></a></h1>
+<p>浏览器端通过<code>&lt;script&gt;</code>标签的<code>src</code>属性，请求服务器上的数据。同时，服务器返回一个函数的调用。这种请求数据的方式叫做JSONP。</p>
+<p>JSONP的特点：</p>
+<ul>
+<li>JSONP不属于真正的Ajax请求，因为它没有使用XMLHttpRequest这个对象。</li>
+<li>JSONP仅支持GET请求，不支持POST、PUT、DELETE等请求。</li>
+</ul>
+<p>实现JSONP接口的步骤：</p>
+<ol>
+<li>
+<p>获取客户端发送过来的回调函数的名字。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">funcName</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">callback</span>
+</span></span></code></pre></div></li>
+<li>
+<p>得到要通过JSONP形式发送给客户端的响应数据。</p>
+</li>
+<li>
+<p>根据前两步得到的数据，拼接出一个函数调用的字符串。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="cm">/* get response data... */</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 拼接函数调用的字符串
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">scriptStr</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">funcName</span><span class="si">}</span><span class="sb">(</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="si">}</span><span class="sb">)`</span>
+</span></span></code></pre></div></li>
+<li>
+<p>把上一步拼接得到的字符串，响应给客户端的<code>&lt;script&gt;</code>标签进行解析执行。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">scriptStr</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+</ol>
+<p>客户端进行JSONP请求的示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;btnJSONP&#34;</span><span class="p">&gt;</span>JSONP<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnJSONP&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://127.0.0.1/jsonp&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span><span class="p">,</span>  <span class="c1">// 表示发起JSONP请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>完整的JSONP接口实现示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/jsonp&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// TODO: 定义 JSONP 接口具体的实现过程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 获取回调函数名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">funcName</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">callback</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 获取响应数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Zhangsan&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="mi">22</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 拼接函数调用的字符串
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">scriptStr</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">funcName</span><span class="si">}</span><span class="sb">(</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="si">}</span><span class="sb">)`</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将函数调用字符串响应给客户端的 &lt;script&gt; 标签进行解析执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">scriptStr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 如果同时启用了 CORS 和 JSONP，CORS中间件要放在JSONP接口后面，否则JSONP接口也会以CORS形式进行相应
+</span></span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
