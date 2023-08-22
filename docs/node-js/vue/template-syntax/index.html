@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue 模板语法">
 <meta itemprop="description" content="Vue.js 使用了基于 HTML 的模板语法，允许开发者声明式地将 DOM 绑定至底层 Vue 实例的数据。结合响应系统，在应用状态改变时， Vue 能够智能地计算出重新渲染组件的最小"><meta itemprop="datePublished" content="2023-08-19T10:36:30+00:00" />
 <meta itemprop="dateModified" content="2023-08-19T10:36:30+00:00" />
-<meta itemprop="wordCount" content="1474">
+<meta itemprop="wordCount" content="2562">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -618,7 +618,7 @@ Linner
     <h1 class="card-title post-title my-2">Vue 模板语法</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-08-19 10:36:30 &#43;0000 UTC。">2023年8月19日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-08-19 10:36:30 &#43;0000 UTC。">2023年8月19日</span><span class="post-reading-time me-1 mb-1">6 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
@@ -773,6 +773,136 @@ Linner
 <p><code>v-model</code>仅作用于<code>value</code>元素上，所以<code>v-model:value</code>可以简写为<code>v-model</code>。</p>
 </li>
 </ul>
+<hr>
+<h1 id="数据代理" data-numberify>数据代理<a class="anchor ms-1" href="#数据代理"></a></h1>
+<p>数据代理是指通过一个对象代理另一个对象中属性的（读/写）操作。</p>
+<h2 id="原理" data-numberify>原理<a class="anchor ms-1" href="#原理"></a></h2>
+<p>数据代理可以通过<code>Object.defineProperty()</code>实现。在Vue中，很多技术的实现都使用到了<code>Object.defineProperty()</code>这个方法。</p>
+<p><code>Object.defineProperty()</code>的用法如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Object.defineProperty<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">sex</span><span class="o">:</span> <span class="s1">&#39;男&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// age: 18,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 使用 Object.defineProperty() 给对象添加属性
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 1. 参数1：要添加属性的对象
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 2. 参数2：要给对象添加的属性名称
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 3. 参数3：要添加的属性的配置
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">person</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">value</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>  <span class="c1">// 定义属性的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">enumerable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 控制属性是否可枚举，默认为false
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">writable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 控制属性是否可被写入（修改），默认为false
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">configurable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 控制属性是否可被删除，默认为false
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// console.log(Object.keys(person));
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">articleSize</span> <span class="o">=</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">article</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Vue&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// size: articleSize,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">article</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">       * Getter：
+</span></span></span><span class="line"><span class="cl"><span class="cm">       * 当article.size被读取时，get()会被调用，并且将返回值作为article.size的值
+</span></span></span><span class="line"><span class="cl"><span class="cm">       */</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;The article.size is read.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">articleSize</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">       * Setter：
+</span></span></span><span class="line"><span class="cl"><span class="cm">       * 当article.size被修改时，set()会被调用，并且将参数value作为article.size的值
+</span></span></span><span class="line"><span class="cl"><span class="cm">       */</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`The article.size is modified to </span><span class="si">${</span><span class="nx">value</span><span class="si">}</span><span class="sb">.`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">articleSize</span> <span class="o">=</span> <span class="nx">value</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">article</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>假设有两个对象<code>obj1</code>和<code>obj2</code>，需要能通过<code>obj2</code>来修改<code>obj1</code>，可以这样实现：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>数据代理<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">obj1</span> <span class="o">=</span> <span class="p">{</span><span class="nx">x</span><span class="o">:</span> <span class="mi">100</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">obj2</span> <span class="o">=</span> <span class="p">{</span><span class="nx">y</span><span class="o">:</span> <span class="mi">200</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">obj2</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">obj1</span><span class="p">.</span><span class="nx">x</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">obj1</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">value</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><h2 id="vue-数据代理" data-numberify>Vue 数据代理<a class="anchor ms-1" href="#vue-数据代理"></a></h2>
+<p>Vue实例实际上是Vue实例中的<code>data</code>的数据代理对象。Vue实例中的<code>data</code>通过数据代理，将其对象中的属性交予Vue实例来直接管理。</p>
+<p>验证Vue数据代理：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>数据代理<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>姓名：{{name}}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">age</span><span class="o">:</span> <span class="s1">&#39;18&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vm</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`vm._data === data ??? </span><span class="si">${</span><span class="nx">vm</span><span class="p">.</span><span class="nx">_data</span> <span class="o">===</span> <span class="nx">data</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>实际上，Vue对象在实例化时，会将配置（<code>options</code>）中的<code>data</code>实例化为<code>vm._data</code>。所以实际上<code>vm</code>对象代理的是<code>vm._data</code>对象。</p>
+<p>由于Vue模板语法中，在使用插值时获取的是Vue实例中的对象。如果Vue没有使用数据代理，那么要获取<code>data</code>中的数据，相应的表达式应该写作<code>{{_data.name}}</code>（假设获取<code>name</code>）。当使用了数据代理，<code>data</code>中的对象可以通过Vue实例对象来进行操作，那么表达式就可以直接写作<code>{{name}}</code>。</p>
 </div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
@@ -958,6 +1088,12 @@ Linner
       <ul>
         <li><a href="#输出-html">输出 HTML</a></li>
         <li><a href="#数据绑定">数据绑定</a></li>
+      </ul>
+    </li>
+    <li><a href="#数据代理">数据代理</a>
+      <ul>
+        <li><a href="#原理">原理</a></li>
+        <li><a href="#vue-数据代理">Vue 数据代理</a></li>
       </ul>
     </li>
   </ul>
