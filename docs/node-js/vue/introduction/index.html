@@ -23,12 +23,12 @@
 <meta property="og:url" content="/docs/node-js/vue/introduction/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2023-08-19T07:36:10+00:00" />
 <meta property="article:modified_time" content="2023-08-19T07:36:10+00:00" />
-<meta property="og:see_also" content="/docs/node-js/vue/mvvm/" /><meta property="og:see_also" content="/docs/node-js/vue/template-syntax/" />
+<meta property="og:see_also" content="/docs/node-js/vue/template-syntax/" />
 
 <meta itemprop="name" content="Vue 介绍">
 <meta itemprop="description" content="Vue.js 是一套构建用户界面的渐进式框架。Vue 只关注视图层，采用自底向上增量开发的设计。Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的"><meta itemprop="datePublished" content="2023-08-19T07:36:10+00:00" />
 <meta itemprop="dateModified" content="2023-08-19T07:36:10+00:00" />
-<meta itemprop="wordCount" content="1458">
+<meta itemprop="wordCount" content="1805">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -392,8 +392,6 @@ Linner
           <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/vue/introduction/"><span class="docs-nav-title">介绍</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/vue/template-syntax/"><span class="docs-nav-title">模板语法</span></a>
-        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
-          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/vue/mvvm/"><span class="docs-nav-title">MVVM 模型</span></a>
         </li></ul>
             </div>
           </div>
@@ -618,7 +616,7 @@ Linner
     <h1 class="card-title post-title my-2">Vue 介绍</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-08-19 07:36:10 &#43;0000 UTC。">2023年8月19日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-08-19 07:36:10 &#43;0000 UTC。">2023年8月19日</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
@@ -792,6 +790,49 @@ Linner
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">      <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="mvvm-模型" data-numberify>MVVM 模型<a class="anchor ms-1" href="#mvvm-模型"></a></h1>
+<p>Vue是在MVVM模型的基础上进行设计，MVVM模型包含以下3个部分：</p>
+<ul>
+<li><strong>M</strong>（Model）：模型，对应Vue实例<code>data</code>中的数据。</li>
+<li><strong>V</strong>（View）：模板，即Vue容器。</li>
+<li><strong>VM</strong>（View Model）：视图模型，对应Vue实例对象。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="Vue 和 MVVM 模型" src="/docs/node-js/vue/introduction/uTools_1692692952621.png" loading="lazy" width="770" height="409" />
+</picture>
+
+</p>
+<ul>
+<li>DOM Listeners：DOM监听器，监听View中数据的改变，并根据Data Bindings指定的关系，将View中被修改的数据在Model中做相应的改变。</li>
+<li>Data Bindings：数据绑定，将View与Model中对应的数据进行绑定，表示视图与模型间的一种对应关系。</li>
+</ul>
+<p>在代码中，Vue和MVVM模型的对应关系如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello Vue<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span> <span class="c">&lt;!-- View --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello, {{name}}!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 在代码中，可以使用vm代表Vue实例，vm表示View Model
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span> <span class="c1">// View Model
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="c1">// Model
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Vue.js&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vm</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
@@ -976,6 +1017,7 @@ Linner
     <li><a href="#hello">Hello</a></li>
     <li><a href="#创建-vue-实例的另一种方式">创建 Vue 实例的另一种方式</a></li>
     <li><a href="#数据对象的函数式写法">数据对象的函数式写法</a></li>
+    <li><a href="#mvvm-模型">MVVM 模型</a></li>
   </ul>
 </nav>
     </div>

@@ -8,58 +8,7 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 22 Aug 2023 08:22:46 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>MVVM 模型</title>
-      <link>/docs/node-js/vue/mvvm/</link>
-      <pubDate>Tue, 22 Aug 2023 08:22:46 +0000</pubDate>
-      
-      <guid>/docs/node-js/vue/mvvm/</guid>
-      <description><![CDATA[Vue是在MVVM模型的基础上进行设计，MVVM模型包含以下3个部分： M（Model）：模型，对应Vue实例data中的数据。 V（View）]]></description>
-      <content:encoded><![CDATA[<p>Vue是在MVVM模型的基础上进行设计，MVVM模型包含以下3个部分：</p>
-<ul>
-<li><strong>M</strong>（Model）：模型，对应Vue实例<code>data</code>中的数据。</li>
-<li><strong>V</strong>（View）：模板，即Vue容器。</li>
-<li><strong>VM</strong>（View Model）：视图模型，对应Vue实例对象。</li>
-</ul>
-<p><picture><img class="img-fluid " alt="Vue 和 MVVM 模型" src="/docs/node-js/vue/mvvm/uTools_1692692952621.png" loading="lazy" width="770" height="409" />
-</picture>
-
-</p>
-<ul>
-<li>DOM Listeners：DOM监听器，监听View中数据的改变，并根据Data Bindings指定的关系，将View中被修改的数据在Model中做相应的改变。</li>
-<li>Data Bindings：数据绑定，将View与Model中对应的数据进行绑定，表示视图与模型间的一种对应关系。</li>
-</ul>
-<p>在代码中，Vue和MVVM模型的对应关系如下所示：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello Vue<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span> <span class="c">&lt;!-- View --&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello, {{name}}!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 在代码中，可以使用vm代表Vue实例，vm表示View Model
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span> <span class="c1">// View Model
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="c1">// Model
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Vue.js&#39;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">})</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vm</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></div>]]></content:encoded>
-    </item>
-    
+    <lastBuildDate>Sat, 19 Aug 2023 10:36:30 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Vue 模板语法</title>
       <link>/docs/node-js/vue/template-syntax/</link>
@@ -512,6 +461,49 @@
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">      <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="mvvm-模型" data-numberify>MVVM 模型<a class="anchor ms-1" href="#mvvm-模型"></a></h1>
+<p>Vue是在MVVM模型的基础上进行设计，MVVM模型包含以下3个部分：</p>
+<ul>
+<li><strong>M</strong>（Model）：模型，对应Vue实例<code>data</code>中的数据。</li>
+<li><strong>V</strong>（View）：模板，即Vue容器。</li>
+<li><strong>VM</strong>（View Model）：视图模型，对应Vue实例对象。</li>
+</ul>
+<p><picture><img class="img-fluid " alt="Vue 和 MVVM 模型" src="/docs/node-js/vue/introduction/uTools_1692692952621.png" loading="lazy" width="770" height="409" />
+</picture>
+
+</p>
+<ul>
+<li>DOM Listeners：DOM监听器，监听View中数据的改变，并根据Data Bindings指定的关系，将View中被修改的数据在Model中做相应的改变。</li>
+<li>Data Bindings：数据绑定，将View与Model中对应的数据进行绑定，表示视图与模型间的一种对应关系。</li>
+</ul>
+<p>在代码中，Vue和MVVM模型的对应关系如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello Vue<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span> <span class="c">&lt;!-- View --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello, {{name}}!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 在代码中，可以使用vm代表Vue实例，vm表示View Model
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span> <span class="c1">// View Model
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="c1">// Model
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Vue.js&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vm</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
