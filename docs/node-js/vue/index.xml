@@ -7,7 +7,123 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
-</copyright><atom:link href="/docs/node-js/vue/index.xml" rel="self" type="application/rss+xml" />
+</copyright>
+    <lastBuildDate>Sat, 19 Aug 2023 07:36:10 +0000</lastBuildDate><atom:link href="/docs/node-js/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 介绍</title>
+      <link>/docs/node-js/vue/introduction/</link>
+      <pubDate>Sat, 19 Aug 2023 07:36:10 +0000</pubDate>
+      
+      <guid>/docs/node-js/vue/introduction/</guid>
+      <description><![CDATA[Vue.js 是一套构建用户界面的渐进式框架。Vue 只关注视图层，采用自底向上增量开发的设计。Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的]]></description>
+      <content:encoded><![CDATA[<p>Vue.js 是一套构建用户界面的渐进式框架。Vue 只关注视图层，采用自底向上增量开发的设计。Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的视图组件。</p>
+<p>在学习Vue之前需要了解HTML、CSS和JavaScript。</p>
+<p>Vue的特点：</p>
+<ul>
+<li>
+<p>采用组件化模式，提高代码复用率、且让代码更好维护。</p>
+</li>
+<li>
+<p>采用声明式编码，让编码人员无需直接操作DOM，提高开发效率。</p>
+<p>使用传统JS操作DOM属于命令式编码。</p>
+</li>
+<li>
+<p>使用虚拟DOM和优秀的Diff算法，尽量复用DOM节点。</p>
+</li>
+</ul>
+<p>Vue官网为：<a href="https://cn.vuejs.org/" target="_blank" rel="noopener noreferrer">https://cn.vuejs.org/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+<h1 id="安装-vue" data-numberify>安装 Vue<a class="anchor ms-1" href="#安装-vue"></a></h1>
+<p>安装Vue的方式有很多，可以在<a href="https://v2.cn.vuejs.org/v2/guide/installation.html" target="_blank" rel="noopener noreferrer">Vue2文档<i class="fas fa-external-link-square-alt ms-1"></i></a>中查阅。</p>
+<p>其中最简单的方式就是通过<code>&lt;script&gt;</code>标签引入。通过<code>&lt;script&gt;</code>标签，可以直接使用Vue CDN引入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>通常引入的Vue有两种版本：</p>
+<ul>
+<li>
+<p>开发版本：包含完整的警告和调试模式。如上方引入的即为<code>vue@2.7.14</code>的开发版本。</p>
+</li>
+<li>
+<p>生产版本：删除了警告。通常Vue开发版本的文件名为<code>vue.min.js</code>。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>在使用Vue时，通常会在浏览器中安装Vue的开发者工具插件：<a href="https://github.com/vuejs/devtools#vue-devtools" target="_blank" rel="noopener noreferrer">https://github.com/vuejs/devtools#vue-devtools<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+<h1 id="hello" data-numberify>Hello<a class="anchor ms-1" href="#hello"></a></h1>
+<p>下方演示了Vue的基本使用方式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello Vue<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;root&#34;</span><span class="p">&gt;</span> <span class="c">&lt;!-- Vue 容器 --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello, {{name}}<span class="c">&lt;!-- 插值表达式 --&gt;</span>!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">      阻止 vue 在启动时生成生产提示
+</span></span></span><span class="line"><span class="cl"><span class="cm">      Vue 2.x 中可能不会生效，直接修改 Vue 源码
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Vue</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">productionTip</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建 Vue 实例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#root&#39;</span><span class="p">,</span>  <span class="c1">// 将实例与容器进行绑定
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="c1">// data 中用于存储数据，存储的数据供 el 所指定的容器使用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Vue.js&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>Hello实例中的一些关键点：</p>
+<ul>
+<li>
+<p>Vue 容器：</p>
+<ul>
+<li>
+<p>容器中的代码依然符合 HTML 规范，只不过混入了一些特殊的 Vue 语法。</p>
+</li>
+<li>
+<p>容器中的代码被称为 Vue模板。</p>
+</li>
+<li>
+<p>插值语法：在HTML标签体中，使用两个花括号<code>{{}}</code>将JS表达式引起来。与语句不同的是，表达式指可以生成值的语句，这个语句可以放在任何需要值的地方。</p>
+<p>也就是说插值表达式一定需要有值（或返回值）。</p>
+<p>插值表达式中的变量、方法都是在对应 Vue实例 的 <code>data</code> 中定义的。当<code>data</code>发生了改变，页面中对应的数据也会发生改变。</p>
+<blockquote>
+<p>插值是，Vue模板语法中的一种。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>Vue 实例：Vue 实例用于解析 Vue 容器，Vue 实例会根据配置对象的信息去解析对应的模板。创建Vue 实例时需要传入一个配置对象。</p>
+<ul>
+<li>
+<p><code>el</code>属性：将实例与容器进行绑定，<code>el</code> 的值通常为 CSS 选择器字符串。</p>
+<p><code>el</code>属性中传入的值也可以是具体的Element对象，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">)</span> <span class="c1">// el 还可以这么绑定
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">})</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>data</code>：<code>data</code> 中用于存储数据（对象或方法），存储的数据供 <code>el</code> 所指定的容器使用。<code>data</code> 可以是对象或函数。</p>
+</li>
+</ul>
+<p>Vue实例和Vue容器是一对一关系。当一个实例的<code>el</code>配置有多个与之对应的容器时，Vue不会报错，但页面显示会有问题；当一个容器被多个实例指定时，Vue会报错。</p>
+<p>真实开发中只有一个Vue实例，并且会配合着组件一起使用。</p>
+</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
   </channel>
 </rss>
 
