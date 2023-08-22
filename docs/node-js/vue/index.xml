@@ -167,7 +167,12 @@
 </span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 函数式 data，将返回值作为数据对象
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * data() 的 this 是当前的Vue实例对象
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 定义data()时不要使用箭头函数
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 如果将data()定义为箭头函数，那么this就不再是当前Vue的实例对象了
+</span></span></span><span class="line"><span class="cl"><span class="cm">         */</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner&#39;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
