@@ -484,7 +484,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span></code></pre></div><p>这部分后续添加的数据（如上例中的<code>user.sex</code>），直接为其赋值（<code>vm._data.user = '男'</code>）并不能让页面产生改变。这是因为在Vue实例中，后续添加的数据Vue并不会自动帮它们进行响应式数据处理（即通过<code>Object.defineProperty()</code>添加Getter和Setter）。</p>
-<p>为了解决这些问题，Vue提供了一个<code>Vue.set()</code>方法来为Vue实例中的数据对象添加新的响应式数据。<code>Vue.set()</code>方法的参数如下：</p>
+<p>为了解决这些问题，Vue提供了一个<code>Vue.set()</code>方法来为Vue实例或Vue组件实例中的数据对象添加新的响应式数据。<code>Vue.set()</code>方法的参数如下：</p>
 <ol>
 <li>参数1（<code>target</code>）：要添加属性的对象。</li>
 <li>参数2（<code>key</code>）：要为<code>target</code>添加的属性名称。</li>
@@ -544,7 +544,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span></code></pre></div><blockquote>
-<p><code>Vue.set()</code>和<code>vm.$set()</code>的使用有一些局限性。它们在使用时不允许<code>target</code>为Vue实例对象或Vue实例对象的直接数据对象（如<code>_data</code>等）。</p>
+<p><code>Vue.set()</code>和<code>vm.$set()</code>的使用有一些局限性。它们在使用时不允许<code>target</code>为Vue实例对象或Vue实例对象的直接数据对象（如<code>_data</code>等，Vue组件实例对象也一样）。</p>
 <p>在Vue中，后续添加的新对象，如果添加的方式满足Vue的规范，添加的元素Vue会对其进行响应式处理。</p>
 </blockquote>
 <hr>
