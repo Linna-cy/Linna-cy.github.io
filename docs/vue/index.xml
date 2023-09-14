@@ -8,7 +8,220 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 12 Sep 2023 05:03:31 +0000</lastBuildDate><atom:link href="/docs/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Sep 2023 07:16:05 +0000</lastBuildDate><atom:link href="/docs/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 生命周期</title>
+      <link>/docs/vue/life-cycle/</link>
+      <pubDate>Wed, 13 Sep 2023 07:16:05 +0000</pubDate>
+      
+      <guid>/docs/vue/life-cycle/</guid>
+      <description><![CDATA[Vue生命周期指的是Vue实例在创建时经历的一系列初始化步骤。 在这个过程中Vue为用户提供了一些可供用户自定义的函数，即生命周期回调函数。这]]></description>
+      <content:encoded><![CDATA[<p>Vue生命周期指的是Vue实例在创建时经历的一系列初始化步骤。</p>
+<p>在这个过程中Vue为用户提供了一些可供用户自定义的函数，即生命周期回调函数。这些函数又称为生命周期函数或生命周期钩子。</p>
+<hr>
+<h1 id="生命周期图示" data-numberify>生命周期图示<a class="anchor ms-1" href="#生命周期图示"></a></h1>
+<p>Vue的生命周期图示如下：</p>
+<p><picture><img class="img-fluid " alt="Vue.js 生命周期" src="/docs/vue/life-cycle/1694591410572.png" loading="lazy" width="1266" height="2002" />
+</picture>
+
+</p>
+<p>下图是尚硅谷天禹所给的有关Vue生命周期的解释：</p>
+<p><picture><img class="img-fluid " alt="Vue.js 生命周期解释" src="/docs/vue/life-cycle/1694591763923.png" loading="lazy" width="1469" height="1892" />
+</picture>
+
+</p>
+<hr>
+<h1 id="生命周期函数" data-numberify>生命周期函数<a class="anchor ms-1" href="#生命周期函数"></a></h1>
+<p>生命周期函数本质是Vue在生命周期过程中的某些关键时刻帮用户调用的一些特殊名称的函数。</p>
+<p>生命周期函数的名字不可更改，但函数的具体内容由程序员根据需求编写。</p>
+<p>生命周期函数中的<code>this</code>指向的是当前的Vue实例或当前组件的实例对象。</p>
+<p>下方代码演示了Vue生命周期函数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- &lt;h2 v-text=&#34;num&#34;&gt;&lt;/h2&gt; --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Current Number：{{num}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;add&#34;</span><span class="p">&gt;</span>Number+1<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;bye&#34;</span><span class="p">&gt;</span>销毁Vue实例<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">num</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">add</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;add.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">num</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">bye</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Bye.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * vm.$destroy()：
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 销毁vm，清理它与其它实例的连接，解绑全部指令及事件监听器（自定义事件）
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 但是在销毁之前vm对页面所作的改变，在销毁之后依旧呈现在页面中
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 销毁了vm之后仅仅意味着没有vm来管理页面的修改了
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * 在某些Vue版本（如 2.6.12）中，销毁了vm后事件绑定的函数依然可以被调用
+</span></span></span><span class="line"><span class="cl"><span class="cm">         */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$destroy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">num</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;The [num] was updated.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 生命周期和事件初始化完成
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">beforeCreate</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;beforeCreate.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>  <span class="c1">// Vue 实例中还没有 _data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="kr">debugger</span>  <span class="c1">// 断点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 数据监测和数据代理初始化完成
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">created</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;created.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">debugger</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 模板解析完成，已生成虚拟DOM
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">beforeMount</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;beforeMount.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByName</span><span class="p">(</span><span class="s1">&#39;h2&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">innerText</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">debugger</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 虚拟DOM已经转为真实DOM插入页面
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;mounted.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$el</span> <span class="k">instanceof</span> <span class="nx">HTMLElement</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">debugger</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * data 更新后重新编译页面之前
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">beforeUpdate</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;beforeUpdate.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">debugger</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * data 更新之后页面已经编译完成
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">updated</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;updated.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">debugger</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * vm被销毁之前
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;beforeDestroy.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">()</span>  <span class="c1">// 此时已经不能对页面做出更改了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">debugger</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * vm已经被销毁
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">destroyed</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;destroyed.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>可以看出在Vue的生命周期过程中共有8个（4对）钩子函数。</p>
+<hr>
+<h1 id="创建流程" data-numberify>创建流程<a class="anchor ms-1" href="#创建流程"></a></h1>
+<ol>
+<li>
+<p><code>beforeCreate()</code>：生命周期和事件初始化完成时执行。</p>
+<p>数据代理和数据监测还未开始。</p>
+</li>
+<li>
+<p><code>created()</code>：数据监测和数据代理初始化完成时执行。</p>
+</li>
+</ol>
+<p>创建指的是数据代理和数据监测被创建。</p>
+<hr>
+<h1 id="挂载流程" data-numberify>挂载流程<a class="anchor ms-1" href="#挂载流程"></a></h1>
+<ol>
+<li>
+<p><code>beforeMount()</code>：模板解析完成。</p>
+<p>此时已生成虚拟DOM，但页面还未经过编译，展示的是模板的原内容。在此对DOM的操作，最终都不奏效</p>
+</li>
+<li>
+<p><code>mounted()</code>：虚拟DOM已经转为真实DOM插入页面时执行。</p>
+<p>此时页面中呈现的是已经Vue编译过的DOM，对DOM的操作有效（使用Vue的过程尽可能避免操作DOM）。</p>
+<p>一般在此时进行如下等初始化操作：</p>
+<ul>
+<li>开启定时器</li>
+<li>发送网络请求</li>
+<li>订阅消息</li>
+<li>绑定自定义事件</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="数据更新流程" data-numberify>数据更新流程<a class="anchor ms-1" href="#数据更新流程"></a></h1>
+<ol>
+<li>
+<p><code>beforeUpdate()</code>：数据更新后重新编译页面之前执行。</p>
+<p>数据是修改之后的，但页面还未重新编译，仍是旧的（更新之前的内容）。</p>
+</li>
+<li>
+<p><code>updated()</code>：数据更新之后执行。</p>
+<p>此时页面已经编译完成。数据在更新之后，页面已经完成了编译，与数据同步。此时已经完成了<code>Model =&gt; View</code>的更新。</p>
+</li>
+</ol>
+<hr>
+<h1 id="销毁流程" data-numberify>销毁流程<a class="anchor ms-1" href="#销毁流程"></a></h1>
+<ol>
+<li>
+<p><code>beforeDestory()</code>：<code>vm</code>被销毁之前（还未销毁）执行。</p>
+<p>此时<code>vm</code>中所有的<code>data</code>、<code>methods</code>、指令等等都处于可用状态。</p>
+<p>一般在此阶段执行如下等收尾操作：</p>
+<ul>
+<li>关闭定时器</li>
+<li>取消订阅消息</li>
+<li>解绑自定义事件</li>
+</ul>
+<p>此时所有对数据的修改不会再触发更新（不能再对页面做出更改）。</p>
+</li>
+<li>
+<p><code>destroyed()</code>：<code>vm</code>被销毁之后（销毁完毕）执行。</p>
+<p>此时<code>vm</code>中所有的监听器、子组件和（自定义）事件监听器被移除。</p>
+<blockquote>
+<p>一般很少在这个钩子里做处理。</p>
+</blockquote>
+</li>
+</ol>
+<p>销毁与<code>vm.$destroy()</code>相关。只有对<code>vm</code>（Vue实例）调用<code>vm.$destroy()</code>后，<code>vm</code>才会开始进行销毁流程。</p>
+<p><code>vm.$destroy()</code>：</p>
+<ul>
+<li>销毁<code>vm</code>，清理它与其它实例的连接，解绑全部指令及事件监听器（自定义事件）。</li>
+<li>在销毁之前（调用<code>vm.$destroy()</code>之前），<code>vm</code>对页面所作的改变，在销毁之后依旧呈现在页面中。</li>
+<li>销毁了<code>vm</code>之后仅仅意味着没有<code>vm</code>来管理页面的修改了。</li>
+<li>在某些Vue版本（如 2.6.12）中，销毁了<code>vm</code>后事件绑定的函数依然可以被调用。即原生DOM事件依然有效。</li>
+</ul>
+<blockquote>
+<p>在大多数场景中，不应该调用<code>vm.$destroy()</code>。最好使用<code>v-if</code>和<code>v-for</code>指令，以数据驱动的方式控制子组件的生命周期。</p>
+</blockquote>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 数据代理与监听</title>
       <link>/docs/vue/data-proxy-watch/</link>
