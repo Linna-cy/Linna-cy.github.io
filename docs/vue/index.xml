@@ -1055,12 +1055,37 @@
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span></code></pre></div><blockquote>
-<p>注：<code>v-else</code>和<code>v-else-if</code>指令必须在使用了<code>v-if</code>的后续元素中使用，它们不能单独使用。并且使用了<code>v-else</code>之后不能在没有使用<code>v-if</code>的情况下再次使用<code>v-else-if</code>。<code>v-else</code>和<code>v-else-if</code>的使用就像其它语言中的<code>if ... else</code>和<code>if ... else if</code>语句一样。</p>
-</blockquote>
+<p>注：</p>
+<p><code>v-if</code>、<code>v-else</code>和<code>v-else-if</code>一起使用时，结构不饿能被“打断”。<code>v-else</code>和<code>v-else-if</code>指令必须在使用了<code>v-if</code>的后续元素中使用，它们不能单独使用。并且使用了<code>v-else</code>之后不能在没有使用<code>v-if</code>的情况下再次使用<code>v-else-if</code>。<code>v-else</code>和<code>v-else-if</code>的使用就像其它语言中的<code>if ... else</code>和<code>if ... else if</code>语句一样。</p>
+<p><code>v-if</code>可以和<code>&lt;template&gt;</code>标签配合使用，以达到将多个同时需要连续使用同个<code>v-if</code>指令的元素在同一条件下一齐显示，而又不影响最终编译出来的页面结构。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;!isDisabled&#34;</span><span class="p">&gt;</span>Title 1<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;!isDisabled&#34;</span><span class="p">&gt;</span>Title 2<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;!isDisabled&#34;</span><span class="p">&gt;</span>Title 3<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>可以使用<code>&lt;template&gt;</code>标签将上方代码优化为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;!isDisabled&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Title 1<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Title 2<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Title 3<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span></code></pre></div></blockquote>
 <p><code>v-show</code>指令的作用和语法与<code>v-if</code>类似，只不过<code>v-show</code>是单支的条件判断，它不能像<code>v-if</code>一样支持<code>v-else</code>和<code>v-else-if</code>指令。即<code>v-if</code>支持多条件分支，而<code>v-show</code>仅支持单条件分支。</p>
-<blockquote>
-<p><code>v-if</code>可以和<code>&lt;template&gt;</code>标签配合使用，以达到将多个同时需要连续使用同个<code>v-if</code>指令的元素在同一条件下一齐显示，而又不影响页面结构。</p>
-</blockquote>
+<p><code>v-show</code>和<code>v-if</code>有以下区别：</p>
+<ul>
+<li>适用性：
+<ul>
+<li><code>v-if</code>适合用于一些切换频率较低的场景。</li>
+<li><code>v-show</code>适合用于一些切换效率较高的场景。</li>
+</ul>
+</li>
+<li>特点：
+<ul>
+<li><code>v-if</code>可以和<code>v-else</code>、<code>v-else-if</code>一同使用，但要求结构不饿能被打断。</li>
+<li><code>v-show</code>指令控制的DOM元素始终存在页面结构中，未被移除。当<code>v-show</code>指令的值为<code>false</code>时，仅仅是使用样式将控制的元素隐藏起来。</li>
+<li>使用<code>v-if</code>时，元素可能无法被获取（当<code>v-if</code>指令的值为<code>false</code>时）；而使用<code>v-show</code>时，元素一定可以被获取。</li>
+</ul>
+</li>
+</ul>
 <h2 id="循环指令" data-numberify>循环指令<a class="anchor ms-1" href="#循环指令"></a></h2>
 <p>Vue模板中循环使用的是<code>v-for</code>指令。<code>v-for</code>指令的语法如下：</p>
 <pre tabindex="0"><code>v-for=&#34;item in items&#34;
