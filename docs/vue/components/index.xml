@@ -7,7 +7,387 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
-</copyright><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+</copyright>
+    <lastBuildDate>Thu, 14 Sep 2023 06:33:39 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 组件</title>
+      <link>/docs/vue/components/introduction/</link>
+      <pubDate>Thu, 14 Sep 2023 06:33:39 +0000</pubDate>
+      
+      <guid>/docs/vue/components/introduction/</guid>
+      <description><![CDATA[组件是指实现应用中局部功能代码（html、css、js等）和资源（图片、音频、视频等）的集合。 传统的Web应用存在以下缺点： 依赖关系混乱，不]]></description>
+      <content:encoded><![CDATA[<p>组件是指实现应用中<u>局部功能代码</u>（<code>html</code>、<code>css</code>、<code>js</code>等）和<u>资源</u>（图片、音频、视频等）的<u>集合</u>。</p>
+<p>传统的Web应用存在以下缺点：</p>
+<ul>
+<li>依赖关系混乱，不易于维护。</li>
+<li>代码复用率不高。</li>
+</ul>
+<p>CSS文件可以通过外部引入，不存在复用率不高的问题。JS的模块化解决了JS代码复用率不高的问题。而Html想要复用却不是那么容易。</p>
+<blockquote>
+<ul>
+<li>模块化应用：当应用中的JS都以区分模块的形式来编写，那么这个应用就是一个模块化的应用。</li>
+<li>组件化应用：当应用中的功能都是以多组件的方式来编写，那么这个应用就是一个组件化的应用。</li>
+</ul>
+</blockquote>
+<p>使用Vue组件可以扩展HTML元素，封装可重用的代码，解决了上述问题。</p>
+<p>使用组件系统可以用独立可复用的小组件来构建大型应用，几乎任意类型的应用的界面都可以抽象为一个组件树：</p>
+<p><picture><img class="img-fluid " alt="组件树" src="/docs/vue/components/introduction/1694674192895.png" loading="lazy" width="1406" height="544" />
+</picture>
+
+</p>
+<p>在Vue中，组件有两种编写形式：</p>
+<ul>
+<li>非单文件组件：一个文件中包含有其它多个组件。</li>
+<li>单文件组件：一个文件中只包含有1个组件。</li>
+</ul>
+<p>在Vue中使用组件共分为3步：</p>
+<ol>
+<li>定义（创建）组件。</li>
+<li>注册组件：</li>
+</ol>
+<ul>
+<li>局部注册。</li>
+<li>全局注册。</li>
+</ul>
+<ol start="3">
+<li>使用组件（组件标签）。</li>
+</ol>
+<hr>
+<h1 id="组件的注册" data-numberify>组件的注册<a class="anchor ms-1" href="#组件的注册"></a></h1>
+<p>组件有两种注册方式：</p>
+<ul>
+<li>
+<p>局部注册：在创建Vue实例时，在其配置对象中的<code>components</code>配置项中定义。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;#app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 3. 使用组件 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hello</span><span class="p">&gt;&lt;/</span><span class="nt">hello</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 1. 创建组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">hello</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;{{msg}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 注册组件（局部注册）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;hello&#39;</span><span class="o">:</span> <span class="nx">hello</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// hello,  // 简写形式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>在<code>components</code>中，组件是以<code>key: value</code>的形式进行注册。<code>key</code>作为组件的名称，而<code>value</code>使用的是组件的实例对象。</p>
+<p>局部注册的组件只能在当前的Vue实例或组件实例中使用。</p>
+</li>
+<li>
+<p>全局注册：使用Vue原型对象提供的<code>Vue.component()</code>方法。</p>
+<p><code>Vue.component()</code>接收两个参数：</p>
+<ol>
+<li>参数1：注册组件时使用的<code>key</code>。</li>
+<li>参数2：组件的实例对象。</li>
+</ol>
+<p>如上例，将<code>hello</code>组件改为全局注册：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;#app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 3. 使用组件 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hello</span><span class="p">&gt;&lt;/</span><span class="nt">hello</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 1. 创建组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">hello</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;{{msg}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 2. 注册组件（全局注册）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h1 id="组件的使用与命名" data-numberify>组件的使用与命名<a class="anchor ms-1" href="#组件的使用与命名"></a></h1>
+<p>组件在使用时，直接以<code>&lt;component-name&gt;</code>的形式使用。切确地说，<code>component-name</code>是组件在注册时传入的<code>key</code>。</p>
+<p>如上例中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;#app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 3. 使用组件 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hello</span><span class="p">&gt;&lt;/</span><span class="nt">hello</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>其实组件标签可以使用闭合标签的形式编写。如<code>&lt;user&gt;&lt;/user&gt;</code>可以写为<code>&lt;user/&gt;</code>。但是这种用法最好在Vue脚手架中使用。因为不使用脚手架的情况下，闭合标签可能会调职后续组件不能被成功渲染。</p>
+<p>关于组件名可以采用以下两种命名方式：</p>
+<ul>
+<li><strong>kebab-case</strong>（烤肉串式）：用<code>-</code>连接多个单词。</li>
+<li><strong>CameCase</strong>（大驼峰命名法，需要Vue脚手架支持）：将每个单词的首字母设为大写形式。</li>
+</ul>
+<blockquote>
+<p>在定义组件名时需要注意：</p>
+<ul>
+<li>
+<p>组件名尽可能回避Html中已有的元素名称（Vue会报错）。</p>
+</li>
+<li>
+<p>可以使用<code>name</code>配置项指定组件在开发者工具中展示的名称。</p>
+<p>如上例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">hello</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;hello-vue&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;h2&gt;{{msg}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>那么无论组件名被定义成什么，<code>hello</code>组件在Vue开发者工具中展示的都是<code>hello-vue</code>这个名称。</p>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="非单文件组件" data-numberify>非单文件组件<a class="anchor ms-1" href="#非单文件组件"></a></h1>
+<p>如下是一个组件的示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>{{msg}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 3. 编写组件标签 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">site</span><span class="p">&gt;&lt;/</span><span class="nt">site</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 3. 编写组件标签 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">user</span><span class="p">&gt;&lt;/</span><span class="nt">user</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 1. 创建site组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">site</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>  
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;网站名称：{{name}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;网站地址：{{url}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner\&#39;s Blog&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;blog.linner.asia&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 1. 创建user组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;用户姓名：{{name}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;用户年龄：{{age}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello!&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 注册组件（局部注册）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">site</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><h2 id="创建组件" data-numberify>创建组件<a class="anchor ms-1" href="#创建组件"></a></h2>
+<p>非单文件组件的创建使用的是<code>Vue.extend()</code>方法。</p>
+<p><code>Vue.extend()</code>的使用与Vue实例的构造函数（<code>new Vue()</code>）非常类似，它们都需要传入一个配置对象。并且在Vue构造函数的配置对象中使用的大多配置项，在<code>Vue.extend()</code>的配置对象中同样也能使用（如<code>data</code>、<code>methods</code>等）。</p>
+<p>但需要注意的是，<code>Vue.extend()</code>的配置对象中不能使用<code>el</code>配置项；并且它的<code>data</code>配置项需要使用函数式来定义，然后通过在<code>data()</code>中<code>return</code>一个对象来作为该组件的<code>data</code>对象。</p>
+<p>在定义非单文件组件时，可以将<code>const component = Vue.extend(options)</code>简写为<code>const component = options</code>。</p>
+<p>如上，将<code>site</code>：使用简写形式定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">site</span> <span class="o">=</span> <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">  <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;h2&gt;网站名称：{{name}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;h2&gt;网站地址：{{url}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner\&#39;s Blog&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;blog.linner.asia&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用简写形式时，<code>Vue.extend()</code>由<code>vm</code>来调用。</p>
+<p><code>Vue.extend()</code>返回的是一个<code>VueComponent()</code>构造函数。并且每次调用<code>Vue.extend()</code>时，返回的都是一个新的<code>VueComponent()</code>。</p>
+<p><code>Vue.extend()</code>的部分源码如下。<code>Vue.extend()</code>在每次被调用时，都会定义一个新的<code>VueComponent()</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">extendOptions</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// VueComponent() 是在 Vue.extend() 中现场定义的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">Sub</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">VueComponent</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 对Sub进行一系列处理... */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">Sub</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h2 id="组件配置" data-numberify>组件配置<a class="anchor ms-1" href="#组件配置"></a></h2>
+<p>使用<code>Vue.extend()</code>创建组件，还需要在配置对象中启用<code>template</code>配置。<code>template</code>的作用是，定义组件的布局结构，也就是组件中可供复用的HTML代码。</p>
+<blockquote>
+<p>在使用<code>template</code>的时候需要注意，<code>template</code>的内容必须仅包含1个根元素，并且不能使用<code>&lt;template&gt;</code>标签作为根元素。</p>
+</blockquote>
+<p>使用<code>Vue.extend()</code>的注意项：</p>
+<ul>
+<li>
+<p>组件配置项与Vue实例配置项基本相同。但是<u>在组件配置中，不能使用<code>el</code>配置。</u></p>
+<p>组件时作为可以复用的Vue实例，所以它们<u>与根实例（Vue实例）接收的配置项基本相同（包括<code>data</code>、<code>computed</code>、<code>watch</code>、<code>methods</code>、<code>components</code>以及生命周期钩子等）</u>。但是所有的组件最终都要被一个根实例<code>vm</code>所管理，由<code>vm</code>决定它们要服务于哪个容器。并且考虑到组件的复用，所以不使用<code>el</code>，而是使用<code>template</code>来配置可复用的组件模板。</p>
+</li>
+<li>
+<p><u>组件中的<code>data</code>要配置成一个函数。</u></p>
+<p>防止一个组件被多次使用时，存在数据的引用关系。<code>data</code>使用函数来定义，可以确保每个组件实例都可以维护一份由<code>data</code>返回对象的独立拷贝。</p>
+</li>
+</ul>
+<h2 id="组件的嵌套" data-numberify>组件的嵌套<a class="anchor ms-1" href="#组件的嵌套"></a></h2>
+<p>组件的嵌套使用很简单，直接在组件的配置对象中使用<code>components</code>配置项即可。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;root&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 定义user组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;用户姓名：{{name}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;用户年龄：{{age}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 定义site组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">site</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;网站名称：{{name}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;h2&gt;网站地址：{{url}}&lt;/h2&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;user&gt;&lt;/user&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner\&#39;s Blog&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;blog.linner.asia&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 注册组件（局部）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 定义hello组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">hello</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;h1&gt;{{msg}}&lt;/h1&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 定义app组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;hello&gt;&lt;/hello&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;hr&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">        &lt;site&gt;&lt;/site&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">hello</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">site</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#root&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;app&gt;&lt;/app&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 注册组件（局部）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span><span class="nx">app</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><h2 id="组件实例对象" data-numberify>组件实例对象<a class="anchor ms-1" href="#组件实例对象"></a></h2>
+<p>在组件的一些配置项中（如<code>data</code>、<code>methods</code>、<code>watch</code>、<code>computed</code>等）的函数，<code>this</code>通常<u>指向的是<code>VueComponent()</code>创建出来的实例对象</u>。而使用<code>new Vue()</code>时，如上的一些配置项中的函数，它们的<code>this</code>通常指向的是Vue实例对象（<code>vm</code>）。</p>
+<p>由<code>VueComponent()</code>创建出来的实例对象即为<u>组件实例对象</u>，又可称为<code>VueComponent</code>对象（在代码中可使用缩写形式<code>vc</code>）。</p>
+<blockquote>
+<p>虽然<code>vc</code>的结构和<code>vm</code>十分相似（<code>vc</code>也使用了数据代理和数据劫持），但是它们是两种不同的对象。</p>
+</blockquote>
+<p>在使用组件标签时，<u>每一个组件标签都对应着一个组件实例</u>。<u>每一个组件实例都是由它对应的<code>VueComponent()</code>构造函数所创建</u>。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">site</span><span class="p">&gt;&lt;/</span><span class="nt">site</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">user</span><span class="p">&gt;&lt;/</span><span class="nt">user</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">user</span><span class="p">&gt;&lt;/</span><span class="nt">user</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>其中所有的<code>&lt;site&gt;&lt;/site&gt;</code>都对应着一个<code>site</code>组件的<code>VueComponent()</code>构造函数，所有的<code>&lt;user&gt;&lt;/user&gt;</code>都对应着一个<code>user</code>组件的<code>VueComponent()</code>构造函数。也就是说，<u>每一个组件都对应一个<code>VueComponent()</code>构造函数</u>。</p>
+<p>而上方的<code>user</code>组件被使用了两次，也就是两个<code>&lt;user&gt;&lt;/user&gt;</code>。其中每一个<code>&lt;user&gt;&lt;/user&gt;</code>都对应着一个使用<code>user</code>的<code>VueComponent()</code>所创建出来的<code>VueComponent</code>对象。也就是说，每使用一次<code>&lt;user&gt;&lt;/user&gt;</code>，Vue都会使用<code>user</code>的<code>VueComponent()</code>创建出来一个组件实例。即<u>每一个组件标签对应着一个组件实例</u>。</p>
+<p>当组件被注册时（无论是局部注册还是全局注册），它们都会被<code>vm</code>所管理。并且当组件被使用时，它们的<code>VueComponent</code>对象都会被保存在<code>vm.$children</code>中。</p>
+<blockquote>
+<p><code>vm.$children</code>是数组类型，保存了实例中使用到的所有<code>VueComponent</code>对象。</p>
+</blockquote>
+<p>而组件在使用子组件时，同<code>vm</code>一样，会将其保存在当前组件实例对象<code>vc</code>的<code>$children</code>（<code>vc.$children</code>）中。</p>
+<hr>
+<h1 id="vue-原型链" data-numberify>Vue 原型链<a class="anchor ms-1" href="#vue-原型链"></a></h1>
+<p>Vue 的原型链如下：</p>
+<p><picture><img class="img-fluid " alt="Vue.js 原型链" src="/docs/vue/components/introduction/1694756873556.png" loading="lazy" width="1440" height="900" />
+</picture>
+
+</p>
+<p>所以在Vue中，<code>Vue.extend(options).prototype.__proto__ === Vue.prototype</code>（<code>Vue.extend(options)</code>返回的是<code>VueComponent</code>构造函数）。</p>
+<hr>
+<h1 id="单文件组件" data-numberify>单文件组件<a class="anchor ms-1" href="#单文件组件"></a></h1>
+<blockquote>
+<p>单文件组件请查看 <a href="../vue-projects/">Vue 项目开发</a>。</p>
+</blockquote>
+]]></content:encoded>
+    </item>
+    
   </channel>
 </rss>
 
