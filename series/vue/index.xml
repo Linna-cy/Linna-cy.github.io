@@ -8,7 +8,708 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 14 Sep 2023 06:33:39 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Sep 2023 01:22:04 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 混入配置对象</title>
+      <link>/docs/vue/components/vue-mixins/</link>
+      <pubDate>Mon, 18 Sep 2023 01:22:04 +0000</pubDate>
+      
+      <guid>/docs/vue/components/vue-mixins/</guid>
+      <description><![CDATA[混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 例如： /** * mixin.js * 混入配置对]]></description>
+      <content:encoded><![CDATA[<p>混入（<code>mixin</code>）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * mixin.js
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 混入配置对象
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 组件中的配置选项基本上都能在 mixin 中使用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kr">const</span> <span class="nx">mixin1</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">showName</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello mixin1!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">mixin2</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">x</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">y</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello mixin2!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  MySite.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;showName&#34;</span><span class="p">&gt;</span>网站名称：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>网站地址：{{url}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 引入一个混合
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">mixin1</span><span class="p">,</span> <span class="nx">mixin2</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;../mixin&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;MySite&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner\&#39;s Blog&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;blog.linner.asia&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">x</span><span class="o">:</span> <span class="mi">666</span><span class="p">,</span> <span class="c1">// 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">   * mixins 中相同的生命周期函数会以被注册的顺序执行
+</span></span></span><span class="line"><span class="cl"><span class="cm">   */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mixins</span><span class="o">:</span> <span class="p">[</span><span class="nx">mixin1</span><span class="p">,</span> <span class="nx">mixin2</span><span class="p">,],</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">   * 配置重复的生命周期函数，它们都会被Vue调用
+</span></span></span><span class="line"><span class="cl"><span class="cm">   * mixins 中的会先被调用
+</span></span></span><span class="line"><span class="cl"><span class="cm">   */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello MySite!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>使用<code>mixin</code>时需要注意：</p>
+<ul>
+<li>组件中的配置选项基本上都能在<code>mixin</code>中使用。</li>
+<li>当混入对象和组件中的某些配置（例如<code>data</code>、计算属性、<code>methods</code>）重复时，以组件中的配置为主。</li>
+<li>当混入对象和组件中的生命周期函数重复时，它们都会被Vue调用，并且<code>mixins</code>中的生命周期函数会先被Vue调用。</li>
+<li>如果<code>mixins</code>中存在相同的生命周期函数，Vue会按照<code>mixin</code>在组件<code>mixins</code>中被注册的顺序进行调用。</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Vue Props 属性</title>
+      <link>/docs/vue/components/vue-props/</link>
+      <pubDate>Mon, 18 Sep 2023 01:19:24 +0000</pubDate>
+      
+      <guid>/docs/vue/components/vue-props/</guid>
+      <description><![CDATA[在Vue中，父组件可以往子组件中传递一些属性值。而子组件需要使用props配置项定义这些要从父组件中获取的数据。 使用props配置项，可以让]]></description>
+      <content:encoded><![CDATA[<p>在Vue中，父组件可以往子组件中传递一些属性值。而子组件需要使用<code>props</code>配置项定义这些要从父组件中获取的数据。</p>
+<p>使用<code>props</code>配置项，可以让该组件的标签在被使用时，通过组件标签属性将值传入组件中。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- SiteUser.vue --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>姓名：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>性别：{{sex}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;SiteUser&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 声明需要接收的属性
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">props</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;age&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;sex&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- App.vue --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">      在标签中，根据对应的 props 属性名称
+</span></span></span><span class="line"><span class="cl"><span class="c">      使用Html属性键值对的方式将值传入
+</span></span></span><span class="line"><span class="cl"><span class="c">     --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">SiteUser</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;张三&#34;</span> <span class="na">age</span><span class="o">=</span><span class="s">&#34;21&#34;</span> <span class="na">sex</span><span class="o">=</span><span class="s">&#34;男&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">SiteUser</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;李四&#34;</span> <span class="na">age</span><span class="o">=</span><span class="s">&#34;18&#34;</span> <span class="na">sex</span><span class="o">=</span><span class="s">&#34;女&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">SiteUser</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;王五&#34;</span> <span class="na">age</span><span class="o">=</span><span class="s">&#34;28&#34;</span> <span class="na">sex</span><span class="o">=</span><span class="s">&#34;男&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">import</span> <span class="nx">SiteUser</span> <span class="nx">from</span> <span class="s1">&#39;./components/SiteUser.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">SiteUser</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="属性值的传递" data-numberify>属性值的传递<a class="anchor ms-1" href="#属性值的传递"></a></h1>
+<p>在组件标签中，使用键值对将属性作为<code>props</code>属性传递给组件时，默认传入的数据类型是作为字符串类型。这意味着使用默认的方式无法将值作为其它类型进行传递。</p>
+<p>要传递其它类型的值，可以使用<code>v-bind</code>指令。这是因为<code>v-bind</code>指令会将属性的值作为表达式去执行并计算值。所以使用了<code>v-bind</code>指令就以为着可以为<code>props</code>属性传入不同类型的值。</p>
+<p>如，将上例中的<code>age</code>作为<code>Number</code>类型传入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">SiteUser</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;张三&#34;</span> <span class="na">:age</span><span class="o">=</span><span class="s">&#34;20 + 1&#34;</span> <span class="na">sex</span><span class="o">=</span><span class="s">&#34;男&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">SiteUser</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;李四&#34;</span> <span class="na">:age</span><span class="o">=</span><span class="s">&#34;18&#34;</span> <span class="na">sex</span><span class="o">=</span><span class="s">&#34;女&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">SiteUser</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;王五&#34;</span> <span class="na">:age</span><span class="o">=</span><span class="s">&#34;28&#34;</span> <span class="na">sex</span><span class="o">=</span><span class="s">&#34;男&#34;</span><span class="p">/&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="定义方式" data-numberify>定义方式<a class="anchor ms-1" href="#定义方式"></a></h1>
+<p><code>props</code>有3种定义方式：</p>
+<ul>
+<li>
+<p>字符串数组形式（简单声明）：将所需传递的属性，作为字符串数组的元素进行声明。使用该方式进行声明的<code>props</code>属性，不限制传递的类型，不限制传递的必要性。</p>
+<p>如上例中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">props</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;age&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;sex&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">],</span>
+</span></span></code></pre></div></li>
+<li>
+<p>仅类型限制形式：在传递的同时进行类型限制。如传递的类型不匹配，控制台会报错。</p>
+<p>如上例，使用仅类型限制：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">age</span><span class="o">:</span> <span class="nb">Number</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// age: [Number, String], // 允许指定多种类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">sex</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div></li>
+<li>
+<p>多限制形式：在传递的同时可以进行类型限制、必要性限制或默认值限制。</p>
+<p>如上例，使用多限制：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>   <span class="c1">// 类型限制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 必须传递（默认为 false）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">age</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">default</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>     <span class="c1">// 设置默认值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">sex</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div><blockquote>
+<p>注：一般情况下，<code>required</code>设置为<code>true</code>时，就不使用<code>default</code>；在设置<code>required</code>或<code>required</code>为<code>false</code>时，最好使用<code>default</code>。</p>
+</blockquote>
+</li>
+</ul>
+<p><code>props</code>属性是只读的，Vue底层会对<code>props</code>属性进行监测，并限制其修改。对<code>props</code>的修改不一定会失败，但是如果进行了修改，Vue会在控制台发出警告。</p>
+<p>如果业务需求确实需要修改<code>props</code>属性，可以在<code>data</code>属性或计算属性中添加<code>props</code>属性对应的不重名的拷贝，然后在<code>data</code>属性或计算属性之上对数据进行修改。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>姓名：{{myName}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;myAge &gt; 0&#34;</span><span class="p">&gt;</span>年龄：{{myAge}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>性别：{{mySex}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;changeSex&#34;</span><span class="p">&gt;</span>修改性别<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;SiteUser&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//  接收的同时对数据进行类型、必要性和默认值限制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>   <span class="c1">// 类型限制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 必须传递（默认为 false）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">age</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="k">default</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>     <span class="c1">// 设置默认值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sex</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 可以重新定义不与 props 属性重名的 data 属性，以便操作数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">myName</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">myAge</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">mySex</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">sex</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">changeSex</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// props 属性可以修改，但是控制台会报错，也过不了语法检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// this.sex = this.sex === &#39;男&#39; ? &#39;女&#39; : &#39;男&#39;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">mySex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">mySex</span> <span class="o">===</span> <span class="s1">&#39;男&#39;</span> <span class="o">?</span> <span class="s1">&#39;女&#39;</span> <span class="o">:</span> <span class="s1">&#39;男&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>即，将<code>props</code>属性作为组件的初始化数据，对<code>data</code>属性或计算属性等内容进行初始化。组件中的数组载体还是以<code>data</code>属性或计算属性等为主。</p>
+<blockquote>
+<p>注：</p>
+<ul>
+<li><code>props</code>属性同样不可与<code>data</code>属性或计算属性中的属性名称相同。</li>
+<li>如果<code>props</code>属性和<code>data</code>属性重名，<code>props</code>属性优先级更高。</li>
+<li><code>props</code>属性不能使用被Vue征用了的标签属性。</li>
+</ul>
+</blockquote>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Vue 获取页面元素</title>
+      <link>/docs/vue/components/vue-dom/</link>
+      <pubDate>Mon, 18 Sep 2023 01:16:55 +0000</pubDate>
+      
+      <guid>/docs/vue/components/vue-dom/</guid>
+      <description><![CDATA[在Vue的模板中可以通过为元素或子组件添加ref属性（如ref=&quot;elementRefValue&quot;）来告诉Vue实例（或]]></description>
+      <content:encoded><![CDATA[<p>在Vue的模板中可以通过为元素或子组件添加<code>ref</code>属性（如<code>ref=&quot;elementRefValue&quot;</code>）来告诉Vue实例（或组件实例）要获取该元素。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>  <span class="c">&lt;!-- 获取Html内置标签元素 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">MySite</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;site&#34;</span><span class="p">/&gt;</span>  <span class="c">&lt;!-- 获取Vue组件 --&gt;</span>
+</span></span></code></pre></div><p>在Vue中，<u><code>ref</code>属性被用来给元素或子组件注册引用信息</u>。</p>
+<p>然后在Vue实例或组件实例中，通过<code>this.$refs.elementRefValue</code>来获取该元素或子组件的对象。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">title</span>  <span class="c1">// 获取真实DOM元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">site</span>   <span class="c1">// 获取组件实例对象
+</span></span></span></code></pre></div><ul>
+<li>如果<code>ref</code>在Html内置标签上使用，那么<code>this.$refs.elementRefValue</code>获取到的是该元素的真实DOM元素。</li>
+<li>如果<code>ref</code>在Vue组件标签上使用，那么<code>this.$refs.elementRefValue</code>获取到的是该组件的<code>VueComponent</code>对象。</li>
+</ul>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;showDom&#34;</span><span class="p">&gt;</span>输出上方DOM<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">MySite</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;site&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">import</span> <span class="nx">MySite</span> <span class="nx">from</span> <span class="s2">&#34;./components/MySite.vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">MySite</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">showDom</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">);</span>        <span class="c1">// 获取模板中所有使用了 ref 属性的元素或组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span>  <span class="c1">// 获取真实DOM元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">site</span><span class="p">);</span>   <span class="c1">// 获取组件实例对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Vue 项目开发</title>
+      <link>/docs/vue/components/vue-projects/</link>
+      <pubDate>Sat, 16 Sep 2023 07:47:27 +0000</pubDate>
+      
+      <guid>/docs/vue/components/vue-projects/</guid>
+      <description><![CDATA[单文件组件 Vue单文件组件是指使用由Vue定义的.vue格式的文件。.vue文件模板如下： &lt;!-- Vue 只能包含以下三种标签 --&gt; &lt;!-- 组件的结构 --&gt; &lt;template&gt; &lt;!-- ... --&gt; &lt;/template&gt;]]></description>
+      <content:encoded><![CDATA[<h1 id="单文件组件" data-numberify>单文件组件<a class="anchor ms-1" href="#单文件组件"></a></h1>
+<p>Vue单文件组件是指使用由Vue定义的<code>.vue</code>格式的文件。<code>.vue</code>文件模板如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- Vue 只能包含以下三种标签 --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 组件的结构 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 组件交互相关的代码（数据、方法等等） --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 组件的样式 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>其中：</p>
+<ul>
+<li>
+<p><code>&lt;template&gt;</code>：用于定义组件的结构。相当于组件配置中的<code>template</code>配置项。</p>
+<p>和Html中的<code>&lt;template&gt;</code>一样，它不会影响页面最终的结构。</p>
+<p>由于<code>&lt;template&gt;</code>不会影响页面结构，所以在<code>&lt;template&gt;</code>中还需要定义一个元素作为整个组件的根节点。</p>
+</li>
+<li>
+<p><code>&lt;script&gt;</code>：定义组件的交互相关的代码。即定义创建组件的JS代码。</p>
+<p>在<code>&lt;script&gt;</code>中可以使用<code>Vue.extend()</code>来创建组件。但是由于Vue会在需要的时候帮我们自动调用<code>Vue.extend()</code>，所以<code>Vue.extend()</code>可省略。<u>一般情况下<code>export default</code>组件的配置对象即可</u>。</p>
+<blockquote>
+<p>如果要使用<code>Vue.extend()</code>，需要先引入<code>Vue</code>。</p>
+</blockquote>
+</li>
+<li>
+<p><code>&lt;style&gt;</code>：和Html中的<code>&lt;style&gt;</code>一样，都是用于定义样式。</p>
+</li>
+<li>
+<p><code>.vue</code>注释：</p>
+<p><code>.vue</code>中的文件有4个地方可以写注释：</p>
+<ul>
+<li>
+<p><code>&lt;template&gt;</code>中：使用Html的注释<code>&lt;!-- 注释内容 --&gt;</code>。</p>
+</li>
+<li>
+<p><code>&lt;script&gt;</code>中：使用JS的注释<code>// 注释内容</code>或<code>/* 注释内容 */</code>。</p>
+</li>
+<li>
+<p><code>&lt;style&gt;</code>中：使用CSS的注释<code>/* 注释内容 */</code>。</p>
+</li>
+<li>
+<p>上述范围之外的其它地方：也就是在<code>&lt;template&gt;</code>、<code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>之外的其它地方可以使用注释。这些注释是属于<code>.vue</code>文件自己的注释，一共有3种注释类型：</p>
+<pre tabindex="0"><code>&lt;!-- 注释内容 --&gt;
+// 注释内容
+/* 注释内容 */
+</code></pre><p>也就是说，<code>&lt;template&gt;</code>、<code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>之外的其它地方可以使用Html、JS和CSS的任何类型的注释。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="vue-cli" data-numberify>Vue CLI<a class="anchor ms-1" href="#vue-cli"></a></h1>
+<p>由于浏览器并不支持直接浏览<code>.vue</code>类型的文件，所以需要将<code>.vue</code>类型的文件编译成浏览器支持的文件类型。而Vue CLI（Vue Command Line Interface，Vue脚手架）可以帮助我们快速地编译<code>.vue</code>。</p>
+<h2 id="安装-vue-cli" data-numberify>安装 Vue CLI<a class="anchor ms-1" href="#安装-vue-cli"></a></h2>
+<p>Vue CLI需要使用<code>npm</code>安装，请确保你的电脑上已经安装了Node.js。</p>
+<p>Vue CLI安装命令如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm install -g @vue/cli
+</span></span></code></pre></div><p>安装完成后直接使用<code>vue</code>命令运行Vue CLI。查看Vue CLI版本以验证是否安装成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vue -V
+</span></span></code></pre></div><h2 id="使用-vue-cli" data-numberify>使用 Vue CLI<a class="anchor ms-1" href="#使用-vue-cli"></a></h2>
+<p>使用Vue CLI创建一个项目：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vue create vue_demo
+</span></span></code></pre></div><p>接着Vue CLI会让你选择一个默认的配置：</p>
+<p><picture><img class="img-fluid " alt="vue create" src="/docs/vue/components/vue-projects/1694764569709.png" loading="lazy" width="397" height="139" />
+</picture>
+
+</p>
+<p>使用键盘的<code>↑</code>或<code>↓</code>去移动选择，然后按下回车即可开始创建。</p>
+<blockquote>
+<p>其中的<code>babel</code>是用来将ES6的代码转换为ES5。<code>eslint</code>是用来进行语法检查。</p>
+</blockquote>
+<p>出现如下提示表示项目创建成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">🎉  Successfully created project vue_demo.
+</span></span><span class="line"><span class="cl">👉  Get started with the following commands:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> $ <span class="nb">cd</span> vue_demo
+</span></span><span class="line"><span class="cl"> $ npm run serve
+</span></span></code></pre></div><p>根据提示信息可以知道，进入<code>vue_demo</code>目录之后运行<code>npm run serve</code>可以启动这个项目：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> vue_demo
+</span></span><span class="line"><span class="cl">npm run serve
+</span></span></code></pre></div><p>启动成功后，项目服务的默认端口是<code>8080</code>，可以访问<code>http://localhost:8080/</code>以浏览Vue CLI为我们创建的<code>HelloWorld</code>这个项目示例。</p>
+<h2 id="项目结构" data-numberify>项目结构<a class="anchor ms-1" href="#项目结构"></a></h2>
+<p>Vue CLI创建好的项目结构一般如下：</p>
+<pre tabindex="0"><code>vue_demo
+├── babel.config.js
+├── dist
+├── .git
+├── .gitignore
+├── jsconfig.json
+├── package.json
+├── package-lock.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── README.md
+├── src
+│   ├── App.vue
+│   ├── assets
+│   │   └── logo.png
+│   ├── components
+│   │   ├── Hello.vue
+│   │   └── SiteUser.vue
+│   └── main.js
+└── vue.config.js
+</code></pre><p>在创建好的<code>vue_demo</code>中，有以下这些注意点：</p>
+<ul>
+<li>
+<p><code>.gitignore</code>：排除那些不需要被<code>git</code>所管理的文件或目录。</p>
+</li>
+<li>
+<p><code>babel.config.js</code>：<code>babel</code>的配置文件。一般来说不需要修改该配置，如果需要修改，可以浏览<a href="https://babeljs.io/" target="_blank" rel="noopener noreferrer">Babel官网<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+</li>
+<li>
+<p><code>package.json</code>：当前（Node.js）项目的包管理配置文件。</p>
+<p>其中需要注意一下的是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="err">/*</span> <span class="err">...</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;serve&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service serve&#34;</span><span class="p">,</span> <span class="c1">// 预览项目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service build&#34;</span><span class="p">,</span> <span class="c1">// 构建项目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;lint&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service lint&#34;</span>    <span class="c1">// 进行语法检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="err">/*</span> <span class="err">...</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>READNE.md</code>：程序说明文档。</p>
+</li>
+<li>
+<p><code>src</code>：项目源代码文件。在使用默认配置的情况下，名称不可随意更改。</p>
+<p><code>src</code>的结构如下所示：</p>
+<ul>
+<li><code>main.js</code>：默认的项目入口文件，主要用来创建Vue实例。在使用默认配置的情况下，名称不可随意更改。</li>
+<li><code>App.vue</code>：项目中所有组件的根组件。</li>
+<li><code>assets</code>：存放项目的静态资源。</li>
+<li><code>components</code>：存放项目中（除了<code>App.vue</code>）组件的文件夹。</li>
+</ul>
+</li>
+<li>
+<p><code>public</code>：存放<code>index.html</code>、<code>favicon.ico</code>等文件。在使用默认配置的情况下，名称不可随意更改。</p>
+<p><code>public/index.html</code>是当前项目默认打开的页面。在使用默认配置的情况下，名称不可随意更改。</p>
+<p>在<code>index.html</code>中，有一个最重要的东西：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>vue.config.js</code>：Vue CLI的配置文件（可选），与<code>package.json</code>同级。</p>
+</li>
+</ul>
+<h2 id="vue-cli-入口文件" data-numberify>Vue CLI 入口文件<a class="anchor ms-1" href="#vue-cli-入口文件"></a></h2>
+<p>在<code>main.js</code>中的<code>import Vue from 'vue'</code>和<code>render: h =&gt; h(App)</code>语句需要格外注意：</p>
+<p><code>main.js</code>中，使用ES6引入的Vue（即<code>import Vue from 'vue'</code>），是<code>vue.runtime.esm.js</code>。</p>
+<p><code>vue.runtime.esm.js</code>是一个精简版的Vue，其中去除了原本Vue中的模板解析器。所以在<code>main.js</code>的Vue实例中，使用<code>template</code>配置项会因为没有模板解析器而导致无法解析。</p>
+<p>有两种方法可以解决该问题：</p>
+<ul>
+<li>
+<p>引入完整版的<code>vue.js</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue/dist/vue&#39;</span>  <span class="c1">// 引入 Vue
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>     <span class="c1">// 引入 App 组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">components</span><span class="o">:</span> <span class="p">{</span><span class="nx">App</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">template</span><span class="o">:</span> <span class="sb">`&lt;App&gt;Hello!&lt;/App&gt;`</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用<code>render</code>配置项：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>       <span class="c1">// 引入 Vue
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span> <span class="c1">// 引入 App 组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">render</span><span class="o">:</span> <span class="nx">h</span> <span class="p">=&gt;</span> <span class="nx">h</span><span class="p">(</span><span class="nx">App</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>render</code>本质是Vue调用的一个函数，它需要接收一个参数<code>createElement</code>这个参数是<code>function</code>类型。<code>createElement()</code>可以帮助我们在页面中创建并渲染元素。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span> <span class="c1">// 引入 Vue
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 其实这里也可以使用完整版的 Vue，但是没必要
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">render</span><span class="p">(</span><span class="nx">createElement</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;render.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">createElement</span><span class="p">);</span> <span class="c1">// function
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;h2&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>由于<code>render</code>中不需要使用<code>this</code>，所以可以使用Lambda表达式<code>() =&gt; {}</code>来定义。如上方的解决方案中<code>h =&gt; h(App)</code>就是<code>render</code>最简洁的定义方式。</p>
+<p>使用了<code>render</code>就无需使用<code>components</code>。</p>
+</li>
+</ul>
+<blockquote>
+<p>注：在<code>.vue</code>中依旧是使用<code>&lt;template&gt;</code>和<code>components</code>。也就是说，实例无需使用<code>render</code>。</p>
+</blockquote>
+<h2 id="vue-cli-配置文件" data-numberify>Vue CLI 配置文件<a class="anchor ms-1" href="#vue-cli-配置文件"></a></h2>
+<p>Vue CLI默认的入口文件就是<code>main.js</code>。并且Vue CLI隐藏了所有<code>webpack</code>相关的配置，若想查看具体的<code>webpack</code>配置，可运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vue inspect &gt; output.js
+</span></span></code></pre></div><p>将Vue CLI的<code>webpack</code>相关配置输出到<code>output.js</code>这个文件中（仅用作输出浏览，无法在此更改配置）。</p>
+<p>在Vue CLI的<code>webpack</code>相关配置中有这样的内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">app</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;./src/main.js&#39;</span> <span class="c1">// 项目入口文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>要修改这些配置内容，需要在<code>vue.config.js</code>中进行修改。它的基本形式如（使用的是<code>common.js</code>的模块化语法）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* 选项... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>或使用<code>@vue/cli-service</code>提供的<code>defineConfig()</code>帮手函数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">defineConfig</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;@vue/cli-service&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">defineConfig</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* 选项... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>vue.config.js</code>中有一个<code>pages</code>配置项（具体内容可在官方文档中复制）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">pages</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">index</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// page 的入口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">entry</span><span class="o">:</span> <span class="s1">&#39;src/main.js&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 模板来源
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">template</span><span class="o">:</span> <span class="s1">&#39;public/index.html&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 在 dist/index.html 的输出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;index.html&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 当使用 title 选项时，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// template 中的 title 标签需要是 &lt;title&gt;&lt;%= htmlWebpackPlugin.options.title %&gt;&lt;/title&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Index Page&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>除了<code>pages</code>配置选项，还有用于关闭语法检查的<code>lintOnSave</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">lintOnSave</span><span class="o">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>vue.config.js</code>的配置选项可参考 <a href="https://cli.vuejs.org/zh/config/" target="_blank" rel="noopener noreferrer">Vue CLI 配置参考<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<blockquote>
+<p>注：</p>
+<p><code>vue.config.js</code>被修改之后，需要重新运行<code>npm run serve</code>。</p>
+<p>如果在<code>vue.config.js</code>中类似这样配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">pages</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">index</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* 空的配置内容 */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>那么在启动或者构建项目的时候就会发生错误。因为此时的配置中的<code>pages.index</code>传递的是一个没有任何属性的对象，而Vue CLI并不会去解析它并为他配上默认的内容。</p>
+<p>所以在使用<code>vue.config.js</code>的时候，要么干脆不添加配置选项，使用默认的内容；要么就要按照配置选项的内容进行正确的配置。</p>
+</blockquote>
+<h2 id="vue-包" data-numberify>Vue 包<a class="anchor ms-1" href="#vue-包"></a></h2>
+<p>Vue的依赖包在<code>node_modules/vue/dist</code>中。其中有这么些版本：</p>
+<ul>
+<li>
+<p><code>.esm</code>：包含<code>.esm</code>的文件代表使用了ES6的模块化语法。使用ES6的模块化语法的版本，浏览器无法直接使用。</p>
+</li>
+<li>
+<p><code>.min</code>：包含<code>.min</code>就是指压缩版本。</p>
+</li>
+<li>
+<p>完整版：</p>
+<ul>
+<li><code>vue.js</code>：浏览器可以直接使用的完整版本。</li>
+<li><code>vue.esm.js</code>：使用了ES6的模块化语法的完整版。</li>
+</ul>
+</li>
+<li>
+<p><code>runtime</code>：运行时版本，是Vue的精简版本，去除了模板解析器。</p>
+<ul>
+<li><code>vue.runtime.js</code></li>
+<li><code>vue.runtime.min.js</code></li>
+<li><code>vue.runtime.esm.js</code></li>
+</ul>
+<p><code>runtime</code>版本不能使用<code>template</code>配置项。需要使用<code>render</code>函数接收到的<code>createElement</code>函数去指定具体内容。</p>
+</li>
+<li>
+<p><code>common</code>：使用<code>common.js</code>时使用的版本。</p>
+<ul>
+<li><code>vue.common.js</code></li>
+<li><code>vue.common.dev.js</code></li>
+<li><code>vue.common.prod.js</code></li>
+<li><code>vue.runtime.common.dev.js</code></li>
+<li><code>vue.runtime.common.js</code></li>
+<li><code>vue.runtime.common.prod.js</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Vue CLI中<code>&lt;template&gt;</code>标签配置的模板，是由<code>vue-template-compiler</code>（Vue 模板解析器）来解析。这个<code>vue-template-compiler</code>只能解析<code>.vue</code>中的<code>&lt;template&gt;</code>模板，而不能解析<code>template</code>配置项。</p>
+</blockquote>
+<h2 id="示例" data-numberify>示例<a class="anchor ms-1" href="#示例"></a></h2>
+<p>根据以上步骤和信息，将<a href="/docs/vue/components/vue-projects/#%e9%9d%9e%e5%8d%95%e6%96%87%e4%bb%b6%e7%bb%84%e4%bb%b6">非单文件组件</a>中的<code>site</code>和<code>user</code>定义为单文件组件的形式：</p>
+<blockquote>
+<p>PS：由于使用的Vue CLI版本为5，默认开启语法检查。根据ESLint的官方代码规范，除了<code>App</code>的其它组件只能以<code>multi-word</code>（多单词）的形式命名。所以下方组件的命名遵循ESLint规范。</p>
+<p><code>multi-word</code>形式选择<strong>kebab-case</strong>或<strong>CameCase</strong>都可以。</p>
+</blockquote>
+<ul>
+<li>
+<p><code>MySite</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;my-site&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>网站名称：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>网站地址：{{url}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;MySite&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner\&#39;s Blog&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;blog.linner.asia&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">.</span><span class="nc">my-site</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">background-color</span><span class="p">:</span> <span class="kc">yellow</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>SiteUser</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户姓名：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;SiteUser&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">age</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>App.vue</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;./assets/logo.png&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;logo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">MySite</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">SiteUser</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">import</span> <span class="nx">MySite</span> <span class="nx">from</span> <span class="s2">&#34;./components/MySite.vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">import</span> <span class="nx">SiteUser</span> <span class="nx">from</span> <span class="s1">&#39;./components/SiteUser.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">MySite</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">SiteUser</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>其它文件暂时不用改动。然后在项目目录下运行<code>npm run serve</code>即可预览。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 组件</title>
       <link>/docs/vue/components/introduction/</link>
