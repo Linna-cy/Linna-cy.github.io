@@ -13,12 +13,12 @@
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
 <meta name="keywords" content="Linner Blog 博客" />
-  <meta name="description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 例如： /** * mixin.js * 混入配置对" />
+  <meta name="description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 局部混入 局部混入是指在组" />
     <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vue 混入配置对象"/>
-<meta name="twitter:description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 例如： /** * mixin.js * 混入配置对"/>
+<meta name="twitter:description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 局部混入 局部混入是指在组"/>
 <meta property="og:title" content="Vue 混入配置对象" />
-<meta property="og:description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 例如： /** * mixin.js * 混入配置对" />
+<meta property="og:description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 局部混入 局部混入是指在组" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/vue/components/vue-mixins/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2023-09-18T01:22:04+00:00" />
@@ -26,9 +26,9 @@
 <meta property="og:see_also" content="/docs/vue/components/vue-props/" /><meta property="og:see_also" content="/docs/vue/components/vue-dom/" /><meta property="og:see_also" content="/docs/vue/components/vue-projects/" /><meta property="og:see_also" content="/docs/vue/components/introduction/" /><meta property="og:see_also" content="/docs/vue/life-cycle/" />
 
 <meta itemprop="name" content="Vue 混入配置对象">
-<meta itemprop="description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 例如： /** * mixin.js * 混入配置对"><meta itemprop="datePublished" content="2023-09-18T01:22:04+00:00" />
+<meta itemprop="description" content="混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 局部混入 局部混入是指在组"><meta itemprop="datePublished" content="2023-09-18T01:22:04+00:00" />
 <meta itemprop="dateModified" content="2023-09-18T01:22:04+00:00" />
-<meta itemprop="wordCount" content="520">
+<meta itemprop="wordCount" content="683">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -646,6 +646,10 @@ Linner
 </a>
     
     
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
     
 
 <a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
@@ -673,8 +677,17 @@ Linner
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
 </div>
-<div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
         <div id="post-content-body"><p>混入（<code>mixin</code>）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。</p>
+<hr>
+<h1 id="局部混入" data-numberify>局部混入<a class="anchor ms-1" href="#局部混入"></a></h1>
+<p>局部混入是指在组件或特定的Vue实例中引入通用的配置对象。</p>
 <p>例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * mixin.js
@@ -740,7 +753,32 @@ Linner
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p>使用<code>mixin</code>时需要注意：</p>
+</span></span></code></pre></div><hr>
+<h1 id="全局混入" data-numberify>全局混入<a class="anchor ms-1" href="#全局混入"></a></h1>
+<p>全局混入是指在Vue原型对象中引入通用配置对象，这个配置对象在全局生效，项目中所有的Vue实例和组件都会自动启用该配置。</p>
+<p>全局混入使用的是<code>Vue.mixin()</code>方法。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * main.js
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mixin1</span><span class="p">,</span> <span class="nx">mixin2</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;./mixin&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">productionTip</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 全局应用 mixin
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">mixin1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">mixin2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">render</span><span class="o">:</span> <span class="nx">h</span> <span class="p">=&gt;</span> <span class="nx">h</span><span class="p">(</span><span class="nx">App</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
+<h1 id="注意事项" data-numberify>注意事项<a class="anchor ms-1" href="#注意事项"></a></h1>
+<p>使用<code>mixin</code>时需要注意：</p>
 <ul>
 <li>组件中的配置选项基本上都能在<code>mixin</code>中使用。</li>
 <li>当混入对象和组件中的某些配置（例如<code>data</code>、计算属性、<code>methods</code>）重复时，以组件中的配置为主。</li>
@@ -913,7 +951,25 @@ Linner
 <aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
   <div class="container">
     
-    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#局部混入">局部混入</a></li>
+    <li><a href="#全局混入">全局混入</a></li>
+    <li><a href="#注意事项">注意事项</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
     
 
   </div>

@@ -15,8 +15,11 @@
       <pubDate>Mon, 18 Sep 2023 01:22:04 +0000</pubDate>
       
       <guid>/docs/vue/components/vue-mixins/</guid>
-      <description><![CDATA[混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 例如： /** * mixin.js * 混入配置对]]></description>
+      <description><![CDATA[混入（mixin）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。 局部混入 局部混入是指在组]]></description>
       <content:encoded><![CDATA[<p>混入（<code>mixin</code>）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。</p>
+<hr>
+<h1 id="局部混入" data-numberify>局部混入<a class="anchor ms-1" href="#局部混入"></a></h1>
+<p>局部混入是指在组件或特定的Vue实例中引入通用的配置对象。</p>
 <p>例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * mixin.js
@@ -82,7 +85,32 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p>使用<code>mixin</code>时需要注意：</p>
+</span></span></code></pre></div><hr>
+<h1 id="全局混入" data-numberify>全局混入<a class="anchor ms-1" href="#全局混入"></a></h1>
+<p>全局混入是指在Vue原型对象中引入通用配置对象，这个配置对象在全局生效，项目中所有的Vue实例和组件都会自动启用该配置。</p>
+<p>全局混入使用的是<code>Vue.mixin()</code>方法。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * main.js
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mixin1</span><span class="p">,</span> <span class="nx">mixin2</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;./mixin&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">productionTip</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 全局应用 mixin
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">mixin1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">mixin2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">render</span><span class="o">:</span> <span class="nx">h</span> <span class="p">=&gt;</span> <span class="nx">h</span><span class="p">(</span><span class="nx">App</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
+<h1 id="注意事项" data-numberify>注意事项<a class="anchor ms-1" href="#注意事项"></a></h1>
+<p>使用<code>mixin</code>时需要注意：</p>
 <ul>
 <li>组件中的配置选项基本上都能在<code>mixin</code>中使用。</li>
 <li>当混入对象和组件中的某些配置（例如<code>data</code>、计算属性、<code>methods</code>）重复时，以组件中的配置为主。</li>
