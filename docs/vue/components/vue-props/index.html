@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue Props 属性">
 <meta itemprop="description" content="在Vue中，父组件可以往子组件中传递一些属性值。而子组件需要使用props配置项定义这些要从父组件中获取的数据。 使用props配置项，可以让"><meta itemprop="datePublished" content="2023-09-18T01:19:24+00:00" />
 <meta itemprop="dateModified" content="2023-09-18T01:19:24+00:00" />
-<meta itemprop="wordCount" content="1856">
+<meta itemprop="wordCount" content="3101">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -676,7 +676,7 @@ Linner
     <h1 class="card-title post-title my-2">Vue Props 属性</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-09-18 01:19:24 &#43;0000 UTC。">2023年9月18日</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-18 01:19:24 &#43;0000 UTC。">2023年9月18日</span><span class="post-reading-time me-1 mb-1">7 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
@@ -844,8 +844,182 @@ Linner
 <li>如果<code>props</code>属性和<code>data</code>属性重名，<code>props</code>属性优先级更高。</li>
 <li><code>props</code>属性不能使用被Vue征用了的标签属性。</li>
 <li><code>props</code>属性不能修改是相对于组件而言的。在组件中，不要对当前组件的<code>props</code>属性进行修改，但是在使用组件时，可以对子组件的<code>props</code>属性通过<code>v-bind</code>指令进行动态数据绑定。</li>
+<li>不要使用<code>v-model</code>绑定<code>props</code>属性。</li>
 </ul>
 </blockquote>
+<hr>
+<h1 id="子组件到父组件的通信" data-numberify>子组件到父组件的通信<a class="anchor ms-1" href="#子组件到父组件的通信"></a></h1>
+<p>组件间通信涉及以下内容：</p>
+<ul>
+<li>父组件到子组件的通信。</li>
+<li>子组件到父组件的通信。</li>
+<li>同级组件间的通信。</li>
+</ul>
+<p>父组件到子组件的通信直接通过<code>props</code>属性就可以实现。而子组件到父组件的通信，也可以通过<code>props</code>实现。</p>
+<h2 id="修改对象类型的-props-属性" data-numberify>修改对象类型的 Props 属性<a class="anchor ms-1" href="#修改对象类型的-props-属性"></a></h2>
+<p>Vue对<code>props</code>属性是一种浅层次的监测，Vue不会对<code>props</code>属性中的属性的改动进行监测。利用这一点可以在子组件中通过获取对象类型<code>props</code>属性值，然后利用<code>v-model</code>绑定该对象的属性来越过Vue的监测，从而实现子组件到父组件的通信。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  user-input.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 使用 v-model 直接修改 props 对象数据类型的属性中的属性 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;user.account&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;账号&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">type</span><span class="o">=</span><span class="s">&#34;password&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;user.password&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;密码&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user-input&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">props</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;userInfo&#34;</span><span class="p">,</span> <span class="c1">// 将数据对象定义在父组件中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 利用 props 属性初始化，目的是防止报错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">user</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  App.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">user-input</span> <span class="na">:userInfo</span><span class="o">=</span><span class="s">&#34;userInfo&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;login&#34;</span><span class="p">&gt;</span>登录<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">UserInput</span> <span class="nx">from</span> <span class="s1">&#39;./components/user-input.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">UserInput</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">userInfo</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">account</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">login</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">alert</span><span class="p">(</span><span class="sb">`账号：</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">account</span><span class="si">}</span><span class="sb">\n密码：</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">password</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>该方法其实就是子组件通过<code>props</code>，将用户在子组件中输入的数据，通过<code>v-model</code>双向绑定到父组件上。</p>
+<p><strong>不建议使用这种方法实现</strong>，虽然修改对象类型的<code>props</code>属性中的属性不会报错（绕过了Vue的监测），但是这样操作违反了Vue的原则。</p>
+<h2 id="给-props-传递函数类型" data-numberify>给 Props 传递函数类型<a class="anchor ms-1" href="#给-props-传递函数类型"></a></h2>
+<p>借助<code>props</code>将父组件中的某些方法传递到子组件中，然后在子组件中通过调用这些从父组件传递过来的<code>props</code>方法来实现子组件到父组件的通信。</p>
+<p>例如有一个<code>user-input</code>组件来收集用户的账号和密码信息，而<code>App.vue</code>需要获取<code>user-input</code>组件收集到的用户信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  user-input.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;userInfo.account&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;账号&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">type</span><span class="o">=</span><span class="s">&#34;password&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;userInfo.password&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;密码&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user-input&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">props</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;setUserInfo&#34;</span><span class="p">,</span>  <span class="c1">// 从父组件接收一个用于通知父组件数据更新的函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">userInfo</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">account</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 监听 userInfo 对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">userInfo</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">deep</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">handler</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 通知父组件 userInfo 被更新
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">setUserInfo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  App.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 将通知信息更新的函数传递给组件 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">user-input</span> <span class="na">:setUserInfo</span><span class="o">=</span><span class="s">&#34;setUserInfo&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 点击登录按钮显示用户信息 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;login&#34;</span><span class="p">&gt;</span>登录<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">UserInput</span> <span class="nx">from</span> <span class="s1">&#39;./components/user-input.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">UserInput</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">userInfo</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">account</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 通知组件用户信息被更新
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">setUserInfo</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">account</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">hasOwn</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">,</span> <span class="s2">&#34;account&#34;</span><span class="p">)</span> <span class="o">?</span>
+</span></span><span class="line"><span class="cl">                              <span class="nx">userInfo</span><span class="p">.</span><span class="nx">account</span> <span class="o">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">password</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">hasOwn</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">,</span> <span class="s2">&#34;password&#34;</span><span class="p">)</span> <span class="o">?</span>
+</span></span><span class="line"><span class="cl">                              <span class="nx">userInfo</span><span class="p">.</span><span class="nx">password</span> <span class="o">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">login</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">alert</span><span class="p">(</span><span class="sb">`账号：</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">account</span><span class="si">}</span><span class="sb">\n密码：</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">password</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>该方法的原理就是：被父组件传递给子组件用于更新的函数，它的<code>this</code>指向的仍是父组件的实例对象。简单来说就是子组件调用了一个父组件的方法来通知父组件。</p>
 </div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
@@ -1028,6 +1202,12 @@ Linner
   <ul>
     <li><a href="#属性值的传递">属性值的传递</a></li>
     <li><a href="#定义方式">定义方式</a></li>
+    <li><a href="#子组件到父组件的通信">子组件到父组件的通信</a>
+      <ul>
+        <li><a href="#修改对象类型的-props-属性">修改对象类型的 Props 属性</a></li>
+        <li><a href="#给-props-传递函数类型">给 Props 传递函数类型</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
     </div>
