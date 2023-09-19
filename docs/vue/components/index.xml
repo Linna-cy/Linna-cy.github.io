@@ -8,7 +8,244 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Mon, 18 Sep 2023 02:18:25 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Sep 2023 03:10:26 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 组件自定义事件</title>
+      <link>/docs/vue/components/custom-events/</link>
+      <pubDate>Tue, 19 Sep 2023 03:10:26 +0000</pubDate>
+      
+      <guid>/docs/vue/components/custom-events/</guid>
+      <description><![CDATA[给一个子组件定义自定义事件的步骤大致如下： 在父组件中使用v-on绑定自定义事件，并定义回调。 例如给一个user-info绑定自定义事件： &lt;!-- App.vue]]></description>
+      <content:encoded><![CDATA[<p>给一个子组件定义自定义事件的步骤大致如下：</p>
+<ul>
+<li>
+<p>在父组件中使用<code>v-on</code>绑定自定义事件，并定义回调。</p>
+<p>例如给一个<code>user-info</code>绑定自定义事件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  App.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">      通过父组件给子组件绑定一个自定义事件
+</span></span></span><span class="line"><span class="cl"><span class="c">      实现子组件给父组件传递数据
+</span></span></span><span class="line"><span class="cl"><span class="c">      使用 .once 修饰符，让事件只在第1次被触发时执行回调
+</span></span></span><span class="line"><span class="cl"><span class="c">     --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">user-info</span> <span class="err">@</span><span class="na">get-name</span><span class="err">.</span><span class="na">once</span><span class="o">=</span><span class="s">&#34;getUserName&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">import</span> <span class="nx">UserInfo</span> <span class="nx">from</span> <span class="s1">&#39;./components/user-info.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">UserInfo</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">getUserName</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">          <span class="s1">&#39;The event get-name has be trigged.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>然后在子组件中，触发该自定义事件。</p>
+<p>接上例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  user-info.vue
+</span></span></span><span class="line"><span class="cl"><span class="c">--&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;user&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户姓名：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户性别：{{sex}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;sendUserName&#34;</span><span class="p">&gt;</span>获取用户姓名<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user-info&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">sex</span><span class="o">:</span> <span class="s1">&#39;男&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">age</span><span class="o">:</span> <span class="mi">21</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sendUserName</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 触发 user-info 组件实例上的 get-name 事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">$emit</span><span class="p">(</span><span class="s1">&#39;get-name&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h1 id="实现子组件到父组件的数据通信" data-numberify>实现子组件到父组件的数据通信<a class="anchor ms-1" href="#实现子组件到父组件的数据通信"></a></h1>
+<p>通过自定义事件，可以实现子组件到父组件的数据通信。</p>
+<p>如上例，在子组件<code>user-info</code>中，触发<code>get-user-name</code>事件的方法为<code>this.$emit()</code>（<code>this</code>是组件实例，Vue实例上也有这个方法）。</p>
+<p><code>this.$emit()</code>：</p>
+<ol>
+<li>参数1：触发的事件名称。</li>
+<li>参数2 ~ n：触发事件的同时，向父组件传递的数据。</li>
+</ol>
+<p>子组件通过调用<code>this.$emit()</code>来触发事件，然后告知父组件有数据需要传递。接着通过<code>this.$emit()</code>的第2 ~ n个参数，将数据传递给父组件。</p>
+<p>父组件通过事件回调函数来处理事件，并接收从子组件传递过来的数据。</p>
+<p>例如某个子组件触发了<code>update</code>事件，并且将数据传递给父组件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$emit</span><span class="p">(</span><span class="s2">&#34;update&#34;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sex</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="p">)</span>
+</span></span></code></pre></div><p>在父组件的<code>methods</code>中，可以这样定义回调函数：</p>
+<ul>
+<li>
+<p>定义对应的形参：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">updateHandler</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">sex</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>定义数量可变的形参：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">updateHandler</span><span class="p">(...</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>修改上方的<code>user-info</code>和<code>App</code>组件，从<code>user-info</code>中获取用户的姓名，并在<code>App</code>组件中显示欢迎消息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  App.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>{{msg}}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">user-info</span> <span class="err">@</span><span class="na">get-name</span><span class="o">=</span><span class="s">&#34;getUserName&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">import</span> <span class="nx">UserInfo</span> <span class="nx">from</span> <span class="s1">&#39;./components/user-info.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span><span class="nx">UserInfo</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">userName</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sb">`Hello </span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">userName</span><span class="si">}</span><span class="sb">!`</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">getUserName</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">          <span class="s1">&#39;The event get-name has be trigged.&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">userName</span> <span class="o">=</span> <span class="nx">name</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">app</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background-color</span><span class="p">:</span> <span class="kc">orange</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">padding</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">  user-info.vue
+</span></span></span><span class="line"><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;SiteUser&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">immediate</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">handler</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 触发 user-info 组件实例上的 get-name 事件，并传递数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">$emit</span><span class="p">(</span><span class="s1">&#39;get-name&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span> <span class="na">scoped</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">user</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background-color</span><span class="p">:</span> <span class="kc">skyblue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">padding</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin-top</span><span class="p">:</span> <span class="mi">30</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="绑定自定义事件" data-numberify>绑定自定义事件<a class="anchor ms-1" href="#绑定自定义事件"></a></h1>
+<p>事件有两种绑定方式：</p>
+<ul>
+<li>
+<p>使用<code>v-on</code>指令绑定。</p>
+<p>如上所示的案例，都是使用<code>v-on</code>来绑定自定义事件。</p>
+</li>
+<li>
+<p>在父组件中，使用<code>ref</code>属性获取组件实例对象，然后通过在父组件的<code>mounted()</code>钩子中调用组件实例对象的<code>$on</code>方法绑定。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">demo</span> <span class="err">@</span><span class="na">event-name</span><span class="o">=</span><span class="s">&#34;eventHandler&#34;</span><span class="p">/&gt;</span>
+</span></span></code></pre></div><p>上方对应的使用<code>ref</code>绑定事件的方法是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">demo</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;demo&#34;</span><span class="p">/&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$ref</span><span class="p">.</span><span class="nx">demo</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;event-name&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">eventHandler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用<code>ref</code>加<code>mounted</code>绑定事件的好处是，自定义度高。例如可以在<code>mounted</code>中使用定时器来实现延迟绑定事件的效果。</p>
+<blockquote>
+<p>注：</p>
+<p>在Vue实例对象或组件实例对象上，要让绑定事件仅触发一次，可以使用<code>this.$once()</code>。<code>this.$once()</code>的参数与<code>this.$on()</code>一致。</p>
+<p>在<code>mounted</code>中，如果要在绑定事件的同时定义回调函数，应该使用Lambda表达式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$ref</span><span class="p">.</span><span class="nx">demo</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;event-name&#39;</span><span class="p">,</span> <span class="p">(...</span><span class="nx">params</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这是因为，如果使用一般的<code>function</code>来定义，那么回调函数中的<code>this</code>指向的是<code>demo</code>的组件实例对象；而使用Lambda来定义，回调函数中的<code>this</code>指向的就是当前的组件实例对象。</p>
+<p>如果<code>this.$ref.demo.$on()</code>传入的回调函数是<code>methods</code>中定义的函数，那么这个函数需要使用<code>function</code>来定义。</p>
+<p>也就是说，在绑定自定义事件回调时，回调函数要么是配置在<code>methods</code>中用<code>function</code>定义，要么用Lambda表达式定义。</p>
+<p>如果子组件的<code>this.$emit()</code>是在<code>immediate:true</code>的<code>watch</code>中调用的，那么就不要使用<code>ref</code>来绑定。因为<code>immediate:true</code>的<code>watch</code>是在<code>beforeCreate()</code>之后<code>created()</code>进行第1次执行。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h1 id="解绑自定义事件" data-numberify>解绑自定义事件<a class="anchor ms-1" href="#解绑自定义事件"></a></h1>
+<p>解绑自定义事件使用的是<code>this.$off()</code>方法：</p>
+<ul>
+<li><code>this.$off(event)</code>：解绑<code>event</code>指定的事件。<code>event</code>是事件的名称，字符串类型。</li>
+<li><code>this.$off([event1, event2, ...])</code>：解绑数组中指定的多个事件。<code>event1</code>、<code>event2</code>等均是事件的名称，字符串类型。</li>
+<li><code>this.$off()</code>：解绑所有的自定义事件。当<code>this.$off()</code>没有附带任何参数直接调用时，<code>this.$off()</code>会将实例中的所有事件解绑。</li>
+</ul>
+<p>解绑自定义事件后，无论再调用多少次对应的<code>this.$emit()</code>，事件都不会被触发。除非在父组件中再次绑定这些自定义事件。</p>
+<hr>
+<h1 id="绑定原生事件" data-numberify>绑定原生事件<a class="anchor ms-1" href="#绑定原生事件"></a></h1>
+<p>Vue中，在组件标签上使用<code>v-on</code>指令绑定的事件，对组件来说，绑定的都是自定义事件。即使绑定的事件名称是原生事件的名称，Vue也会将其识别为自定义事件。</p>
+<p>如果要在组件上绑定原生事件，可以使用<code>.native</code>修饰符。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">demo</span> <span class="err">@</span><span class="na">click</span><span class="err">.</span><span class="na">native</span><span class="o">=</span><span class="s">&#34;clickDemo&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue Scoped</title>
       <link>/docs/vue/components/vue-scoped/</link>
