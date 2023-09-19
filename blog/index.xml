@@ -8,7 +8,82 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 10 Aug 2023 08:40:27 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Sep 2023 23:39:38 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WebStorage 浏览器本地存储</title>
+      <link>/blog/2023/09/webstorage-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/</link>
+      <pubDate>Mon, 18 Sep 2023 23:39:38 +0000</pubDate>
+      
+      <guid>/blog/2023/09/webstorage-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/</guid>
+      <description><![CDATA[WebStorage是指浏览器自带的本地存储。WebStorage存储内容大小一般支持5MB左右（不同浏览器的存储大小可能不一样）。 浏览器通]]></description>
+      <content:encoded><![CDATA[<p>WebStorage是指浏览器自带的本地存储。WebStorage存储内容大小一般支持5MB左右（不同浏览器的存储大小可能不一样）。</p>
+<p>浏览器通过以下两种属性来实现本地存储：</p>
+<ul>
+<li><code>window.sessionStorage</code>：存储的内容仅在当前会话下有效。浏览器关闭，<code>sessionStorage</code>中的内容会被清空。</li>
+<li><code>window.localStorage</code>：存储的内容与会话的关闭无关。浏览器关闭后，<code>localStorage</code>中的内容依旧存在。手动清除（例如清空浏览器缓存）才会导致<code>localStorage</code>被清空。</li>
+</ul>
+<p><code>sessionStorage</code>和<code>localStorage</code>是按照网站地址（IP或域名+端口）进行存储。并且<code>sessionStorage</code>和<code>localStorage</code>存储的内容都是<code>String</code>类型。</p>
+<p><code>window.sessionStorage</code>和<code>window.localStorage</code>的4个API几乎一样，它们分别是：</p>
+<ul>
+<li>
+<p><code>setItem(key, value)</code>：往<code>sessionStorage</code>或<code>localStorage</code>中存储一条数据，存储的数据会被解析成<code>String</code>类型进行存储。在解析时，<code>setItem()</code>调用的是对象的<code>toString()</code>方法。</p>
+<ul>
+<li>
+<p><code>key</code>：字符串类型的键，用于标识<code>value</code>。并且在<code>sessionStorage</code>或<code>localStorage</code>中，同一个网站地址的<code>key</code>是唯一的。</p>
+<p>也就是说，在同一个网站的<code>sessionStorage</code>中，不存在两个相同的<code>key</code>，如果一个相同的<code>key</code>被存储了两次，那么新数据会覆盖旧数据。<code>localStorage</code>与<code>sessionStorage</code>相同。</p>
+</li>
+<li>
+<p><code>value</code>：要存储的值，可以是任意类型，最终会被解析成字符串形式进行存储。</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// sessionStorage.setItem():
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello sessionStorage!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="mi">666</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 存储对象时，通常手动解析为JSON进行存储
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">person</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// localStorage.setItem():
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello localStorage!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="mi">666</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">person</span><span class="p">))</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>getItem(key)</code>：从<code>sessionStorage</code>或<code>localStorage</code>中读取对应<code>key</code>的一条数据。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// sessionStorage.setItem():
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;num&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">result</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 读取不存在的数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">));</span>  <span class="c1">// 返回 null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// JSON.parse(null)  // 返回 null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// localStorage.setItem():
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;num&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">result</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 读取不存在的数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">));</span>  <span class="c1">// 返回 null
+</span></span></span></code></pre></div></li>
+<li>
+<p><code>removeItem(key)</code>：从<code>sessionStorage</code>或<code>localStorage</code>中删除对应<code>key</code>的一条数据。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>clear()</code>：将<code>sessionStorage</code>或<code>localStorage</code>中的所有数据清空。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 清空 sessionStorage 中的数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">clear</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 清空 localStorage 中的数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">clear</span><span class="p">()</span>
+</span></span></code></pre></div></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>VS Code 中英字符对齐</title>
       <link>/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/</link>
