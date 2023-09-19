@@ -519,7 +519,7 @@
 <li>同级组件间的通信。</li>
 </ul>
 <p>父组件到子组件的通信直接通过<code>props</code>属性就可以实现。而子组件到父组件的通信，也可以通过<code>props</code>实现。</p>
-<h2 id="修改对象类型的-props-属性" data-numberify>修改对象类型的 Props 属性<a class="anchor ms-1" href="#修改对象类型的-props-属性"></a></h2>
+<h2 id="修改对象类型的-prop" data-numberify>修改对象类型的 Prop<a class="anchor ms-1" href="#修改对象类型的-prop"></a></h2>
 <p>Vue对<code>props</code>属性是一种浅层次的监测，Vue不会对<code>props</code>属性中的属性的改动进行监测。利用这一点可以在子组件中通过获取对象类型<code>props</code>属性值，然后利用<code>v-model</code>绑定该对象的属性来越过Vue的监测，从而实现子组件到父组件的通信。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
 </span></span></span><span class="line"><span class="cl"><span class="c">  user-input.vue
@@ -591,7 +591,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span></code></pre></div><p>该方法其实就是子组件通过<code>props</code>，将用户在子组件中输入的数据，通过<code>v-model</code>双向绑定到父组件上。</p>
 <p><strong>不建议使用这种方法实现</strong>，虽然修改对象类型的<code>props</code>属性中的属性不会报错（绕过了Vue的监测），但是这样操作违反了Vue的原则。</p>
-<h2 id="给-props-传递函数类型" data-numberify>给 Props 传递函数类型<a class="anchor ms-1" href="#给-props-传递函数类型"></a></h2>
+<h2 id="传递函数类型的-prop" data-numberify>传递函数类型的 Prop<a class="anchor ms-1" href="#传递函数类型的-prop"></a></h2>
 <p>借助<code>props</code>将父组件中的某些方法传递到子组件中，然后在子组件中通过调用这些从父组件传递过来的<code>props</code>方法来实现子组件到父组件的通信。</p>
 <p>例如有一个<code>user-input</code>组件来收集用户的账号和密码信息，而<code>App.vue</code>需要获取<code>user-input</code>组件收集到的用户信息：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 
