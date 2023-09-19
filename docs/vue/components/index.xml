@@ -8,7 +8,55 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 19 Sep 2023 03:10:26 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Sep 2023 10:59:34 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 消息订阅与发布（pubsub-js）</title>
+      <link>/docs/vue/components/pubsub-js/</link>
+      <pubDate>Tue, 19 Sep 2023 10:59:34 +0000</pubDate>
+      
+      <guid>/docs/vue/components/pubsub-js/</guid>
+      <description><![CDATA[Vue组件间的通信还可借助第三方库来实现。而pubsub-js就是一种实现了消息的订阅与发布的库。使用pubsub-js可以实现任意组件间的]]></description>
+      <content:encoded><![CDATA[<p>Vue组件间的通信还可借助第三方库来实现。而<code>pubsub-js</code>就是一种实现了消息的订阅与发布的库。使用<code>pubsub-js</code>可以实现任意组件间的通信。</p>
+<p>安装<code>pubsub-js</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i pubsub-js
+</span></span></code></pre></div><p>在需要发布或订阅消息的组件中引入<code>pubsub-js</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">pubsub</span> <span class="nx">from</span> <span class="s1">&#39;pubsub-js&#39;</span>
+</span></span></code></pre></div><hr>
+<h1 id="发布消息" data-numberify>发布消息<a class="anchor ms-1" href="#发布消息"></a></h1>
+<p><code>pubsub-js</code>发布消息可以使用<code>pubsub.publish()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="nx">msgName</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+</span></span></code></pre></div><ul>
+<li><code>msgName</code>：发送消息的名称，字符串类型。</li>
+<li><code>data</code>：发送的消息（数据），类型任意。</li>
+</ul>
+<blockquote>
+<p>注：<code>pubsub.publish()</code>与<code>$bus.$emit()</code>方法不一样。<code>pubsub.publish()</code>仅有一个<code>data</code>参数作为消息进行发送。而<code>$bus.$emit()</code>的参数数量是可变的，从第2个开始的参数都可作为消息发送。</p>
+</blockquote>
+<hr>
+<h1 id="订阅消息" data-numberify>订阅消息<a class="anchor ms-1" href="#订阅消息"></a></h1>
+<p><code>pubsub-js</code>订阅消息可以使用<code>pubsub.subscribe()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">pubsub</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">msgName</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
+</span></span></code></pre></div><ul>
+<li>
+<p><code>msgName</code>：订阅的消息名称，字符串类型。</p>
+</li>
+<li>
+<p><code>callback</code>：收到消息时，执行的回调函数。</p>
+<p>当<code>pubsub.subscribe()</code>的回调函数使用一般的<code>function</code>形式定义时，回调函数中的<code>this</code>指向的是<code>undefined</code>。</p>
+<p>而在Vue中定义的回调一般是Lambda表达式。所以使用Lambda表达式直接在<code>pubsub.subscribe()</code>中定义回调函数即可。</p>
+</li>
+<li>
+<p>返回值：返回当前订阅的ID值。</p>
+</li>
+</ul>
+<hr>
+<h1 id="取消订阅" data-numberify>取消订阅<a class="anchor ms-1" href="#取消订阅"></a></h1>
+<p><code>pubsub-js</code>取消订阅消息可以使用<code>pubsub.unsubscribe()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">pubsub</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="nx">subId</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>subId</code>：订阅的ID值。即，在调用<code>pubsub.subscribe()</code>时返回的ID值。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 组件自定义事件</title>
       <link>/docs/vue/components/custom-events/</link>
