@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue 组件自定义事件">
 <meta itemprop="description" content="给一个子组件定义自定义事件的步骤大致如下： 在父组件中使用v-on绑定自定义事件，并定义回调。 例如给一个user-info绑定自定义事件： &lt;!-- App.vue"><meta itemprop="datePublished" content="2023-09-19T03:10:26+00:00" />
 <meta itemprop="dateModified" content="2023-09-19T03:10:26+00:00" />
-<meta itemprop="wordCount" content="2006">
+<meta itemprop="wordCount" content="2732">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -678,7 +678,7 @@ Linner
     <h1 class="card-title post-title my-2">Vue 组件自定义事件</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-09-19 03:10:26 &#43;0000 UTC。">2023年9月19日</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-19 03:10:26 &#43;0000 UTC。">2023年9月19日</span><span class="post-reading-time me-1 mb-1">6 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
@@ -917,7 +917,67 @@ Linner
 <p>如果要在组件上绑定原生事件，可以使用<code>.native</code>修饰符。</p>
 <p>例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">demo</span> <span class="err">@</span><span class="na">click</span><span class="err">.</span><span class="na">native</span><span class="o">=</span><span class="s">&#34;clickDemo&#34;</span><span class="p">&gt;</span>
-</span></span></code></pre></div></div>
+</span></span></code></pre></div><hr>
+<h1 id="全局事件总线" data-numberify>全局事件总线<a class="anchor ms-1" href="#全局事件总线"></a></h1>
+<p>全局事件总线（Global Event Bus）是一种组件间通信的方式，适用于任意组件间通信。</p>
+<p>全局事件总线是指，抽取出一个专门用来绑定和触发自定义事件的对象。所有的组件都通过在这个对象上绑定或触发自定义事件来接收或发送数据。</p>
+<p>作为全局事件总线，需要满足以下条件：</p>
+<ul>
+<li>
+<p>能被所有组件访问。</p>
+<p>可以将全局事件总线对象在Vue原型对象上，让所有组件都能访问。</p>
+</li>
+<li>
+<p>拥有<code>$on</code>、<code>$emit</code>和<code>$off</code>等方法。</p>
+<p>可以使用Vue实例或组件实例作为全局事件总线。</p>
+</li>
+</ul>
+<p>全局事件总线的使用方式如下：</p>
+<ul>
+<li>
+<p>安装全局事件总线：</p>
+<p>一般情况下，是将<code>main.js</code>中的Vue实例对象作为全局事件总线对象，并且将Vue实例安装在Vue原型对象<code>Vue.prototype</code>上。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeCreate</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Vue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">$bus</span> <span class="o">=</span> <span class="k">this</span> <span class="c1">// 安装全局事件总线
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>$bus</code>只有在Vue实例创建之前进行安装，才能生效。如果在<code>new Vue()</code>执行结束之后安装，是无法生效的（即<code>$bus === undefine</code>）。</p>
+</li>
+<li>
+<p>使用事件总线发送数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$bus</span><span class="p">.</span><span class="nx">$emit</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">eventHandler</span><span class="p">)</span>
+</span></span></code></pre></div><blockquote>
+<p><code>this</code>指的是Vue组件实例（下同）。</p>
+</blockquote>
+</li>
+<li>
+<p>使用事件总线接收数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$bus</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">value1</span><span class="p">[,</span> <span class="nx">value2</span><span class="p">[,</span> <span class="p">...]])</span>
+</span></span></code></pre></div></li>
+<li>
+<p>关闭数据通道：</p>
+<p>在当前组件实例中，如果要在事件总线中关闭某条数据通道（停止某个自定义事件的数据发送和接收），可以使用<code>$bus.$off()</code>解绑某个事件。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="c1">// 关闭单个通道
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">this</span><span class="p">.</span><span class="nx">$bus</span><span class="p">.</span><span class="nx">$off</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 关闭多个通道
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">this</span><span class="p">.</span><span class="nx">$bus</span><span class="p">.</span><span class="nx">$off</span><span class="p">([</span><span class="nx">event1</span><span class="p">,</span> <span class="nx">event2</span><span class="p">,</span> <span class="p">...])</span>
+</span></span></code></pre></div><blockquote>
+<p>关闭数据通道（自定义事件）的同时，需要注意该通道（自定义事件）没有被其它组件或组件实例对象所使用。如果当前组件有多个实例，但是它们有相同的数据通道，最好是不要随便去关闭通道。</p>
+</blockquote>
+</li>
+<li>
+<p>销毁前解绑<code>$bus</code>的自定义事件：</p>
+<p>在绑定了<code>$bus</code>自定义事件（调用了<code>$bus.$on()</code>）的组件实例中，最好在<code>beforeDestroy</code>钩子中，将当前组件实例使用到的自定义事件从<code>$bus</code>上解绑。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$bus</span><span class="p">.</span><span class="nx">$off</span><span class="p">([</span><span class="nx">event1</span><span class="p">,</span> <span class="nx">event2</span><span class="p">,</span> <span class="p">...])</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div></li>
+</ul>
+</div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -1098,6 +1158,7 @@ Linner
     <li><a href="#绑定自定义事件">绑定自定义事件</a></li>
     <li><a href="#解绑自定义事件">解绑自定义事件</a></li>
     <li><a href="#绑定原生事件">绑定原生事件</a></li>
+    <li><a href="#全局事件总线">全局事件总线</a></li>
   </ul>
 </nav>
     </div>
