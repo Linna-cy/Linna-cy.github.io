@@ -8,7 +8,116 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 19 Sep 2023 10:59:34 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 Sep 2023 00:12:12 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 组件生命周期</title>
+      <link>/docs/vue/components/life-cycle/</link>
+      <pubDate>Wed, 20 Sep 2023 00:12:12 +0000</pubDate>
+      
+      <guid>/docs/vue/components/life-cycle/</guid>
+      <description><![CDATA[在Vue中，每个组件都有其对应的生命周期，这个过程与Vue 生命周期中描述的过程一致。 Vue组件的生命周期图示如下： 下图是尚硅谷天禹所给的有关]]></description>
+      <content:encoded><![CDATA[<p>在Vue中，每个组件都有其对应的生命周期，这个过程与<a href="../../life-cycle">Vue 生命周期</a>中描述的过程一致。</p>
+<p>Vue组件的生命周期图示如下：</p>
+<p><picture><img class="img-fluid " alt="Vue.js 生命周期" src="/docs/vue/components/life-cycle/1694591410572.png" loading="lazy" width="1266" height="2002" />
+</picture>
+
+</p>
+<p>下图是尚硅谷天禹所给的有关Vue生命周期的解释：</p>
+<p><picture><img class="img-fluid " alt="Vue.js 生命周期解释" src="/docs/vue/components/life-cycle/1694591763923.png" loading="lazy" width="1469" height="1892" />
+</picture>
+
+</p>
+<hr>
+<h1 id="嵌套组件的生命周期" data-numberify>嵌套组件的生命周期<a class="anchor ms-1" href="#嵌套组件的生命周期"></a></h1>
+<p>定义存在嵌套关系的组件：</p>
+<p><code>App.vue</code>（父组件，3秒后自动销毁）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>App.vue<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserInfo</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">SubComponent</span> <span class="nx">from</span> <span class="s1">&#39;./components/SubComponent.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">components</span><span class="o">:</span> <span class="p">{</span><span class="nx">SubComponent</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeCreate</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;App beforeCreate...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">created</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;App created...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeMount</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;App beforeMount...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;App mounted...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 3秒后自动销毁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$destroy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;App beforeDestroy...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">destroyed</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;App destroyed...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>SubComponent.vue</code>（子组件，不自动销毁）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>SubComponent.vue<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;SubComponent&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeCreate</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SubComponent beforeCreate...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">created</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SubComponent created...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeMount</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SubComponent beforeMount...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SubComponent mounted...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SubComponent beforeDestroy...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">destroyed</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SubComponent destroyed...&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>启动项目后，浏览器控制台输出内容如下：</p>
+<pre tabindex="0"><code>App beforeCreate...
+App created...
+App beforeMount...
+SubComponent beforeCreate...
+SubComponent created...
+SubComponent beforeMount...
+SubComponent mounted...
+App mounted...
+App beforeDestroy...
+SubComponent beforeDestroy...
+SubComponent destroyed...
+App destroyed...
+</code></pre><p>从控制台的输出中可以看出，子组件的初始化及挂载流程（从<code>beforeCreate</code>到<code>mounted</code>）是在父组件挂载流程（从<code>beforeMount</code>到<code>mounted</code>）中完成的；子组件的销毁流程（从<code>beforeDestroy</code>到<code>destroyed</code>）是在父组件的卸载流程（从<code>beforeDestroy</code>到<code>destroyed</code>）中完成的。</p>
+<p>嵌套的组件的生命周期可以用下图来表示：</p>
+<p><picture><img class="img-fluid " alt="嵌套组件的生命周期" src="/docs/vue/components/life-cycle/components-life-cycle.png" loading="lazy" width="535" height="690" />
+</picture>
+
+</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 消息订阅与发布（pubsub-js）</title>
       <link>/docs/vue/components/pubsub-js/</link>
@@ -58,6 +167,7 @@
 <h1 id="与全局事件总线的对比" data-numberify>与全局事件总线的对比<a class="anchor ms-1" href="#与全局事件总线的对比"></a></h1>
 <ul>
 <li>全局事件总线是Vue自带的一个模型，无需引入第三方库。</li>
+<li>Pubsub是第三方库，其事件的订阅与发布无法在Vue开发者工具中查看。</li>
 <li>全局事件总线的功能整体上与消息的订阅发布并无太大差别。</li>
 </ul>
 <hr>
@@ -93,7 +203,7 @@
 </ul>
 <hr>
 <h1 id="消息订阅发布案例" data-numberify>消息订阅发布案例<a class="anchor ms-1" href="#消息订阅发布案例"></a></h1>
-<p>对<a href="../custom-events">组件自定义事件</a>中的案例进行修改。</p>
+<p>将<a href="../custom-events">组件自定义事件</a>中的<code>todo-list</code>案例修改成使用消息订阅与发布实现，并且增加了编辑功能。</p>
 <blockquote>
 <p>注：下方注释内容为<code>...</code>（即<code>&lt;!-- ... --&gt;</code>或<code>/* ... */</code>）的部分，代表与原先<a href="../custom-events">组件自定义事件</a>中的案例内容相同。</p>
 </blockquote>
@@ -113,7 +223,26 @@
 </span></span></code></pre></div><h2 id="todo-list-itmevue" data-numberify>todo-list-itme.vue<a class="anchor ms-1" href="#todo-list-itmevue"></a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;checkbox&#34;</span> <span class="na">:checked</span><span class="o">=</span><span class="s">&#34;isCompleted&#34;</span> <span class="err">@</span><span class="na">change</span><span class="o">=</span><span class="s">&#34;handleCheck&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isEdit&#34;</span><span class="p">&gt;</span>{{name}}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">      <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isEdit&#34;</span> 
+</span></span><span class="line"><span class="cl">      <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">v-model</span><span class="o">=</span><span class="s">&#34;todoName&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">ref</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">keyup</span><span class="err">.</span><span class="na">enter</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">blur</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-danger&#34;</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;handleDelete&#34;</span><span class="p">&gt;</span>删除<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isEdit&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-edit&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;handleEdit&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    编辑
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">
@@ -121,6 +250,21 @@
 </span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;todo-list-item&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">props</span><span class="o">:</span> <span class="p">{</span><span class="cm">/* ... */</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">isEdit</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">todoName</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 勾选或取消勾选
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleCheck</span><span class="p">()</span> <span class="p">{</span>
@@ -133,7 +277,19 @@
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;remove-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 进入编辑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleEdit</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 自动获取焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 失去焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleBlur</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">
@@ -197,6 +353,8 @@
 </span></span><span class="line"><span class="cl">                                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;check-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">checkTodo</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">subIds</span><span class="p">.</span><span class="nx">removeTodo</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span>
 </span></span><span class="line"><span class="cl">                                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;remove-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deleteTodo</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">subIds</span><span class="p">.</span><span class="nx">updateTodo</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">updateTodo</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 取消订阅所有消息
@@ -499,6 +657,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">},</span>
 </span></span></code></pre></div><hr>
 <h1 id="自定义事件实现组件间数据通信案例" data-numberify>自定义事件实现组件间数据通信案例<a class="anchor ms-1" href="#自定义事件实现组件间数据通信案例"></a></h1>
+<p>使用自定义事件实现一个<code>todo-list</code>案例，这个案例演示了如何实现组件间数据通信。</p>
 <blockquote>
 <p>注：全局事件总线中，每条线的<code>$bus.$on()</code>应该在早于所有的<code>$bus.emit()</code>时执行。</p>
 </blockquote>

@@ -23,12 +23,12 @@
 <meta property="og:url" content="/docs/vue/components/pubsub-js/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2023-09-19T10:59:34+00:00" />
 <meta property="article:modified_time" content="2023-09-19T10:59:34+00:00" />
-<meta property="og:see_also" content="/docs/vue/components/custom-events/" /><meta property="og:see_also" content="/docs/vue/components/vue-scoped/" /><meta property="og:see_also" content="/docs/vue/components/vue-plugins/" /><meta property="og:see_also" content="/docs/vue/components/vue-mixins/" /><meta property="og:see_also" content="/docs/vue/components/vue-props/" />
+<meta property="og:see_also" content="/docs/vue/components/life-cycle/" /><meta property="og:see_also" content="/docs/vue/components/custom-events/" /><meta property="og:see_also" content="/docs/vue/components/vue-scoped/" /><meta property="og:see_also" content="/docs/vue/components/vue-plugins/" /><meta property="og:see_also" content="/docs/vue/components/vue-mixins/" />
 
 <meta itemprop="name" content="Vue 消息订阅与发布（pubsub-js）">
 <meta itemprop="description" content="Vue组件间的通信还可借助第三方库来实现。而pubsub-js就是一种实现了消息的订阅与发布的库。使用pubsub-js可以实现任意组件间的"><meta itemprop="datePublished" content="2023-09-19T10:59:34+00:00" />
 <meta itemprop="dateModified" content="2023-09-19T10:59:34+00:00" />
-<meta itemprop="wordCount" content="1303">
+<meta itemprop="wordCount" content="1508">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -378,6 +378,8 @@ Linner
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/vue-scoped/"><span class="docs-nav-title">Vue Scoped</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/life-cycle/"><span class="docs-nav-title">组件生命周期</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/custom-events/"><span class="docs-nav-title">组件自定义事件</span></a>
         </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/pubsub-js/"><span class="docs-nav-title">消息订阅与发布（pubsub-js）</span></a>
@@ -680,7 +682,7 @@ Linner
     <h1 class="card-title post-title my-2">Vue 消息订阅与发布（pubsub-js）</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-09-19 10:59:34 &#43;0000 UTC。">2023年9月19日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-19 10:59:34 &#43;0000 UTC。">2023年9月19日</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
@@ -734,6 +736,7 @@ Linner
 <h1 id="与全局事件总线的对比" data-numberify>与全局事件总线的对比<a class="anchor ms-1" href="#与全局事件总线的对比"></a></h1>
 <ul>
 <li>全局事件总线是Vue自带的一个模型，无需引入第三方库。</li>
+<li>Pubsub是第三方库，其事件的订阅与发布无法在Vue开发者工具中查看。</li>
 <li>全局事件总线的功能整体上与消息的订阅发布并无太大差别。</li>
 </ul>
 <hr>
@@ -769,7 +772,7 @@ Linner
 </ul>
 <hr>
 <h1 id="消息订阅发布案例" data-numberify>消息订阅发布案例<a class="anchor ms-1" href="#消息订阅发布案例"></a></h1>
-<p>对<a href="../custom-events">组件自定义事件</a>中的案例进行修改。</p>
+<p>将<a href="../custom-events">组件自定义事件</a>中的<code>todo-list</code>案例修改成使用消息订阅与发布实现，并且增加了编辑功能。</p>
 <blockquote>
 <p>注：下方注释内容为<code>...</code>（即<code>&lt;!-- ... --&gt;</code>或<code>/* ... */</code>）的部分，代表与原先<a href="../custom-events">组件自定义事件</a>中的案例内容相同。</p>
 </blockquote>
@@ -789,7 +792,26 @@ Linner
 </span></span></code></pre></div><h2 id="todo-list-itmevue" data-numberify>todo-list-itme.vue<a class="anchor ms-1" href="#todo-list-itmevue"></a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;checkbox&#34;</span> <span class="na">:checked</span><span class="o">=</span><span class="s">&#34;isCompleted&#34;</span> <span class="err">@</span><span class="na">change</span><span class="o">=</span><span class="s">&#34;handleCheck&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isEdit&#34;</span><span class="p">&gt;</span>{{name}}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">      <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isEdit&#34;</span> 
+</span></span><span class="line"><span class="cl">      <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">v-model</span><span class="o">=</span><span class="s">&#34;todoName&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">ref</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">keyup</span><span class="err">.</span><span class="na">enter</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">blur</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-danger&#34;</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;handleDelete&#34;</span><span class="p">&gt;</span>删除<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isEdit&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-edit&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;handleEdit&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    编辑
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">
@@ -797,6 +819,21 @@ Linner
 </span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;todo-list-item&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">props</span><span class="o">:</span> <span class="p">{</span><span class="cm">/* ... */</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">isEdit</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">todoName</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 勾选或取消勾选
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleCheck</span><span class="p">()</span> <span class="p">{</span>
@@ -809,7 +846,19 @@ Linner
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;remove-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 进入编辑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleEdit</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 自动获取焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 失去焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleBlur</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">
@@ -873,6 +922,8 @@ Linner
 </span></span><span class="line"><span class="cl">                                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;check-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">checkTodo</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">subIds</span><span class="p">.</span><span class="nx">removeTodo</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span>
 </span></span><span class="line"><span class="cl">                                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;remove-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deleteTodo</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">subIds</span><span class="p">.</span><span class="nx">updateTodo</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">updateTodo</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 取消订阅所有消息
@@ -917,6 +968,9 @@ Linner
   <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
       <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
       <a href="/docs/vue/components/custom-events/">Vue 组件自定义事件</a>
+    </div><div class="post-nav post-next">
+      <a href="/docs/vue/components/life-cycle/">Vue 组件生命周期</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
     </div></div>
 </div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
     <div class="card-header">
