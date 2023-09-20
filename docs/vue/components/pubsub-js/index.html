@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue 消息订阅与发布（pubsub-js）">
 <meta itemprop="description" content="Vue组件间的通信还可借助第三方库来实现。而pubsub-js就是一种实现了消息的订阅与发布的库。使用pubsub-js可以实现任意组件间的"><meta itemprop="datePublished" content="2023-09-19T10:59:34+00:00" />
 <meta itemprop="dateModified" content="2023-09-19T10:59:34+00:00" />
-<meta itemprop="wordCount" content="1508">
+<meta itemprop="wordCount" content="1580">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -798,7 +798,7 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">input</span> 
 </span></span><span class="line"><span class="cl">      <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isEdit&#34;</span> 
 </span></span><span class="line"><span class="cl">      <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="na">v-model</span><span class="o">=</span><span class="s">&#34;todoName&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;todoName&#34;</span>
 </span></span><span class="line"><span class="cl">      <span class="na">ref</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">keyup</span><span class="err">.</span><span class="na">enter</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
 </span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">blur</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
@@ -830,7 +830,8 @@ Linner
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span>
 </span></span><span class="line"><span class="cl">      <span class="p">},</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">name</span><span class="p">.</span><span class="nx">trim</span><span class="p">())</span> <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;事件名称不能为空！&#39;</span><span class="p">)</span>  <span class="c1">// 控制输入不能为空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
@@ -849,9 +850,10 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="c1">// 进入编辑
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleEdit</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// 自动获取焦点
+</span></span><span class="line"><span class="cl">      <span class="c1">// 模板重新解析完成后才自动获取焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// $nextTick() 指定的回调，会在下次DOM更新完成之后才执行
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">          <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">      <span class="p">})</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 失去焦点

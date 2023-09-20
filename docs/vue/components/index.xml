@@ -229,7 +229,7 @@ App destroyed...
 </span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">input</span> 
 </span></span><span class="line"><span class="cl">      <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isEdit&#34;</span> 
 </span></span><span class="line"><span class="cl">      <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="na">v-model</span><span class="o">=</span><span class="s">&#34;todoName&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;todoName&#34;</span>
 </span></span><span class="line"><span class="cl">      <span class="na">ref</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">keyup</span><span class="err">.</span><span class="na">enter</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
 </span></span><span class="line"><span class="cl">      <span class="err">@</span><span class="na">blur</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
@@ -261,7 +261,8 @@ App destroyed...
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span>
 </span></span><span class="line"><span class="cl">      <span class="p">},</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">name</span><span class="p">.</span><span class="nx">trim</span><span class="p">())</span> <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;事件名称不能为空！&#39;</span><span class="p">)</span>  <span class="c1">// 控制输入不能为空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">$pubsub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;update-todo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
@@ -280,9 +281,10 @@ App destroyed...
 </span></span><span class="line"><span class="cl">    <span class="c1">// 进入编辑
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">handleEdit</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">// 自动获取焦点
+</span></span><span class="line"><span class="cl">      <span class="c1">// 模板重新解析完成后才自动获取焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// $nextTick() 指定的回调，会在下次DOM更新完成之后才执行
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">          <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">      <span class="p">})</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 失去焦点
@@ -1781,8 +1783,9 @@ App destroyed...
       <pubDate>Mon, 18 Sep 2023 01:16:55 +0000</pubDate>
       
       <guid>/docs/vue/components/vue-dom/</guid>
-      <description><![CDATA[在Vue的模板中可以通过为元素或子组件添加ref属性（如ref=&quot;elementRefValue&quot;）来告诉Vue实例（或]]></description>
-      <content:encoded><![CDATA[<p>在Vue的模板中可以通过为元素或子组件添加<code>ref</code>属性（如<code>ref=&quot;elementRefValue&quot;</code>）来告诉Vue实例（或组件实例）要获取该元素。例如：</p>
+      <description><![CDATA[ref 属性 在Vue的模板中可以通过为元素或子组件添加ref属性（如ref=&quot;elementRefValue&quot;）来告诉Vue实]]></description>
+      <content:encoded><![CDATA[<h1 id="ref-属性" data-numberify>ref 属性<a class="anchor ms-1" href="#ref-属性"></a></h1>
+<p>在Vue的模板中可以通过为元素或子组件添加<code>ref</code>属性（如<code>ref=&quot;elementRefValue&quot;</code>）来告诉Vue实例（或组件实例）要获取该元素。例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>  <span class="c">&lt;!-- 获取Html内置标签元素 --&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">MySite</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;site&#34;</span><span class="p">/&gt;</span>  <span class="c">&lt;!-- 获取Vue组件 --&gt;</span>
 </span></span></code></pre></div><p>在Vue中，<u><code>ref</code>属性被用来给元素或子组件注册引用信息</u>。</p>
@@ -1795,38 +1798,104 @@ App destroyed...
 </ul>
 <p>例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;showDom&#34;</span><span class="p">&gt;</span>输出上方DOM<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">MySite</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;site&#34;</span><span class="p">/&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-text</span><span class="o">=</span><span class="s">&#34;msg&#34;</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;title&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;showDom&#34;</span><span class="p">&gt;</span>输出上方DOM<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">MySite</span> <span class="na">ref</span><span class="o">=</span><span class="s">&#34;site&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="c1">// 引入组件
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">import</span> <span class="nx">MySite</span> <span class="nx">from</span> <span class="s2">&#34;./components/MySite.vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">MySite</span> <span class="nx">from</span> <span class="s2">&#34;./components/MySite.vue&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">MySite</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">showDom</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">);</span>        <span class="c1">// 获取模板中所有使用了 ref 属性的元素或组件
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span>  <span class="c1">// 获取真实DOM元素
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">site</span><span class="p">);</span>   <span class="c1">// 获取组件实例对象
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">MySite</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;Hello Vue.js!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">showDom</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">);</span>        <span class="c1">// 获取模板中所有使用了 ref 属性的元素或组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span>  <span class="c1">// 获取真实DOM元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">site</span><span class="p">);</span>   <span class="c1">// 获取组件实例对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span></code></pre></div>]]></content:encoded>
+</span></span></code></pre></div><hr>
+<h1 id="nexttick-延迟执行" data-numberify>nextTick 延迟执行<a class="anchor ms-1" href="#nexttick-延迟执行"></a></h1>
+<p>假设有如下组件，需要在点击编辑按钮时显示输入框并且自动获取焦点：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isEdit&#34;</span><span class="p">&gt;</span>{{name}}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isEdit&#34;</span> 
+</span></span><span class="line"><span class="cl">    <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">v-model</span><span class="err">.</span><span class="na">lazy</span><span class="o">=</span><span class="s">&#34;name&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">ref</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="na">keyup</span><span class="err">.</span><span class="na">enter</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="na">blur</span><span class="o">=</span><span class="s">&#34;handleBlur&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isEdit&#34;</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;isEdit = true&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    编辑
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;张三&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">isEdit</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">handleBlur</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$ref</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>但是运行后发现，<code>&lt;input&gt;</code>并不能自动获取焦点。</p>
+<p>产生这个问题的原因是，<code>this.$ref.input.focus()</code>执行的时机在组件DOM更新完成之前。即，点击编辑按钮之后，组件调用<code>this.handleBlur()</code>，等到<code>this.handleBlur()</code>执行完成时，组件才开始重新解析页面。</p>
+<p>想要让<code>this.$ref.input.focus()</code>在下次DOM更新完成之后才执行，可以使用Vue提供的<code>this.$nextTick(callback)</code>（<code>this</code>指Vue或组件实例）。</p>
+<p><code>this.$nextTick(callback)</code>需要传入一个回调。当执行到<code>this.$nextTick(callback)</code>时，Vue并不会立即执行回调，而是等到数据更新完毕，且DOM更新完成之后才执行<code>callback</code>。</p>
+<blockquote>
+<p>当<code>callback</code>使用<code>function</code>定义时，<code>callback</code>中的<code>this</code>指向的是当前Vue或组件实例。</p>
+</blockquote>
+<p>也就是说，<code>this.$nextTick(callback)</code>可以让<code>callback</code>在<u>下一次DOM更新结束之后执行</u>。</p>
+<p>例如，修改上方案例中的<code>handleBlur()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">handleBlur</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 模板重新解析完成后才自动获取焦点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// $nextTick() 指定的回调，会在下次DOM更新完成之后才执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">this</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p><code>nextTick</code>的使用场景：当改变数据后，要基于更新之后的新DOM进行某些操作时。</p>
+<p>其实还有一种解决方法，就是使用一个不带时间、立即执行的定时器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">handleBlur</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">isEdit</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这是因为<code>setTimeout()</code>即使不带时间，它也会将回调推向一个队列去执行，所以本质上来说并不算立即执行。</p>
+</blockquote>
+]]></content:encoded>
     </item>
     
     <item>
