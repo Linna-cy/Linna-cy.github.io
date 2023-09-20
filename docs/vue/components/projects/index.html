@@ -1,0 +1,1367 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.3020ee296250c6f6a6ecdb19638caff240d3b1ac91094e8089aaec326aec54c1.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vue 项目开发 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="单文件组件 Vue单文件组件是指使用由Vue定义的.vue格式的文件。.vue文件模板如下： &lt;!-- Vue 只能包含以下三种标签 --&gt; &lt;!-- 组件的结构 --&gt; &lt;template&gt; &lt;!-- ... --&gt; &lt;/template&gt;" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vue 项目开发"/>
+<meta name="twitter:description" content="单文件组件 Vue单文件组件是指使用由Vue定义的.vue格式的文件。.vue文件模板如下： &lt;!-- Vue 只能包含以下三种标签 --&gt; &lt;!-- 组件的结构 --&gt; &lt;template&gt; &lt;!-- ... --&gt; &lt;/template&gt;"/>
+<meta property="og:title" content="Vue 项目开发" />
+<meta property="og:description" content="单文件组件 Vue单文件组件是指使用由Vue定义的.vue格式的文件。.vue文件模板如下： &lt;!-- Vue 只能包含以下三种标签 --&gt; &lt;!-- 组件的结构 --&gt; &lt;template&gt; &lt;!-- ... --&gt; &lt;/template&gt;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/vue/components/projects/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2023-09-16T07:47:27+00:00" />
+<meta property="article:modified_time" content="2023-09-16T07:47:27+00:00" />
+<meta property="og:see_also" content="/docs/vue/components/life-cycle/" /><meta property="og:see_also" content="/docs/vue/components/pubsub-js/" /><meta property="og:see_also" content="/docs/vue/components/custom-events/" /><meta property="og:see_also" content="/docs/vue/components/scoped/" /><meta property="og:see_also" content="/docs/vue/components/plugins/" /><meta property="og:see_also" content="/docs/vue/components/mixins/" />
+
+<meta itemprop="name" content="Vue 项目开发">
+<meta itemprop="description" content="单文件组件 Vue单文件组件是指使用由Vue定义的.vue格式的文件。.vue文件模板如下： &lt;!-- Vue 只能包含以下三种标签 --&gt; &lt;!-- 组件的结构 --&gt; &lt;template&gt; &lt;!-- ... --&gt; &lt;/template&gt;"><meta itemprop="datePublished" content="2023-09-16T07:47:27+00:00" />
+<meta itemprop="dateModified" content="2023-09-16T07:47:27+00:00" />
+<meta itemprop="wordCount" content="4351">
+<meta itemprop="keywords" content="" />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="Vue 项目开发" />
+  <meta name="twitter:image:alt" content="Vue 项目开发" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.5d2cef75ebbe961fea594e4454bba142c3b4bb72f172f5d6a0f6a5c39a8714f8.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDocsNav"
+      aria-expanded="false" aria-label="Toggle docs navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start justify-content-center ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/docs/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+<aside class="docs-nav col-xxl-2" tabindex="-1" data-bs-hide="focusout">
+  <div class="offcanvas-xxl offcanvas-start" id="offcanvasDocsNav" aria-labelledby="offcanvasDocsNavLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="offcanvas-title h5" id="offcanvasDocsNavLabel">Browse docs</div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
+    </div>
+    <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/"><span class="docs-nav-title">Vue</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-1029dbd31a6591a6326ddf96ff69dbdb" aria-expanded="true" aria-controls="nav-1029dbd31a6591a6326ddf96ff69dbdb">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-1029dbd31a6591a6326ddf96ff69dbdb">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/"><span class="docs-nav-title">模板语法</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f389a5b2e73b01ccec5fa7e5a8af3ed1" aria-expanded="false" aria-controls="nav-f389a5b2e73b01ccec5fa7e5a8af3ed1">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-f389a5b2e73b01ccec5fa7e5a8af3ed1">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/interpolation/"><span class="docs-nav-title">插值语法</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/directives/"><span class="docs-nav-title">指令语法</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/data-proxy-watch/"><span class="docs-nav-title">数据代理与监听</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/life-cycle/"><span class="docs-nav-title">生命周期</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/"><span class="docs-nav-title">组件化</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e5e29306485835e28633ba4850bd6757" aria-expanded="true" aria-controls="nav-e5e29306485835e28633ba4850bd6757">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-e5e29306485835e28633ba4850bd6757">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/projects/"><span class="docs-nav-title">项目开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/ref-and-nexttick/"><span class="docs-nav-title">获取页面元素及延迟执行</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/props/"><span class="docs-nav-title">Props 属性</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/mixins/"><span class="docs-nav-title">混入配置对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/plugins/"><span class="docs-nav-title">插件</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/scoped/"><span class="docs-nav-title">组件样式作用域</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/life-cycle/"><span class="docs-nav-title">组件生命周期</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/custom-events/"><span class="docs-nav-title">组件自定义事件</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/pubsub-js/"><span class="docs-nav-title">消息订阅与发布（pubsub-js）</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/"><span class="docs-nav-title">Docker</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-9381102fbed42e351f5da17ba517eda6" aria-expanded="false" aria-controls="nav-9381102fbed42e351f5da17ba517eda6">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-9381102fbed42e351f5da17ba517eda6">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/"><span class="docs-nav-title">Node.js</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-c94ab24a95e5a55230dfbc0cebf70a38" aria-expanded="false" aria-controls="nav-c94ab24a95e5a55230dfbc0cebf70a38">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-c94ab24a95e5a55230dfbc0cebf70a38">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/fs/"><span class="docs-nav-title">文件系统模块</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/event/"><span class="docs-nav-title">事件循环</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/http-module/"><span class="docs-nav-title">HTTP 模块</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/modularization/"><span class="docs-nav-title">模块化</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/npm-and-package/"><span class="docs-nav-title">NPM 与包</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/"><span class="docs-nav-title">Express</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e8dad32c76039d4a0ee9c8d08e224e8b" aria-expanded="false" aria-controls="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/base/"><span class="docs-nav-title">Express 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/router/"><span class="docs-nav-title">Express 路由</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/middleware/"><span class="docs-nav-title">中间件</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/cors-request/"><span class="docs-nav-title">跨域请求</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/nodemon/"><span class="docs-nav-title">Node.js Nodemon 模块</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/typescript/"><span class="docs-nav-title">TypeScript 介绍</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/"><span class="docs-nav-title">Spring</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b" aria-expanded="false" aria-controls="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/"><span class="docs-nav-title">Java Web</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-2c2fd3c619a279e5884afbde08fbce5f" aria-expanded="false" aria-controls="nav-2c2fd3c619a279e5884afbde08fbce5f">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-2c2fd3c619a279e5884afbde08fbce5f">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/jdbc/"><span class="docs-nav-title">JDBC</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/druid/"><span class="docs-nav-title">Druid</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/maven-base/"><span class="docs-nav-title">Maven 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/mybatis-base/"><span class="docs-nav-title">MyBatis</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/tomcat-base/"><span class="docs-nav-title">Tomcat</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/servlet/"><span class="docs-nav-title">Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/http-servlet/"><span class="docs-nav-title">HTTP Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/ajax-interaction/"><span class="docs-nav-title">Ajax</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/cookie-session/"><span class="docs-nav-title">Cookie and Session</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/filter/"><span class="docs-nav-title">Filter</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springframework/"><span class="docs-nav-title">Spring Framework</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springmvc/"><span class="docs-nav-title">SpringMVC</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-b6680671b2f17f4fbd5793f6f1a3b7d7" aria-expanded="false" aria-controls="nav-b6680671b2f17f4fbd5793f6f1a3b7d7">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-b6680671b2f17f4fbd5793f6f1a3b7d7">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springmvc/base/"><span class="docs-nav-title">SpringMVC 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springmvc/api-tools/"><span class="docs-nav-title">API 测试工具</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-10d78731ccb52607bab03f5768d951d8" aria-expanded="false" aria-controls="nav-10d78731ccb52607bab03f5768d951d8">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-10d78731ccb52607bab03f5768d951d8">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/mysql-sharding/"><span class="docs-nav-title">MySQL 分库搭建</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/maven-senior/"><span class="docs-nav-title">Maven 高级</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/swagger_knife4j/"><span class="docs-nav-title">API 文档</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f03e9a6ffb896ed89385de43b461a0d5" aria-expanded="false" aria-controls="nav-f03e9a6ffb896ed89385de43b461a0d5">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-f03e9a6ffb896ed89385de43b461a0d5">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/introduction/"><span class="docs-nav-title">微服务简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/config/"><span class="docs-nav-title">Spring 环境和配置</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/remote-call/"><span class="docs-nav-title">RestTemplate</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/eureka/"><span class="docs-nav-title">Eureka</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/nacos/"><span class="docs-nav-title">Nacos</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/nacos-deploy/"><span class="docs-nav-title">Nacos 部署</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/feign/"><span class="docs-nav-title">Feign</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/gateway/"><span class="docs-nav-title">Gateway</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/"><span class="docs-nav-title">异步通讯</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-72daade16aa364d7ef0e054f9633547c" aria-expanded="false" aria-controls="nav-72daade16aa364d7ef0e054f9633547c">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-72daade16aa364d7ef0e054f9633547c">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/introduction/"><span class="docs-nav-title">通讯方式</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/rabbit-mq/"><span class="docs-nav-title">RabbitMQ</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/spring-amqp/"><span class="docs-nav-title">Spring AMQP</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/"><span class="docs-nav-title">软件设计师</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-533aa7ca377ccea3e5f5cfaa22286ecf" aria-expanded="false" aria-controls="nav-533aa7ca377ccea3e5f5cfaa22286ecf">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-533aa7ca377ccea3e5f5cfaa22286ecf">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/computer-system/"><span class="docs-nav-title">计算机系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/programming-language/"><span class="docs-nav-title">程序设计语言</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/"><span class="docs-nav-title">知识产权</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/data-base/"><span class="docs-nav-title">数据库</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/object-oriented/"><span class="docs-nav-title">面向对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/operating-system/"><span class="docs-nav-title">操作系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/structured-dev/"><span class="docs-nav-title">结构化开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/software-engineering/"><span class="docs-nav-title">软件工程</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/computer-nework/"><span class="docs-nav-title">计算机网络</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/data-structure/"><span class="docs-nav-title">数据结构</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/algorithm-design-analysis/"><span class="docs-nav-title">算法设计与分析</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/all-graphs/"><span class="docs-nav-title">软考图类汇总</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/summary/"><span class="docs-nav-title">概念总结</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul></div>
+  </div>
+</aside><div class="col-xxl-7 ms-auto">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/vue/">Vue</a></li><li class="breadcrumb-item text-surface"><a href="/docs/vue/components/">组件化</a></li><li class="breadcrumb-item active">Vue 项目开发</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">Vue 项目开发</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-16 07:47:27 &#43;0000 UTC。">2023年9月16日</span><span class="post-reading-time me-1 mb-1">9 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><h1 id="单文件组件" data-numberify>单文件组件<a class="anchor ms-1" href="#单文件组件"></a></h1>
+<p>Vue单文件组件是指使用由Vue定义的<code>.vue</code>格式的文件。<code>.vue</code>文件模板如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- Vue 只能包含以下三种标签 --&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 组件的结构 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 组件交互相关的代码（数据、方法等等） --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 组件的样式 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>其中：</p>
+<ul>
+<li>
+<p><code>&lt;template&gt;</code>：用于定义组件的结构。相当于组件配置中的<code>template</code>配置项。</p>
+<p>和Html中的<code>&lt;template&gt;</code>一样，它不会影响页面最终的结构。</p>
+<p>由于<code>&lt;template&gt;</code>不会影响页面结构，所以在<code>&lt;template&gt;</code>中还需要定义一个元素作为整个组件的根节点。</p>
+</li>
+<li>
+<p><code>&lt;script&gt;</code>：定义组件的交互相关的代码。即定义创建组件的JS代码。</p>
+<p>在<code>&lt;script&gt;</code>中可以使用<code>Vue.extend()</code>来创建组件。但是由于Vue会在需要的时候帮我们自动调用<code>Vue.extend()</code>，所以<code>Vue.extend()</code>可省略。<u>一般情况下<code>export default</code>组件的配置对象即可</u>。</p>
+<blockquote>
+<p>如果要使用<code>Vue.extend()</code>，需要先引入<code>Vue</code>。</p>
+</blockquote>
+</li>
+<li>
+<p><code>&lt;style&gt;</code>：和Html中的<code>&lt;style&gt;</code>一样，都是用于定义样式。</p>
+</li>
+<li>
+<p><code>.vue</code>注释：</p>
+<p><code>.vue</code>中的文件有4个地方可以写注释：</p>
+<ul>
+<li>
+<p><code>&lt;template&gt;</code>中：使用Html的注释<code>&lt;!-- 注释内容 --&gt;</code>。</p>
+</li>
+<li>
+<p><code>&lt;script&gt;</code>中：使用JS的注释<code>// 注释内容</code>或<code>/* 注释内容 */</code>。</p>
+</li>
+<li>
+<p><code>&lt;style&gt;</code>中：使用CSS的注释<code>/* 注释内容 */</code>。</p>
+</li>
+<li>
+<p>上述范围之外的其它地方：也就是在<code>&lt;template&gt;</code>、<code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>之外的其它地方可以使用注释。这些注释是属于<code>.vue</code>文件自己的注释，一共有3种注释类型：</p>
+<pre tabindex="0"><code>&lt;!-- 注释内容 --&gt;
+// 注释内容
+/* 注释内容 */
+</code></pre><p>也就是说，<code>&lt;template&gt;</code>、<code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>之外的其它地方可以使用Html、JS和CSS的任何类型的注释。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="vue-cli" data-numberify>Vue CLI<a class="anchor ms-1" href="#vue-cli"></a></h1>
+<p>由于浏览器并不支持直接浏览<code>.vue</code>类型的文件，所以需要将<code>.vue</code>类型的文件编译成浏览器支持的文件类型。而Vue CLI（Vue Command Line Interface，Vue脚手架）可以帮助我们快速地编译<code>.vue</code>。</p>
+<h2 id="安装-vue-cli" data-numberify>安装 Vue CLI<a class="anchor ms-1" href="#安装-vue-cli"></a></h2>
+<p>Vue CLI需要使用<code>npm</code>安装，请确保你的电脑上已经安装了Node.js。</p>
+<p>Vue CLI安装命令如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm install -g @vue/cli
+</span></span></code></pre></div><p>安装完成后直接使用<code>vue</code>命令运行Vue CLI。查看Vue CLI版本以验证是否安装成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vue -V
+</span></span></code></pre></div><h2 id="使用-vue-cli" data-numberify>使用 Vue CLI<a class="anchor ms-1" href="#使用-vue-cli"></a></h2>
+<p>使用Vue CLI创建一个项目：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vue create vue_demo
+</span></span></code></pre></div><p>接着Vue CLI会让你选择一个默认的配置：</p>
+<p><picture><img class="img-fluid " alt="vue create" src="/docs/vue/components/projects/1694764569709.png" loading="lazy" width="397" height="139" />
+</picture>
+
+</p>
+<p>使用键盘的<code>↑</code>或<code>↓</code>去移动选择，然后按下回车即可开始创建。</p>
+<blockquote>
+<p>其中的<code>babel</code>是用来将ES6的代码转换为ES5。<code>eslint</code>是用来进行语法检查。</p>
+</blockquote>
+<p>出现如下提示表示项目创建成功：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">🎉  Successfully created project vue_demo.
+</span></span><span class="line"><span class="cl">👉  Get started with the following commands:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> $ <span class="nb">cd</span> vue_demo
+</span></span><span class="line"><span class="cl"> $ npm run serve
+</span></span></code></pre></div><p>根据提示信息可以知道，进入<code>vue_demo</code>目录之后运行<code>npm run serve</code>可以启动这个项目：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> vue_demo
+</span></span><span class="line"><span class="cl">npm run serve
+</span></span></code></pre></div><p>启动成功后，项目服务的默认端口是<code>8080</code>，可以访问<code>http://localhost:8080/</code>以浏览Vue CLI为我们创建的<code>HelloWorld</code>这个项目示例。</p>
+<h2 id="项目结构" data-numberify>项目结构<a class="anchor ms-1" href="#项目结构"></a></h2>
+<p>Vue CLI创建好的项目结构一般如下：</p>
+<pre tabindex="0"><code>vue_demo
+├── babel.config.js
+├── dist
+├── .git
+├── .gitignore
+├── jsconfig.json
+├── package.json
+├── package-lock.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── README.md
+├── src
+│   ├── App.vue
+│   ├── assets
+│   │   └── logo.png
+│   ├── components
+│   │   ├── Hello.vue
+│   │   └── SiteUser.vue
+│   └── main.js
+└── vue.config.js
+</code></pre><p>在创建好的<code>vue_demo</code>中，有以下这些注意点：</p>
+<ul>
+<li>
+<p><code>.gitignore</code>：排除那些不需要被<code>git</code>所管理的文件或目录。</p>
+</li>
+<li>
+<p><code>babel.config.js</code>：<code>babel</code>的配置文件。一般来说不需要修改该配置，如果需要修改，可以浏览<a href="https://babeljs.io/" target="_blank" rel="noopener noreferrer">Babel官网<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+</li>
+<li>
+<p><code>package.json</code>：当前（Node.js）项目的包管理配置文件。</p>
+<p>其中需要注意一下的是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="err">/*</span> <span class="err">...</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;serve&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service serve&#34;</span><span class="p">,</span> <span class="c1">// 预览项目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service build&#34;</span><span class="p">,</span> <span class="c1">// 构建项目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;lint&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service lint&#34;</span>    <span class="c1">// 进行语法检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="err">/*</span> <span class="err">...</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>READNE.md</code>：程序说明文档。</p>
+</li>
+<li>
+<p><code>src</code>：项目源代码文件。在使用默认配置的情况下，名称不可随意更改。</p>
+<p><code>src</code>的结构如下所示：</p>
+<ul>
+<li><code>main.js</code>：默认的项目入口文件，主要用来创建Vue实例。在使用默认配置的情况下，名称不可随意更改。</li>
+<li><code>App.vue</code>：项目中所有组件的根组件。</li>
+<li><code>assets</code>：存放项目的静态资源。</li>
+<li><code>components</code>：存放项目中（除了<code>App.vue</code>）组件的文件夹。</li>
+</ul>
+</li>
+<li>
+<p><code>public</code>：存放<code>index.html</code>、<code>favicon.ico</code>等文件。在使用默认配置的情况下，名称不可随意更改。</p>
+<p><code>public/index.html</code>是当前项目默认打开的页面。在使用默认配置的情况下，名称不可随意更改。</p>
+<p>在<code>index.html</code>中，有一个最重要的东西：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>vue.config.js</code>：Vue CLI的配置文件（可选），与<code>package.json</code>同级。</p>
+</li>
+</ul>
+<h2 id="vue-cli-入口文件" data-numberify>Vue CLI 入口文件<a class="anchor ms-1" href="#vue-cli-入口文件"></a></h2>
+<p>在<code>main.js</code>中的<code>import Vue from 'vue'</code>和<code>render: h =&gt; h(App)</code>语句需要格外注意：</p>
+<p><code>main.js</code>中，使用ES6引入的Vue（即<code>import Vue from 'vue'</code>），是<code>vue.runtime.esm.js</code>。</p>
+<p><code>vue.runtime.esm.js</code>是一个精简版的Vue，其中去除了原本Vue中的模板解析器。所以在<code>main.js</code>的Vue实例中，使用<code>template</code>配置项会因为没有模板解析器而导致无法解析。</p>
+<p>有两种方法可以解决该问题：</p>
+<ul>
+<li>
+<p>引入完整版的<code>vue.js</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue/dist/vue&#39;</span>  <span class="c1">// 引入 Vue
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>     <span class="c1">// 引入 App 组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">components</span><span class="o">:</span> <span class="p">{</span><span class="nx">App</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">template</span><span class="o">:</span> <span class="sb">`&lt;App&gt;Hello!&lt;/App&gt;`</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用<code>render</code>配置项：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>       <span class="c1">// 引入 Vue
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span> <span class="c1">// 引入 App 组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">render</span><span class="o">:</span> <span class="nx">h</span> <span class="p">=&gt;</span> <span class="nx">h</span><span class="p">(</span><span class="nx">App</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>render</code>本质是Vue调用的一个函数，它需要接收一个参数<code>createElement</code>这个参数是<code>function</code>类型。<code>createElement()</code>可以帮助我们在页面中创建并渲染元素。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span> <span class="c1">// 引入 Vue
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 其实这里也可以使用完整版的 Vue，但是没必要
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">render</span><span class="p">(</span><span class="nx">createElement</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;render.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">createElement</span><span class="p">);</span> <span class="c1">// function
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;h2&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>由于<code>render</code>中不需要使用<code>this</code>，所以可以使用Lambda表达式<code>() =&gt; {}</code>来定义。如上方的解决方案中<code>h =&gt; h(App)</code>就是<code>render</code>最简洁的定义方式。</p>
+<p>使用了<code>render</code>就无需使用<code>components</code>。</p>
+</li>
+</ul>
+<blockquote>
+<p>注：在<code>.vue</code>中依旧是使用<code>&lt;template&gt;</code>和<code>components</code>。也就是说，实例无需使用<code>render</code>。</p>
+</blockquote>
+<h2 id="vue-cli-配置文件" data-numberify>Vue CLI 配置文件<a class="anchor ms-1" href="#vue-cli-配置文件"></a></h2>
+<p>Vue CLI默认的入口文件就是<code>main.js</code>。并且Vue CLI隐藏了所有<code>webpack</code>相关的配置，若想查看具体的<code>webpack</code>配置，可运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vue inspect &gt; output.js
+</span></span></code></pre></div><p>将Vue CLI的<code>webpack</code>相关配置输出到<code>output.js</code>这个文件中（仅用作输出浏览，无法在此更改配置）。</p>
+<p>在Vue CLI的<code>webpack</code>相关配置中有这样的内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">app</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;./src/main.js&#39;</span> <span class="c1">// 项目入口文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>要修改这些配置内容，需要在<code>vue.config.js</code>中进行修改。它的基本形式如（使用的是<code>common.js</code>的模块化语法）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* 选项... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>或使用<code>@vue/cli-service</code>提供的<code>defineConfig()</code>帮手函数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">defineConfig</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;@vue/cli-service&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">defineConfig</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* 选项... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>vue.config.js</code>中有一个<code>pages</code>配置项（具体内容可在官方文档中复制）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">pages</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">index</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// page 的入口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">entry</span><span class="o">:</span> <span class="s1">&#39;src/main.js&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 模板来源
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">template</span><span class="o">:</span> <span class="s1">&#39;public/index.html&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 在 dist/index.html 的输出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;index.html&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 当使用 title 选项时，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// template 中的 title 标签需要是 &lt;title&gt;&lt;%= htmlWebpackPlugin.options.title %&gt;&lt;/title&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Index Page&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>除了<code>pages</code>配置选项，还有用于关闭语法检查的<code>lintOnSave</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">lintOnSave</span><span class="o">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>vue.config.js</code>的配置选项可参考 <a href="https://cli.vuejs.org/zh/config/" target="_blank" rel="noopener noreferrer">Vue CLI 配置参考<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<blockquote>
+<p>注：</p>
+<p><code>vue.config.js</code>被修改之后，需要重新运行<code>npm run serve</code>。</p>
+<p>如果在<code>vue.config.js</code>中类似这样配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">pages</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">index</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* 空的配置内容 */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>那么在启动或者构建项目的时候就会发生错误。因为此时的配置中的<code>pages.index</code>传递的是一个没有任何属性的对象，而Vue CLI并不会去解析它并为他配上默认的内容。</p>
+<p>所以在使用<code>vue.config.js</code>的时候，要么干脆不添加配置选项，使用默认的内容；要么就要按照配置选项的内容进行正确的配置。</p>
+</blockquote>
+<h2 id="vue-包" data-numberify>Vue 包<a class="anchor ms-1" href="#vue-包"></a></h2>
+<p>Vue的依赖包在<code>node_modules/vue/dist</code>中。其中有这么些版本：</p>
+<ul>
+<li>
+<p><code>.esm</code>：包含<code>.esm</code>的文件代表使用了ES6的模块化语法。使用ES6的模块化语法的版本，浏览器无法直接使用。</p>
+</li>
+<li>
+<p><code>.min</code>：包含<code>.min</code>就是指压缩版本。</p>
+</li>
+<li>
+<p>完整版：</p>
+<ul>
+<li><code>vue.js</code>：浏览器可以直接使用的完整版本。</li>
+<li><code>vue.esm.js</code>：使用了ES6的模块化语法的完整版。</li>
+</ul>
+</li>
+<li>
+<p><code>runtime</code>：运行时版本，是Vue的精简版本，去除了模板解析器。</p>
+<ul>
+<li><code>vue.runtime.js</code></li>
+<li><code>vue.runtime.min.js</code></li>
+<li><code>vue.runtime.esm.js</code></li>
+</ul>
+<p><code>runtime</code>版本不能使用<code>template</code>配置项。需要使用<code>render</code>函数接收到的<code>createElement</code>函数去指定具体内容。</p>
+</li>
+<li>
+<p><code>common</code>：使用<code>common.js</code>时使用的版本。</p>
+<ul>
+<li><code>vue.common.js</code></li>
+<li><code>vue.common.dev.js</code></li>
+<li><code>vue.common.prod.js</code></li>
+<li><code>vue.runtime.common.dev.js</code></li>
+<li><code>vue.runtime.common.js</code></li>
+<li><code>vue.runtime.common.prod.js</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Vue CLI中<code>&lt;template&gt;</code>标签配置的模板，是由<code>vue-template-compiler</code>（Vue 模板解析器）来解析。这个<code>vue-template-compiler</code>只能解析<code>.vue</code>中的<code>&lt;template&gt;</code>模板，而不能解析<code>template</code>配置项。</p>
+</blockquote>
+<h2 id="示例" data-numberify>示例<a class="anchor ms-1" href="#示例"></a></h2>
+<p>根据以上步骤和信息，将<a href="/docs/vue/components/projects/#%e9%9d%9e%e5%8d%95%e6%96%87%e4%bb%b6%e7%bb%84%e4%bb%b6">非单文件组件</a>中的<code>site</code>和<code>user</code>定义为单文件组件的形式：</p>
+<blockquote>
+<p>PS：由于使用的Vue CLI版本为5，默认开启语法检查。根据ESLint的官方代码规范，除了<code>App</code>的其它组件只能以<code>multi-word</code>（多单词）的形式命名。所以下方组件的命名遵循ESLint规范。</p>
+<p><code>multi-word</code>形式选择<strong>kebab-case</strong>或<strong>CameCase</strong>都可以。</p>
+</blockquote>
+<ul>
+<li>
+<p><code>MySite</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;my-site&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>网站名称：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>网站地址：{{url}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;MySite&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Linner\&#39;s Blog&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;blog.linner.asia&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">.</span><span class="nc">my-site</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">background-color</span><span class="p">:</span> <span class="kc">yellow</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>SiteUser</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户姓名：{{name}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>用户年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;SiteUser&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">age</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>App.vue</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;./assets/logo.png&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;logo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">MySite</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">SiteUser</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">import</span> <span class="nx">MySite</span> <span class="nx">from</span> <span class="s2">&#34;./components/MySite.vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">import</span> <span class="nx">SiteUser</span> <span class="nx">from</span> <span class="s1">&#39;./components/SiteUser.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">MySite</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">SiteUser</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>其它文件暂时不用改动。然后在项目目录下运行<code>npm run serve</code>即可预览。</p>
+<hr>
+<h1 id="组件化编码流程" data-numberify>组件化编码流程<a class="anchor ms-1" href="#组件化编码流程"></a></h1>
+<ol>
+<li>拆分静态组件：组件按功能点拆分，命名不要与Html元素冲突。</li>
+<li>实现动态组件：根据数据被使用的范围，考虑好数据的存放位置。</li>
+</ol>
+<ul>
+<li>数据只有一个组件在使用：放在组件中即可。</li>
+<li>数据被一部分组件共同使用：放在这些组件的父组件上（这种方法被称为状态提升，Vue中的数据也可被称为状态）。</li>
+</ul>
+<ol start="3">
+<li>实现交互：从绑定事件开始。</li>
+</ol>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/docs/vue/components/introduction/">Vue 组件</a>
+    </div><div class="post-nav post-next">
+      <a href="/docs/vue/components/ref-and-nexttick/">Vue 获取页面元素及延迟执行</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/components/introduction/">
+    Vue 组件
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月14日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/life-cycle/">
+    Vue 生命周期
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月13日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/data-proxy-watch/">
+    Vue 数据代理与监听
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月12日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/template-syntax/directives/">
+    Vue 指令语法
+  </a>
+  <div class="post-meta mb-0">
+    2023年8月19日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/template-syntax/interpolation/">
+    Vue 插值语法
+  </a>
+  <div class="post-meta mb-0">
+    2023年8月19日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
+  <div class="container">
+    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#单文件组件">单文件组件</a></li>
+    <li><a href="#vue-cli">Vue CLI</a>
+      <ul>
+        <li><a href="#安装-vue-cli">安装 Vue CLI</a></li>
+        <li><a href="#使用-vue-cli">使用 Vue CLI</a></li>
+        <li><a href="#项目结构">项目结构</a></li>
+        <li><a href="#vue-cli-入口文件">Vue CLI 入口文件</a></li>
+        <li><a href="#vue-cli-配置文件">Vue CLI 配置文件</a></li>
+        <li><a href="#vue-包">Vue 包</a></li>
+        <li><a href="#示例">示例</a></li>
+      </ul>
+    </li>
+    <li><a href="#组件化编码流程">组件化编码流程</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    
+
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.67fea83894c964b385accead61283b1ea3bfb26367431c831233ddc9f1fafac8.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>
