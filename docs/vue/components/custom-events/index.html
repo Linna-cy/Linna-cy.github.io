@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue 组件自定义事件">
 <meta itemprop="description" content="给一个子组件定义自定义事件的步骤大致如下： 在父组件中使用v-on绑定自定义事件，并定义回调。 例如给一个user-info绑定自定义事件： &lt;!-- App.vue"><meta itemprop="datePublished" content="2023-09-19T03:10:26+00:00" />
 <meta itemprop="dateModified" content="2023-09-19T03:10:26+00:00" />
-<meta itemprop="wordCount" content="4085">
+<meta itemprop="wordCount" content="4118">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -937,7 +937,6 @@ Linner
 <blockquote>
 <p>全局事件总线最适用于同级组件间的通信和跨越多层级的组件间的通行。</p>
 </blockquote>
-<p>全局事件总线的使用方式如下：</p>
 <h2 id="安装全局事件总线" data-numberify>安装全局事件总线<a class="anchor ms-1" href="#安装全局事件总线"></a></h2>
 <p>一般情况下，是将<code>main.js</code>中的Vue实例对象作为全局事件总线对象，并且将Vue实例安装在Vue原型对象<code>Vue.prototype</code>上。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
@@ -972,6 +971,9 @@ Linner
 </span></span><span class="line"><span class="cl"><span class="p">},</span>
 </span></span></code></pre></div><hr>
 <h1 id="自定义事件实现组件间数据通信案例" data-numberify>自定义事件实现组件间数据通信案例<a class="anchor ms-1" href="#自定义事件实现组件间数据通信案例"></a></h1>
+<blockquote>
+<p>注：全局事件总线中，每条线的<code>$bus.$on()</code>应该在早于所有的<code>$bus.emit()</code>时执行。</p>
+</blockquote>
 <h2 id="mainjs" data-numberify>main.js<a class="anchor ms-1" href="#mainjs"></a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>

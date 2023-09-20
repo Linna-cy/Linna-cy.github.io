@@ -54,6 +54,13 @@
 <p><code>pubsub-js</code>取消订阅消息可以使用<code>pubsub.unsubscribe()</code>方法：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">pubsub</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="nx">subId</span><span class="p">)</span>
 </span></span></code></pre></div><p><code>subId</code>：订阅的ID值。即，在调用<code>pubsub.subscribe()</code>时返回的ID值。</p>
+<hr>
+<h1 id="与全局事件总线的对比" data-numberify>与全局事件总线的对比<a class="anchor ms-1" href="#与全局事件总线的对比"></a></h1>
+<ul>
+<li>全局事件总线是Vue自带的一个模型。</li>
+<li>全局事件总线的功能整体上与消息的订阅发布并无太大差别。</li>
+<li>全局事件总线在使用<code>$bus.$on()</code>绑定事件时，</li>
+</ul>
 ]]></content:encoded>
     </item>
     
@@ -309,7 +316,6 @@
 <blockquote>
 <p>全局事件总线最适用于同级组件间的通信和跨越多层级的组件间的通行。</p>
 </blockquote>
-<p>全局事件总线的使用方式如下：</p>
 <h2 id="安装全局事件总线" data-numberify>安装全局事件总线<a class="anchor ms-1" href="#安装全局事件总线"></a></h2>
 <p>一般情况下，是将<code>main.js</code>中的Vue实例对象作为全局事件总线对象，并且将Vue实例安装在Vue原型对象<code>Vue.prototype</code>上。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
@@ -344,6 +350,9 @@
 </span></span><span class="line"><span class="cl"><span class="p">},</span>
 </span></span></code></pre></div><hr>
 <h1 id="自定义事件实现组件间数据通信案例" data-numberify>自定义事件实现组件间数据通信案例<a class="anchor ms-1" href="#自定义事件实现组件间数据通信案例"></a></h1>
+<blockquote>
+<p>注：全局事件总线中，每条线的<code>$bus.$on()</code>应该在早于所有的<code>$bus.emit()</code>时执行。</p>
+</blockquote>
 <h2 id="mainjs" data-numberify>main.js<a class="anchor ms-1" href="#mainjs"></a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>
