@@ -8,7 +8,115 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Wed, 20 Sep 2023 09:47:53 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Sep 2023 04:59:57 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue CLI 服务代理</title>
+      <link>/docs/vue/components/dev-server-poxy/</link>
+      <pubDate>Thu, 21 Sep 2023 04:59:57 +0000</pubDate>
+      
+      <guid>/docs/vue/components/dev-server-poxy/</guid>
+      <description><![CDATA[通常情况下，跨域问题是由服务端依靠CORS或JSONP等方法解决。为了在开发过程中不依靠后端解决跨域问题，可以使用一台与前端页面服务的Hos]]></description>
+      <content:encoded><![CDATA[<p>通常情况下，跨域问题是由服务端依靠CORS或JSONP等方法解决。为了在开发过程中不依靠后端解决跨域问题，可以使用一台与前端页面服务的Host相同的代理服务器，将请求发送给这台代理服务器，然后再由代理服务器将请求转发给真实的服务器。</p>
+<p>使用服务代理可绕开浏览器同源策略的限制。服务代理可以使用Nginx等应用创建，当然Vue CLI也支持创建代理。</p>
+<p>Vue CLI代理需要在<code>vue.config.js</code>中进行配置。</p>
+<blockquote>
+<p>注：Vue CLI代理仅是在开发过程中使用的。</p>
+</blockquote>
+<hr>
+<h1 id="简单代理" data-numberify>简单代理<a class="anchor ms-1" href="#简单代理"></a></h1>
+<p>Vue CLI创建代理最简单的方式就是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">proxy</span><span class="o">:</span> <span class="s1">&#39;http://localhost:4000&#39;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>配置完成后，重启前端页面服务，然后将原本请求的Host改为与页面服务相同的Host即可。例如本地页面服务为<code>http://localhost:8080</code>，要发送的Ajax请求为<code>http://localhost:4000/api/user</code>。那么将Ajax请求改为<code>http://localhost:8080/api/user</code>即可通过服务代理绕过浏览器的同源策略。</p>
+<blockquote>
+<p>由于页面的端口与服务代理的端口一致，所以在发送请求时，可以将<code>http://localhost:8080/api/user</code>直接简写为<code>/api/user</code>。</p>
+</blockquote>
+<p>这种配置方式的服务代理，首先会根据请求路径，在项目的<code>public</code>目录下寻找对应的资源：</p>
+<ul>
+<li>如果<code>public</code>目录中有请求所对应的资源，那么服务器就直接将该资源发送给浏览器；</li>
+<li>如果<code>public</code>目录中没有请求所对应的资源，那么服务器就会将这次请求通过代理的方式完整地转发给<code>proxy</code>配置的服务器。</li>
+</ul>
+<p>例如<code>http://localhost:8080/api/user</code>：</p>
+<ul>
+<li>如果<code>public</code>目录中有<code>api</code>目录，并且<code>api</code>目录下一个名为<code>user</code>这个资源，那么服务器就直接将<code>user</code>这个资源发送给浏览器。</li>
+<li>如果<code>public</code>目录中没有<code>api</code>目录或者有<code>api</code>目录但是<code>api</code>目录下没有名为<code>user</code>的资源，那么服务器就会认为该请求需要走代理。</li>
+</ul>
+<p>也就是说，当请求了前端不存在的资源时，请求就会被转发给被代理的服务器（优先匹配前端资源）。</p>
+<p>这种配置方式的优缺点如下：</p>
+<ul>
+<li>优点：配置简单。</li>
+<li>缺点：不能配置多个代理，不能灵活控制某些请求是否走代理。</li>
+</ul>
+<hr>
+<h1 id="完整配置" data-numberify>完整配置<a class="anchor ms-1" href="#完整配置"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">proxy</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;/api&#39;</span><span class="o">:</span> <span class="p">{</span>             <span class="c1">// 访问代理时的路径前缀
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;&lt;url&gt;&#39;</span><span class="p">,</span>    <span class="c1">// 代理的目标路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">ws</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>           <span class="c1">// 是否支持 webSocket
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 是否将请求头中的Host改成与target一样的Host（默认为true）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;/foo&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;&lt;other_url&gt;&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">proxy</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;/api&#39;</span><span class="o">:</span> <span class="p">{</span>                           <span class="c1">// 路径前缀
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://localhost:5000&#39;</span><span class="p">,</span>  <span class="c1">// 代理目标
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">ws</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>那么在使用代理请求<code>http://localhost:5000</code>的资源时，除了使用当前服务的Host外，还需要加上路径前缀<code>/api</code>。即通过<code>http://localhost:8080/api</code>对<code>http://localhost:5000</code>的资源进行访问。</p>
+<p>在使用<code>http://localhost:8080/api</code>访问时，代理会将整个访问路径（包括前缀）原封不动地转发给<code>http://localhost:5000</code>这个服务器。例如请求<code>http://localhost:8080/api/user</code>那么<code>http://localhost:5000</code>会接收到<code>/api/user</code>这个请求。</p>
+<p>如果在转发时要将路径前缀去掉（例如请求<code>http://localhost:8080/api/user</code>，<code>http://localhost:5000</code>接收到的是<code>/user</code>请求），可以配置路径转发规则<code>pathRewrite</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">proxy</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;/api&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://localhost:5000&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pathRewrite</span><span class="o">:</span> <span class="p">{</span>  <span class="c1">// 路径转发规则
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// key：用于匹配路径的正则匹配表达式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// value：是替换路径中匹配的内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="s1">&#39;^/api&#39;</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ws</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在微服务架构中，一个服务使用一台（或多台）服务器运行，那么可以根据服务来精简配置项。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">proxy</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;/users&#39;</span><span class="o">:</span> <span class="p">{</span>  <span class="c1">// http://localhost:5000/users
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://localhost:5000&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s1">&#39;/orders&#39;</span><span class="o">:</span> <span class="p">{</span>  <span class="c1">// http://localhost:5001/orders
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://localhost:5001&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用完整配置时的优缺点如下：</p>
+<ul>
+<li>优点：可以配置多个代理，可以灵活地控制请求是否使用代理。</li>
+<li>缺点：配置略繁琐，请求资源时必须使用路径前缀。</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 过渡和动画</title>
       <link>/docs/vue/animations/</link>
