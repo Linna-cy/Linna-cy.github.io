@@ -8,7 +8,177 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Wed, 20 Sep 2023 00:12:12 +0000</lastBuildDate><atom:link href="/docs/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 Sep 2023 09:47:53 +0000</lastBuildDate><atom:link href="/docs/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 过渡和动画</title>
+      <link>/docs/vue/animations/</link>
+      <pubDate>Wed, 20 Sep 2023 09:47:53 +0000</pubDate>
+      
+      <guid>/docs/vue/animations/</guid>
+      <description><![CDATA[Vue封装了一套可以快速构建基于状态变化的过渡和过度与动画的组件&lt;transition&gt;（&lt;Transition&gt;）]]></description>
+      <content:encoded><![CDATA[<p>Vue封装了一套可以快速构建基于状态变化的过渡和过度与动画的组件<code>&lt;transition&gt;</code>（<code>&lt;Transition&gt;</code>）和<code>&lt;transition-group&gt;</code>（<code>&lt;TransitionGroup&gt;</code>）。</p>
+<p><code>&lt;transition&gt;</code>和<code>&lt;transition-group&gt;</code>是Vue内置的组件，无需注册即可使用。它们可以将进入和离开的动画应用到通过默认插槽传递给它的元素或组件上。</p>
+<p>它们的进入/离开动画的切换可以由<code>v-if</code>或<code>v-show</code>所触发。</p>
+<hr>
+<h1 id="transition-组件" data-numberify>Transition 组件<a class="anchor ms-1" href="#transition-组件"></a></h1>
+<p><code>&lt;transition&gt;</code>用于在一个元素或组件进入和离开DOM时应用动画。</p>
+<p>最基本的用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;isShow = !isShow&#34;</span><span class="p">&gt;</span>显示/隐藏<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">    &lt;transition&gt; 用于给元素自动加上动画效果
+</span></span></span><span class="line"><span class="cl"><span class="c">   --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">transition</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isShow&#34;</span><span class="p">&gt;</span>Hello Vue.js!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">transition</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hello&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">isShow</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span> <span class="na">scoped</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">h1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background-color</span><span class="p">:</span> <span class="kc">orange</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">v-enter-active</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">animation</span><span class="p">:</span> <span class="n">fade</span> <span class="mi">1</span><span class="kt">s</span> <span class="kc">linear</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">v-leave-active</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">animation</span><span class="p">:</span> <span class="n">fade</span> <span class="mi">1</span><span class="kt">s</span> <span class="kc">linear</span> <span class="kc">reverse</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">@</span><span class="k">keyframes</span> <span class="nt">fade</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">from</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">transform</span><span class="p">:</span> <span class="nb">translateX</span><span class="p">(</span><span class="mi">-100</span><span class="kt">%</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">to</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">transform</span><span class="p">:</span> <span class="nb">translateX</span><span class="p">(</span><span class="mi">0</span><span class="kt">px</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>当<code>&lt;transition&gt;</code>中的元素被显示或隐藏时，Vue会在适当的时机自动将一些CSS过渡<code>class</code>往目标元素上添加或移除。</p>
+<blockquote>
+<p><code>&lt;transition&gt;</code>仅支持单个元素或组件作为其插槽内容。如果内容是一个组件，该组件必须仅有一个根元素。</p>
+</blockquote>
+<hr>
+<h1 id="css-过渡-class" data-numberify>CSS 过渡 class<a class="anchor ms-1" href="#css-过渡-class"></a></h1>
+<p>Vue中一共有6种应用于进入与离开过度效果的 CSS <code>class</code>：</p>
+<p>Vue2的CSS过渡<code>class</code>：</p>
+<p><picture><img class="img-fluid " alt="Vue2 CSS 过渡 class" src="/docs/vue/animations/1695255059938.png" loading="lazy" width="1200" height="600" />
+</picture>
+
+</p>
+<p>Vue3的CSS过渡<code>class</code>：</p>
+<p><picture><img class="img-fluid " alt="Vue3 CSS 过渡 class" src="/docs/vue/animations/1695253388660.png" loading="lazy" width="1376" height="700" />
+</picture>
+
+</p>
+<ul>
+<li><code>v-enter</code>（Vue2）/ <code>v-enter-from</code>（Vue3）：进入动画的起始状态。在元素插入之前添加，在元素插入完成后的下一帧移除。</li>
+<li><code>v-enter-active</code>：进入动画的生效状态。应用于整个进入动画阶段。在元素被插入之前添加，在过渡或动画完成之后移除。这个<code>class</code>可以被用来定义进入动画的持续时间、延迟与速度曲线类型。</li>
+<li><code>v-enter-to</code>（<code>2.1.8</code>版及以上）：进入动画的结束状态。在元素插入完成后的下一帧被添加 (也就是<code>v-enter-from</code>被移除的同时)，在过渡或动画完成之后移除。</li>
+<li><code>v-leave</code>（Vue2）/ <code>v-leave-from</code>（Vue3）：离开动画的起始状态。在离开过渡效果被触发时立即添加，在一帧后被移除。</li>
+<li><code>v-leave-active</code>：离开动画的生效状态。应用于整个离开动画阶段。在离开过渡效果被触发时立即添加，在过渡或动画完成之后移除。这个<code>class</code>可以被用来定义离开动画的持续时间、延迟与速度曲线类型。</li>
+<li><code>v-leave-to</code>（<code>2.1.8</code>版及以上）：离开动画的结束状态。在一个离开动画被触发后的下一帧被添加 (也就是<code>v-leave-from</code>被移除的同时)，在过渡或动画完成之后移除。</li>
+</ul>
+<blockquote>
+<p>注：Vue3将过渡类名<code>v-enter</code>修改为<code>v-enter-from</code>，将过渡类名<code>v-leave</code>修改为<code>v-leave-from</code>。</p>
+</blockquote>
+<hr>
+<h1 id="过度效果命名" data-numberify>过度效果命名<a class="anchor ms-1" href="#过度效果命名"></a></h1>
+<p><code>&lt;transition&gt;</code>和<code>&lt;transition-group&gt;</code>有一个名为<code>name</code>的<code>prop</code>，它可以为过渡效果命名，并将该名称作用于其一系列CSS过渡<code>class</code>的名称前缀。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">transition</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;fade&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">transition</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>那么其一系列的CSS过渡<code>class</code>的名称如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="c">/* 进入的起点 和 离开的终点 */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">fade-enter</span> <span class="c">/* 或 .fade-enter-from */</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">fade-leave-to</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">transform</span><span class="p">:</span> <span class="nb">translateX</span><span class="p">(</span><span class="mi">-100</span><span class="kt">%</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">/* 进入 和 离开的过程 */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">fade-enter-active</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">fade-leave-active</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">transition</span><span class="p">:</span> <span class="mf">0.5</span><span class="kt">s</span> <span class="kc">linear</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">/* 进入的终点 和 离开的起点 */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">fade-enter-to</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">fade-leave</span> <span class="c">/* 或 .fade-leave-from */</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">transform</span><span class="p">:</span> <span class="nb">translateX</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<h1 id="自定义过渡-class" data-numberify>自定义过渡 class<a class="anchor ms-1" href="#自定义过渡-class"></a></h1>
+<p>可以向<code>&lt;transition&gt;</code>和<code>&lt;transition-group&gt;</code>传递以下的<code>props</code>来指定自定义的过渡<code>class</code>。</p>
+<ul>
+<li><code>enter-class</code>（Vue2）/ <code>enter-from-class</code>（Vue3）：定义目标元素<u>进入动画起点</u>的过渡<code>class</code>。</li>
+<li><code>enter-active-class</code>：定义目标元素<u>进入动画过程</u>的过渡<code>class</code>。</li>
+<li><code>enter-to-class</code>（<code>2.1.8+</code>）：定义目标元素<u>进入动画终点</u>的过渡<code>class</code>。</li>
+<li><code>leave-class</code>（Vue2）/ <code>leave-from-class</code>（Vue3）：定义目标元素<u>离开动画起点</u>的过渡<code>class</code>。</li>
+<li><code>leave-active-class</code>：定义目标元素<u>离开动画过程</u>的过渡<code>class</code>。</li>
+<li><code>leave-to-class</code>（<code>2.1.8+</code>）：定义目标元素<u>离开动画终点</u>的过渡<code>class</code>。</li>
+</ul>
+<p>传入的这些<code>class</code>会覆盖相应阶段的默认<code>class</code>名。这个功能在Vue的动画机制下集成其他的第三方CSS动画库时非常有用。</p>
+<p>例如使用<code>animate.css</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;isShow = !isShow&#34;</span><span class="p">&gt;</span>显示/隐藏<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">transition</span>
+</span></span><span class="line"><span class="cl">    <span class="na">appear</span>
+</span></span><span class="line"><span class="cl">    <span class="na">name</span><span class="o">=</span><span class="s">&#34;animate__animated animate__bounce&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">enter-active-class</span><span class="o">=</span><span class="s">&#34;animate__swing&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">leave-active-class</span><span class="o">=</span><span class="s">&#34;animate__backOutUp&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;!isShow&#34;</span><span class="p">&gt;</span>Hello Vue.js!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">transition</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="s1">&#39;animate.css&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hello&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">isShow</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">style</span> <span class="na">scoped</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">h1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background-color</span><span class="p">:</span> <span class="kc">orange</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><hr>
+<h1 id="transitiongroup-组件" data-numberify>TransitionGroup 组件<a class="anchor ms-1" href="#transitiongroup-组件"></a></h1>
+<p><code>&lt;transition-group&gt;</code>支持和<code>&lt;transition&gt;</code>基本相同的<code>props</code>、CSS过渡<code>class</code>和JavaScript钩子监听器，但有以下几点区别：</p>
+<ul>
+<li>默认情况下，它不会渲染一个容器元素。但可以通过传入<code>tag</code> prop来指定一个元素作为容器元素来渲染。</li>
+<li>过渡模式在这里不可用，因为我们不再是在互斥的元素之间进行切换。</li>
+<li><code>&lt;transition-group&gt;</code>中渲染的每个元素都必须有一个唯一的<code>key</code>属性值。</li>
+<li>CSS过渡<code>class</code>会被应用在列表内的元素上，而不是容器元素上。</li>
+</ul>
+<p><code>&lt;transition-group&gt;</code>用于同时渲染多个元素，通常情况下渲染的是列表元素。被<code>&lt;transition-group&gt;</code>渲染的每个元素都需要有一个我i唯一的<code>key</code>属性值。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 生命周期</title>
       <link>/docs/vue/life-cycle/</link>
