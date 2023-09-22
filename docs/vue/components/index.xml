@@ -8,7 +8,227 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 21 Sep 2023 04:59:57 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Sep 2023 04:25:29 +0000</lastBuildDate><atom:link href="/docs/vue/components/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 插槽 Slots</title>
+      <link>/docs/vue/components/slots/</link>
+      <pubDate>Fri, 22 Sep 2023 04:25:29 +0000</pubDate>
+      
+      <guid>/docs/vue/components/slots/</guid>
+      <description><![CDATA[Vue插槽（Slots）用于向组件传递一些模板片段，让子组件在它们的组件中渲染这些片段。插槽也是属于一种父组件到子组件的组件间通行的方式。 V]]></description>
+      <content:encoded><![CDATA[<p>Vue插槽（Slots）用于向组件传递一些模板片段，让子组件在它们的组件中渲染这些片段。插槽也是属于一种父组件到子组件的组件间通行的方式。</p>
+<p>Vue插槽有以下3种类型：</p>
+<ul>
+<li>默认插槽。</li>
+<li>具名插槽。</li>
+<li>作用域插槽。</li>
+</ul>
+<hr>
+<h1 id="默认插槽" data-numberify>默认插槽<a class="anchor ms-1" href="#默认插槽"></a></h1>
+<p>使用默认插槽时，只需在子组件模板中，将要从外部传入的模板内容，使用<code>&lt;slot&gt;</code>进行占位即可。</p>
+<p>例如有一个名为<code>display-frame</code>的组件，其模板内容如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;display-frame&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>{{title}}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 默认插槽，等待组件的使用者进行填充 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">slot</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    默认插槽内容。使用者没有传递结构时，会显示。
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">slot</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>该组件的使用方式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">display-frame</span> <span class="na">title</span><span class="o">=</span><span class="s">&#34;用户信息&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="cl"><span class="c">    在组件标签体中的内容，
+</span></span></span><span class="line"><span class="cl"><span class="c">    会被插入到组件中使用了 &lt;slot&gt; 的位置
+</span></span></span><span class="line"><span class="cl"><span class="c">   --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{ user.name }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{ user.sex }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{ user.age }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">display-frame</span><span class="p">&gt;</span>
+</span></span></code></pre></div><blockquote>
+<p>注：插槽在使用过程中，<code>&lt;slot&gt;</code>标签并不限制使用次数，意味着可以在模板中显示两个相同的插槽内容。并且，在使用标签内容插入模板时，标签内容并不需要像组件模板一样需要在外部有一个作为根的元素。</p>
+</blockquote>
+<hr>
+<h1 id="具名插槽" data-numberify>具名插槽<a class="anchor ms-1" href="#具名插槽"></a></h1>
+<p>具名插槽就是指给组件插槽位置指定一个名称。外部在使用组件标签时，可以通过插槽名称指定模板要插入到组件中的位置。</p>
+<p>定义插槽名称使用的是<code>&lt;slot&gt;</code>标签的<code>name</code>属性：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;display-frame&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">slot</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;header&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>Header<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">slot</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">slot</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;main&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>Main<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">slot</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">slot</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;footer&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>Footer<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">slot</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>上方定义了3个插槽，分别是<code>header</code>、<code>main</code>和<code>footer</code>。使用方式有两种：</p>
+<ul>
+<li>
+<p><code>slot</code>属性：</p>
+<pre tabindex="0"><code>slot=&#34;slot-name&#34;
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">display-frame</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h3</span> <span class="na">slot</span><span class="o">=</span><span class="s">&#34;header&#34;</span><span class="p">&gt;</span>{{ title }}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">img</span> <span class="na">slot</span><span class="o">=</span><span class="s">&#34;main&#34;</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia/images/avatar.jpg&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">slot</span><span class="o">=</span><span class="s">&#34;main&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{ user.name }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{ user.sex }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{ user.age }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">slot</span><span class="o">=</span><span class="s">&#34;footer&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia&#34;</span><span class="p">&gt;</span>博客主页<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia/about/&#34;</span><span class="p">&gt;</span>个人信息<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia/contact/&#34;</span><span class="p">&gt;</span>联系用户<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">display-frame</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>slot</code>属性可以作用在普通元素标签上，也可以作用在<code>&lt;template&gt;</code>上。并且同个插槽可以同时存放多个元素（模板），只需要定义多个具有相同的<code>slot</code>属性的元素，或者使用<code>&lt;template&gt;</code>将它们包裹起来即可。</p>
+</li>
+<li>
+<p><code>v-slot</code>指令：</p>
+<pre tabindex="0"><code>v-slot:slot-name
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">display-frame</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">v-slot:header</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h3</span> <span class="na">slot</span><span class="o">=</span><span class="s">&#34;header&#34;</span><span class="p">&gt;</span>{{ title }}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">v-slot:main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia/images/avatar.jpg&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{ user.name }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{ user.sex }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{ user.age }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">v-slot:footer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia&#34;</span><span class="p">&gt;</span>博客主页<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia/about/&#34;</span><span class="p">&gt;</span>个人信息<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.linner.asia/contact/&#34;</span><span class="p">&gt;</span>联系用户<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">display-frame</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>v-slot</code>指令在使用时，只能在<code>&lt;template&gt;</code>上使用，不能在其它元素标签上使用。</p>
+</li>
+</ul>
+<blockquote>
+<p>默认插槽就是没有提供<code>name</code>的<code>&lt;slot&gt;</code>。没有提供<code>name</code>的<code>&lt;slot&gt;</code>出口会隐式地命名为<code>default</code>。</p>
+</blockquote>
+<hr>
+<h1 id="渲染作用域" data-numberify>渲染作用域<a class="anchor ms-1" href="#渲染作用域"></a></h1>
+<p><u>插槽内容可以访问到父组件的数据作用域</u>，因为插槽内容本身是在父组件模板中定义的。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>{{ message }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">display-frame</span><span class="p">&gt;</span>{{ message }}<span class="p">&lt;/</span><span class="nt">display-frame</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>两个标签中的<code>{{ message }}</code>插值表达式渲染的内容都是一样的。</p>
+<p>需要注意的是，<u>插槽的内容无法访问子组件的数据</u>（无法直接访问）。因为Vue模板中的表达式只能访问其定义时所处的作用域，这和JavaScript的词法作用域规则是一致的。</p>
+<p>也就是说，在哪个文件中定义的模板，其数据的作用域就在哪个文件，其表达式访问的也是该文件中的数据。</p>
+<hr>
+<h1 id="作用域插槽" data-numberify>作用域插槽<a class="anchor ms-1" href="#作用域插槽"></a></h1>
+<p>作用域插槽可以让组件在定义插槽位置时，将组件中的一些数据，通过插槽<code>&lt;slot&gt;</code>，像<code>props</code>传递数据那样，将数据传递给父组件使用。</p>
+<p>向父组件传递数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;user-info&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">slot</span> <span class="na">:username</span><span class="o">=</span><span class="s">&#34;name&#34;</span> <span class="na">:age</span><span class="o">=</span><span class="s">&#34;18&#34;</span> <span class="na">:sex</span><span class="o">=</span><span class="s">&#34;男&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user-info&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;张三&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">age</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sex</span><span class="o">:</span> <span class="s1">&#39;男&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>父组件接收数据，并为子组件定义插槽模板，有3种方式：</p>
+<ul>
+<li>
+<p><code>scope</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">scope</span><span class="o">=</span><span class="s">&#34;userInfo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{userInfo.username}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{userInfo.sex}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{userInfo.age}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>slot-scope</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">slot-scope</span><span class="o">=</span><span class="s">&#34;userInfo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{userInfo.username}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{userInfo.sex}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{userInfo.age}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>v-slot</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">v-slot</span><span class="o">=</span><span class="s">&#34;userInfo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>姓名：{{userInfo.username}}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>性别：{{userInfo.sex}}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>年龄：{{userInfo.age}}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>与前两种不同的是，<code>v-slot</code>可以指定插槽位置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;user-info&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">slot</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;main&#34;</span> <span class="na">:username</span><span class="o">=</span><span class="s">&#34;name&#34;</span> <span class="na">:age</span><span class="o">=</span><span class="s">&#34;18&#34;</span> <span class="na">:sex</span><span class="o">=</span><span class="s">&#34;男&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">v-slot:main</span><span class="o">=</span><span class="s">&#34;userInfo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{userInfo.username}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{userInfo.sex}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{userInfo.age}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span></code></pre></div><blockquote>
+<p><code>scope</code>和<code>slot-scope</code>指定卡槽需要配合<code>slot</code>属性。</p>
+</blockquote>
+<p><code>v-slot</code>可以直接在组件标签上使用：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span> <span class="na">v-slot</span><span class="o">=</span><span class="s">&#34;userInfo&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>姓名：{{userInfo.username}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>性别：{{userInfo.sex}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>年龄：{{userInfo.age}}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>这3种使用方式都支持解构赋值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">slot-scope</span><span class="o">=</span><span class="s">&#34;{username, sex, age}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>姓名：{{username}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>性别：{{sex}}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span> <span class="na">v-slot</span><span class="o">=</span><span class="s">&#34;{username, sex, age}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>姓名：{{username}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>性别：{{sex}}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">template</span> <span class="na">scope</span><span class="o">=</span><span class="s">&#34;{username, sex, age}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>姓名：{{username}}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>性别：{{sex}}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>年龄：{{age}}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">user-info</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>适用于：数据在组件中定义，但根据数据生成的结构需要组件的使用者来决定。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue CLI 服务代理</title>
       <link>/docs/vue/components/dev-server-poxy/</link>
