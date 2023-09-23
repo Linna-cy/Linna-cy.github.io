@@ -8,7 +8,387 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Fri, 22 Sep 2023 04:25:29 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Sep 2023 10:47:45 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vuex 插件</title>
+      <link>/docs/vue/components/vuex/</link>
+      <pubDate>Fri, 22 Sep 2023 10:47:45 +0000</pubDate>
+      
+      <guid>/docs/vue/components/vuex/</guid>
+      <description><![CDATA[Vuex是由Vue官方开发的一个专为Vue.js开发的状态管理库。Vuex可以集中存储管理应用的所有组件的状态，并以相应的规则保证状态以一种]]></description>
+      <content:encoded><![CDATA[<p>Vuex是由Vue官方开发的一个专为Vue.js开发的<u>状态管理库</u>。Vuex可以<u>集中存储管理应用的所有组件的状态</u>，并以相应的规则保证状态以一种可预测的方式发生变化。</p>
+<p>Vuex基于“单向数据流”理念：</p>
+<p><picture><img class="img-fluid " alt="Vuex 单向数据流示意图" src="/docs/vue/components/vuex/1695380224992.png" loading="lazy" width="1280" height="866" />
+</picture>
+
+</p>
+<p>Vuex的工作模式如下：</p>
+<p><picture><img class="img-fluid " alt="Vuex 工作模式" src="/docs/vue/components/vuex/1695380408716.png" loading="lazy" width="701" height="551" />
+</picture>
+
+</p>
+<p>Vuex应用的核心就是Store（仓库）。Store基本上就是一个容器，它包含着应用中大部分的状态（State）。</p>
+<p>使用Vuex也可以实现任意组件间通信。但是官方在文档中提到，如果要构建一个简单的网页应用，使用Vuex可能是繁琐冗余的。</p>
+<blockquote>
+<p>如果应用够简单，最好不要使用Vuex。一个简单的Store模式就足够了。</p>
+<p>如果需要构建一个中大型单页应用，就需要考虑如何更好地在组件外部管理状态，Vuex将会成为自然而然的选择。</p>
+</blockquote>
+<hr>
+<h1 id="安装-vuex" data-numberify>安装 Vuex<a class="anchor ms-1" href="#安装-vuex"></a></h1>
+<p>在Node.js环境下，可以运行下方命令安装Vuex：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i vuex
+</span></span></code></pre></div><p>但是需要注意的是<code>vuex@4</code>使用于Vue3，而适用于Vue2的Vuex版本是<code>vuex@3</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 安装适用于 Vue2 的 Vuex 3</span>
+</span></span><span class="line"><span class="cl">npm i vuex@3
+</span></span></code></pre></div><p>安装好后，就可以在项目中导入Vuex：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vuex</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span>
+</span></span></code></pre></div><p>导入Vuex后，需要在Vue中开启Vuex插件：</p>
+<pre tabindex="0"><code>Vue.use(Vuex)
+</code></pre><hr>
+<h1 id="配置-vuex" data-numberify>配置 Vuex<a class="anchor ms-1" href="#配置-vuex"></a></h1>
+<p>Vuex的基本配置如下（Vuex配置文件可以是项目根目录下的<code>vuex/store.js</code>或<code>store/index.js</code>）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vuex</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span> <span class="c1">// 引入 Vuex
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Vuex</span><span class="p">)</span> <span class="c1">// 使用 Vuex
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Actions 用于响应组件中的动作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Mutations 用于操作数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// State 用于存储数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Getters 用于将 State 中的数据进行加工
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建并导出 Store
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Vuex</span><span class="p">.</span><span class="nx">Store</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">actions</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mutations</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">state</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">getters</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>创建好Store之后，需要将其导入到<code>main.js</code>中，并配置在Vue实例上：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">store</span> <span class="nx">from</span> <span class="s1">&#39;./store&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">store</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>配置好后，当前Vue实例，以及Vue实例下的所有组件，都能通过<code>this.$store</code>访问Store的API。</p>
+<hr>
+<h1 id="使用-store" data-numberify>使用 Store<a class="anchor ms-1" href="#使用-store"></a></h1>
+<p>Store中，常用的API如下：</p>
+<ul>
+<li><code>$store.dispatch()</code>：将数据分发给对应的Action。</li>
+<li><code>$store.commit()</code>：将数据（载荷）提交给对应的Mutation.</li>
+</ul>
+<p>Store中，常用的数据对象如下：</p>
+<ul>
+<li><code>$store.state</code>：访问State中的状态数据（可以认为是一个全局的<code>data</code>）。</li>
+<li><code>$store.getters</code>：对State中的状态数据进行相应处理，并获取对应的处理结果（可以认为是一个全局的，没有Setter的<code>computed</code>）。</li>
+</ul>
+<h2 id="dispatch" data-numberify>dispatch<a class="anchor ms-1" href="#dispatch"></a></h2>
+<p><code>$store.dispatch(actionName, data)</code>：</p>
+<ul>
+<li><code>actionName</code>：指定一个Action的名称，<code>String</code>类型。对应<code>store</code>配置中<code>actions</code>配置对象下的一个相同名称的方法<code>actionName()</code>。</li>
+<li><code>data</code>：分发给<code>actionName()</code>的数据，任意类型。<code>actionName()</code>使用第2个形参<code>value</code>接收。</li>
+</ul>
+<p>每一个Action，在<code>actions</code>中都有一个与之对应的方法。在组件实例中，使用<code>$store.dispatch()</code>来将数据分发给对应的Action方法处理。每个Action都有一个唯一的<code>actionName</code>。</p>
+<blockquote>
+<p>通常，actionName是以小驼峰规则命名。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;demoAction&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>demoAction</code>对应的Action：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">demoAction</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* demoAction的处理逻辑... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>context</code>是一个上下文对象，每一个Action都会接收到这个参数。<code>context</code>封装了<code>$store</code>中的一些方法。通过<code>context</code>，可以将当前处理转发给其它Action，或是将处理提交到某个Mutation。</p>
+<p><code>context</code>中封装了如下方法和对象：</p>
+<ul>
+<li><code>context.dispatch()</code></li>
+<li><code>context.commit()</code></li>
+<li><code>context.state</code></li>
+<li><code>context.getters</code></li>
+</ul>
+<p>这些方法和对象的用法与<code>$store</code>中的相同。</p>
+<blockquote>
+<p><code>context</code>可以看作是一个小型的<code>$store</code>，它封装了<code>$store</code>中常用的方法和对象。使用者可以根据处理逻辑（上下文）调用<code>context</code>中的方法，所以才命名为<code>context</code>。</p>
+<p>在Action中，应该将<code>context.state</code>视为只读的。因为Action的职责不是对状态进行修改，并且Vue.js devtools（Vue.js开发者工具）捕获不到Action对<code>context.state</code>的修改（尽管这些修改可能会生效），所以应该尽量避免在Action中对<code>context.state</code>的修改。</p>
+</blockquote>
+<p>通常情况下，Action是用来对数据进行一些校验或简单的处理，然后将数据转派给下一个Action或提交给某个Mutation。</p>
+<p><code>$store.dispatch()</code>在调用时可以仅传递一个参数，也就是<code>actionName</code>。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;plusOne&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="commit" data-numberify>commit<a class="anchor ms-1" href="#commit"></a></h2>
+<p><code>$store.commit(mutationName, payload)</code>：</p>
+<ul>
+<li><code>mutationName</code>：指定一个Mutation的名称（事件类型），<code>String</code>类型。对应<code>store</code>配置中<code>mutations</code>配置对象下的一个相同名称的方法<code>mutationName()</code>。</li>
+<li><code>payload</code>：提交给<code>mutationName()</code>的数据（载荷），任意类型。<code>mutationName()</code>使用第2个形参<code>value</code>接收。</li>
+</ul>
+<blockquote>
+<p>通常，mutationName是以全大写+下划线规则命名。</p>
+</blockquote>
+<p><code>$store.commit()</code>的用法和<code>$store.dispatch()</code>十分相似，不同的是<code>$store.commit()</code>是将载荷提交给某个Mutation。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;demoMutation&#39;</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>demoMutation</code>对应的Mutation：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">demoMutation</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* demoMutation的处理逻辑... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>state</code>即对应Store配置中的<code>state</code>配置对象（相当于<code>$store.state</code>）。每一个Mutation都会接收到这个<code>state</code>对象。通过<code>state</code>对象，Mutation可以获取State中的状态数据，并对状态数据进行编辑。</p>
+<p>与Action不同，Mutation通常是作为状态数据处理的角色存在。Mutation可以直接修改State中的数据；而Action通常不修改State中的数据，Action一般只是读取State中的数据。</p>
+<blockquote>
+<p>Action不用作修改数据还有一个原因，如果在Action中修改State中的数据，Vue.js devtools并不能捕获到这些修改。即使在Action对State的修改能生效，也不建议在Action中对State进行修改，在Actions中，应该将State（<code>context.$state</code>）视为只读的。</p>
+</blockquote>
+<p>一般情况下（官方给的示意图中），Store对数据的处理流程是：<code>$store.dispatch</code> $\Rightarrow$ <code>$store.commit</code>。实际上，对一些简单的操作，不需要对传递的数据进行校验或处理的情况下，可以在组件实例中直接调用<code>$store.commit</code>将数据提交给Mutation处理。</p>
+<p><code>$store.commit()</code>在调用时可以仅传递一个参数，也就是<code>mutationName</code>。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;plusOne&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="state" data-numberify>state<a class="anchor ms-1" href="#state"></a></h2>
+<p>在组件中读取State中的数据，可以通过<code>this.$store.state.dataName</code>的形式读取（<code>dataName</code>指要读取的数据）。需要注意的是，在组件实例中不要修改State中的数据。也就是说，在组件实例中应该将<code>this.$store.state</code>视为只读。</p>
+<p>例如在Store的<code>state</code>配置项中定义一个状态数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">siteTitle</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// 网站的标题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>在组件实例中获取<code>state</code>中的数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span>
+</span></span></code></pre></div><p>在组件实例中推荐使用<code>computed</code>来获取<code>state</code>中的数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">siteTitle</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>也可以通过<code>computed</code>的Setter来修改<code>state</code>中的数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">siteTitle</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;SET_SITE_TITLE&#39;</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">SET_SITE_TITLE</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span> <span class="o">=</span> <span class="nx">payload</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>接着，就可以在组件实例中，像使用一般的数据一样，对<code>siteTitle</code>进行各种操作。</p>
+<hr>
+<h2 id="getters" data-numberify>getters<a class="anchor ms-1" href="#getters"></a></h2>
+<p><code>$store.getters</code>就像是一个全局的<code>computed</code>，可以在获取State中的数据之前，对数据进行一些处理。但与<code>computed</code>不同的是，<code>getters</code>只能用于获取，不能用于修改数据。</p>
+<p>在Store的<code>getters</code>配置中，每个<code>getter</code>以函数的形式被定义，且每个<code>getter</code>接收一个<code>state</code>参数。这个<code>state</code>参数用于获取State中的数据。</p>
+<p>每个<code>getter</code>都有一个唯一的名称，并且就像<code>computed</code>一样，在Vue实例中使用<code>this.$store.getterName</code>来获取相应的<code>getter</code>，<code>getterName</code>与<code>getter</code>定义时的函数名称相同。<code>getter</code>同样也是使用返回值来确定值。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">demoGetter</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* demoGetter 的处理逻辑... */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="cm">/* demoGetter 的值 */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>例如要获取一个转为大写的<code>siteTitle</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">siteTitleUpperCase</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在组件实例中获取该值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">gettets</span><span class="p">.</span><span class="nx">siteTitleUpperCase</span>
+</span></span></code></pre></div><p>同样可以使用<code>computed</code>来读取该值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">siteTitleUpperCase</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">gettets</span><span class="p">.</span><span class="nx">siteTitleUpperCase</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<h1 id="vuex-映射" data-numberify>Vuex 映射<a class="anchor ms-1" href="#vuex-映射"></a></h1>
+<p>在组件实例中，使用Store中的<code>state</code>和<code>getter</code>时，配合<code>computed</code>可以使代码更加精简。而Vuex原型正好提供了一些辅助的API，可以在组件实例中快速地为<code>state</code>和<code>getters</code>中的数据创建对应的<code>computed</code>。</p>
+<ul>
+<li><code>mapState()</code></li>
+<li><code>mapGetters()</code></li>
+<li><code>mapMutations()</code></li>
+<li><code>mapActions()</code></li>
+</ul>
+<p>在使用这些辅助函数之前，需要先引入。这些辅助函数的引入方法都是相同的，下面进行例举了辅助函数的引入方式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mapState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span> <span class="c1">// 引入 mapState
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mapState</span><span class="p">,</span> <span class="nx">mapGetters</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span> <span class="c1">// 引入 mapState 和 mapGetters
+</span></span></span></code></pre></div><h2 id="mapstate" data-numberify>mapState<a class="anchor ms-1" href="#mapstate"></a></h2>
+<p><code>mapState()</code>可以将State中的数据映射到组件实例中的<code>computed</code>中。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="nx">mapState</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr1</span><span class="o">:</span> <span class="s1">&#39;stateAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr2</span><span class="o">:</span> <span class="s1">&#39;stateAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr3</span><span class="o">:</span> <span class="s1">&#39;stateAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span>
+</span></span></code></pre></div><p>或者使用对象扩展运算符：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span><span class="nx">mapState</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computedAttr1</span><span class="o">:</span> <span class="s1">&#39;stateAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computedAttr2</span><span class="o">:</span> <span class="s1">&#39;stateAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computedAttr3</span><span class="o">:</span> <span class="s1">&#39;stateAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}),</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>上方所示的两个<code>mapState()</code>相当于在<code>computed</code>中进行如下定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr1</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr2</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr3</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr3</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>也就是说，<code>mapState()</code>返回的是一个类似于<code>computed</code>配置对象的对象。这个对象中的每个属性都是函数类型，相当于一个个设置了Setter的<code>computed</code>属性。</p>
+<p>使用<code>mapState()</code>生成的<code>computed</code>被称为<code>vuex bindings</code>（可以在Vue开发者工具中查看）。</p>
+<p><code>mapState()</code>可以传入两种类型的参数：</p>
+<ul>
+<li>
+<p>一种就是如上所示的<code>Object</code>类型参数。</p>
+<p>传入的对象中，其每个属性的<code>key</code>是作为实例中的<code>computed</code>属性名称，每个属性的<code>value</code>以<code>String</code>类型的形式指定了State中某个属性的名称。</p>
+<p>该方式通过传入对象中的每个属性的<code>value</code>指定State中的属性，然后以每个属性的<code>key</code>作为它们的<code>computed</code>属性来生成<code>vuex bindings</code>。</p>
+</li>
+<li>
+<p>另一种方式就是传入字符串数组类型的参数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">mapState</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;stateAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;stateAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;stateAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">]),</span>
+</span></span></code></pre></div><p>这种方式通过字符串数组指定一系列要作为<code>computed</code>（<code>vuex binding</code>）属性使用的State属性。这种方式可以直接使用对应State属性的名称来使用这些<code>vuex binding</code>属性。</p>
+<p>上方<code>mapState()</code>相当于在<code>computed</code>中配置了以下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">stateAttr1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr1</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nx">stateAttr2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr2</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nx">stateAttr3</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr3</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="mapgetters" data-numberify>mapGetters<a class="anchor ms-1" href="#mapgetters"></a></h2>
+<p><code>mapGetters()</code>可以将<code>getters</code>中的数据映射到组件实例中的<code>computed</code>中。生成的属性同样被称为<code>vuex bindings</code>。</p>
+<p><code>mapGetters()</code>的用法和<code>mapState()</code>几乎相同，它们都可以传入两种类型的参数，并且返回值也是一个属性都为函数类型的对象。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">mapGetters</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr1</span><span class="o">:</span> <span class="s1">&#39;gettersAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr2</span><span class="o">:</span> <span class="s1">&#39;gettersAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr3</span><span class="o">:</span> <span class="s1">&#39;gettersAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">mapGetters</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;gettersAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;gettersAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;gettersAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">])</span>
+</span></span></code></pre></div><p>上述两种使用方式，都是相当于在<code>computed</code>进行如下配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">gettersAttr1</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">gettersAttr2</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr3</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">gettersAttr3</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="mapmutations" data-numberify>mapMutations<a class="anchor ms-1" href="#mapmutations"></a></h2>
+<p><code>mapMutations()</code>用于在<code>methods</code>中快速生成提交（<code>commit</code>）对应Mutations事件的方法。<code>mapMutations()</code>同样拥有两种形参类型。</p>
+<p><code>mapMutations()</code>作用于<code>methods</code>，但是用法基本上与<code>mapState()</code>和<code>mapGetters()</code>相同。并且<code>mapMutations()</code>传入的也是一个属性为<code>function</code>类型的对象。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapMutations</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="o">:</span> <span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="o">:</span> <span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span>
+</span></span></code></pre></div><p>相当于在<code>methods</code>中进行如下配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>所以在调用或者绑定事件时，需要以<code>increment()</code>或<code>increment(value)</code>的形式。否则，以<code>increment</code>（如<code>@click=&quot;increment&quot;</code>）的形式绑定事件，传入的<code>value</code>参数就是当前绑定事件的对象（可能会造成数据错误）。</p>
+<p><code>mapMutations()</code>数组参数写法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapMutations</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">]),</span>
+</span></span></code></pre></div><p>相当于：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">INCREMENT</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">DECREMENT</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="mapactions" data-numberify>mapActions<a class="anchor ms-1" href="#mapactions"></a></h2>
+<p><code>mapActions()</code>用于在<code>methods</code>中快速生成分发（<code>dispatch</code>）对应Action的方法。</p>
+<p><code>mapMutations()</code>的用法基本上与<code>mapMutations()</code>相同。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapActions</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="o">:</span> <span class="s1">&#39;increment&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="err">：</span><span class="s1">&#39;decrement&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapActions</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;increment&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;decrement&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">]),</span>
+</span></span></code></pre></div><p>上述两种方式相当于：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;increment&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;decrement&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>同样使用<code>increment()</code>或<code>increment(value)</code>的形式调用或绑定事件。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 插槽 Slots</title>
       <link>/docs/vue/components/slots/</link>
