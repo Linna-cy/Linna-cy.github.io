@@ -1,0 +1,1347 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="blue-gray">
+  <head><script src="/assets/init/bundle.min.3020ee296250c6f6a6ecdb19638caff240d3b1ac91094e8089aaec326aec54c1.js" crossorigin="anonymous"></script>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vuex 插件 | Linner&#39;s Blog</title>
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
+    <link rel="apple-touch-icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_180x180_resize_q75_h2_box_2.webp" sizes="180x180" type="image/webp">
+    <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="Vuex是由Vue官方开发的一个专为Vue.js开发的状态管理库。Vuex可以集中存储管理应用的所有组件的状态，并以相应的规则保证状态以一种" />
+    <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vuex 插件"/>
+<meta name="twitter:description" content="Vuex是由Vue官方开发的一个专为Vue.js开发的状态管理库。Vuex可以集中存储管理应用的所有组件的状态，并以相应的规则保证状态以一种"/>
+<meta property="og:title" content="Vuex 插件" />
+<meta property="og:description" content="Vuex是由Vue官方开发的一个专为Vue.js开发的状态管理库。Vuex可以集中存储管理应用的所有组件的状态，并以相应的规则保证状态以一种" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/vue/vuex/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2023-09-22T10:47:45+00:00" />
+<meta property="article:modified_time" content="2023-09-22T10:47:45+00:00" />
+<meta property="og:see_also" content="/docs/vue/components/slots/" /><meta property="og:see_also" content="/docs/vue/dev-server-poxy/" /><meta property="og:see_also" content="/docs/vue/animations/" /><meta property="og:see_also" content="/docs/vue/components/life-cycle/" /><meta property="og:see_also" content="/docs/vue/components/pubsub-js/" />
+
+<meta itemprop="name" content="Vuex 插件">
+<meta itemprop="description" content="Vuex是由Vue官方开发的一个专为Vue.js开发的状态管理库。Vuex可以集中存储管理应用的所有组件的状态，并以相应的规则保证状态以一种"><meta itemprop="datePublished" content="2023-09-22T10:47:45+00:00" />
+<meta itemprop="dateModified" content="2023-09-22T10:47:45+00:00" />
+<meta itemprop="wordCount" content="5098">
+<meta itemprop="keywords" content="" />
+  <meta property="og:image" content="/images/favicon.ico"/>
+  <meta name="twitter:image" content="/images/favicon.ico"/>
+  <meta property="og:image:alt" content="Vuex 插件" />
+  <meta name="twitter:image:alt" content="Vuex 插件" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.5d2cef75ebbe961fea594e4454bba142c3b4bb72f172f5d6a0f6a5c39a8714f8.css" crossorigin="anonymous">
+
+
+<link data-precache rel="stylesheet" href="/assets/katex/bundle.min.f809692aab178eedf49a9b384d0e8cbceb05e563bea5d7cf54690185756ba414.css" crossorigin="anonymous">
+
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.eb914844636cd41f221f109e99c887bbc3b6b5ffb2af7c664b284cea2d1b54b7.css" crossorigin="anonymous">
+    
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDocsNav"
+      aria-expanded="false" aria-label="Toggle docs navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start justify-content-center ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/favicon.ico" loading="lazy" width="200" height="200" />
+</picture>
+Linner
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Linner</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto">
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>博客
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-file-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/series/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-columns"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">专栏</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">分类</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">标签</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/docs/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto" action="/search/" novalidate>
+      <div class="input-group input-group-sm align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="bg-primary rounded shadow">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label=""
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container">
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+<aside class="docs-nav col-xxl-2" tabindex="-1" data-bs-hide="focusout">
+  <div class="offcanvas-xxl offcanvas-start" id="offcanvasDocsNav" aria-labelledby="offcanvasDocsNavLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="offcanvas-title h5" id="offcanvasDocsNavLabel">Browse docs</div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
+    </div>
+    <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/"><span class="docs-nav-title">Vue</span></a>
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-1029dbd31a6591a6326ddf96ff69dbdb" aria-expanded="true" aria-controls="nav-1029dbd31a6591a6326ddf96ff69dbdb">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-1029dbd31a6591a6326ddf96ff69dbdb">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/"><span class="docs-nav-title">模板语法</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f389a5b2e73b01ccec5fa7e5a8af3ed1" aria-expanded="false" aria-controls="nav-f389a5b2e73b01ccec5fa7e5a8af3ed1">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-f389a5b2e73b01ccec5fa7e5a8af3ed1">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/interpolation/"><span class="docs-nav-title">插值语法</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/template-syntax/directives/"><span class="docs-nav-title">指令语法</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/data-proxy-watch/"><span class="docs-nav-title">数据代理与监听</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/life-cycle/"><span class="docs-nav-title">生命周期</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/"><span class="docs-nav-title">组件化</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e5e29306485835e28633ba4850bd6757" aria-expanded="false" aria-controls="nav-e5e29306485835e28633ba4850bd6757">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-e5e29306485835e28633ba4850bd6757">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/projects/"><span class="docs-nav-title">项目开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/ref-and-nexttick/"><span class="docs-nav-title">获取页面元素及延迟执行</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/props/"><span class="docs-nav-title">Props 属性</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/mixins/"><span class="docs-nav-title">混入配置对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/scoped/"><span class="docs-nav-title">组件样式作用域</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/life-cycle/"><span class="docs-nav-title">组件生命周期</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/custom-events/"><span class="docs-nav-title">组件自定义事件</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/pubsub-js/"><span class="docs-nav-title">消息订阅与发布（pubsub-js）</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/components/slots/"><span class="docs-nav-title">插槽 Slots</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/plugins/"><span class="docs-nav-title">插件</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/animations/"><span class="docs-nav-title">过渡和动画</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/dev-server-poxy/"><span class="docs-nav-title">Vue CLI 服务代理</span></a>
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/vuex/"><span class="docs-nav-title">Vuex 插件</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/"><span class="docs-nav-title">Docker</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-9381102fbed42e351f5da17ba517eda6" aria-expanded="false" aria-controls="nav-9381102fbed42e351f5da17ba517eda6">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-9381102fbed42e351f5da17ba517eda6">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/introduction/"><span class="docs-nav-title">Docker 简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/docker-hub/"><span class="docs-nav-title">Docker Hub</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/images-options/"><span class="docs-nav-title">Docker 镜像操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/container-options/"><span class="docs-nav-title">Docker 容器操作</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/docker-compose/"><span class="docs-nav-title">Docker Compose</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/docker/dockerfile/"><span class="docs-nav-title">Dockerfile</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/"><span class="docs-nav-title">Node.js</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-c94ab24a95e5a55230dfbc0cebf70a38" aria-expanded="false" aria-controls="nav-c94ab24a95e5a55230dfbc0cebf70a38">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-c94ab24a95e5a55230dfbc0cebf70a38">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/introduction/"><span class="docs-nav-title">介绍</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/fs/"><span class="docs-nav-title">文件系统模块</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/event/"><span class="docs-nav-title">事件循环</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/http-module/"><span class="docs-nav-title">HTTP 模块</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/modularization/"><span class="docs-nav-title">模块化</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/npm-and-package/"><span class="docs-nav-title">NPM 与包</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/"><span class="docs-nav-title">Express</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e8dad32c76039d4a0ee9c8d08e224e8b" aria-expanded="false" aria-controls="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/base/"><span class="docs-nav-title">Express 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/router/"><span class="docs-nav-title">Express 路由</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/middleware/"><span class="docs-nav-title">中间件</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/cors-request/"><span class="docs-nav-title">跨域请求</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/nodemon/"><span class="docs-nav-title">Node.js Nodemon 模块</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/typescript/"><span class="docs-nav-title">TypeScript 介绍</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/"><span class="docs-nav-title">Spring</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b" aria-expanded="false" aria-controls="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-ff3aaa2fd2f60e2f0871e22b1e0beb1b">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/"><span class="docs-nav-title">Java Web</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-2c2fd3c619a279e5884afbde08fbce5f" aria-expanded="false" aria-controls="nav-2c2fd3c619a279e5884afbde08fbce5f">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-2c2fd3c619a279e5884afbde08fbce5f">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/jdbc/"><span class="docs-nav-title">JDBC</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/druid/"><span class="docs-nav-title">Druid</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/maven-base/"><span class="docs-nav-title">Maven 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/mybatis-base/"><span class="docs-nav-title">MyBatis</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/tomcat-base/"><span class="docs-nav-title">Tomcat</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/servlet/"><span class="docs-nav-title">Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/http-servlet/"><span class="docs-nav-title">HTTP Servlet</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/ajax-interaction/"><span class="docs-nav-title">Ajax</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/cookie-session/"><span class="docs-nav-title">Cookie and Session</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/java-web/filter/"><span class="docs-nav-title">Filter</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springframework/"><span class="docs-nav-title">Spring Framework</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springmvc/"><span class="docs-nav-title">SpringMVC</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-b6680671b2f17f4fbd5793f6f1a3b7d7" aria-expanded="false" aria-controls="nav-b6680671b2f17f4fbd5793f6f1a3b7d7">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-b6680671b2f17f4fbd5793f6f1a3b7d7">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springmvc/base/"><span class="docs-nav-title">SpringMVC 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springmvc/api-tools/"><span class="docs-nav-title">API 测试工具</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/"><span class="docs-nav-title">Spring Boot</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-10d78731ccb52607bab03f5768d951d8" aria-expanded="false" aria-controls="nav-10d78731ccb52607bab03f5768d951d8">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-10d78731ccb52607bab03f5768d951d8">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/base/"><span class="docs-nav-title">SpringBoot 基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/mybatisplus/"><span class="docs-nav-title">MyBatisPlus</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/redis-base/"><span class="docs-nav-title">Redis基础</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/mysql-sharding/"><span class="docs-nav-title">MySQL 分库搭建</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/sharding-jdbc/"><span class="docs-nav-title">Sharding Jdbc</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/maven-senior/"><span class="docs-nav-title">Maven 高级</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springboot/swagger_knife4j/"><span class="docs-nav-title">API 文档</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/"><span class="docs-nav-title">Spring Cloud</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-f03e9a6ffb896ed89385de43b461a0d5" aria-expanded="false" aria-controls="nav-f03e9a6ffb896ed89385de43b461a0d5">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-f03e9a6ffb896ed89385de43b461a0d5">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/introduction/"><span class="docs-nav-title">微服务简介</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/config/"><span class="docs-nav-title">Spring 环境和配置</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/remote-call/"><span class="docs-nav-title">RestTemplate</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/eureka/"><span class="docs-nav-title">Eureka</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/nacos/"><span class="docs-nav-title">Nacos</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/nacos-deploy/"><span class="docs-nav-title">Nacos 部署</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/feign/"><span class="docs-nav-title">Feign</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/gateway/"><span class="docs-nav-title">Gateway</span></a>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/"><span class="docs-nav-title">异步通讯</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-72daade16aa364d7ef0e054f9633547c" aria-expanded="false" aria-controls="nav-72daade16aa364d7ef0e054f9633547c">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-72daade16aa364d7ef0e054f9633547c">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/introduction/"><span class="docs-nav-title">通讯方式</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/rabbit-mq/"><span class="docs-nav-title">RabbitMQ</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/spring/springcloud/communications/spring-amqp/"><span class="docs-nav-title">Spring AMQP</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="mb-2" tabindex="-1">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+            <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/"><span class="docs-nav-title">软件设计师</span></a>
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-533aa7ca377ccea3e5f5cfaa22286ecf" aria-expanded="false" aria-controls="nav-533aa7ca377ccea3e5f5cfaa22286ecf">
+              <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
+            </a>
+          </div>
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-533aa7ca377ccea3e5f5cfaa22286ecf">
+            <div class="btn-toggle-nav fw-normal ms-2 small">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/computer-system/"><span class="docs-nav-title">计算机系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/programming-language/"><span class="docs-nav-title">程序设计语言</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/"><span class="docs-nav-title">知识产权</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/data-base/"><span class="docs-nav-title">数据库</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/object-oriented/"><span class="docs-nav-title">面向对象</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/operating-system/"><span class="docs-nav-title">操作系统</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/structured-dev/"><span class="docs-nav-title">结构化开发</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/software-engineering/"><span class="docs-nav-title">软件工程</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/computer-nework/"><span class="docs-nav-title">计算机网络</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/data-structure/"><span class="docs-nav-title">数据结构</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/algorithm-design-analysis/"><span class="docs-nav-title">算法设计与分析</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/all-graphs/"><span class="docs-nav-title">软考图类汇总</span></a>
+        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+          <a class="docs-nav-link d-flex align-items-center" href="/docs/ruan-she/summary/"><span class="docs-nav-title">概念总结</span></a>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul></div>
+  </div>
+</aside><div class="col-xxl-7 ms-auto">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/vue/">Vue</a></li><li class="breadcrumb-item active">Vuex 插件</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">Vuex 插件</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-22 10:47:45 &#43;0000 UTC。">2023年9月22日</span><span class="post-reading-time me-1 mb-1">11 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><p>Vuex是由Vue官方开发的一个专为Vue.js开发的<u>状态管理库</u>。Vuex可以<u>集中存储管理应用的所有组件的状态</u>，并以相应的规则保证状态以一种可预测的方式发生变化。</p>
+<p>Vuex基于“单向数据流”理念：</p>
+<p><picture><img class="img-fluid " alt="Vuex 单向数据流示意图" src="/docs/vue/vuex/1695380224992.png" loading="lazy" width="1280" height="866" />
+</picture>
+
+</p>
+<p>Vuex的工作模式如下：</p>
+<p><picture><img class="img-fluid " alt="Vuex 工作模式" src="/docs/vue/vuex/1695380408716.png" loading="lazy" width="701" height="551" />
+</picture>
+
+</p>
+<p>Vuex应用的核心就是Store（仓库）。Store基本上就是一个容器，它包含着应用中大部分的状态（State）。</p>
+<p>使用Vuex也可以实现任意组件间通信。但是官方在文档中提到，如果要构建一个简单的网页应用，使用Vuex可能是繁琐冗余的。</p>
+<blockquote>
+<p>如果应用够简单，最好不要使用Vuex。一个简单的Store模式就足够了。</p>
+<p>如果需要构建一个中大型单页应用，就需要考虑如何更好地在组件外部管理状态，Vuex将会成为自然而然的选择。</p>
+</blockquote>
+<hr>
+<h1 id="安装-vuex" data-numberify>安装 Vuex<a class="anchor ms-1" href="#安装-vuex"></a></h1>
+<p>在Node.js环境下，可以运行下方命令安装Vuex：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i vuex
+</span></span></code></pre></div><p>但是需要注意的是<code>vuex@4</code>使用于Vue3，而适用于Vue2的Vuex版本是<code>vuex@3</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 安装适用于 Vue2 的 Vuex 3</span>
+</span></span><span class="line"><span class="cl">npm i vuex@3
+</span></span></code></pre></div><p>安装好后，就可以在项目中导入Vuex：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vuex</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span>
+</span></span></code></pre></div><p>导入Vuex后，需要在Vue中开启Vuex插件：</p>
+<pre tabindex="0"><code>Vue.use(Vuex)
+</code></pre><hr>
+<h1 id="配置-vuex" data-numberify>配置 Vuex<a class="anchor ms-1" href="#配置-vuex"></a></h1>
+<p>Vuex的基本配置如下（Vuex配置文件可以是项目根目录下的<code>vuex/store.js</code>或<code>store/index.js</code>）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vuex</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span> <span class="c1">// 引入 Vuex
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Vuex</span><span class="p">)</span> <span class="c1">// 使用 Vuex
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Actions 用于响应组件中的动作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Mutations 用于操作数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// State 用于存储数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Getters 用于将 State 中的数据进行加工
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建并导出 Store
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Vuex</span><span class="p">.</span><span class="nx">Store</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">actions</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mutations</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">state</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">getters</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>创建好Store之后，需要将其导入到<code>main.js</code>中，并配置在Vue实例上：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">store</span> <span class="nx">from</span> <span class="s1">&#39;./store&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">store</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>配置好后，当前Vue实例，以及Vue实例下的所有组件，都能通过<code>this.$store</code>访问Store的API。</p>
+<hr>
+<h1 id="使用-store" data-numberify>使用 Store<a class="anchor ms-1" href="#使用-store"></a></h1>
+<p>Store中，常用的API如下：</p>
+<ul>
+<li><code>$store.dispatch()</code>：将数据分发给对应的Action。</li>
+<li><code>$store.commit()</code>：将数据（载荷）提交给对应的Mutation.</li>
+</ul>
+<p>Store中，常用的数据对象如下：</p>
+<ul>
+<li><code>$store.state</code>：访问State中的状态数据（可以认为是一个全局的<code>data</code>）。</li>
+<li><code>$store.getters</code>：对State中的状态数据进行相应处理，并获取对应的处理结果（可以认为是一个全局的，没有Setter的<code>computed</code>）。</li>
+</ul>
+<h2 id="dispatch" data-numberify>dispatch<a class="anchor ms-1" href="#dispatch"></a></h2>
+<p><code>$store.dispatch(actionName, data)</code>：</p>
+<ul>
+<li><code>actionName</code>：指定一个Action的名称，<code>String</code>类型。对应<code>store</code>配置中<code>actions</code>配置对象下的一个相同名称的方法<code>actionName()</code>。</li>
+<li><code>data</code>：分发给<code>actionName()</code>的数据，任意类型。<code>actionName()</code>使用第2个形参<code>value</code>接收。</li>
+</ul>
+<p>每一个Action，在<code>actions</code>中都有一个与之对应的方法。在组件实例中，使用<code>$store.dispatch()</code>来将数据分发给对应的Action方法处理。每个Action都有一个唯一的<code>actionName</code>。</p>
+<blockquote>
+<p>通常，actionName是以小驼峰规则命名。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;demoAction&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>demoAction</code>对应的Action：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">demoAction</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* demoAction的处理逻辑... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>context</code>是一个上下文对象，每一个Action都会接收到这个参数。<code>context</code>封装了<code>$store</code>中的一些方法。通过<code>context</code>，可以将当前处理转发给其它Action，或是将处理提交到某个Mutation。</p>
+<p><code>context</code>中封装了如下方法和对象：</p>
+<ul>
+<li><code>context.dispatch()</code></li>
+<li><code>context.commit()</code></li>
+<li><code>context.state</code></li>
+<li><code>context.getters</code></li>
+</ul>
+<p>这些方法和对象的用法与<code>$store</code>中的相同。</p>
+<blockquote>
+<p><code>context</code>可以看作是一个小型的<code>$store</code>，它封装了<code>$store</code>中常用的方法和对象。使用者可以根据处理逻辑（上下文）调用<code>context</code>中的方法，所以才命名为<code>context</code>。</p>
+<p>在Action中，应该将<code>context.state</code>视为只读的。因为Action的职责不是对状态进行修改，并且Vue.js devtools（Vue.js开发者工具）捕获不到Action对<code>context.state</code>的修改（尽管这些修改可能会生效），所以应该尽量避免在Action中对<code>context.state</code>的修改。</p>
+</blockquote>
+<p>通常情况下，Action是用来对数据进行一些校验或简单的处理，然后将数据转派给下一个Action或提交给某个Mutation。</p>
+<p><code>$store.dispatch()</code>在调用时可以仅传递一个参数，也就是<code>actionName</code>。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;plusOne&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="commit" data-numberify>commit<a class="anchor ms-1" href="#commit"></a></h2>
+<p><code>$store.commit(mutationName, payload)</code>：</p>
+<ul>
+<li><code>mutationName</code>：指定一个Mutation的名称（事件类型），<code>String</code>类型。对应<code>store</code>配置中<code>mutations</code>配置对象下的一个相同名称的方法<code>mutationName()</code>。</li>
+<li><code>payload</code>：提交给<code>mutationName()</code>的数据（载荷），任意类型。<code>mutationName()</code>使用第2个形参<code>value</code>接收。</li>
+</ul>
+<blockquote>
+<p>通常，mutationName是以全大写+下划线规则命名。</p>
+</blockquote>
+<p><code>$store.commit()</code>的用法和<code>$store.dispatch()</code>十分相似，不同的是<code>$store.commit()</code>是将载荷提交给某个Mutation。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;demoMutation&#39;</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>demoMutation</code>对应的Mutation：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">demoMutation</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* demoMutation的处理逻辑... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>state</code>即对应Store配置中的<code>state</code>配置对象（相当于<code>$store.state</code>）。每一个Mutation都会接收到这个<code>state</code>对象。通过<code>state</code>对象，Mutation可以获取State中的状态数据，并对状态数据进行编辑。</p>
+<p>与Action不同，Mutation通常是作为状态数据处理的角色存在。Mutation可以直接修改State中的数据；而Action通常不修改State中的数据，Action一般只是读取State中的数据。</p>
+<blockquote>
+<p>Action不用作修改数据还有一个原因，如果在Action中修改State中的数据，Vue.js devtools并不能捕获到这些修改。即使在Action对State的修改能生效，也不建议在Action中对State进行修改，在Actions中，应该将State（<code>context.$state</code>）视为只读的。</p>
+</blockquote>
+<p>一般情况下（官方给的示意图中），Store对数据的处理流程是：<code>$store.dispatch</code> $\Rightarrow$ <code>$store.commit</code>。实际上，对一些简单的操作，不需要对传递的数据进行校验或处理的情况下，可以在组件实例中直接调用<code>$store.commit</code>将数据提交给Mutation处理。</p>
+<p><code>$store.commit()</code>在调用时可以仅传递一个参数，也就是<code>mutationName</code>。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;plusOne&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="state" data-numberify>state<a class="anchor ms-1" href="#state"></a></h2>
+<p>在组件中读取State中的数据，可以通过<code>this.$store.state.dataName</code>的形式读取（<code>dataName</code>指要读取的数据）。需要注意的是，在组件实例中不要修改State中的数据。也就是说，在组件实例中应该将<code>this.$store.state</code>视为只读。</p>
+<p>例如在Store的<code>state</code>配置项中定义一个状态数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">siteTitle</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// 网站的标题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>在组件实例中获取<code>state</code>中的数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span>
+</span></span></code></pre></div><p>在组件实例中推荐使用<code>computed</code>来获取<code>state</code>中的数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">siteTitle</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>也可以通过<code>computed</code>的Setter来修改<code>state</code>中的数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">siteTitle</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">set</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;SET_SITE_TITLE&#39;</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">SET_SITE_TITLE</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span> <span class="o">=</span> <span class="nx">payload</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>接着，就可以在组件实例中，像使用一般的数据一样，对<code>siteTitle</code>进行各种操作。</p>
+<hr>
+<h2 id="getters" data-numberify>getters<a class="anchor ms-1" href="#getters"></a></h2>
+<p><code>$store.getters</code>就像是一个全局的<code>computed</code>，可以在获取State中的数据之前，对数据进行一些处理。但与<code>computed</code>不同的是，<code>getters</code>只能用于获取，不能用于修改数据。</p>
+<p>在Store的<code>getters</code>配置中，每个<code>getter</code>以函数的形式被定义，且每个<code>getter</code>接收一个<code>state</code>参数。这个<code>state</code>参数用于获取State中的数据。</p>
+<p>每个<code>getter</code>都有一个唯一的名称，并且就像<code>computed</code>一样，在Vue实例中使用<code>this.$store.getterName</code>来获取相应的<code>getter</code>，<code>getterName</code>与<code>getter</code>定义时的函数名称相同。<code>getter</code>同样也是使用返回值来确定值。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">demoGetter</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* demoGetter 的处理逻辑... */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="cm">/* demoGetter 的值 */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>例如要获取一个转为大写的<code>siteTitle</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">siteTitleUpperCase</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">siteTitle</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在组件实例中获取该值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">gettets</span><span class="p">.</span><span class="nx">siteTitleUpperCase</span>
+</span></span></code></pre></div><p>同样可以使用<code>computed</code>来读取该值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">siteTitleUpperCase</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">gettets</span><span class="p">.</span><span class="nx">siteTitleUpperCase</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<h1 id="vuex-映射" data-numberify>Vuex 映射<a class="anchor ms-1" href="#vuex-映射"></a></h1>
+<p>在组件实例中，使用Store中的<code>state</code>和<code>getter</code>时，配合<code>computed</code>可以使代码更加精简。而Vuex原型正好提供了一些辅助的API，可以在组件实例中快速地为<code>state</code>和<code>getters</code>中的数据创建对应的<code>computed</code>。</p>
+<ul>
+<li><code>mapState()</code></li>
+<li><code>mapGetters()</code></li>
+<li><code>mapMutations()</code></li>
+<li><code>mapActions()</code></li>
+</ul>
+<p>在使用这些辅助函数之前，需要先引入。这些辅助函数的引入方法都是相同的，下面进行例举了辅助函数的引入方式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mapState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span> <span class="c1">// 引入 mapState
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mapState</span><span class="p">,</span> <span class="nx">mapGetters</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;vuex&#39;</span> <span class="c1">// 引入 mapState 和 mapGetters
+</span></span></span></code></pre></div><h2 id="mapstate" data-numberify>mapState<a class="anchor ms-1" href="#mapstate"></a></h2>
+<p><code>mapState()</code>可以将State中的数据映射到组件实例中的<code>computed</code>中。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="nx">mapState</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr1</span><span class="o">:</span> <span class="s1">&#39;stateAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr2</span><span class="o">:</span> <span class="s1">&#39;stateAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr3</span><span class="o">:</span> <span class="s1">&#39;stateAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span>
+</span></span></code></pre></div><p>或者使用对象扩展运算符：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span><span class="nx">mapState</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computedAttr1</span><span class="o">:</span> <span class="s1">&#39;stateAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computedAttr2</span><span class="o">:</span> <span class="s1">&#39;stateAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">computedAttr3</span><span class="o">:</span> <span class="s1">&#39;stateAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}),</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>上方所示的两个<code>mapState()</code>相当于在<code>computed</code>中进行如下定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr1</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr2</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">computedAttr3</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr3</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>也就是说，<code>mapState()</code>返回的是一个类似于<code>computed</code>配置对象的对象。这个对象中的每个属性都是函数类型，相当于一个个设置了Setter的<code>computed</code>属性。</p>
+<p>使用<code>mapState()</code>生成的<code>computed</code>被称为<code>vuex bindings</code>（可以在Vue开发者工具中查看）。</p>
+<p><code>mapState()</code>可以传入两种类型的参数：</p>
+<ul>
+<li>
+<p>一种就是如上所示的<code>Object</code>类型参数。</p>
+<p>传入的对象中，其每个属性的<code>key</code>是作为实例中的<code>computed</code>属性名称，每个属性的<code>value</code>以<code>String</code>类型的形式指定了State中某个属性的名称。</p>
+<p>该方式通过传入对象中的每个属性的<code>value</code>指定State中的属性，然后以每个属性的<code>key</code>作为它们的<code>computed</code>属性来生成<code>vuex bindings</code>。</p>
+</li>
+<li>
+<p>另一种方式就是传入字符串数组类型的参数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">mapState</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;stateAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;stateAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;stateAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">]),</span>
+</span></span></code></pre></div><p>这种方式通过字符串数组指定一系列要作为<code>computed</code>（<code>vuex binding</code>）属性使用的State属性。这种方式可以直接使用对应State属性的名称来使用这些<code>vuex binding</code>属性。</p>
+<p>上方<code>mapState()</code>相当于在<code>computed</code>中配置了以下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">stateAttr1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr1</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nx">stateAttr2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr2</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nx">stateAttr3</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">stateAttr3</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="mapgetters" data-numberify>mapGetters<a class="anchor ms-1" href="#mapgetters"></a></h2>
+<p><code>mapGetters()</code>可以将<code>getters</code>中的数据映射到组件实例中的<code>computed</code>中。生成的属性同样被称为<code>vuex bindings</code>。</p>
+<p><code>mapGetters()</code>的用法和<code>mapState()</code>几乎相同，它们都可以传入两种类型的参数，并且返回值也是一个属性都为函数类型的对象。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">mapGetters</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr1</span><span class="o">:</span> <span class="s1">&#39;gettersAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr2</span><span class="o">:</span> <span class="s1">&#39;gettersAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr3</span><span class="o">:</span> <span class="s1">&#39;gettersAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">mapGetters</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;gettersAttr1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;gettersAttr2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;gettersAttr3&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">])</span>
+</span></span></code></pre></div><p>上述两种使用方式，都是相当于在<code>computed</code>进行如下配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">gettersAttr1</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">gettersAttr2</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">gettersAttr3</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">gettersAttr3</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="mapmutations" data-numberify>mapMutations<a class="anchor ms-1" href="#mapmutations"></a></h2>
+<p><code>mapMutations()</code>用于在<code>methods</code>中快速生成提交（<code>commit</code>）对应Mutations事件的方法。<code>mapMutations()</code>同样拥有两种形参类型。</p>
+<p><code>mapMutations()</code>作用于<code>methods</code>，但是用法基本上与<code>mapState()</code>和<code>mapGetters()</code>相同。并且<code>mapMutations()</code>传入的也是一个属性为<code>function</code>类型的对象。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapMutations</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="o">:</span> <span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="o">:</span> <span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span>
+</span></span></code></pre></div><p>相当于在<code>methods</code>中进行如下配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>所以在调用或者绑定事件时，需要以<code>increment()</code>或<code>increment(value)</code>的形式。否则，以<code>increment</code>（如<code>@click=&quot;increment&quot;</code>）的形式绑定事件，传入的<code>value</code>参数就是当前绑定事件的对象（可能会造成数据错误）。</p>
+<p><code>mapMutations()</code>数组参数写法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapMutations</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">]),</span>
+</span></span></code></pre></div><p>相当于：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">INCREMENT</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;INCREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">DECREMENT</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s1">&#39;DECREMENT&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="mapactions" data-numberify>mapActions<a class="anchor ms-1" href="#mapactions"></a></h2>
+<p><code>mapActions()</code>用于在<code>methods</code>中快速生成分发（<code>dispatch</code>）对应Action的方法。</p>
+<p><code>mapMutations()</code>的用法基本上与<code>mapMutations()</code>相同。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapActions</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="o">:</span> <span class="s1">&#39;increment&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="err">：</span><span class="s1">&#39;decrement&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="nx">mapActions</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;increment&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;decrement&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">]),</span>
+</span></span></code></pre></div><p>上述两种方式相当于：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">increment</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;increment&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">decrement</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;decrement&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>同样使用<code>increment()</code>或<code>increment(value)</code>的形式调用或绑定事件。</p>
+</div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/docs/vue/dev-server-poxy/">Vue CLI 服务代理</a>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/components/slots/">
+    Vue 插槽 Slots
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月22日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/dev-server-poxy/">
+    Vue CLI 服务代理
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月21日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/animations/">
+    Vue 过渡和动画
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月20日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/components/life-cycle/">
+    Vue 组件生命周期
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月20日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/vue/components/pubsub-js/">
+    Vue 消息订阅与发布（pubsub-js）
+  </a>
+  <div class="post-meta mb-0">
+    2023年9月19日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
+  <div class="container">
+    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-vuex">安装 Vuex</a></li>
+    <li><a href="#配置-vuex">配置 Vuex</a></li>
+    <li><a href="#使用-store">使用 Store</a>
+      <ul>
+        <li><a href="#dispatch">dispatch</a></li>
+        <li><a href="#commit">commit</a></li>
+        <li><a href="#state">state</a></li>
+        <li><a href="#getters">getters</a></li>
+      </ul>
+    </li>
+    <li><a href="#vuex-映射">Vuex 映射</a>
+      <ul>
+        <li><a href="#mapstate">mapState</a></li>
+        <li><a href="#mapgetters">mapGetters</a></li>
+        <li><a href="#mapmutations">mapMutations</a></li>
+        <li><a href="#mapactions">mapActions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
+    
+
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="row text-center">
+  <div class="col-12 mt-2">
+    <p class="mb-2">
+      Linner&#39;s Blog
+    </p>
+
+    <p class="text-secondary mb-2">
+      <small></small>
+    </p>
+
+    <p class="text-secondary mb-2">
+      
+      <a href="https://beian.miit.gov.cn/" target="_blank" >粤ICP备2022125602号-1</a>
+    </p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2023 Linner. All Rights Reserved.
+</small>
+</div>
+<div class="powered-by mb-2 text-secondary">
+  <small>
+    Build with ❤️ from the <a class="text-primary" href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> and the <a class="text-primary" href="https://github.com/razonyang/hugo-theme-bootstrap" target="_blank" rel="noopener noreferrer">HBS</a> theme.
+  </small>
+</div>
+
+
+<nav class="social-links nav justify-content-center mb-2 mt-3">
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://space.bilibili.com/375861626" title="哔哩哔哩" rel="me">
+        <i class="fa-fw fa-2x fab fa-bilibili"
+           style="color: #fb7299;"></i>
+      </a>
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope" style="color: #0963ac;"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1525811756&amp;site=qq&amp;menu=yes" title="QQ" rel="me">
+        <i class="fa-fw fa-2x fab fa-qq"
+          ></i>
+      </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://www.zhihu.com/people/chen-yu-da-ren" title="知乎" rel="me">
+        <i class="fa-fw fa-2x fab fa-zhihu"
+           style="color: #056de8;"></i>
+      </a>
+</nav>
+</div>
+  
+  <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.67fea83894c964b385accead61283b1ea3bfb26367431c831233ddc9f1fafac8.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+
+<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+  
+  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+
+
+<script src="/js/sw-register.js" defer></script>
+
+
+  </body>
+</html>
