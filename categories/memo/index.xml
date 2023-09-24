@@ -8,7 +8,98 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 10 Aug 2023 08:40:27 +0000</lastBuildDate><atom:link href="/categories/memo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Sep 2023 06:48:35 +0000</lastBuildDate><atom:link href="/categories/memo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>局域网同步 Git 仓库</title>
+      <link>/blog/2023/09/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%90%8C%E6%AD%A5-git-%E4%BB%93%E5%BA%93/</link>
+      <pubDate>Sun, 24 Sep 2023 06:48:35 +0000</pubDate>
+      
+      <guid>/blog/2023/09/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%90%8C%E6%AD%A5-git-%E4%BB%93%E5%BA%93/</guid>
+      <description><![CDATA[裸仓库 在局域网下对仓库进行同步，除了自己搭建Git服务外，还有一种方式，就是搭建一个专用于同步代码的裸仓库。 裸仓库是一种没有工作目录、不存储]]></description>
+      <content:encoded><![CDATA[<h1 id="裸仓库" data-numberify>裸仓库<a class="anchor ms-1" href="#裸仓库"></a></h1>
+<p>在局域网下对仓库进行同步，除了自己搭建Git服务外，还有一种方式，就是搭建一个专用于同步代码的<strong>裸仓库</strong>。</p>
+<p>裸仓库是一种没有工作目录、不存储任何实际文件的仓库。裸仓库中只包含了版本历史信息和索引，没有文件副本。它只是一个包含Git版本控制所需的元数据的文件夹。</p>
+<p>裸仓库通常用于共享代码的中央仓库，在团队协作中扮演着重要的角色。由于裸仓库没有工作目录，因此不能在上面进行实际的编辑和修改文件的操作，仅仅是用来存储并共享版本控制的历史记录。</p>
+<p>裸仓库的用处与优点如下：</p>
+<ul>
+<li>分布式开发与协作。</li>
+<li>版本控制的中心仓库。</li>
+<li>提高性能和节省空间。</li>
+</ul>
+<p>由于裸仓库可以使用Git创建，所以它可以在局域网环境中对代码进行同步。</p>
+<p>裸仓库没有工作目录，但是它可以被其它（局域网中的）拥有权限的任何人<code>clone</code>、<code>push</code>和<code>pull</code>。</p>
+<hr>
+<h1 id="创建裸仓库" data-numberify>创建裸仓库<a class="anchor ms-1" href="#创建裸仓库"></a></h1>
+<p>假设要为一个<code>myapp</code>创建一个用于同步代码，可以为其初始化一个裸仓库：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git init --bare myapp.git
+</span></span></code></pre></div><p>一般初始化工作仓库的命令是<code>git init</code>，而<code>--bare</code>参数表示的是初始化一个裸仓库。裸仓库一般使用<code>.git</code>作为结尾。就像从Github之类的网站上<code>clone</code>时一样，那些仓库的URL常常以<code>.git</code>做为后缀。</p>
+<hr>
+<h1 id="裸仓库和工作仓库的区别" data-numberify>裸仓库和工作仓库的区别<a class="anchor ms-1" href="#裸仓库和工作仓库的区别"></a></h1>
+<p>一般工作仓库的<code>config</code>：</p>
+<pre tabindex="0"><code>[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+</code></pre><p>裸仓库的<code>config</code>：</p>
+<pre tabindex="0"><code>[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+	sharedrepository = 1
+</code></pre><p>对比工作仓库和裸仓库的<code>config</code>，可以很明显地看出它们在<code>config</code>上最直接的区别就是裸仓库的<code>bare</code>是<code>true</code>。</p>
+<hr>
+<h1 id="关联裸仓库" data-numberify>关联裸仓库<a class="anchor ms-1" href="#关联裸仓库"></a></h1>
+<p>创建好裸仓库之后，就可以在原本的仓库中将裸仓库添加到远程仓库中。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git remote add local_origin ssh://linner@localhost/repo/myapp.git
+</span></span></code></pre></div><p>Git远程仓库不仅支持HTTP/HTTPS和Git协议，还支持本地协议（<code>file://</code>）、SSH协议（<code>ssh://</code>）。</p>
+<p>当然在添加远程仓库之前，也需要对仓库或服务进行一些配置。例如使用SSH协议，最好实现为两台服务器<a href="/blog/2022/08/ssh-%e5%85%ac%e9%92%a5%e9%85%8d%e7%bd%ae/">交换公钥</a>。</p>
+<hr>
+<h1 id="git-钩子" data-numberify>Git 钩子<a class="anchor ms-1" href="#git-钩子"></a></h1>
+<p>通过Git钩子（Git Hooks）可以很方便地在进行提交或拉取时进行一些自定义操作。例如在提交代码后，自动Pull代码，然后部署项目。</p>
+<blockquote>
+<p>Git钩子是Git提供的，在进行一些操作时（例如<code>commit</code>、<code>push</code>、<code>pll</code>等操作）执行的一些脚本。</p>
+</blockquote>
+<p>常见的Git钩子有：</p>
+<ul>
+<li>本地钩子：
+<ul>
+<li><code>pre-commit</code></li>
+<li><code>prepare-commit-msg</code></li>
+<li><code>commit-msg</code></li>
+<li><code>post-commit</code></li>
+<li><code>post-checkout</code></li>
+<li><code>pre-rebase</code></li>
+</ul>
+</li>
+<li>服务端钩子：
+<ul>
+<li><code>pre-receive</code></li>
+<li><code>update</code></li>
+<li><code>post-receive</code></li>
+</ul>
+</li>
+</ul>
+<p>Git钩子在Git仓库中是存储在特定目录下的一系列脚本文件。在工作仓库中，它们被存储在工作根目录的<code>.git\hooks</code>目录中；在裸仓库中，它们被存储在仓库根目录的<code>hooks</code>目录中。</p>
+<p>在初始化仓库（<code>git init</code>）之后，Git会提供一些使用钩子的案例（其中对钩子进行了简单的说明和一些代码示例）。它们在<code>hooks</code>目录中，这些由Git创建的钩子脚本文件，都是以<code>.sample</code>做为后缀。你可以将<code>.sample</code>后缀删除后启用它们，Git会在特定时刻自动执行钩子中的脚本。</p>
+<p>Git Hooks具体的使用方式可以查看<a href="https://git-scm.com/docs/githooks#_hooks" target="_blank" rel="noopener noreferrer">https://git-scm.com/docs/githooks#_hooks<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+<h1 id="自动-pull-代码" data-numberify>自动 Pull 代码<a class="anchor ms-1" href="#自动-pull-代码"></a></h1>
+<p>通过Git提供的钩子，我们可以很方便地定制一些流程（<u><strong>偷懒</strong></u>）。</p>
+<p>我的个人博客网站是由Hugo构建，然后通过Github挂载在<a href="https://app.netlify.com/" target="_blank" rel="noopener noreferrer">Netlify<i class="fas fa-external-link-square-alt ms-1"></i></a>上。在编写完一篇文章后需要将Markdown编译成静态网页的形式，然后提交到Git仓库中。</p>
+<p>由于一些限制，例如网络不佳（Netlify在国内的访问速度还是可以的）、设备断网或者是在无法访问到外网（本地局域网之外）的情况下，可能无法顺畅地浏览个人博客中的内容。</p>
+<p>为此，我在本地使用Docker创建了两个容器。一个容器是用于编辑博文内容并且将内容编译成网页格式；另一个容器是用于将 Linner&rsquo;s Blog 挂载到本地。这样在上述的一些特殊情况下，我依然可以顺畅地浏览我的个人博客网站。</p>
+<blockquote>
+<p>创建两个容器是为了区分两个容器的职责。这是基于分布式理念，让特定的工作交给特定的容器去处理。这样在我无需编辑博客时，我可以将用于编辑博客的容器关闭，让PC上更多的资源可以为我所用。当然，区分容器也降低了由于依赖环境冲突所造成的风险。</p>
+</blockquote>
+<p>由于将编辑和浏览分为了两个容器，为了让两个容器上的Git仓库可以在任何时候都能互通，我使用了裸仓库和钩子来同步这两个仓库。</p>
+<p>将两个容器的公钥相互交换（交换之前使用了Docker Network让两个容器能够连通），然后在裸仓库中使用<code>post-receive</code>钩子，在将编译完成之后的网页提交到裸仓库后，让用于浏览的容器可以自动将编译完成好的内容<code>pull</code>下来。</p>
+<p>在<code>post-receive</code>中，我使用的是最简单最直接的方式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ssh root@my-site <span class="s2">&#34;git -C /root/myblog pull&#34;</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
     <item>
       <title>VS Code 中英字符对齐</title>
       <link>/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/</link>
