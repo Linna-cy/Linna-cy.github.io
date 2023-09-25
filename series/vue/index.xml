@@ -245,7 +245,8 @@
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">],</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><hr>
+</span></span></code></pre></div><p>在<code>MessageDetail</code>的<code>path</code>中，使用了两个以<code>:</code>为开头的占位符（<code>:id</code>和<code>:title</code>）。<code>:</code>后是当前路径参数的名称（<code>id</code>和<code>title</code>）。</p>
+<hr>
 <h2 id="传递路径参数" data-numberify>传递路径参数<a class="anchor ms-1" href="#传递路径参数"></a></h2>
 <p>传递路径参数的方式与传递Query参数的方式十分相同。传递路径参数也有两种方式：</p>
 <ul>
@@ -264,7 +265,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">  {{ message.title }}
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
-</span></span></code></pre></div></li>
+</span></span></code></pre></div><p>在<code>params</code>中配置传递的参数以及它们的值。<code>params</code>属性的<code>key</code>是传递的参数的名称（对应路由配置中占位符里<code>:</code>后的内容），<code>value</code>是传递的参数的值（就像Axios的<code>params</code>配置那样）。</p>
+</li>
 </ul>
 <h2 id="接收路径参数" data-numberify>接收路径参数<a class="anchor ms-1" href="#接收路径参数"></a></h2>
 <p>接收路径参数的形式与接收Query参数的形式也十分相似。在对应的路由组件实例中，使用<code>$route.params</code>来接收并获取这些路径参数。</p>
@@ -277,8 +279,11 @@
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">title</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><blockquote>
-<p>注：获取路径参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
+</span></span></code></pre></div><p>在路由实例中，通过<code>$route.params.argName</code>的形式获取路径参数的值。</p>
+<blockquote>
+<p>注：</p>
+<p>获取路径参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
+<p>路径参数需要在路由的<code>path</code>中使用占位符配置，否则Vue Router不会接收到这些路径参数。</p>
 </blockquote>
 ]]></content:encoded>
     </item>

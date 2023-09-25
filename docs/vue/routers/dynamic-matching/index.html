@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue 动态路由匹配">
 <meta itemprop="description" content="在Vue Router中，路由路径有以下几种匹配形式： 静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹"><meta itemprop="datePublished" content="2023-09-25T04:27:20+00:00" />
 <meta itemprop="dateModified" content="2023-09-25T04:27:20+00:00" />
-<meta itemprop="wordCount" content="962">
+<meta itemprop="wordCount" content="1217">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -713,7 +713,7 @@ Linner
     <h1 class="card-title post-title my-2">Vue 动态路由匹配</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-09-25 12:27:20 &#43;0800 CST。">2023年9月25日</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-25 12:27:20 &#43;0800 CST。">2023年9月25日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
@@ -780,7 +780,8 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">],</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><hr>
+</span></span></code></pre></div><p>在<code>MessageDetail</code>的<code>path</code>中，使用了两个以<code>:</code>为开头的占位符（<code>:id</code>和<code>:title</code>）。<code>:</code>后是当前路径参数的名称（<code>id</code>和<code>title</code>）。</p>
+<hr>
 <h2 id="传递路径参数" data-numberify>传递路径参数<a class="anchor ms-1" href="#传递路径参数"></a></h2>
 <p>传递路径参数的方式与传递Query参数的方式十分相同。传递路径参数也有两种方式：</p>
 <ul>
@@ -799,7 +800,8 @@ Linner
 </span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">  {{ message.title }}
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
-</span></span></code></pre></div></li>
+</span></span></code></pre></div><p>在<code>params</code>中配置传递的参数以及它们的值。<code>params</code>属性的<code>key</code>是传递的参数的名称（对应路由配置中占位符里<code>:</code>后的内容），<code>value</code>是传递的参数的值（就像Axios的<code>params</code>配置那样）。</p>
+</li>
 </ul>
 <h2 id="接收路径参数" data-numberify>接收路径参数<a class="anchor ms-1" href="#接收路径参数"></a></h2>
 <p>接收路径参数的形式与接收Query参数的形式也十分相似。在对应的路由组件实例中，使用<code>$route.params</code>来接收并获取这些路径参数。</p>
@@ -812,8 +814,11 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">title</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><blockquote>
-<p>注：获取路径参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
+</span></span></code></pre></div><p>在路由实例中，通过<code>$route.params.argName</code>的形式获取路径参数的值。</p>
+<blockquote>
+<p>注：</p>
+<p>获取路径参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
+<p>路径参数需要在路由的<code>path</code>中使用占位符配置，否则Vue Router不会接收到这些路径参数。</p>
 </blockquote>
 </div>
 </div>
