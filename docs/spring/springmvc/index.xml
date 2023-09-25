@@ -771,13 +771,13 @@ URL。</li>
 <blockquote>
 <p>在客户端向服务器发送请求时，<code>DispatcherServlet</code>会首先根据<code>@RequestMapping</code>获取对应的控制器方法。</p>
 </blockquote>
-<h2 id="接收-url-参数" data-numberify>接收 URL 参数<a class="anchor ms-1" href="#接收-url-参数"></a></h2>
-<blockquote>
-<p>接收URL参数，GET和POST请求的编写方式一致。</p>
+<h2 id="接收-query-参数" data-numberify>接收 Query 参数<a class="anchor ms-1" href="#接收-query-参数"></a></h2>
+<p>Query参数，也就是拼接在请求路径后面，以<code>?</code>开始，使用<code>&amp;</code>分隔每个参数项的参数传递方式。例如：</p>
+<pre tabindex="0"><code>http://localhost/user/hello?name=张三
+</code></pre><p>接收Query参数，GET和POST请求的编写方式一致。</p>
 <p>如果要使用不同的方式接收请求，可以修改<code>@RequestMapping</code>注解：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;/save&#34;</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
-</span></span></code></pre></div></blockquote>
-<h3 id="普通参数" data-numberify>普通参数<a class="anchor ms-1" href="#普通参数"></a></h3>
+</span></span></code></pre></div><h3 id="普通参数" data-numberify>普通参数<a class="anchor ms-1" href="#普通参数"></a></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Controller</span>
 </span></span><span class="line"><span class="cl"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/user&#34;</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
@@ -803,9 +803,8 @@ URL。</li>
 </span></span></code></pre></div><ul>
 <li>
 <p>请求参数：</p>
-<p>普通参数即URL地址传参。</p>
-<p><u>定义相同的地址参数名与方法形参变量名即可接收参数。</u></p>
-<p><u>如果想要形参名与地址参数名不同则可使用<code>@RequestParam</code>注解定义地址参数名。</u></p>
+<p><u>定义相同的Query参数名与方法形参变量名即可接收参数。</u></p>
+<p><u>如果想要形参名与Query参数名不同则可使用<code>@RequestParam</code>注解定义Query参数名。</u></p>
 <p>如果有多个请求参数则定义多个方法参数。</p>
 </li>
 <li>
@@ -892,7 +891,7 @@ URL。</li>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><h2 id="json-数据参数" data-numberify>JSON 数据参数<a class="anchor ms-1" href="#json-数据参数"></a></h2>
-<p>使用JSON传输需要添加相应依赖。SpringMVC默认使用的是jackson来处理json的转换：</p>
+<p>使用JSON传输需要添加相应依赖。SpringMVC默认使用的是<code>jackson</code>来处理json的转换：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span class="nt">&lt;/groupId&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>jackson-databind<span class="nt">&lt;/artifactId&gt;</span>
@@ -1179,7 +1178,7 @@ URL。</li>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><h2 id="params-请求参数映射匹配" data-numberify>params 请求参数映射匹配<a class="anchor ms-1" href="#params-请求参数映射匹配"></a></h2>
+</span></span></code></pre></div><h2 id="params-请求参数映射匹配" data-numberify>Params 请求参数映射匹配<a class="anchor ms-1" href="#params-请求参数映射匹配"></a></h2>
 <p><code>params</code>是<code>@RequestMapping</code>中的一个属性，该属性通过请求的请求参数匹配请求映射。</p>
 <p>用法如下：</p>
 <ul>

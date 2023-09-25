@@ -78,6 +78,89 @@
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
 </span></span></code></pre></div><p>可以看出，为<code>News</code>和<code>Message</code>添加的<code>&lt;router-link&gt;</code>，其<code>to</code> Prop配置的都是以<code>/home</code>开头的完整的目录路径。</p>
 <p>这是因为，如果使用相对路径，那么路由的路径可能会出错。</p>
+<hr>
+<h1 id="路由-query-传参" data-numberify>路由 Query 传参<a class="anchor ms-1" href="#路由-query-传参"></a></h1>
+<p>路由有了嵌套的关系之后，必然会涉及到父子路由之间数据的传递。Vue Router可以像调用API一样，让路由通过Query的形式传递参数。</p>
+<blockquote>
+<p>Query传参形式也就是在URL后，以<code>?</code>为开始，使用<code>&amp;</code>分隔每个参数项的参数传递方式。例如：<code>http://localhost:8080/home/user?name=张三</code></p>
+</blockquote>
+<p>假设现在有个名为<code>MessageDetail</code>的路由组件，该组件是<code>Message</code>的子路由组件，且需要<code>Message</code>给他传递一些消息数据。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/* import... */</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Detail</span> <span class="nx">from</span> <span class="s1">&#39;../pages/Detail.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>  <span class="c1">// 应用 VueRouter 插件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建并导出 Router
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="c1">// 一级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/about&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">About</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="c1">// 一级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">Home</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="c1">// 二级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">component</span><span class="o">:</span> <span class="nx">News</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="c1">// 二级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;message&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">component</span><span class="o">:</span> <span class="nx">Message</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="c1">// 三级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>              <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;detail&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">              <span class="nx">component</span><span class="o">:</span> <span class="nx">Detail</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h2 id="传递-query-参数" data-numberify>传递 Query 参数<a class="anchor ms-1" href="#传递-query-参数"></a></h2>
+<p>在Vue Router中，使用<code>&lt;router-link&gt;</code>的<code>to</code> prop给Route组件实例传参。<code>&lt;router-link&gt;</code>传递Query参数有两种方式：</p>
+<ul>
+<li>
+<p>字符串拼接：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">:to</span><span class="o">=</span><span class="s">&#34;`/home/message/detail?id=${message.id}&amp;title=${message.title}`&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  {{ message.title }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>To</code>对象：通过<code>v-bind</code>指令给<code>to</code> prop传递一个对象类型的参数。通过这个<code>To</code>对象指定传递的Query</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;{
+</span></span></span><span class="line"><span class="cl"><span class="s">  path: &#39;/home/message/detail&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  query: {
+</span></span></span><span class="line"><span class="cl"><span class="s">    id: message.id,
+</span></span></span><span class="line"><span class="cl"><span class="s">    title: message.title,
+</span></span></span><span class="line"><span class="cl"><span class="s">  }
+</span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  {{ message.title }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>在<code>To</code>对象中的<code>query</code>属性中配置传递的参数以及它们的值。<code>query</code>属性的<code>key</code>是传递的参数的名称，<code>value</code>是传递的参数的值（就像Axios的<code>params</code>配置那样）。</p>
+</li>
+</ul>
+<h2 id="接收-query-参数" data-numberify>接收 Query 参数<a class="anchor ms-1" href="#接收-query-参数"></a></h2>
+<p>接收参数需要在对应的路由组件中进行配置。</p>
+<p>如上，在<code>MessageDetail</code>路由组件中，使用路由组件实例的<code>$route.query</code>对象接收并获取这些参数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">id</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">title</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">title</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div><p>Vue Router的Query参数都会被对应的路由组件的实例中的<code>$route.query</code>对象接收。通过<code>$route.query.argName</code>的形式获取这些参数的值。</p>
+<blockquote>
+<p>注：</p>
+<p>获取Query参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
+<p>在Vue Router中，使用Query形式传递的参数，即使它们在对应的路由组件中没有被使用，依然会被<code>$route.query</code>接收到。</p>
+</blockquote>
 ]]></content:encoded>
     </item>
     
