@@ -184,6 +184,106 @@
     </item>
     
     <item>
+      <title>Vue 动态路由匹配</title>
+      <link>/docs/vue/routers/dynamic-matching/</link>
+      <pubDate>Mon, 25 Sep 2023 04:27:20 +0000</pubDate>
+      
+      <guid>/docs/vue/routers/dynamic-matching/</guid>
+      <description><![CDATA[在Vue Router中，路由路径有以下几种匹配形式： 静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹]]></description>
+      <content:encoded><![CDATA[<p>在Vue Router中，路由路径有以下几种匹配形式：</p>
+<ul>
+<li><strong>静态匹配</strong>：即完全按照<code>path</code>中的内容，进行相等匹配。</li>
+<li><strong>动态匹配</strong>：根据<code>path</code>中定义的路径匹配规则匹配多个路径。</li>
+</ul>
+<hr>
+<h1 id="路径参数" data-numberify>路径参数<a class="anchor ms-1" href="#路径参数"></a></h1>
+<p>Vue中的动态参数匹配使用的是<strong>路径参数匹配</strong>。路径参数是路径中的一个动态字段。路径参数的值会动态变化，根据这些路径参数的值，可以读取相应的数据或展示相应的页面。</p>
+<p>例如，有个<code>User</code>组件对所有用户进行渲染，但用户ID不同。使用路径参数，可以让用户ID像路径中的某个资源或目录一样在URL中展示。变换不同的用户ID，就像切换目录一样路由到不同的用户界面。</p>
+<p>使用路径参数包含3个步骤：</p>
+<ul>
+<li>在Router配置文件（<code>router/index.js</code>）中，配置路径参数的匹配规则。</li>
+<li>使用<code>&lt;router-link&gt;</code>传递路径参数。</li>
+<li>在对应的路由组件中使用<code>$route.params</code>接收路径参数。</li>
+</ul>
+<h2 id="配置路径参数匹配规则" data-numberify>配置路径参数匹配规则<a class="anchor ms-1" href="#配置路径参数匹配规则"></a></h2>
+<p>在Router配置文件的<code>route</code>元素或<code>children</code>中的<code>path</code>属性上配置当前路由的路径参数匹配规则。</p>
+<p>例如，在<code>User</code>路由组件中使用路径参数，其路由配置如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">User</span> <span class="nx">from</span> <span class="s1">&#39;../pages/User.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/user/:id&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">User</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>如上<code>User</code>的路由规则可以使用<code>/user/zhangsan</code>、<code>/user/lisi</code>等方式映射。</p>
+<p>将<a href="../nested-routes/#%e8%b7%af%e7%94%b1-query-%e4%bc%a0%e5%8f%82">嵌套路由 —— 路由 Query 传参</a>中的<code>MessageDetail</code>改为使用路径参数形式传参，其路由配置如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* about route... */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">Home</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* news route... */</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;message&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">component</span><span class="o">:</span> <span class="nx">Message</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;:id/:title&#39;</span><span class="p">,</span> <span class="c1">// 路径传参
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>              <span class="nx">component</span><span class="o">:</span> <span class="nx">MessageDetail</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><hr>
+<h2 id="传递路径参数" data-numberify>传递路径参数<a class="anchor ms-1" href="#传递路径参数"></a></h2>
+<p>传递路径参数的方式与传递Query参数的方式十分相同。传递路径参数也有两种方式：</p>
+<ul>
+<li>
+<p>字符拼接：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;`/home/message/${message.id}/${message.title}`&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>传入对象：与传递Query参数的方式基本相同。不同的是，传递路径参数需要配置的是<code>to</code> prop对象中<code>params</code>属性。并且传递路径参数时不能使用<code>path</code>属性指定路由，必须使用<code>name</code>来指定路由。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;{
+</span></span></span><span class="line"><span class="cl"><span class="s">  name: &#39;MessageDetail&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  params: {
+</span></span></span><span class="line"><span class="cl"><span class="s">    id: message.id,
+</span></span></span><span class="line"><span class="cl"><span class="s">    title: message.title,
+</span></span></span><span class="line"><span class="cl"><span class="s">  },
+</span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  {{ message.title }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="接收路径参数" data-numberify>接收路径参数<a class="anchor ms-1" href="#接收路径参数"></a></h2>
+<p>接收路径参数的形式与接收Query参数的形式也十分相似。在对应的路由组件实例中，使用<code>$route.params</code>来接收并获取这些路径参数。</p>
+<p>接上例，在<code>MessageDetail</code>中接收并获取路径参数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">id</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">title</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">title</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p>注：获取路径参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
+</blockquote>
+]]></content:encoded>
+    </item>
+    
+    <item>
       <title>Vue 路由</title>
       <link>/docs/vue/routers/introduction/</link>
       <pubDate>Sat, 23 Sep 2023 05:27:36 +0000</pubDate>

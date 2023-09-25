@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Node.js Express 模块基础 | Linner&#39;s Blog</title>
+    <title>Vue 动态路由匹配 | Linner&#39;s Blog</title>
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
@@ -13,27 +13,27 @@
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
 <meta name="keywords" content="Linner Blog 博客" />
-  <meta name="description" content="Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex" />
+  <meta name="description" content="在Vue Router中，路由路径有以下几种匹配形式： 静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹" />
     <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Node.js Express 模块基础"/>
-<meta name="twitter:description" content="Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex"/>
-<meta property="og:title" content="Node.js Express 模块基础" />
-<meta property="og:description" content="Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex" />
+<meta name="twitter:title" content="Vue 动态路由匹配"/>
+<meta name="twitter:description" content="在Vue Router中，路由路径有以下几种匹配形式： 静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹"/>
+<meta property="og:title" content="Vue 动态路由匹配" />
+<meta property="og:description" content="在Vue Router中，路由路径有以下几种匹配形式： 静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/docs/node-js/express/base/" /><meta property="article:section" content="docs" />
-<meta property="article:published_time" content="2023-08-10T15:11:28+00:00" />
-<meta property="article:modified_time" content="2023-08-10T15:11:28+00:00" />
-<meta property="og:see_also" content="/docs/node-js/typescript/" /><meta property="og:see_also" content="/docs/node-js/express/cors-request/" /><meta property="og:see_also" content="/docs/node-js/express/middleware/" /><meta property="og:see_also" content="/docs/node-js/express/router/" /><meta property="og:see_also" content="/docs/node-js/nodemon/" />
+<meta property="og:url" content="/docs/vue/routers/dynamic-matching/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2023-09-25T04:27:20+00:00" />
+<meta property="article:modified_time" content="2023-09-25T04:27:20+00:00" />
+<meta property="og:see_also" content="/docs/vue/routers/nested-routes/" /><meta property="og:see_also" content="/docs/vue/routers/introduction/" /><meta property="og:see_also" content="/docs/vue/vuex/" /><meta property="og:see_also" content="/docs/vue/components/slots/" /><meta property="og:see_also" content="/docs/vue/dev-server-poxy/" />
 
-<meta itemprop="name" content="Node.js Express 模块基础">
-<meta itemprop="description" content="Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Ex"><meta itemprop="datePublished" content="2023-08-10T15:11:28+00:00" />
-<meta itemprop="dateModified" content="2023-08-10T15:11:28+00:00" />
-<meta itemprop="wordCount" content="1588">
+<meta itemprop="name" content="Vue 动态路由匹配">
+<meta itemprop="description" content="在Vue Router中，路由路径有以下几种匹配形式： 静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹"><meta itemprop="datePublished" content="2023-09-25T04:27:20+00:00" />
+<meta itemprop="dateModified" content="2023-09-25T04:27:20+00:00" />
+<meta itemprop="wordCount" content="962">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
-  <meta property="og:image:alt" content="Node.js Express 模块基础" />
-  <meta name="twitter:image:alt" content="Node.js Express 模块基础" />
+  <meta property="og:image:alt" content="Vue 动态路由匹配" />
+  <meta name="twitter:image:alt" content="Vue 动态路由匹配" />
   <link rel="manifest" href="/manifest.json">
 
 <link data-precache rel="stylesheet" href="/assets/main/bundle.min.5d2cef75ebbe961fea594e4454bba142c3b4bb72f172f5d6a0f6a5c39a8714f8.css" crossorigin="anonymous">
@@ -319,14 +319,14 @@ Linner
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#offcanvasDocsNav"></button>
     </div>
     <div class="offcanvas-body pt-2 flex-column"><ul class="list-unstyled mb-2 w-100"><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/"><span class="docs-nav-title">Vue</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-1029dbd31a6591a6326ddf96ff69dbdb" aria-expanded="false" aria-controls="nav-1029dbd31a6591a6326ddf96ff69dbdb">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-1029dbd31a6591a6326ddf96ff69dbdb" aria-expanded="true" aria-controls="nav-1029dbd31a6591a6326ddf96ff69dbdb">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-1029dbd31a6591a6326ddf96ff69dbdb">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-1029dbd31a6591a6326ddf96ff69dbdb">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/introduction/"><span class="docs-nav-title">介绍</span></a>
@@ -395,20 +395,20 @@ Linner
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/vuex/"><span class="docs-nav-title">Vuex 插件</span></a>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/routers/"><span class="docs-nav-title">路由</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-e014579cb5338bc649a542e4ffc7f55d" aria-expanded="false" aria-controls="nav-e014579cb5338bc649a542e4ffc7f55d">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e014579cb5338bc649a542e4ffc7f55d" aria-expanded="true" aria-controls="nav-e014579cb5338bc649a542e4ffc7f55d">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-e014579cb5338bc649a542e4ffc7f55d">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-e014579cb5338bc649a542e4ffc7f55d">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/routers/introduction/"><span class="docs-nav-title">介绍</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/routers/nested-routes/"><span class="docs-nav-title">嵌套路由</span></a>
-        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/vue/routers/dynamic-matching/"><span class="docs-nav-title">动态路由匹配</span></a>
         </li></ul>
             </div>
@@ -442,14 +442,14 @@ Linner
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/"><span class="docs-nav-title">Node.js</span></a>
-            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-c94ab24a95e5a55230dfbc0cebf70a38" aria-expanded="true" aria-controls="nav-c94ab24a95e5a55230dfbc0cebf70a38">
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-c94ab24a95e5a55230dfbc0cebf70a38" aria-expanded="false" aria-controls="nav-c94ab24a95e5a55230dfbc0cebf70a38">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-c94ab24a95e5a55230dfbc0cebf70a38">
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-c94ab24a95e5a55230dfbc0cebf70a38">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/introduction/"><span class="docs-nav-title">介绍</span></a>
@@ -464,16 +464,16 @@ Linner
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/npm-and-package/"><span class="docs-nav-title">NPM 与包</span></a>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/"><span class="docs-nav-title">Express</span></a>
-            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-e8dad32c76039d4a0ee9c8d08e224e8b" aria-expanded="true" aria-controls="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
+            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-e8dad32c76039d4a0ee9c8d08e224e8b" aria-expanded="false" aria-controls="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
+          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-e8dad32c76039d4a0ee9c8d08e224e8b">
             <div class="btn-toggle-nav fw-normal ms-2 small">
-              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
+              <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/base/"><span class="docs-nav-title">Express 基础</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/node-js/express/router/"><span class="docs-nav-title">Express 路由</span></a>
@@ -675,7 +675,7 @@ Linner
 </aside><div class="col-xxl-7 ms-auto">
   <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body pb-0">
-    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/node-js/">Node.js</a></li><li class="breadcrumb-item text-surface"><a href="/docs/node-js/express/">Express</a></li><li class="breadcrumb-item active">Node.js Express 模块基础</li></ol>
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/vue/">Vue</a></li><li class="breadcrumb-item text-surface"><a href="/docs/vue/routers/">路由</a></li><li class="breadcrumb-item active">Vue 动态路由匹配</li></ol>
   </div>
 </nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
   <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
@@ -710,13 +710,13 @@ Linner
   </div>
 </div><article class="row card component mb-4 post">
 <div class="card-header ">
-    <h1 class="card-title post-title my-2">Node.js Express 模块基础</h1>
+    <h1 class="card-title post-title my-2">Vue 动态路由匹配</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-08-10 23:11:28 &#43;0800 CST。">2023年8月10日</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-25 12:27:20 &#43;0800 CST。">2023年9月25日</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/node.js/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
-      <i class="fas fa-fw fa-columns me-1"></i>Node.js</a>
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
 </div>
 
 <div class="mt-2 mb-3 d-block d-xxl-none">
@@ -725,119 +725,97 @@ Linner
         </div>
     <hr class="text-secondary">
 </div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
-        <div id="post-content-body"><p>Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Express中文网地址为<a href="https://www.expressjs.com.cn/" target="_blank" rel="noopener noreferrer">https://www.expressjs.com.cn/<i class="fas fa-external-link-square-alt ms-1"></i></a>，官网地址为<a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer">https://expressjs.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
-<p>使用Node.js提供的原生<code>http</code>模块也一样可以创建Web服务器。只不过<code>http</code>模块用起来很麻烦、开发效率低，而Express在基于<code>http</code>的基础上进行了进一步的封装，能极大提高开发效率。</p>
-<p>安装Express 4.17.2版本：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i express@4.17.2
-</span></span></code></pre></div><p>使用Express的基本步骤如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 创建 Web 服务器
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 监听 80 端口，服务器启动成功后执行回调函数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Express server running at http://127.0.0.1&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><p>启动服务器，程序会先执行<code>app.listen()</code>方法中的回调函数。</p>
+        <div id="post-content-body"><p>在Vue Router中，路由路径有以下几种匹配形式：</p>
+<ul>
+<li><strong>静态匹配</strong>：即完全按照<code>path</code>中的内容，进行相等匹配。</li>
+<li><strong>动态匹配</strong>：根据<code>path</code>中定义的路径匹配规则匹配多个路径。</li>
+</ul>
 <hr>
-<h1 id="请求处理" data-numberify>请求处理<a class="anchor ms-1" href="#请求处理"></a></h1>
-<p>在Express中，请求方式并不需要自己使用Request对象去判断，可以直接调用Express提供的方法：</p>
+<h1 id="路径参数" data-numberify>路径参数<a class="anchor ms-1" href="#路径参数"></a></h1>
+<p>Vue中的动态参数匹配使用的是<strong>路径参数匹配</strong>。路径参数是路径中的一个动态字段。路径参数的值会动态变化，根据这些路径参数的值，可以读取相应的数据或展示相应的页面。</p>
+<p>例如，有个<code>User</code>组件对所有用户进行渲染，但用户ID不同。使用路径参数，可以让用户ID像路径中的某个资源或目录一样在URL中展示。变换不同的用户ID，就像切换目录一样路由到不同的用户界面。</p>
+<p>使用路径参数包含3个步骤：</p>
+<ul>
+<li>在Router配置文件（<code>router/index.js</code>）中，配置路径参数的匹配规则。</li>
+<li>使用<code>&lt;router-link&gt;</code>传递路径参数。</li>
+<li>在对应的路由组件中使用<code>$route.params</code>接收路径参数。</li>
+</ul>
+<h2 id="配置路径参数匹配规则" data-numberify>配置路径参数匹配规则<a class="anchor ms-1" href="#配置路径参数匹配规则"></a></h2>
+<p>在Router配置文件的<code>route</code>元素或<code>children</code>中的<code>path</code>属性上配置当前路由的路径参数匹配规则。</p>
+<p>例如，在<code>User</code>路由组件中使用路径参数，其路由配置如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">User</span> <span class="nx">from</span> <span class="s1">&#39;../pages/User.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/user/:id&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">User</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>如上<code>User</code>的路由规则可以使用<code>/user/zhangsan</code>、<code>/user/lisi</code>等方式映射。</p>
+<p>将<a href="../nested-routes/#%e8%b7%af%e7%94%b1-query-%e4%bc%a0%e5%8f%82">嵌套路由 —— 路由 Query 传参</a>中的<code>MessageDetail</code>改为使用路径参数形式传参，其路由配置如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* about route... */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">Home</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* news route... */</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;message&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">component</span><span class="o">:</span> <span class="nx">Message</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;:id/:title&#39;</span><span class="p">,</span> <span class="c1">// 路径传参
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>              <span class="nx">component</span><span class="o">:</span> <span class="nx">MessageDetail</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><hr>
+<h2 id="传递路径参数" data-numberify>传递路径参数<a class="anchor ms-1" href="#传递路径参数"></a></h2>
+<p>传递路径参数的方式与传递Query参数的方式十分相同。传递路径参数也有两种方式：</p>
 <ul>
 <li>
-<p><code>app.get()</code>：监听 GET 请求。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 监听客户端 GET /user 请求
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 参数1：客户端请求的 URL 地址
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 参数2：请求对应的处理函数
-</span></span></span><span class="line"><span class="cl"><span class="cm"> *      - req: Request 对象，包含了请求相关的属性与方法
-</span></span></span><span class="line"><span class="cl"><span class="cm"> *      - res: Response 对象，包含了响应相关的属性与方法
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/uer&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 向客户端发送 JSON 对象
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">id</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="s1">&#39;20&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">gender</span><span class="o">:</span> <span class="s1">&#39;man&#39;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">})</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
+<p>字符拼接：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;`/home/message/${message.id}/${message.title}`&#34;</span><span class="p">&gt;</span>
 </span></span></code></pre></div></li>
 <li>
-<p><code>app.post()</code>：监听 POST 请求。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 监听客户端 POST /login 请求
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * post() 方法的参数与 get() 方法类似
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 向客户端发送文本消息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录成功!&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
+<p>传入对象：与传递Query参数的方式基本相同。不同的是，传递路径参数需要配置的是<code>to</code> prop对象中<code>params</code>属性。并且传递路径参数时不能使用<code>path</code>属性指定路由，必须使用<code>name</code>来指定路由。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;{
+</span></span></span><span class="line"><span class="cl"><span class="s">  name: &#39;MessageDetail&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  params: {
+</span></span></span><span class="line"><span class="cl"><span class="s">    id: message.id,
+</span></span></span><span class="line"><span class="cl"><span class="s">    title: message.title,
+</span></span></span><span class="line"><span class="cl"><span class="s">  },
+</span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  {{ message.title }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
 </span></span></code></pre></div></li>
 </ul>
-<p>在Express中，可以使用Response对象的<code>send()</code>方法向客户端响应数据，响应的数据可以是JSON、文本、HTML等等。</p>
-<blockquote>
-<p>注：在调用了<code>res.send()</code>方法之后，代表业务逻辑处理完毕，所以<code>res.send()</code>方法之后不能再添加任何处理逻辑。</p>
+<h2 id="接收路径参数" data-numberify>接收路径参数<a class="anchor ms-1" href="#接收路径参数"></a></h2>
+<p>接收路径参数的形式与接收Query参数的形式也十分相似。在对应的路由组件实例中，使用<code>$route.params</code>来接收并获取这些路径参数。</p>
+<p>接上例，在<code>MessageDetail</code>中接收并获取路径参数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">id</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">title</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">title</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p>注：获取路径参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
 </blockquote>
-<p>Express支持所有关于HTTP的请求，可以通过使用<code>app.METHOD()</code>来指定请求方式。例如DELETE请求使用<code>app.delete()</code>。</p>
-<p>Express还支持通过<code>app.all()</code>来匹配所有请求方式。</p>
-<hr>
-<h1 id="获取请求参数" data-numberify>获取请求参数<a class="anchor ms-1" href="#获取请求参数"></a></h1>
-<p>获取查询参数：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 使用 request.query 对象，获取查询（路径）参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 获取具体的查询参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">name</span> <span class="o">||</span> <span class="o">!</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录失败! 请输入用户名密码!&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">==</span> <span class="s1">&#39;admin&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">password</span> <span class="o">==</span> <span class="s1">&#39;123456&#39;</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录成功!&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;登录失败! 用户名或密码不正确!&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><p>例如，使用 POST <code>http://localhost/login?name=admin&amp;password=123456</code> 进行请求时，可以通过<code>req.query['name']</code>和<code>req.query['password']</code>获取<code>name=admin</code>和<code>password=123456</code>这两个参数。然后将获取到的参数进行判断。</p>
-<p>获取动态参数：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user/:id&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 动态参数使用 &#34;:&#34; + 参数名 定义
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 使用 request.params 对象获取动态（URL）参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 向客户端发送 JSON 对象
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">id</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="s1">&#39;20&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">gender</span><span class="o">:</span> <span class="s1">&#39;man&#39;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">})</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div><p>例如，使用 GET <code>http://localhost/user/1</code> 进行请求时，通过<code>req.params['id']</code>获取URL中这个<code>:id</code>参数。</p>
-<hr>
-<h1 id="托管静态资源" data-numberify>托管静态资源<a class="anchor ms-1" href="#托管静态资源"></a></h1>
-<p>Express中使用<code>express.static()</code>和<code>app.use()</code>方法可以方便地托管静态资源。例如，托管存放静态资源的<code>public</code>目录：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 使用 express.static() 方法托管静态资源
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * express.static() 需要使用 app.use() 方法，并将其作为参数放入 app.use() 中
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 在进行访问时，默认直接在根路径下请求资源，无需使用 public 作为请求路径
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 并且 public 下的 index.html 会作为 GET / 请求时默认响应的页面
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 注：public 目录需要与当前 .js 文件同级
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">))</span>
-</span></span></code></pre></div><p><code>express.static()</code>可以通过多次调用来托管多个静态目录：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 可以多次使用 express.static() 托管多个静态资源
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 在访问静态资源时，express.static() 会根据目录的添加顺序查找所需的文件
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">))</span>
-</span></span></code></pre></div><p>Express托管静态目录时，可以指定访问当前资源的路径前缀：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * app.use() 可以使用路径前缀来访问静态资源
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * 只需要将 路径前缀 作为 参数1，将 express.static() 方法作为 参数2 即可
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/static&#39;</span><span class="p">,</span> <span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;static&#39;</span><span class="p">))</span>
-</span></span></code></pre></div></div>
+</div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -865,8 +843,11 @@ Linner
     </div>
   </div>
 </div></div><div class="card-footer">
-  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-next">
-      <a href="/docs/node-js/express/router/">Node.js Express 路由</a>
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/docs/vue/routers/introduction/">Vue 路由</a>
+    </div><div class="post-nav post-next">
+      <a href="/docs/vue/routers/nested-routes/">Vue 嵌套路由</a>
       <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
     </div></div>
 </div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
@@ -895,11 +876,11 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/blog/2023/08/vs-code-%E4%B8%AD%E8%8B%B1%E5%AD%97%E7%AC%A6%E5%AF%B9%E9%BD%90/">
-    VS Code 中英字符对齐
+  <a class="post-title" href="/blog/2023/09/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%90%8C%E6%AD%A5-git-%E4%BB%93%E5%BA%93/">
+    局域网同步 Git 仓库
   </a>
   <div class="post-meta mb-0">
-    2023年8月10日
+    2023年9月24日
 
   </div>
 </div>
@@ -912,11 +893,11 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/node-js/npm-and-package/">
-    NPM 与包
+  <a class="post-title" href="/docs/vue/routers/introduction/">
+    Vue 路由
   </a>
   <div class="post-meta mb-0">
-    2023年8月8日
+    2023年9月23日
 
   </div>
 </div>
@@ -929,11 +910,11 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/node-js/modularization/">
-    Node.js 模块化
+  <a class="post-title" href="/docs/vue/vuex/">
+    Vuex 插件
   </a>
   <div class="post-meta mb-0">
-    2023年8月7日
+    2023年9月22日
 
   </div>
 </div>
@@ -946,11 +927,11 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/node-js/http-module/">
-    Node.js HTTP 模块
+  <a class="post-title" href="/docs/vue/components/slots/">
+    Vue 插槽 Slots
   </a>
   <div class="post-meta mb-0">
-    2023年8月7日
+    2023年9月22日
 
   </div>
 </div>
@@ -963,11 +944,11 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/node-js/event/">
-    Node.js 事件循环
+  <a class="post-title" href="/docs/vue/dev-server-poxy/">
+    Vue CLI 服务代理
   </a>
   <div class="post-meta mb-0">
-    2023年8月6日
+    2023年9月21日
 
   </div>
 </div>
@@ -1014,9 +995,13 @@ Linner
     <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#请求处理">请求处理</a></li>
-    <li><a href="#获取请求参数">获取请求参数</a></li>
-    <li><a href="#托管静态资源">托管静态资源</a></li>
+    <li><a href="#路径参数">路径参数</a>
+      <ul>
+        <li><a href="#配置路径参数匹配规则">配置路径参数匹配规则</a></li>
+        <li><a href="#传递路径参数">传递路径参数</a></li>
+        <li><a href="#接收路径参数">接收路径参数</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
     </div>
