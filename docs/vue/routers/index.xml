@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>路由 on Linner&#39;s Blog</title>
+    <link>/docs/vue/routers/</link>
+    <description>Recent content in 路由 on Linner&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
+</copyright>
+    <lastBuildDate>Mon, 25 Sep 2023 04:29:24 +0000</lastBuildDate><atom:link href="/docs/vue/routers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 嵌套路由</title>
+      <link>/docs/vue/routers/nested-routes/</link>
+      <pubDate>Mon, 25 Sep 2023 04:29:24 +0000</pubDate>
+      
+      <guid>/docs/vue/routers/nested-routes/</guid>
+      <description><![CDATA[Vue 嵌套路由又称多级路由。一些应用程序的UI由多层嵌套的组件组成（即一个路由下又配置了其它几个路由）。通过Vue Router，可以使用嵌套路由]]></description>
+      <content:encoded><![CDATA[<p>Vue 嵌套路由又称多级路由。一些应用程序的UI由多层嵌套的组件组成（即一个路由下又配置了其它几个路由）。通过Vue Router，可以使用嵌套路由配置来表达这种关系。</p>
+<p>接<a href="../introduction">路由介绍</a>中的案例，为<code>Home</code>组件新增两个路由<code>News</code>和<code>Message</code>。</p>
+<hr>
+<h1 id="配置嵌套路由" data-numberify>配置嵌套路由<a class="anchor ms-1" href="#配置嵌套路由"></a></h1>
+<p>首先是配置Router（<code>router/index.js</code>）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">VueRouter</span> <span class="nx">from</span> <span class="s1">&#39;vue-router&#39;</span>  <span class="c1">// 引入 VueRouter
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">Home</span> <span class="nx">from</span> <span class="s1">&#39;../pages/Home.vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">About</span> <span class="nx">from</span> <span class="s1">&#39;../pages/About.vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">News</span> <span class="nx">from</span> <span class="s1">&#39;../pages/News.vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Message</span> <span class="nx">from</span> <span class="s1">&#39;../pages/Message.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>  <span class="c1">// 应用 VueRouter 插件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建并导出 Router
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="c1">// 一级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/about&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">About</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="c1">// 一级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">Home</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="c1">// 二级路由，路径开头无需加 “/” 分隔符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">component</span><span class="o">:</span> <span class="nx">News</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="c1">// 二级路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;message&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">component</span><span class="o">:</span> <span class="nx">Message</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>在Router配置中，<code>routes</code>配置项的每个元素都是一级路由（<code>About</code>和<code>Home</code>）。在每个一级路由中，可以使用<code>children</code>配置项为每个一级路由配置其子路由，也就是二级路由。<code>children</code>配置项的配置方式与<code>routes</code>配置项基本一致。</p>
+<p>路由可以配置多个级别，也就是说除了一级路由可以使用<code>children</code>配置二级路由外，二级路由也可以使用<code>children</code>配置三级路由，以此类推。理论上可以配置无限个级别的路由，但是在实际开发过程中，路由最多可能就配置到第六层级。</p>
+<hr>
+<h1 id="使用嵌套路由" data-numberify>使用嵌套路由<a class="anchor ms-1" href="#使用嵌套路由"></a></h1>
+<p>配置完嵌套路由后，需要在对应的组件中使用<code>&lt;router-link&gt;</code>和<code>&lt;router-view&gt;</code>来链接和展示。</p>
+<p>嵌套路由的使用方式与普通的一级路由一样，都是使用<code>&lt;router-link&gt;</code>和<code>&lt;router-view&gt;</code>来链接和展示路由组件。只不过<code>&lt;router-link&gt;</code>在使用时有一些小细节。</p>
+<p>如上，在<code>Home</code>组件中为其子路由添加<code>&lt;router-link&gt;</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">class</span><span class="o">=</span><span class="s">&#34;list-group-item&#34;</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">active-class</span><span class="o">=</span><span class="s">&#34;active&#34;</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">to</span><span class="o">=</span><span class="s">&#34;/home/news&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  News
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">class</span><span class="o">=</span><span class="s">&#34;list-group-item&#34;</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">active-class</span><span class="o">=</span><span class="s">&#34;active&#34;</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">to</span><span class="o">=</span><span class="s">&#34;/home/message&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  Message
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>可以看出，为<code>News</code>和<code>Message</code>添加的<code>&lt;router-link&gt;</code>，其<code>to</code> Prop配置的都是以<code>/home</code>开头的完整的目录路径。</p>
+<p>这是因为，如果使用相对路径，那么路由的路径可能会出错。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Vue 路由</title>
+      <link>/docs/vue/routers/introduction/</link>
+      <pubDate>Sat, 23 Sep 2023 05:27:36 +0000</pubDate>
+      
+      <guid>/docs/vue/routers/introduction/</guid>
+      <description><![CDATA[Vue.js路由（Router）允许通过不同的URL访问不同的内容。通过Vue Router，可以实现SPA（Single Page web Applicat]]></description>
+      <content:encoded><![CDATA[<p>Vue.js路由（Router）允许通过不同的URL访问不同的内容。通过Vue Router，可以实现SPA（Single Page web Application，单页Web应用）。</p>
+<p>SPA是指整个Web应用中，只有一个完整的页面。在点击SPA中的导航链接时，浏览器不会刷新页面，而是做页面的局部更新。Vue SPA的数据通过Ajax请求获取。</p>
+<p>在使用Router之前，需要理清SPA中Route和Router之间的关系：</p>
+<ul>
+<li>
+<p>Route：指的是SPA的路径与页面（组件）之间的一个对应关系。通常是将路径作为某条特定Route的<code>key</code>，将页面作为该Route的<code>value</code>。</p>
+<blockquote>
+<p>在前端路由中，Route Value指的是页面（组件）；在后端路由中，Route Value指的是Function。</p>
+</blockquote>
+</li>
+<li>
+<p>Router：指的是控制整个SPA中所有的Routes的一个角色。Router需要根据所有的Routes，通过Route Key来给出对应的Route Value。</p>
+</li>
+</ul>
+<hr>
+<h1 id="安装-vue-router" data-numberify>安装 Vue Router<a class="anchor ms-1" href="#安装-vue-router"></a></h1>
+<p>在Node.js环境中安装<code>vue-router</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i vue-router
+</span></span></code></pre></div><p>需要注意的是，兼容Vue2的<code>vue-router@3</code>，而当前默认安装的是<code>vue-router@4</code>（适用于Vue3），如果在Vue2的环境下，就需要安装<code>vue-router@3</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i vue-router@3
+</span></span></code></pre></div><hr>
+<h1 id="配置-router" data-numberify>配置 Router<a class="anchor ms-1" href="#配置-router"></a></h1>
+<p>安装完成后，首先需要引入Vue Router：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">VueRouter</span> <span class="nx">from</span> <span class="s1">&#39;vue-router&#39;</span>  <span class="c1">// 引入 VueRouter
+</span></span></span></code></pre></div><p>接着就是在Vue中应用Vue Router插件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>  <span class="c1">// 应用 VueRouter 插件
+</span></span></span></code></pre></div><p>假设现在要为两个组件<code>Home</code>和<code>About</code>配置路由，那么其Router的基本配置（配置文件可以存放在项目根目录下的<code>router/index.js</code>）如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">VueRouter</span> <span class="nx">from</span> <span class="s1">&#39;vue-router&#39;</span>  <span class="c1">// 引入 VueRouter
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 引入组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">Home</span> <span class="nx">from</span> <span class="s1">&#39;../pages/Home.vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">About</span> <span class="nx">from</span> <span class="s1">&#39;../pages/About.vue&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>  <span class="c1">// 应用 VueRouter 插件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建并导出 Router
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 路由规则：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/about&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">About</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">Home</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>在<code>routes</code>中指定的每个路由规则都使用对象来定义，这个对象的<code>path</code>属性定义路由的路径，<code>component</code>属性定义该路径下路由的组件。</p>
+<p>路由配置完成后，就可以将其配置在<code>main.js</code>（Vue实例）中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">router</span> <span class="nx">from</span> <span class="s1">&#39;./router&#39;</span> <span class="c1">// 引入 Router
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">productionTip</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">router</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>注：</p>
+<ul>
+<li>通常，路由组件被存放在项目根目录下的<code>pages</code>文件夹中，而一般组件通常存放在<code>components</code>。</li>
+<li>使用路由切换页面时，被切换掉的路由组件，默认会被销毁。再次被切换回来时，才去重新挂载。</li>
+<li>每个路由组件实例对象都有自己的<code>$route</code>属性，里面存放着组件自生的路由信息。</li>
+<li>整个应用（Vue实例）中只有唯一的一个Router，可以通过路由组件实例对象的<code>$router</code>属性获取。</li>
+</ul>
+<hr>
+<h1 id="使用-router" data-numberify>使用 Router<a class="anchor ms-1" href="#使用-router"></a></h1>
+<p>将组件配置在Vue实例之后，就可以在任意组件中使用路由。使用路由时，有两个基本的组件：</p>
+<ul>
+<li><code>&lt;router-link&gt;</code>：在页面中展示路由链接。该组件会被Vue渲染成<code>&lt;a&gt;</code>标签。</li>
+<li><code>&lt;router-view&gt;</code>：根据用户打开的路径，渲染对应的组件。可以将其放在任何地方，以适应你的布局。</li>
+</ul>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">active-class</span><span class="o">=</span><span class="s">&#34;active&#34;</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/about&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  About
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">active-class</span><span class="o">=</span><span class="s">&#34;active&#34;</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/home&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  Home
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-view</span><span class="p">&gt;&lt;/</span><span class="nt">router-view</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>当点击对应的<code>&lt;router-link&gt;</code>，Vue会根据<code>&lt;router-link&gt;</code>上的<code>to</code>属性，改变应用的路径，并根据<code>to</code>属性将对应的组件渲染到<code>&lt;router-view&gt;</code>的位置上。</p>
+<p><code>&lt;router-link&gt;</code>的<code>active-class</code>可以指定一个当<code>&lt;router-link&gt;</code>处于活动状态时的CSS样式。Vue会根据情况，自动将该样式应用到对应的元素中。</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>
+
