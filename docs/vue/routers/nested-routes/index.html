@@ -28,7 +28,7 @@
 <meta itemprop="name" content="Vue 嵌套路由">
 <meta itemprop="description" content="Vue 嵌套路由又称多级路由。一些应用程序的UI由多层嵌套的组件组成（即一个路由下又配置了其它几个路由）。通过Vue Router，可以使用嵌套路由"><meta itemprop="datePublished" content="2023-09-25T04:29:24+00:00" />
 <meta itemprop="dateModified" content="2023-09-25T04:29:24+00:00" />
-<meta itemprop="wordCount" content="1702">
+<meta itemprop="wordCount" content="1993">
 <meta itemprop="keywords" content="" />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -793,7 +793,7 @@ Linner
 </blockquote>
 <p>假设现在有个名为<code>MessageDetail</code>的路由组件，该组件是<code>Message</code>的子路由组件，且需要<code>Message</code>给他传递一些消息数据。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/* import... */</span>
-</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Detail</span> <span class="nx">from</span> <span class="s1">&#39;../pages/Detail.vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">MessageDetail</span> <span class="nx">from</span> <span class="s1">&#39;../pages/MessageDetail.vue&#39;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>  <span class="c1">// 应用 VueRouter 插件
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
@@ -818,7 +818,7 @@ Linner
 </span></span><span class="line"><span class="cl">          <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="c1">// 三级路由
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>              <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;detail&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">              <span class="nx">component</span><span class="o">:</span> <span class="nx">Detail</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">              <span class="nx">component</span><span class="o">:</span> <span class="nx">MessageDetail</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">          <span class="p">],</span>
 </span></span><span class="line"><span class="cl">        <span class="p">},</span>
@@ -838,7 +838,7 @@ Linner
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
 </span></span></code></pre></div></li>
 <li>
-<p><code>To</code>对象：通过<code>v-bind</code>指令给<code>to</code> prop传递一个对象类型的参数。通过这个<code>To</code>对象指定传递的Query</p>
+<p>传入对象：通过<code>v-bind</code>指令给<code>to</code> prop传递一个对象类型的参数。通过这个<code>to</code> prop对象指定传递的Query</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;{
 </span></span></span><span class="line"><span class="cl"><span class="s">  path: &#39;/home/message/detail&#39;,
 </span></span></span><span class="line"><span class="cl"><span class="s">  query: {
@@ -848,7 +848,7 @@ Linner
 </span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">  {{ message.title }}
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p>在<code>To</code>对象中的<code>query</code>属性中配置传递的参数以及它们的值。<code>query</code>属性的<code>key</code>是传递的参数的名称，<code>value</code>是传递的参数的值（就像Axios的<code>params</code>配置那样）。</p>
+</span></span></code></pre></div><p>在<code>to</code> prop对象中的<code>query</code>属性中配置传递的参数以及它们的值。<code>query</code>属性的<code>key</code>是传递的参数的名称，<code>value</code>是传递的参数的值（就像Axios的<code>params</code>配置那样）。</p>
 </li>
 </ul>
 <h2 id="接收-query-参数" data-numberify>接收 Query 参数<a class="anchor ms-1" href="#接收-query-参数"></a></h2>
@@ -868,6 +868,25 @@ Linner
 <p>获取Query参数的形式很固定，为了使代码更加简介、书写更加简便，可以如上使用<code>computed</code>属性来接收它们的值。</p>
 <p>在Vue Router中，使用Query形式传递的参数，即使它们在对应的路由组件中没有被使用，依然会被<code>$route.query</code>接收到。</p>
 </blockquote>
+<hr>
+<h1 id="命名路由" data-numberify>命名路由<a class="anchor ms-1" href="#命名路由"></a></h1>
+<p>当嵌套路由的路径过长时，在<code>&lt;router-link&gt;</code>的<code>to</code> prop中，就需要配置一串冗长的路径。通过为路由指定<code>name</code>字段，然后在<code>&lt;router-link&gt;</code>的<code>to</code> prop对象中使用<code>name</code>属性指定使用的路由。</p>
+<p>修改上例，给<code>MessageDetail</code>的路由添加<code>name</code>，并且在<code>&lt;router-link&gt;</code>使用<code>to</code> prop的<code>name</code>指定它：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;MessageDetail&#39;</span><span class="p">,</span>  <span class="c1">// 路由名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;detail&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">component</span><span class="o">:</span> <span class="nx">MessageDetail</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> <span class="na">:to</span><span class="o">=</span><span class="s">&#34;{
+</span></span></span><span class="line"><span class="cl"><span class="s">  name: &#39;MessageDetail&#39;,
+</span></span></span><span class="line"><span class="cl"><span class="s">  params: {
+</span></span></span><span class="line"><span class="cl"><span class="s">    id: message.id,
+</span></span></span><span class="line"><span class="cl"><span class="s">    title: message.title,
+</span></span></span><span class="line"><span class="cl"><span class="s">  }
+</span></span></span><span class="line"><span class="cl"><span class="s">}&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  {{ message.title }}
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>在<code>&lt;router-link&gt;</code>使用<code>to</code> prop的<code>name</code>指定了路由后，就无需使用<code>to</code> prop的<code>path</code>指定一段冗长的路径。</p>
 </div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
@@ -1053,6 +1072,7 @@ Linner
         <li><a href="#接收-query-参数">接收 Query 参数</a></li>
       </ul>
     </li>
+    <li><a href="#命名路由">命名路由</a></li>
   </ul>
 </nav>
     </div>
