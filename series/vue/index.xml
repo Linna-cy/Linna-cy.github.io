@@ -8,7 +8,93 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Mon, 25 Sep 2023 04:29:24 +0000</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 10:27:58 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 路由 Props</title>
+      <link>/docs/vue/routers/passing-props/</link>
+      <pubDate>Tue, 26 Sep 2023 10:27:58 +0800</pubDate>
+      
+      <guid>/docs/vue/routers/passing-props/</guid>
+      <description><![CDATA[路由的props配置可以让路由组件更方便地接收到参数。在组件中使用$route会让组件与路由紧耦合（使用组件必须配置路由）。通过props可]]></description>
+      <content:encoded><![CDATA[<p>路由的<code>props</code>配置可以让路由组件更方便地接收到参数。在组件中使用<code>$route</code>会让组件与路由紧耦合（使用组件必须配置路由）。通过<code>props</code>可以解除组件与路由的紧耦合。</p>
+<blockquote>
+<p>注：使用<code>props</code>，让组件通过<code>props</code>接收参数，让路由通过<code>props</code>给组件传递参数。这样当组件被用在其它不使用路由的组件中时，组件依然可以通过<code>props</code>接收参数，而无需配置路由。</p>
+</blockquote>
+<hr>
+<h1 id="对象模式" data-numberify>对象模式<a class="anchor ms-1" href="#对象模式"></a></h1>
+<p>当<code>props</code>是一个对象时，它将被作为组件的<code>props</code>，原封不动地被传递给组件<code>props</code>。在<code>props</code>为静态的时候可以使用这种方式。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/promotion/from-newsletter&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">Promotion</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">props</span><span class="o">:</span> <span class="p">{</span> <span class="nx">newsletterPopup</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><hr>
+<h1 id="布尔模式" data-numberify>布尔模式<a class="anchor ms-1" href="#布尔模式"></a></h1>
+<p>在路由中，给<code>props</code>设置一个为<code>true</code>的布尔值，路由会自动将当前的所有<code>params</code>通过<code>props</code>传递给组件。</p>
+<p>例如<code>User</code>组件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span>  <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;User&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">props</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>通过以下方式给<code>User</code>配置路由，并以<code>props</code>形式将<code>params</code>传递给<code>User</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/user/:id&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">User</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">props</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>  <span class="c1">// 以 props 形式将 params 传递给 User 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>也就是说，当<code>props</code>设置为<code>true</code>时，<code>$route.params</code>将被设置为组件的<code>props</code>。</p>
+<hr>
+<h1 id="函数模式" data-numberify>函数模式<a class="anchor ms-1" href="#函数模式"></a></h1>
+<p>将<code>props</code>设置为函数类型，可以在函数中定义传递给组件的<code>props</code>。这种方式可以包括将<code>query</code>、<code>parmas</code>作为<code>props</code>传递，传递静态的<code>props</code>等等。</p>
+<p>函数模式的路由<code>props</code>，可以接收到一个<code>route</code>参数，这个参数的与其对应的路由组件实例中的<code>$route</code>类似，可以通过<code>route.query</code>和<code>route.params</code>获取Query参数和路径参数。</p>
+<p>基本用法示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/searchUser&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">searchUser</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">props</span><span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">id</span><span class="o">:</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p><code>props</code>可以使用Lambda表达式定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/searchUsers&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">searchUsers</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">props</span><span class="o">:</span> <span class="nx">route</span> <span class="p">=&gt;</span> <span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">id</span><span class="o">:</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}),</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p><code>props</code>可以使用解构赋值或多重解构赋值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/searchUsers&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">searchUsers</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">props</span><span class="o">:</span> <span class="p">({</span><span class="nx">query</span><span class="o">:</span><span class="p">{</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">}})</span> <span class="p">=&gt;</span> <span class="p">({</span><span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">}),</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>将所有的<code>query</code>和<code>params</code>作为<code>props</code>传递：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/searchUsers&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">searchUsers</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">props</span><span class="o">:</span> <span class="p">({</span><span class="nx">query</span><span class="p">,</span> <span class="nx">params</span><span class="p">})</span> <span class="p">=&gt;</span> <span class="p">({...</span><span class="nx">query</span><span class="p">,</span> <span class="p">...</span><span class="nx">params</span><span class="p">}),</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 嵌套路由</title>
       <link>/docs/vue/routers/nested-routes/</link>
