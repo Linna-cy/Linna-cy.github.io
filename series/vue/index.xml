@@ -8,7 +8,30 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 13:19:57 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 15:12:36 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 路由组件缓存</title>
+      <link>/docs/vue/routers/cache/</link>
+      <pubDate>Tue, 26 Sep 2023 15:12:36 +0800</pubDate>
+      
+      <guid>/docs/vue/routers/cache/</guid>
+      <description><![CDATA[Vue Router中，开启路由组件缓存可以使用&lt;keep-alive&gt;将&lt;router-view&gt;包裹起来。使用了&lt]]></description>
+      <content:encoded><![CDATA[<p>Vue Router中，开启路由组件缓存可以使用<code>&lt;keep-alive&gt;</code>将<code>&lt;router-view&gt;</code>包裹起来。使用了<code>&lt;keep-alive&gt;</code>之后，路由组件被用户切换掉时，不会被销毁。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">keep-alive</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">router-view</span><span class="p">&gt;&lt;/</span><span class="nt">router-view</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">keep-alive</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><code>&lt;keep-alive&gt;</code>默认会缓存当前在<code>&lt;router-view&gt;</code>中展示的所有组件。如果要指定缓存的组件，可以使用<code>include</code>。在<code>include</code>中指定要缓存的组件的名称即可。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">keep-alive</span> <span class="na">include</span><span class="o">=</span><span class="s">&#34;Home&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">router-view</span><span class="p">&gt;&lt;/</span><span class="nt">router-view</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">keep-alive</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>如果要指定缓存多个组件，可以使用<code>v-bind</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">keep-alive</span> <span class="na">:include</span><span class="o">=</span><span class="s">&#34;[&#39;Home&#39;, &#39;About&#39;]&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">router-view</span><span class="p">&gt;&lt;/</span><span class="nt">router-view</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">keep-alive</span><span class="p">&gt;</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 编程式路由导航</title>
       <link>/docs/vue/routers/navigation/</link>
