@@ -470,7 +470,19 @@
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-view</span><span class="p">&gt;&lt;/</span><span class="nt">router-view</span><span class="p">&gt;</span>
 </span></span></code></pre></div><p>当点击对应的<code>&lt;router-link&gt;</code>，Vue会根据<code>&lt;router-link&gt;</code>上的<code>to</code>属性，改变应用的路径，并根据<code>to</code>属性将对应的组件渲染到<code>&lt;router-view&gt;</code>的位置上。</p>
 <p><code>&lt;router-link&gt;</code>的<code>active-class</code>可以指定一个当<code>&lt;router-link&gt;</code>处于活动状态时的CSS样式。Vue会根据情况，自动将该样式应用到对应的元素中。</p>
-]]></content:encoded>
+<hr>
+<h1 id="router-link-的两种模式" data-numberify>Router Link 的两种模式<a class="anchor ms-1" href="#router-link-的两种模式"></a></h1>
+<p><code>&lt;router-link&gt;</code>默认是<code>push</code>模式，也就是点击<code>&lt;router-link&gt;</code>后，浏览器会将当前浏览记录<code>push</code>到当前页面的浏览历史记录栈的栈顶。也就是说，<code>push</code>模式的<code>&lt;router-link&gt;</code>可以在浏览器中保存访问历史，让当前应用可以根据历史记录前进后退。</p>
+<p><code>&lt;router-link&gt;</code>还支持<code>replace</code>模式，<code>replace</code>模式就是将当前浏览记录替换历史记录栈顶的记录。</p>
+<p><code>&lt;router-link&gt;</code>开启历史记录，可以在<code>&lt;router-link&gt;</code>中使用<code>v-bind</code>将<code>replace</code>设置为<code>true</code>，也就是<code>:replace=&quot;true&quot;</code>。开启<code>replace</code>可以使用简便的写法，直接在<code>&lt;router-link&gt;</code>中添加<code>replace</code>即可。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">router-link</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">replace</span>
+</span></span><span class="line"><span class="cl">  <span class="na">active-class</span><span class="o">=</span><span class="s">&#34;active&#34;</span> 
+</span></span><span class="line"><span class="cl">  <span class="na">to</span><span class="o">=</span><span class="s">&#34;/about&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  About
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">router-link</span><span class="p">&gt;</span>
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
