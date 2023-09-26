@@ -8,7 +8,79 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 10:27:58 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 13:19:57 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 编程式路由导航</title>
+      <link>/docs/vue/routers/navigation/</link>
+      <pubDate>Tue, 26 Sep 2023 13:19:57 +0800</pubDate>
+      
+      <guid>/docs/vue/routers/navigation/</guid>
+      <description><![CDATA[编程式路由导航是指不通过&lt;router-link&gt;创建&lt;a&gt;标签来定义导航链接，而是借助路由组件实例中的$route]]></description>
+      <content:encoded><![CDATA[<p>编程式路由导航是指不通过<code>&lt;router-link&gt;</code>创建<code>&lt;a&gt;</code>标签来定义导航链接，而是借助路由组件实例中的<code>$router</code>实例，通过编写代码来实现路由导航。</p>
+<p>使用编程式路由导航，可以让路由的跳转方式变得更加灵活。</p>
+<hr>
+<h1 id="两种导航方式" data-numberify>两种导航方式<a class="anchor ms-1" href="#两种导航方式"></a></h1>
+<p><code>$router</code>也有与<code>&lt;router-link&gt;</code>相同两种导航方式，分别是<code>push</code>和<code>replace</code>。这两种方式分别调用两个不同的API，不过这两个API的使用方式是一致的。并且他们传入的参数与<code>&lt;router-link&gt;</code>中<code>to</code> props的值一样，可以传入两种类型的参数。</p>
+<ul>
+<li>
+<p><code>$router.push()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;/user/zhangsan&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">  <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;zhangsan&#39;</span> 
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> 
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>$router.replace()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;/user/zhangsan&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">replace</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">  <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>一般情况下，<code>push</code>和<code>replace</code>的区别是，<code>replace</code>模式不会向<code>history</code>添加新记录。</p>
+<p><code>$router.push()</code>可以在配置对象中加入一个<code>replace:true</code>，起到与<code>$router.replace()</code>相同的效果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/user/zhangsan&#39;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">  <span class="nx">replace</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 相当于
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">replace</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/user/zhangsan&#39;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><hr>
+<h1 id="移动历史记录" data-numberify>移动历史记录<a class="anchor ms-1" href="#移动历史记录"></a></h1>
+<p><code>$router</code>还封装了一些用于操作当前应用历史浏览记录的API：</p>
+<ul>
+<li>
+<p><code>$router.forward()</code>：向前移动一条记录。</p>
+</li>
+<li>
+<p><code>router.back()</code>：回退上一条记录。</p>
+</li>
+<li>
+<p><code>$router.go(n)</code>：携带一个整数类型的参数，用于在历史堆栈中前进后退$n$步（类似于<code>window.history.go(n)</code>）。</p>
+<ul>
+<li>当$n$为正整数时，在历史堆栈中前进$n$步。</li>
+<li>当$n$为负整数时，在历史堆栈中后退$|n|$步。</li>
+<li>如果移动的步数超过历史堆栈的长度（$|n|$过大），那么移动静默失败。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li><code>$router.go(1)</code>：向前移动一条记录。与<code>$router.forward()</code>相同。</li>
+<li><code>$router.go(-1)</code>：回退上一条记录。与<code>$router.back()</code>相同。</li>
+<li><code>$router.go(3)</code>：向前移动3条记录。</li>
+</ul>
+</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 路由通过 Props 传参</title>
       <link>/docs/vue/routers/passing-props/</link>
