@@ -8,7 +8,59 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Wed, 27 Sep 2023 11:17:58 +0800</lastBuildDate><atom:link href="/docs/vue/routers/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Sep 2023 14:09:10 +0800</lastBuildDate><atom:link href="/docs/vue/routers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue Router 两种工作模式</title>
+      <link>/docs/vue/routers/two-modes/</link>
+      <pubDate>Thu, 28 Sep 2023 14:09:10 +0800</pubDate>
+      
+      <guid>/docs/vue/routers/two-modes/</guid>
+      <description><![CDATA[Vue Router中有两种工作模式，它们分别是： hash模式：使用URL的hash来模拟一个完整的URL。 hash：在URL中，#符号及其之后的]]></description>
+      <content:encoded><![CDATA[<p>Vue Router中有两种工作模式，它们分别是：</p>
+<ul>
+<li>
+<p><code>hash</code>模式：使用URL的<code>hash</code>来模拟一个完整的URL。</p>
+<p><code>hash</code>：在URL中，<code>#</code>符号及其之后的内容。</p>
+<ul>
+<li>当URL改变时，页面不会重新加载。</li>
+<li>URL中会包含一个<code>/#/</code>，不够美观。</li>
+<li>在浏览器中，<code>hash</code>的内容并不会被浏览器作为请求中的一部分发送给后端服务器。</li>
+<li><code>hash</code>模式兼容性强。</li>
+</ul>
+<p>工作原理：通过监听<code>hashchange</code>事件，从而监控<code>hash</code>的变化。当<code>hash</code>发生变化时，Vue Router会解析<code>hash</code>之后的内容，并将对应的结果呈现出来。</p>
+</li>
+<li>
+<p><code>history</code>模式（依赖于HTML5）：通过HTML5新增的<code>history</code>，将<code>hash</code> URL中的<code>#</code>符号去除。</p>
+<p>去除了URL中的<code>#</code>符号之后，在刷新或者直接使用特定的路径进入页面时，浏览器会直接向服务器请求对应的资源。而Vue开发的是SAP（单页Web应用），所以在上述情况发生时，会造成请求错误。</p>
+<p>解决方法是，在部署时，对前端页面的请求资源路径进行匹配，将所有访问都指向<code>index.html</code>。</p>
+<p>如果使用的是Express部署页面，可以在Express中使用<code>connect-history-api-fallback</code>中间件快速解决。</p>
+</li>
+</ul>
+<p>安装<code>connect-history-api-fallback</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i connect-history-api-fallback
+</span></span></code></pre></div><p>使用<code>connect-history-api-fallback</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">history</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;connect-history-api-fallback&#39;</span><span class="p">);</span>  <span class="c1">// 引入模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">history</span><span class="p">())</span>  <span class="c1">// 使用中间件（在挂载静态资源之前使用）
+</span></span></span></code></pre></div><p><code>hash</code>模式与<code>history</code>模式的比较：</p>
+<ul>
+<li><code>hash</code>模式：
+<ul>
+<li>URL中永远存在<code>#</code>符号，不美观。</li>
+<li>URL中存在<code>#</code>符号，可能会被其它软件标记为不合法。</li>
+<li>兼容性较好。</li>
+</ul>
+</li>
+<li><code>history</code>模式：
+<ul>
+<li>URL不会永远带着<code>#</code>符号，相对较美观。</li>
+<li>兼容性不如<code>hash</code>模式。</li>
+<li>应用部署时需要进行一些调整，以解决刷新及进入特定页面的问题（可能需要后端人员配合）。</li>
+</ul>
+</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 路由守卫</title>
       <link>/docs/vue/routers/guards/</link>
