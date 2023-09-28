@@ -8,7 +8,76 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 28 Sep 2023 14:09:10 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Sep 2023 16:34:08 +0800</lastBuildDate><atom:link href="/series/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Vue 中使用 Element-UI</title>
+      <link>/docs/vue/element-ui/</link>
+      <pubDate>Thu, 28 Sep 2023 16:34:08 +0800</pubDate>
+      
+      <guid>/docs/vue/element-ui/</guid>
+      <description><![CDATA[Vue UI 组件库 在Vue中，可以通过引入他人编写好的组件库，来构建自己的页面，提高开发效率。 Vue中常用的UI组件库有： 移动端常用UI组件库： Vant Cube]]></description>
+      <content:encoded><![CDATA[<h1 id="vue-ui-组件库" data-numberify>Vue UI 组件库<a class="anchor ms-1" href="#vue-ui-组件库"></a></h1>
+<p>在Vue中，可以通过引入他人编写好的组件库，来构建自己的页面，提高开发效率。</p>
+<p>Vue中常用的UI组件库有：</p>
+<ul>
+<li>移动端常用UI组件库：
+<ul>
+<li><a href="https://vant-ui.github.io/vant/" target="_blank" rel="noopener noreferrer">Vant<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://didi.github.io/cube-ui/" target="_blank" rel="noopener noreferrer">Cube UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://mint-ui.github.io/" target="_blank" rel="noopener noreferrer">Mint UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://nutui.jd.com/" target="_blank" rel="noopener noreferrer">NutUI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+</ul>
+</li>
+<li>PC端常用UI组件库：
+<ul>
+<li><a href="https://element.eleme.cn/" target="_blank" rel="noopener noreferrer">Element UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://www.iviewui.com/" target="_blank" rel="noopener noreferrer">IView UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://www.antdv.com/components/overview" target="_blank" rel="noopener noreferrer">Ant Design Vue<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="安装-element-ui" data-numberify>安装 Element-UI<a class="anchor ms-1" href="#安装-element-ui"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm i element-ui
+</span></span></code></pre></div><hr>
+<h1 id="引入并应用-element-ui" data-numberify>引入并应用 Element-UI<a class="anchor ms-1" href="#引入并应用-element-ui"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">ElementUI</span> <span class="nx">from</span> <span class="s1">&#39;element-ui&#39;</span><span class="p">;</span> <span class="c1">// 引入 Element-UI
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="s1">&#39;element-ui/lib/theme-chalk/index.css&#39;</span><span class="p">;</span>  <span class="c1">// 引入 Element-UI 的全部样式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">ElementUI</span><span class="p">);</span> <span class="c1">// 应用 Element-UI
+</span></span></span></code></pre></div><p>直接使用以上方式引入Element-UI，引入的是Element-UI中所有的组件以及它们的样式和交互。这会使页面的体积变得十分庞大。</p>
+<p>在使用Element-UI时，可以根据需要使用的组件，按需引入它们。</p>
+<p>引入<code>babel-plugin-component</code>开发依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">npm install babel-plugin-component -D
+</span></span></code></pre></div><p>接着在<code>babel.config.js</code>中追加如下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;presets&#34;</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="s2">&#34;@babel/preset-env&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&#34;modules&#34;</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;plugins&#34;</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;component&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;libraryName&#34;</span><span class="o">:</span> <span class="s2">&#34;element-ui&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;styleLibraryName&#34;</span><span class="o">:</span> <span class="s2">&#34;theme-chalk&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>然后就可以按需引入项目中所需的组件。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Button</span><span class="p">,</span> <span class="nx">Select</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;element-ui&#39;</span><span class="p">;</span>  <span class="c1">// 引入 Button 和 Select 组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 将 Button 和 Select 注册为全局组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="nx">Button</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">Button</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="nx">Select</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">Select</span><span class="p">);</span>
+</span></span></code></pre></div><p>注册Element-UI组件也可以使用<code>Vue.use()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Button</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
+<h1 id="使用-element-ui" data-numberify>使用 Element-UI<a class="anchor ms-1" href="#使用-element-ui"></a></h1>
+<p>Element-UI的使用可直接参考官方文档：<a href="https://element.eleme.cn/" target="_blank" rel="noopener noreferrer">Element UI<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue Router 两种工作模式</title>
       <link>/docs/vue/routers/two-modes/</link>
