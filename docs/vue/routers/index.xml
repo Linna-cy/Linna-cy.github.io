@@ -8,7 +8,135 @@
     <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 16:28:34 +0800</lastBuildDate><atom:link href="/docs/vue/routers/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 27 Sep 2023 11:17:58 +0800</lastBuildDate><atom:link href="/docs/vue/routers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue 路由守卫</title>
+      <link>/docs/vue/routers/guards/</link>
+      <pubDate>Wed, 27 Sep 2023 11:17:58 +0800</pubDate>
+      
+      <guid>/docs/vue/routers/guards/</guid>
+      <description><![CDATA[Vue Router提供的路由守卫主要用来通过跳转或取消的方式守卫导航。 在路由守卫中，你可以自定义何时何种情况放行或拦截页面的路由。通过Vue Ro]]></description>
+      <content:encoded><![CDATA[<p>Vue Router提供的路由守卫主要用来通过<strong>跳转</strong>或<strong>取消</strong>的方式守卫导航。</p>
+<p>在路由守卫中，你可以自定义何时何种情况<strong>放行</strong>或<strong>拦截</strong>页面的路由。通过Vue Router，可以实现对前端页面路由的权限控制。</p>
+<p>Vue 路由守卫有以下分类：</p>
+<ul>
+<li>全局守卫</li>
+<li>独享守卫</li>
+<li>组件内守卫</li>
+</ul>
+<hr>
+<h1 id="全局路由守卫" data-numberify>全局路由守卫<a class="anchor ms-1" href="#全局路由守卫"></a></h1>
+<p>全局路由守卫，是在Router配置文件中，在<code>router</code>上配置的路由守卫。</p>
+<p>在配置路由守卫之前，在Router配置文件中需要先接收到<code>router</code>实例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>全局路由守卫对整个Vue Router下的所有路由都生效。</p>
+<h2 id="全局前置守卫" data-numberify>全局前置守卫<a class="anchor ms-1" href="#全局前置守卫"></a></h2>
+<p>全局前置路由守卫的使用方式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">((</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>router.beforeEach()</code>需要传入一个回调函数。该回调函数的定义方式不限，可以使用<code>function</code>也可以使用Lambda。</p>
+<p><code>router.beforeEach()</code>回调函数可以接收到3个参数：</p>
+<ol>
+<li><code>to</code>：记录跳转的目标路由信息（跳转到哪里）。对象类型，其中常用的属性如下：</li>
+</ol>
+<ul>
+<li><code>to.path</code>：路由的路径，字符串类型，返回的是真实的路由请求路径。</li>
+<li><code>to.query</code>：路由所携带的 Query 参数，以对象的形式呈现。</li>
+<li><code>to.fullPath</code>：全路径名，字符串类型，返回的是真实的路由请求路径，带有 Query 参数，而 to.path 不包含 Query 参数。</li>
+<li><code>to.params</code>：路由所携带的路径参数，以对象的形式呈现。</li>
+<li><code>to.meta</code>：获取路由元数据，元数据是定义在路由配置信息中，由程序员定义的一组路由信息。</li>
+</ul>
+<ol start="2">
+<li><code>from</code>：记录跳转的来源路由信息（从哪里跳转）。对象类型，结构与<code>to</code>相同。</li>
+<li><code>next</code>（可选）：传递给回调的函数，用来放行路由。在使用<code>next()</code>时，必须严格确保它在任何情况下最多只能被调用一次。否则，可能会引起错误。</li>
+</ol>
+<blockquote>
+<p>要避免错误的发生，可以在调用<code>next()</code>之后调用<code>return</code>结束回调的执行，例如使用<code>return next()</code>。</p>
+</blockquote>
+<p>默认情况下，调用<code>next()</code>跳转到的是<code>to</code>参数中所指的路由（也就是用户选择跳转的路由）。</p>
+<p><code>next()</code>可以接收一个如下参数：</p>
+<ul>
+<li>
+<p><code>false</code>：中断当前的导航。</p>
+</li>
+<li>
+<p><code>path</code>：字符串类型，指定最终跳转的路径。</p>
+</li>
+<li>
+<p><code>to</code>：对象类型，定义最终跳转的目标路由信息。</p>
+<p>也就是说，可以使用<code>next(to)</code>指定跳转到哪个具体路由。例如跳转到一个名为<code>Login</code>的路由可以使用<code>next({ name: 'Login' })</code>；或者，通过路径指定跳转的目标路由，如<code>next({ path: '/login' })</code>。</p>
+<p>这个<code>to</code>对象的结构与<code>router.beforeEach()</code>回调中的<code>to</code>参数对象结构不同。它更像是<code>&lt;router-link&gt;</code>中给<code>to</code> props传递的对象或传给<code>$router.push()</code>的配置对象。还可以在其中配置如<code>params</code>、<code>query</code>、<code>replace</code>等信息。</p>
+</li>
+<li>
+<p><code>Error</code>实例（2.4.0+）：导航会被终止且该错误会被传递给<code>router.onError()</code>注册过的回调。</p>
+</li>
+</ul>
+<p>全局前置路由守卫<code>router.beforeEach()</code>会在以下两种情况被调用：</p>
+<ul>
+<li>初始化时；</li>
+<li>每次路由切换完成之前。</li>
+</ul>
+<hr>
+<h2 id="全局后置钩子" data-numberify>全局后置钩子<a class="anchor ms-1" href="#全局后置钩子"></a></h2>
+<p>全局后置钩子用来进行路由跳转后的处理。与守卫不同的是，钩子不会接受<code>next</code>函数也不会改变导航本身。</p>
+<p>使用方式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">((</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>全局后置钩子<code>router.afterEach()</code>会在以下两种情况被调用：</p>
+<ul>
+<li>初始化时；</li>
+<li>每次路由切换成功之后。</li>
+</ul>
+<blockquote>
+<p>如果路由切换不成功，例如在<code>router.beforeEach()</code>中调用了<code>next(false)</code>或<code>next(error)</code>时，<code>router.afterEach()</code>不会被调用。</p>
+</blockquote>
+<h2 id="全局解析守卫" data-numberify>全局解析守卫<a class="anchor ms-1" href="#全局解析守卫"></a></h2>
+<p>全局解析守卫（<code>router.beforeResolve</code>）是Vue Router 2.5.0新增的一种路由守卫。</p>
+<p><code>router.beforeResolve()</code>的用法与<code>router.beforeEach()</code>类似。</p>
+<p>被<code>router.beforeResolve()</code>注册的回调会在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后被调用。</p>
+<hr>
+<h1 id="独享路由守卫" data-numberify>独享路由守卫<a class="anchor ms-1" href="#独享路由守卫"></a></h1>
+<p>独享路由守卫（<code>beforeEnter</code>）是在特定的路由配置下定义的，在<u>进入该路由之前执行</u>的一个函数。</p>
+<p><code>beforeEnter()</code>用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="nx">routerName</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">path</span><span class="o">:</span> <span class="nx">routerPath</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">component</span><span class="o">:</span> <span class="nx">Component</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">beforeEnter</span><span class="o">:</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>beforeEnter()</code>的参数与<code>router.beforeEach()</code>回调的参数一致。</p>
+<hr>
+<h1 id="组件内路由守卫" data-numberify>组件内路由守卫<a class="anchor ms-1" href="#组件内路由守卫"></a></h1>
+<p>组件内路由守卫有以下几种：</p>
+<ul>
+<li>
+<p><code>beforeRouteEnter</code>：通过路由规则，进入该组件时被调用。</p>
+<blockquote>
+<p>在<code>beforeRouteEnter</code>中不能获取组件实例<code>this</code>，这是因为在执行<code>beforeRouteEnter</code>时，组件实例可能还未被创建。</p>
+</blockquote>
+</li>
+<li>
+<p><code>beforeRouteLeave</code>：通过路由规则，将要离开组件时被调用。</p>
+</li>
+<li>
+<p><code>beforeRouteUpdate</code>（Vue Router 2.2 新增）：在当前路由改变，但是该组件被复用时调用。</p>
+<p>例如在带有动态的路径参数改变时，由于会渲染同样的路由组件，所以实例会被复用。而这个钩子将在被复用时被调用。</p>
+</li>
+</ul>
+<p>通过其它非路由方式进入或呈现该组件，以上三个守卫都不会被调用。</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Vue 路由组件钩子</title>
       <link>/docs/vue/routers/hooks/</link>
