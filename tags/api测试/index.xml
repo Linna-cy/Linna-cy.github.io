@@ -5,7 +5,6 @@
     <link>/tags/api%E6%B5%8B%E8%AF%95/</link>
     <description>Recent content in API测试 on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Thu, 27 Jul 2023 13:29:13 +0000</lastBuildDate><atom:link href="/tags/api%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
@@ -167,7 +166,7 @@
 </span></span><span class="line"><span class="cl"><span class="nd">@ApiModel</span><span class="o">(</span><span class="s">&#34;菜品&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类的名称
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dish</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">1L</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="n">1L</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品ID&#34;</span><span class="o">)</span>     <span class="c1">// 标识实体类属性的名称
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
@@ -272,7 +271,7 @@
 </span></span><span class="line"><span class="cl">        <span class="c1">// 添加排序条件（降序排序）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">orderByDesc</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getUpdateTime</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// isDeleted不为1（为1表示被删除）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 执行分页查询
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">dishService</span><span class="o">.</span><span class="na">page</span><span class="o">(</span><span class="n">pageInfo</span><span class="o">,</span> <span class="n">queryWrapper</span><span class="o">);</span>

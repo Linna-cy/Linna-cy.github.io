@@ -5,7 +5,6 @@
     <link>/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
     <description>Recent content in 数据库 on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Fri, 28 Jul 2023 07:20:31 +0000</lastBuildDate><atom:link href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
@@ -2070,7 +2069,7 @@ $$</p>
 </span></span></span></code></pre></div><p><code>UPDATE</code>——修改：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="err">表名</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="err">列名</span><span class="o">=</span><span class="err">值表达式</span><span class="p">[,</span><span class="w"> </span><span class="err">列名</span><span class="o">=</span><span class="err">值表达式</span><span class="p">...]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="n">WHERE</span><span class="err">条件表达式</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="n">WHERE条件表达式</span><span class="p">]</span><span class="w">
 </span></span></span></code></pre></div><h2 id="数据查询语言dql" data-numberify>数据查询语言（DQL）<a class="anchor ms-1" href="#数据查询语言dql"></a></h2>
 <p><code>SELECT</code>——查询：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">目标表的列名或列表达式序列</span><span class="w">
@@ -3302,7 +3301,7 @@ $$</p>
       <pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate>
       
       <guid>/docs/spring/springboot/sharding-jdbc/</guid>
-      <description><![CDATA[介绍 Sharding Jdbc是一个用于实现数据库读写分离的框架。 依赖 Sharding Jdbc依赖坐标： &lt;dependency&gt; &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt; &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.0.0-RC1&lt;/version&gt; &lt;/dependency&gt; 配置 配置application.yaml： spring: sharding-sphere: # 旧版为 shardingsphere]]></description>
+      <description><![CDATA[介绍 Sharding Jdbc是一个用于实现数据库读写分离的框架。 依赖 Sharding Jdbc依赖坐标： &lt;dependency&gt; &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt; &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.0.0-RC1&lt;/version&gt; &lt;/dependency&gt; 配置 配置application.yaml： spring:sharding-sphere:# 旧版为 shardingspheredatasource:# 数据]]></description>
       <content:encoded><![CDATA[<h1 id="介绍" data-numberify>介绍<a class="anchor ms-1" href="#介绍"></a></h1>
 <p>Sharding Jdbc是一个用于实现数据库读写分离的框架。</p>
 <hr>
@@ -3621,13 +3620,13 @@ OK
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">city</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置超时
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valueOperations</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;key1&#34;</span><span class="o">,</span> <span class="s">&#34;value1&#34;</span><span class="o">,</span> <span class="mi">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valueOperations</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;key1&#34;</span><span class="o">,</span> <span class="s">&#34;value1&#34;</span><span class="o">,</span> <span class="n">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 不存在才设置
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Boolean</span> <span class="n">setIfAbsent1</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">setIfAbsent</span><span class="o">(</span><span class="s">&#34;city&#34;</span><span class="o">,</span> <span class="s">&#34;foshang&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">setIfAbsent1</span><span class="o">)</span> <span class="o">?</span> <span class="s">&#34;city设置成功&#34;</span> <span class="o">:</span> <span class="s">&#34;city已存在&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Boolean</span> <span class="n">setIfAbsent2</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">setIfAbsent</span><span class="o">(</span><span class="s">&#34;city_name&#34;</span><span class="o">,</span> <span class="s">&#34;foshang&#34;</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">                                                   <span class="mi">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                                                   <span class="n">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Object</span> <span class="n">cityName</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;city_name&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setIfAbsent2</span> <span class="o">?</span> <span class="s">&#34;city_name设置成功:&#34;</span> <span class="o">+</span> <span class="n">cityName</span>
 </span></span><span class="line"><span class="cl">                                        <span class="o">:</span> <span class="s">&#34;city_name已存在&#34;</span><span class="o">);</span>
@@ -3682,7 +3681,7 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;入队：&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">myList</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
@@ -3691,7 +3690,7 @@ OK
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获得列表长度 llen
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">size</span><span class="o">(</span><span class="n">key</span><span class="o">).</span><span class="na">intValue</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;出队：&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// 出队列
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">String</span> <span class="n">element</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">rightPop</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">element</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
@@ -3737,27 +3736,27 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&#34;myZset&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 存储
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="mf">10.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="mf">11.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">,</span> <span class="mf">12.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;d&#34;</span><span class="o">,</span> <span class="mf">13.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="mf">14.</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">10</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">11</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">,</span> <span class="n">12</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;d&#34;</span><span class="o">,</span> <span class="n">13</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">14</span><span class="o">.);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 修改分数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">incrementScore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="mf">20.</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">incrementScore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">.);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 删除成员
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
@@ -4218,7 +4217,7 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSelectById</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 模拟接收参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 1. 获取sqlSessionFactory
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">resource</span> <span class="o">=</span> <span class="s">&#34;./mybatis-config.xml&#34;</span><span class="o">;</span>
@@ -4528,8 +4527,8 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>Collection: 封装为Map集合</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">collection</span><span class="err">集合</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">collection</span><span class="err">集合</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">collection集合</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">collection集合</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>使用<code>@Param</code>注解，替换Map集合中默认的arg键名</li>
 </ul>
@@ -4537,9 +4536,9 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>List: 封装为Map集合</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">list</span><span class="err">集合</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">list</span><span class="err">集合</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;list&#34;</span><span class="o">,</span> <span class="n">list</span><span class="err">集合</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">list集合</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">list集合</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;list&#34;</span><span class="o">,</span> <span class="n">list集合</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>使用<code>@Param</code>注解,替换Map集合中默认的arg键名</li>
 </ul>
@@ -4547,8 +4546,8 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>Array: 封装为Map集合</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="err">数组</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;array&#34;</span><span class="o">,</span> <span class="err">数组</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">数组</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;array&#34;</span><span class="o">,</span> <span class="n">数组</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>使用<code>@Param</code>注解,替换Map集合中默认的arg键名</li>
 </ul>
@@ -4564,17 +4563,17 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>每个参数有两个键:</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg1&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">2</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param2&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">2</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg1&#34;</span><span class="o">,</span> <span class="n">参数值2</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param2&#34;</span><span class="o">,</span> <span class="n">参数值2</span><span class="o">)</span>
 </span></span></code></pre></div></li>
 <li>
 <p>使用<code>@Param</code>注解,替换Map集合中默认的arg键名:</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Param</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">)</span> <span class="err">参数类型</span> <span class="err">参数名</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Param</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">)</span> <span class="n">参数类型</span> <span class="n">参数名</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
 </span></span></code></pre></div></li>
 </ul>
 </li>
@@ -4961,11 +4960,11 @@ maxWait=3000
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// *4. 设置参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span> <span class="c1">// 返回影响的行数
@@ -4975,7 +4974,7 @@ maxWait=3000
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 7. 返回结果
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
@@ -5009,12 +5008,12 @@ maxWait=3000
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// *4. 设置参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">6</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span> <span class="c1">// 返回影响的行数
@@ -5024,7 +5023,7 @@ maxWait=3000
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 8. 返回结果
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
@@ -5044,7 +5043,7 @@ maxWait=3000
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// *4. 设置参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span> <span class="c1">// 返回影响的行数
@@ -5054,7 +5053,7 @@ maxWait=3000
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 7. 返回结果
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div>]]></content:encoded>
@@ -5200,8 +5199,8 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">        <span class="c1">// 4. 获取执行SQL的PreparedStatement对象
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置参数（?）的值 pstmt.setXxx(index, value)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
@@ -5299,10 +5298,10 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//   - 防注入原理：
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//     字符串参数在setString中会被转义，
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//     即整个参数被当成sql里面的字符串，而不是java的字符串
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 从mysql日志文件可以发现：
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// &#39; OR &#39;1&#39; = &#39;1 转义成了 \&#39; OR \&#39;1\&#39; = \&#39;1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// - 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
@@ -5398,10 +5397,10 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//   - rs.next()：光标向下移动一行，并判断当前行是否有效
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">while</span> <span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">())</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// - 获取数据 getXxx()
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// getXxx()方法可以使用列索引（从1开始）也可以使用列名
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">String</span> <span class="n">usrname</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">passwd</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">passwd</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;id: &#34;</span> <span class="o">+</span> <span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;username: &#34;</span> <span class="o">+</span> <span class="n">usrname</span><span class="o">);</span>
@@ -5518,8 +5517,8 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; WHERE username = ?&#34;</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; AND password = ?&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获取ResultSet
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
@@ -5558,15 +5557,15 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&#34;INSERT INTO tb_user&#34;</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; VALUE(null, ?, ?)&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
@@ -5584,15 +5583,15 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; WHERE username = ?&#34;</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; AND password = ?&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div>]]></content:encoded>

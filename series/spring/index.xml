@@ -5,7 +5,6 @@
     <link>/series/spring/</link>
     <description>Recent content in Spring on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Fri, 04 Aug 2023 08:40:11 +0000</lastBuildDate><atom:link href="/series/spring/index.xml" rel="self" type="application/rss+xml" />
@@ -145,11 +144,11 @@
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWorkQueue</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">queueName</span> <span class="o">=</span> <span class="s">&#34;work.queue&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&#34;Hello Message__&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">50</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">rabbitTemplate</span><span class="o">.</span><span class="na">convertAndSend</span><span class="o">(</span><span class="n">queueName</span><span class="o">,</span> <span class="n">msg</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;发送消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>   <span class="c1">// 休眠 20ms，1s == 1000ms，所以1s最多只能发50条
+</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">20</span><span class="o">);</span>   <span class="c1">// 休眠 20ms，1s == 1000ms，所以1s最多只能发50条
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -161,13 +160,13 @@
 </span></span><span class="line"><span class="cl">    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queuesToDeclare</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@Queue</span><span class="o">(</span><span class="n">WORK_QUEUE</span><span class="o">)})</span> <span class="c1">// 声明并订阅Queue
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listenWorkQueue1</span><span class="o">(</span><span class="n">String</span> <span class="n">msg</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;消费者 1 收到消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>   <span class="c1">// 用不同的日志级别区分消费者1和消费者2，更易于阅读
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>   <span class="c1">// 处理速度约：50条/s
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">20</span><span class="o">);</span>   <span class="c1">// 处理速度约：50条/s
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queuesToDeclare</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@Queue</span><span class="o">(</span><span class="n">WORK_QUEUE</span><span class="o">)})</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listenWorkQueue2</span><span class="o">(</span><span class="n">String</span> <span class="n">msg</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;消费者 2 收到消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">200</span><span class="o">);</span>  <span class="c1">// 处理速度约：5条/s
+</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">200</span><span class="o">);</span>  <span class="c1">// 处理速度约：5条/s
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><p><code>@RabbitListener</code>的<code>queuesToDeclare</code>属性是<code>@Queue</code>类型数组。<code>queuesToDeclare</code>在指定多个队列的同时，会去声明它们，这样就能不通过创建Bean来声明它们。</p>
@@ -696,7 +695,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConnectionFactory</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 1.1. 设置连接参数
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">);</span>   <span class="c1">// 主机地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5672</span><span class="o">);</span>          <span class="c1">// 端口号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="n">5672</span><span class="o">);</span>          <span class="c1">// 端口号
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setVirtualHost</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">);</span>    <span class="c1">// 虚拟主机
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;linner&#34;</span><span class="o">);</span>  <span class="c1">// 账号
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>  <span class="c1">// 密码
@@ -734,7 +733,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConnectionFactory</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 1.1. 设置连接参数
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">);</span>   <span class="c1">// 主机地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5672</span><span class="o">);</span>          <span class="c1">// 端口号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="n">5672</span><span class="o">);</span>          <span class="c1">// 端口号
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setVirtualHost</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">);</span>    <span class="c1">// 虚拟主机
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;linner&#34;</span><span class="o">);</span>  <span class="c1">// 用户名
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>  <span class="c1">// 密码
@@ -2175,7 +2174,7 @@ Slave_SQL_Running: Yes
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * 识别用户权限
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="mi">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
+</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="n">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nd">@Component</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizeFilter</span> <span class="kd">implements</span> <span class="n">GlobalFilter</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
@@ -2243,7 +2242,7 @@ Slave_SQL_Running: Yes
 </span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div></li>
@@ -3219,7 +3218,7 @@ Slave_SQL_Running: Yes
 </span></span><span class="line"><span class="cl"><span class="nd">@ApiModel</span><span class="o">(</span><span class="s">&#34;菜品&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类的名称
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dish</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">1L</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="n">1L</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品ID&#34;</span><span class="o">)</span>     <span class="c1">// 标识实体类属性的名称
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
@@ -3324,7 +3323,7 @@ Slave_SQL_Running: Yes
 </span></span><span class="line"><span class="cl">        <span class="c1">// 添加排序条件（降序排序）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">orderByDesc</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getUpdateTime</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// isDeleted不为1（为1表示被删除）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 执行分页查询
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">dishService</span><span class="o">.</span><span class="na">page</span><span class="o">(</span><span class="n">pageInfo</span><span class="o">,</span> <span class="n">queryWrapper</span><span class="o">);</span>
@@ -3403,7 +3402,7 @@ Slave_SQL_Running: Yes
       <pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate>
       
       <guid>/docs/spring/springboot/sharding-jdbc/</guid>
-      <description><![CDATA[介绍 Sharding Jdbc是一个用于实现数据库读写分离的框架。 依赖 Sharding Jdbc依赖坐标： &lt;dependency&gt; &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt; &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.0.0-RC1&lt;/version&gt; &lt;/dependency&gt; 配置 配置application.yaml： spring: sharding-sphere: # 旧版为 shardingsphere]]></description>
+      <description><![CDATA[介绍 Sharding Jdbc是一个用于实现数据库读写分离的框架。 依赖 Sharding Jdbc依赖坐标： &lt;dependency&gt; &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt; &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.0.0-RC1&lt;/version&gt; &lt;/dependency&gt; 配置 配置application.yaml： spring:sharding-sphere:# 旧版为 shardingspheredatasource:# 数据]]></description>
       <content:encoded><![CDATA[<h1 id="介绍" data-numberify>介绍<a class="anchor ms-1" href="#介绍"></a></h1>
 <p>Sharding Jdbc是一个用于实现数据库读写分离的框架。</p>
 <hr>
@@ -3722,13 +3721,13 @@ OK
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">city</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置超时
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valueOperations</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;key1&#34;</span><span class="o">,</span> <span class="s">&#34;value1&#34;</span><span class="o">,</span> <span class="mi">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valueOperations</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;key1&#34;</span><span class="o">,</span> <span class="s">&#34;value1&#34;</span><span class="o">,</span> <span class="n">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 不存在才设置
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Boolean</span> <span class="n">setIfAbsent1</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">setIfAbsent</span><span class="o">(</span><span class="s">&#34;city&#34;</span><span class="o">,</span> <span class="s">&#34;foshang&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">setIfAbsent1</span><span class="o">)</span> <span class="o">?</span> <span class="s">&#34;city设置成功&#34;</span> <span class="o">:</span> <span class="s">&#34;city已存在&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Boolean</span> <span class="n">setIfAbsent2</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">setIfAbsent</span><span class="o">(</span><span class="s">&#34;city_name&#34;</span><span class="o">,</span> <span class="s">&#34;foshang&#34;</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">                                                   <span class="mi">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                                                   <span class="n">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Object</span> <span class="n">cityName</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;city_name&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setIfAbsent2</span> <span class="o">?</span> <span class="s">&#34;city_name设置成功:&#34;</span> <span class="o">+</span> <span class="n">cityName</span>
 </span></span><span class="line"><span class="cl">                                        <span class="o">:</span> <span class="s">&#34;city_name已存在&#34;</span><span class="o">);</span>
@@ -3783,7 +3782,7 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;入队：&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">myList</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
@@ -3792,7 +3791,7 @@ OK
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获得列表长度 llen
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">size</span><span class="o">(</span><span class="n">key</span><span class="o">).</span><span class="na">intValue</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;出队：&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// 出队列
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">String</span> <span class="n">element</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">rightPop</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">element</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
@@ -3838,27 +3837,27 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&#34;myZset&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 存储
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="mf">10.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="mf">11.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">,</span> <span class="mf">12.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;d&#34;</span><span class="o">,</span> <span class="mf">13.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="mf">14.</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">10</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">11</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">,</span> <span class="n">12</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;d&#34;</span><span class="o">,</span> <span class="n">13</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">14</span><span class="o">.);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 修改分数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">incrementScore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="mf">20.</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">incrementScore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">.);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 删除成员
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
@@ -4250,11 +4249,11 @@ OK
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;/resources&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="nt">&lt;/build&gt;</span>
 </span></span></code></pre></div><p>修改<code>jdbc.properties</code>（属性值的使用方式与<code>pom.xml</code>中相同）：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">jdbc.driver</span><span class="o">=</span><span class="s">com.mysql.jdbc.Driver</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.url</span><span class="o">=</span><span class="s">${jdbc.url}</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.username</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.password</span><span class="o">=</span><span class="s">root</span>
-</span></span></code></pre></div><p>如果需要在多个项目中解析属性值，可以使用<code>${project.basedir}</code>（Maven的内置系统属性）来简化书写：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=${jdbc.url}
+jdbc.username=root
+jdbc.password=root
+</code></pre><p>如果需要在多个项目中解析属性值，可以使用<code>${project.basedir}</code>（Maven的内置系统属性）来简化书写：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;build&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;resources&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="c">&lt;!--
@@ -4512,11 +4511,11 @@ OK
 <li>
 <p><code>properties</code>格式：</p>
 <p>文件名为<code>application.properties</code>，格式如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 端口</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">81</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 访问路径</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.servlet.context-path</span><span class="o">=</span><span class="s">/</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 端口
+server.port=81
+# 访问路径
+server.servlet.context-path=/
+</code></pre></li>
 <li>
 <p><code>yaml</code>格式：</p>
 <p>文件名为<code>application.yml</code>或<code>application.yaml</code>，格式如下：</p>
@@ -4691,20 +4690,20 @@ OK
 <ul>
 <li>
 <p><code>application-dev.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">80</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=80
+</code></pre></li>
 <li>
 <p><code>application-pro.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">81</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=81
+</code></pre></li>
 <li>
 <p><code>application-test.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">82</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=82
+</code></pre></li>
 </ul>
 <p>SpringBoot只会默认加载名为 <code>application.properties</code> 的配置文件，所以需要在 <code>application.properties</code> 配置文件中设置启用哪个配置文件。如：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">spring.profiles.active</span><span class="o">=</span><span class="s">pro</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">spring.profiles.active=pro
+</code></pre></li>
 </ul>
 <p>SpringBoot提供了在运行<code>jar</code>时设置开启指定的环境的方式。如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">java –jar springbootdemo.jar –-spring.profiles.active<span class="o">=</span><span class="nb">test</span>
@@ -4849,7 +4848,7 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="n">bookDao</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="n">bookDao</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">book</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -5497,11 +5496,11 @@ URL。</li>
 </blockquote>
 <p>DAO相关配置类：</p>
 <p><code>jdbc.properties</code>（数据库配置，放在项目中<code>resources</code>目录下）：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">jdbc.driver</span><span class="o">=</span><span class="s">com.mysql.jdbc.Driver</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.url</span><span class="o">=</span><span class="s">jdbc:mysql:///spring_db?useSSL=false&amp;characterEncoding=utf-8</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.username</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.password</span><span class="o">=</span><span class="s">123456</span>
-</span></span></code></pre></div><p><code>JdbcConfig</code>：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql:///spring_db?useSSL=false&amp;characterEncoding=utf-8
+jdbc.username=root
+jdbc.password=123456
+</code></pre><p><code>JdbcConfig</code>：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JdbcConfig</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="nd">@Value</span><span class="o">(</span><span class="s">&#34;${jdbc.driver}&#34;</span><span class="o">)</span>
@@ -5801,7 +5800,7 @@ URL。</li>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Book</span><span class="o">&gt;</span> <span class="nf">searchName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Search the book &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">List</span> <span class="n">books</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Book</span><span class="o">&gt;();</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">5</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">books</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Book</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">name</span> <span class="o">+</span> <span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">books</span><span class="o">;</span>
@@ -6609,7 +6608,7 @@ FirstInterceptor afterCompletion...
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span><span class="line"><span class="cl"><span class="kt">boolean</span> <span class="nf">applyPreHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 读取interceptorList中的interceptor，并逐个执行它们的preHandle方法
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获取interceptor
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">HandlerInterceptor</span> <span class="n">interceptor</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 执行interceptor.preHandle
@@ -6630,7 +6629,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">applyPostHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ModelAndView</span> <span class="n">mv</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 按照倒序，逐个执行interceptor.postHandle()
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">HandlerInterceptor</span> <span class="n">interceptor</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">interceptor</span><span class="o">.</span><span class="na">postHandle</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">handler</span><span class="o">,</span> <span class="n">mv</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -6642,7 +6641,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">triggerAfterCompletion</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 从interceptorIndex开始，倒序执行interceptor.afterCompletion()
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 即triggerAfterCompletion()只会执行那些返回true的interceptor的afterCompletion()
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorIndex</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorIndex</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">HandlerInterceptor</span> <span class="n">interceptor</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">interceptorList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">interceptor</span><span class="o">.</span><span class="na">afterCompletion</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">handler</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
@@ -7191,7 +7190,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="c1">// 请求的分发处理，根据请求方式调用相应方法（如调用doGet）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">METHOD_GET</span><span class="o">))</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">long</span> <span class="n">lastModified</span> <span class="o">=</span> <span class="n">getLastModified</span><span class="o">(</span><span class="n">req</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">lastModified</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">lastModified</span> <span class="o">==</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// servlet doesn&#39;t support if-modified-since, no reason
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">// to go through further expensive logic
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">doGet</span><span class="o">(</span><span class="n">req</span><span class="o">,</span> <span class="n">resp</span><span class="o">);</span>
@@ -7843,14 +7842,14 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFindById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDelete</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -7858,7 +7857,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSave</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -7868,7 +7867,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUpdate</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8006,7 +8005,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFindById</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">UserService</span> <span class="n">userService</span> <span class="o">=</span> <span class="o">(</span><span class="n">UserService</span><span class="o">)</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&#34;userService&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">userService</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -8015,7 +8014,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDelete</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">UserService</span> <span class="n">userService</span> <span class="o">=</span> <span class="o">(</span><span class="n">UserService</span><span class="o">)</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&#34;userService&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">userService</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -8025,7 +8024,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">        <span class="n">UserService</span> <span class="n">userService</span> <span class="o">=</span> <span class="o">(</span><span class="n">UserService</span><span class="o">)</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&#34;userService&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">userService</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8036,7 +8035,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">        <span class="n">UserService</span> <span class="n">userService</span> <span class="o">=</span> <span class="o">(</span><span class="n">UserService</span><span class="o">)</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&#34;userService&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">userService</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8097,14 +8096,14 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFindById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDelete</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -8112,7 +8111,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSave</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8122,7 +8121,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUpdate</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8381,14 +8380,14 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFindById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDelete</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -8396,7 +8395,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSave</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8406,7 +8405,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUpdate</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8724,11 +8723,11 @@ FirstInterceptor afterCompletion...
 </span></span></code></pre></div></li>
 <li>
 <p>JDBC配置（<code>jdbc.properties</code>）：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">jdbc.driver</span><span class="o">=</span><span class="s">com.mysql.jdbc.Driver</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost:33061/spring_db</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.username</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.password</span><span class="o">=</span><span class="s">n546,Lin0</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:33061/spring_db
+jdbc.username=root
+jdbc.password=n546,Lin0
+</code></pre></li>
 <li>
 <p>Spring配置（<code>applicationContext.xml</code>）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
@@ -8858,14 +8857,14 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFindById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDelete</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">12</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;------------&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -8873,7 +8872,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSave</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -8883,7 +8882,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUpdate</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">12</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc123&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userDao</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -9109,9 +9108,9 @@ FirstInterceptor afterCompletion...
 <h4 id="注解读取-properties-配置文件" data-numberify>注解读取 properties 配置文件<a class="anchor ms-1" href="#注解读取-properties-配置文件"></a></h4>
 <p>使用<code>@Value</code>的意义之一在于：读取properties配置文件的信息。</p>
 <p>在<code>resource</code>目录下新建<code>jdbc.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">databaseName</span><span class="o">=</span><span class="s">mysql</span>
-</span></span><span class="line"><span class="cl"><span class="na">connectionNum</span><span class="o">=</span><span class="s">10</span>
-</span></span></code></pre></div><p>在配置类上添加<code>@PropertySource</code>注解：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">databaseName=mysql
+connectionNum=10
+</code></pre><p>在配置类上添加<code>@PropertySource</code>注解：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">org.springframework.context.annotation.PropertySource</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Configuration</span>
@@ -9282,11 +9281,11 @@ FirstInterceptor afterCompletion...
 </span></span></span></code></pre></div></li>
 <li>
 <p>JDBC配置文件<code>jdbc.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">jdbc.driver</span><span class="o">=</span><span class="s">com.mysql.cj.jdbc.Driver</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost:3306/spring_db?useSSL=false&amp;useServerPrepStmts=true</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.username</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.password</span><span class="o">=</span><span class="s">root</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/spring_db?useSSL=false&amp;useServerPrepStmts=true
+jdbc.username=root
+jdbc.password=root
+</code></pre></li>
 <li>
 <p>JDBC配置类<code>JdbcConfig.java</code>：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nn">com.linner.config</span><span class="o">;</span>
@@ -9414,14 +9413,14 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFindById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">10</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDelete</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">10</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
@@ -9436,7 +9435,7 @@ FirstInterceptor afterCompletion...
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUpdate</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">21</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">21</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;张三&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;abc&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">userService</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
@@ -9583,7 +9582,7 @@ FirstInterceptor afterCompletion...
 </ul>
 <h3 id="aop-切入点表达式" data-numberify>AOP 切入点表达式<a class="anchor ms-1" href="#aop-切入点表达式"></a></h3>
 <p>切入点表达式是对要进行增强的方法的描述方式。切入点表达式的一般形式如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="err">动作关键字</span><span class="o">(</span><span class="err">访问修饰符</span> <span class="err">返回值类型</span> <span class="err">包名</span><span class="o">.</span><span class="err">类名</span><span class="o">.</span><span class="err">方法名</span><span class="o">(</span><span class="err">参数类型列表</span><span class="o">)</span> <span class="err">异常名</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">动作关键字</span><span class="o">(</span><span class="n">访问修饰符</span> <span class="n">返回值类型</span> <span class="n">包名</span><span class="o">.</span><span class="na">类名</span><span class="o">.</span><span class="na">方法名</span><span class="o">(</span><span class="n">参数类型列表</span><span class="o">)</span> <span class="n">异常名</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>由于通常都是对<code>public</code>方法进行定义，而<code>public</code>是默认的，所以可以省略。</li>
 <li>切入点表达式定义的类可以是接口，也可以是其实现类。</li>
@@ -10006,7 +10005,7 @@ Session是存储在服务器端。</li>
 </span></span><span class="line"><span class="cl">        <span class="n">Cookie</span> <span class="n">cookie</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cookie</span><span class="o">(</span><span class="s">&#34;message&#34;</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置存活时间, 7天
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cookie</span><span class="o">.</span><span class="na">setMaxAge</span><span class="o">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cookie</span><span class="o">.</span><span class="na">setMaxAge</span><span class="o">(</span><span class="n">60</span><span class="o">*</span><span class="n">60</span><span class="o">*</span><span class="n">24</span><span class="o">*</span><span class="n">7</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 2. 发送Cookie, response
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">response</span><span class="o">.</span><span class="na">addCookie</span><span class="o">(</span><span class="n">cookie</span><span class="o">);</span>
@@ -10041,7 +10040,7 @@ Session是存储在服务器端。</li>
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Cookie</span> <span class="n">cookie</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cookie</span><span class="o">(</span><span class="s">&#34;message&#34;</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置存活时间, 7天
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cookie</span><span class="o">.</span><span class="na">setMaxAge</span><span class="o">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cookie</span><span class="o">.</span><span class="na">setMaxAge</span><span class="o">(</span><span class="n">60</span><span class="o">*</span><span class="n">60</span><span class="o">*</span><span class="n">24</span><span class="o">*</span><span class="n">7</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 2. 发送Cookie, response
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">response</span><span class="o">.</span><span class="na">addCookie</span><span class="o">(</span><span class="n">cookie</span><span class="o">);</span>
@@ -11204,7 +11203,7 @@ URL编码：</p>
 <ol>
 <li>
 <p>设置302状态码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">response</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="mi">302</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">response</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">302</span><span class="o">)</span>
 </span></span></code></pre></div></li>
 <li>
 <p>设置响应头中，<code>location</code>的值：</p>
@@ -11229,7 +11228,7 @@ URL编码：</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 重定向
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 1. 设置相应状态码
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">resp</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="mi">302</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">resp</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">302</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 2. 设置相应头 Location (不区分大小写)
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">resp</span><span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="s">&#34;Location&#34;</span><span class="o">,</span> <span class="s">&#34;/request-demo/demo2&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -11374,10 +11373,10 @@ URL编码：</p>
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ServletOutputStream</span> <span class="n">os</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 3. 完成流的copy
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">byte</span><span class="o">[]</span> <span class="n">buff</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">fis</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buff</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">os</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buff</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">byte</span><span class="o">[]</span> <span class="n">buff</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">fis</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buff</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">os</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buff</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">fis</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
@@ -11403,7 +11402,7 @@ URL编码：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl"><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 1. 读取文件
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">FileInputStream</span> <span class="n">fis</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&#34;src/main/webapp/imgs/reg_bg_min.jpg&#34;</span><span class="o">);</span><span class="mi">0</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">FileInputStream</span> <span class="n">fis</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&#34;src/main/webapp/imgs/reg_bg_min.jpg&#34;</span><span class="o">);</span><span class="n">0</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 2. 获取response字节输出流
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ServletOutputStream</span> <span class="n">os</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span>
@@ -11642,7 +11641,7 @@ URL编码：</p>
 </li>
 </ol>
 <p>可以把Servlet的创建放到服务器启动的时候来创建（修改<code>@WebServlet</code>注解）：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@WebServlet</span><span class="o">(</span><span class="n">urlPatterns</span> <span class="o">=</span> <span class="s">&#34;/demo1&#34;</span><span class="o">,</span> <span class="n">loadOnStartup</span> <span class="o">=</span> <span class="mi">1</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@WebServlet</span><span class="o">(</span><span class="n">urlPatterns</span> <span class="o">=</span> <span class="s">&#34;/demo1&#34;</span><span class="o">,</span> <span class="n">loadOnStartup</span> <span class="o">=</span> <span class="n">1</span><span class="o">)</span>
 </span></span></code></pre></div><p><code>loadOnstartup</code>的取值有两类情况：</p>
 <ol>
 <li>负整数：第一次访问时创建Servlet对象</li>
@@ -11655,7 +11654,7 @@ URL编码：</p>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">javax.servlet.annotation.WebServlet</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nd">@WebServlet</span><span class="o">(</span><span class="n">urlPatterns</span> <span class="o">=</span> <span class="s">&#34;/demo&#34;</span><span class="o">,</span> <span class="n">loadOnStartup</span> <span class="o">=</span> <span class="mi">1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@WebServlet</span><span class="o">(</span><span class="n">urlPatterns</span> <span class="o">=</span> <span class="s">&#34;/demo&#34;</span><span class="o">,</span> <span class="n">loadOnStartup</span> <span class="o">=</span> <span class="n">1</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServletDemo</span> <span class="kd">implements</span> <span class="n">Servlet</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
 </span></span></span><span class="line"><span class="cl"><span class="cm">     * 初始化方法
@@ -12465,7 +12464,7 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSelectById</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 模拟接收参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 1. 获取sqlSessionFactory
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">String</span> <span class="n">resource</span> <span class="o">=</span> <span class="s">&#34;./mybatis-config.xml&#34;</span><span class="o">;</span>
@@ -12775,8 +12774,8 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>Collection: 封装为Map集合</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">collection</span><span class="err">集合</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">collection</span><span class="err">集合</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">collection集合</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">collection集合</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>使用<code>@Param</code>注解，替换Map集合中默认的arg键名</li>
 </ul>
@@ -12784,9 +12783,9 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>List: 封装为Map集合</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">list</span><span class="err">集合</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">list</span><span class="err">集合</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;list&#34;</span><span class="o">,</span> <span class="n">list</span><span class="err">集合</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">list集合</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;collection&#34;</span><span class="o">,</span> <span class="n">list集合</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;list&#34;</span><span class="o">,</span> <span class="n">list集合</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>使用<code>@Param</code>注解,替换Map集合中默认的arg键名</li>
 </ul>
@@ -12794,8 +12793,8 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>Array: 封装为Map集合</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="err">数组</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;array&#34;</span><span class="o">,</span> <span class="err">数组</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">数组</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;array&#34;</span><span class="o">,</span> <span class="n">数组</span><span class="o">)</span>
 </span></span></code></pre></div><ul>
 <li>使用<code>@Param</code>注解,替换Map集合中默认的arg键名</li>
 </ul>
@@ -12811,17 +12810,17 @@ atis的配置文件 <code>mybatis-config.xml</code> 中加载映射文件：</p>
 <li>
 <p>每个参数有两个键:</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg1&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">2</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param2&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">2</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg0&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;arg1&#34;</span><span class="o">,</span> <span class="n">参数值2</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param2&#34;</span><span class="o">,</span> <span class="n">参数值2</span><span class="o">)</span>
 </span></span></code></pre></div></li>
 <li>
 <p>使用<code>@Param</code>注解,替换Map集合中默认的arg键名:</p>
 <p>相当于：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Param</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">)</span> <span class="err">参数类型</span> <span class="err">参数名</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="err">参数值</span><span class="mi">1</span><span class="o">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Param</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">)</span> <span class="n">参数类型</span> <span class="n">参数名</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;param1&#34;</span><span class="o">,</span> <span class="n">参数值1</span><span class="o">)</span>
 </span></span></code></pre></div></li>
 </ul>
 </li>
@@ -13208,11 +13207,11 @@ maxWait=3000
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// *4. 设置参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span> <span class="c1">// 返回影响的行数
@@ -13222,7 +13221,7 @@ maxWait=3000
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 7. 返回结果
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
@@ -13256,12 +13255,12 @@ maxWait=3000
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// *4. 设置参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getBrandName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getCompanyName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getOrdered</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getDescription</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">6</span><span class="o">,</span> <span class="n">brand</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span> <span class="c1">// 返回影响的行数
@@ -13271,7 +13270,7 @@ maxWait=3000
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 8. 返回结果
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
@@ -13291,7 +13290,7 @@ maxWait=3000
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// *4. 设置参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span> <span class="c1">// 返回影响的行数
@@ -13301,7 +13300,7 @@ maxWait=3000
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 7. 返回结果
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div>]]></content:encoded>
@@ -13739,8 +13738,8 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">        <span class="c1">// 4. 获取执行SQL的PreparedStatement对象
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置参数（?）的值 pstmt.setXxx(index, value)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">        <span class="c1">// 5. 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
@@ -13838,10 +13837,10 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//   - 防注入原理：
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//     字符串参数在setString中会被转义，
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//     即整个参数被当成sql里面的字符串，而不是java的字符串
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 从mysql日志文件可以发现：
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// &#39; OR &#39;1&#39; = &#39;1 转义成了 \&#39; OR \&#39;1\&#39; = \&#39;1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">pwd</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// - 执行SQL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
@@ -13937,10 +13936,10 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//   - rs.next()：光标向下移动一行，并判断当前行是否有效
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">while</span> <span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">())</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// - 获取数据 getXxx()
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// getXxx()方法可以使用列索引（从1开始）也可以使用列名
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">String</span> <span class="n">usrname</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&#34;username&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">passwd</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">passwd</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;id: &#34;</span> <span class="o">+</span> <span class="n">id</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;username: &#34;</span> <span class="o">+</span> <span class="n">usrname</span><span class="o">);</span>
@@ -14057,8 +14056,8 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; WHERE username = ?&#34;</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; AND password = ?&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获取ResultSet
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
@@ -14097,15 +14096,15 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&#34;INSERT INTO tb_user&#34;</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; VALUE(null, ?, ?)&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="cm">/**
@@ -14123,15 +14122,15 @@ useUnicode=true&amp;characterEncoding=UTF-8 // 设置字符集为UTF-8
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; WHERE username = ?&#34;</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">                <span class="s">&#34; AND password = ?&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">pstmt</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div>]]></content:encoded>

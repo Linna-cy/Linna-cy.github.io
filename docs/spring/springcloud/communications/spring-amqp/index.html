@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
   data-bs-theme="auto" data-palette="blue-gray">
-  <head><script src="/assets/init/bundle.min.3020ee296250c6f6a6ecdb19638caff240d3b1ac91094e8089aaec326aec54c1.js" crossorigin="anonymous"></script>
+  <head><script src="/assets/init/bundle.min.3263b6a22e9d322fd2064619a80984aac7b40726b56f9e8376854cb0bfd26281.js" crossorigin="anonymous"></script>
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,13 +22,13 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/spring/springcloud/communications/spring-amqp/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2023-08-04T08:40:11+00:00" />
-<meta property="article:modified_time" content="2023-08-04T08:40:11+00:00" />
+<meta property="article:modified_time" content="2023-08-04T08:40:11+00:00" /><meta property="og:site_name" content="Linner&#39;s Blog" />
 <meta property="og:see_also" content="/docs/spring/springcloud/communications/rabbit-mq/" /><meta property="og:see_also" content="/docs/spring/springcloud/communications/introduction/" /><meta property="og:see_also" content="/docs/spring/springboot/mysql-sharding/" /><meta property="og:see_also" content="/docs/spring/springmvc/api-tools/" /><meta property="og:see_also" content="/docs/spring/springcloud/eureka/" />
 
 <meta itemprop="name" content="Spring AMQP">
 <meta itemprop="description" content="AMQP（Advanced Message Queuing Protocol）是用于在应用程序之间传递业务消息的开放标准。该协议与语言和平台无关，更符合微服务中独立性的要"><meta itemprop="datePublished" content="2023-08-04T08:40:11+00:00" />
 <meta itemprop="dateModified" content="2023-08-04T08:40:11+00:00" />
-<meta itemprop="wordCount" content="6467">
+<meta itemprop="wordCount" content="6519">
 <meta itemprop="keywords" content="Java,Maven,SpringCloud," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -740,7 +740,7 @@ Linner
     <h1 class="card-title post-title my-2">Spring AMQP</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-08-04 08:40:11 &#43;0000 UTC。">2023年8月4日</span><span class="post-reading-time me-1 mb-1">13 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2023-08-04 08:40:11 &#43;0000 UTC。">2023年8月4日</span><span class="post-reading-time me-1 mb-1">14 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/spring/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
       <i class="fas fa-fw fa-columns me-1"></i>Spring</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a><a href="/tags/maven/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Maven</a><a href="/tags/springcloud/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">SpringCloud</a>
@@ -881,11 +881,11 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWorkQueue</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">queueName</span> <span class="o">=</span> <span class="s">&#34;work.queue&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&#34;Hello Message__&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">50</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">rabbitTemplate</span><span class="o">.</span><span class="na">convertAndSend</span><span class="o">(</span><span class="n">queueName</span><span class="o">,</span> <span class="n">msg</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;发送消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>   <span class="c1">// 休眠 20ms，1s == 1000ms，所以1s最多只能发50条
+</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">20</span><span class="o">);</span>   <span class="c1">// 休眠 20ms，1s == 1000ms，所以1s最多只能发50条
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -897,13 +897,13 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queuesToDeclare</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@Queue</span><span class="o">(</span><span class="n">WORK_QUEUE</span><span class="o">)})</span> <span class="c1">// 声明并订阅Queue
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listenWorkQueue1</span><span class="o">(</span><span class="n">String</span> <span class="n">msg</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;消费者 1 收到消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>   <span class="c1">// 用不同的日志级别区分消费者1和消费者2，更易于阅读
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>   <span class="c1">// 处理速度约：50条/s
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">20</span><span class="o">);</span>   <span class="c1">// 处理速度约：50条/s
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queuesToDeclare</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@Queue</span><span class="o">(</span><span class="n">WORK_QUEUE</span><span class="o">)})</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listenWorkQueue2</span><span class="o">(</span><span class="n">String</span> <span class="n">msg</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;消费者 2 收到消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">200</span><span class="o">);</span>  <span class="c1">// 处理速度约：5条/s
+</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">200</span><span class="o">);</span>  <span class="c1">// 处理速度约：5条/s
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><p><code>@RabbitListener</code>的<code>queuesToDeclare</code>属性是<code>@Queue</code>类型数组。<code>queuesToDeclare</code>在指定多个队列的同时，会去声明它们，这样就能不通过创建Bean来声明它们。</p>
@@ -1380,8 +1380,8 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/spring/springcloud/eureka/">
-    Eureka
+  <a class="post-title" href="/docs/spring/springcloud/nacos/">
+    Nacos
   </a>
   <div class="post-meta mb-0">
     2023年6月26日
@@ -1397,8 +1397,8 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/spring/springcloud/feign/">
-    Feign
+  <a class="post-title" href="/docs/spring/springcloud/introduction/">
+    微服务简介
   </a>
   <div class="post-meta mb-0">
     2023年6月26日
@@ -1414,8 +1414,8 @@ Linner
     NO IMAGE
   </div>
 
-  <a class="post-title" href="/docs/spring/springcloud/gateway/">
-    Gateway
+  <a class="post-title" href="/docs/spring/springcloud/remote-call/">
+    RestTemplate
   </a>
   <div class="post-meta mb-0">
     2023年6月26日
@@ -1539,12 +1539,12 @@ Linner
   <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
 </div>
 </footer>
-<script data-precache src="/assets/main/bundle.min.67fea83894c964b385accead61283b1ea3bfb26367431c831233ddc9f1fafac8.js" crossorigin="anonymous" async></script>
-<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/main/bundle.min.53e0e32e4d054f28b31bc681959fdeff7baa9e728cf9378b54450945f44cb3f7.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.fdebb7aeec9126663292814fd95fe6005995f3e5a1eedbb7b9ff84da96a39dbb.js" crossorigin="anonymous" defer></script>
 
-<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.e5a7213f2100ce0c5c22bd9f113527cd503672ffe57b00e9d6bf5f2abb0d86b2.js" crossorigin="anonymous" defer></script>
   
-  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+  <script data-precache defer src="/assets/katex/bundle.min.68202f2ad0a23ffe876cc403066e3d2609bddee4beca531ae701afdc518abec8.js" crossorigin="anonymous"></script>
 
 
 <script src="/js/sw-register.js" defer></script>

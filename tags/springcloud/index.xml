@@ -5,7 +5,6 @@
     <link>/tags/springcloud/</link>
     <description>Recent content in SpringCloud on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Fri, 04 Aug 2023 08:40:11 +0000</lastBuildDate><atom:link href="/tags/springcloud/index.xml" rel="self" type="application/rss+xml" />
@@ -145,11 +144,11 @@
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWorkQueue</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">queueName</span> <span class="o">=</span> <span class="s">&#34;work.queue&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&#34;Hello Message__&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">50</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">rabbitTemplate</span><span class="o">.</span><span class="na">convertAndSend</span><span class="o">(</span><span class="n">queueName</span><span class="o">,</span> <span class="n">msg</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;发送消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>   <span class="c1">// 休眠 20ms，1s == 1000ms，所以1s最多只能发50条
+</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">20</span><span class="o">);</span>   <span class="c1">// 休眠 20ms，1s == 1000ms，所以1s最多只能发50条
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -161,13 +160,13 @@
 </span></span><span class="line"><span class="cl">    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queuesToDeclare</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@Queue</span><span class="o">(</span><span class="n">WORK_QUEUE</span><span class="o">)})</span> <span class="c1">// 声明并订阅Queue
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listenWorkQueue1</span><span class="o">(</span><span class="n">String</span> <span class="n">msg</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;消费者 1 收到消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>   <span class="c1">// 用不同的日志级别区分消费者1和消费者2，更易于阅读
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>   <span class="c1">// 处理速度约：50条/s
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">20</span><span class="o">);</span>   <span class="c1">// 处理速度约：50条/s
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queuesToDeclare</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@Queue</span><span class="o">(</span><span class="n">WORK_QUEUE</span><span class="o">)})</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listenWorkQueue2</span><span class="o">(</span><span class="n">String</span> <span class="n">msg</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;消费者 2 收到消息：[&#34;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">200</span><span class="o">);</span>  <span class="c1">// 处理速度约：5条/s
+</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">200</span><span class="o">);</span>  <span class="c1">// 处理速度约：5条/s
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><p><code>@RabbitListener</code>的<code>queuesToDeclare</code>属性是<code>@Queue</code>类型数组。<code>queuesToDeclare</code>在指定多个队列的同时，会去声明它们，这样就能不通过创建Bean来声明它们。</p>
@@ -696,7 +695,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConnectionFactory</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 1.1. 设置连接参数
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">);</span>   <span class="c1">// 主机地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5672</span><span class="o">);</span>          <span class="c1">// 端口号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="n">5672</span><span class="o">);</span>          <span class="c1">// 端口号
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setVirtualHost</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">);</span>    <span class="c1">// 虚拟主机
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;linner&#34;</span><span class="o">);</span>  <span class="c1">// 账号
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>  <span class="c1">// 密码
@@ -734,7 +733,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConnectionFactory</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 1.1. 设置连接参数
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">);</span>   <span class="c1">// 主机地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5672</span><span class="o">);</span>          <span class="c1">// 端口号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="n">5672</span><span class="o">);</span>          <span class="c1">// 端口号
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setVirtualHost</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">);</span>    <span class="c1">// 虚拟主机
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&#34;linner&#34;</span><span class="o">);</span>  <span class="c1">// 用户名
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">factory</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>  <span class="c1">// 密码
@@ -1986,7 +1985,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * 识别用户权限
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="mi">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
+</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="n">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nd">@Component</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizeFilter</span> <span class="kd">implements</span> <span class="n">GlobalFilter</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
@@ -2054,7 +2053,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div></li>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
   data-bs-theme="auto" data-palette="blue-gray">
-  <head><script src="/assets/init/bundle.min.3020ee296250c6f6a6ecdb19638caff240d3b1ac91094e8089aaec326aec54c1.js" crossorigin="anonymous"></script>
+  <head><script src="/assets/init/bundle.min.3263b6a22e9d322fd2064619a80984aac7b40726b56f9e8376854cb0bfd26281.js" crossorigin="anonymous"></script>
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/2023/02/java-%E8%BF%9B%E9%98%B6/" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2023-02-14T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-02-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-02-14T00:00:00+00:00" /><meta property="og:site_name" content="Linner&#39;s Blog" />
 
 <meta itemprop="name" content="Java 进阶">
 <meta itemprop="description" content="反射 反射是Java中一种用于动态获取类或对象的信息以及动态调用对象方法的功能机制。在运行状态中，对于任意一个类，使用反射可以获取这个类的所有"><meta itemprop="datePublished" content="2023-02-14T00:00:00+00:00" />
@@ -500,7 +500,7 @@ Linner
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 如果是private修饰的构造方法，需要临时修改构造方法的访问权限（取消检查访问权限）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">con2</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 使用带参数的构造方法创建对象
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Student</span> <span class="n">stu2</span> <span class="o">=</span> <span class="o">(</span><span class="n">Student</span><span class="o">)</span> <span class="n">con2</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="s">&#34;zhangsan&#34;</span><span class="o">,</span> <span class="mi">23</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Student</span> <span class="n">stu2</span> <span class="o">=</span> <span class="o">(</span><span class="n">Student</span><span class="o">)</span> <span class="n">con2</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="s">&#34;zhangsan&#34;</span><span class="o">,</span> <span class="n">23</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">stu2</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -608,7 +608,7 @@ Linner
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ReflectDemo</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">IllegalAccessException</span><span class="o">,</span> <span class="n">NoSuchFieldException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Student</span><span class="o">(</span><span class="s">&#34;张三&#34;</span><span class="o">,</span> <span class="mi">23</span><span class="o">,</span> <span class="s">&#34;大三&#34;</span><span class="o">,</span> <span class="s">&#34;广州&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Student</span><span class="o">(</span><span class="s">&#34;张三&#34;</span><span class="o">,</span> <span class="n">23</span><span class="o">,</span> <span class="s">&#34;大三&#34;</span><span class="o">,</span> <span class="s">&#34;广州&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获取Class对象
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;com.linner.reflect.Student&#34;</span><span class="o">);</span>
@@ -800,7 +800,7 @@ Linner
 <p>Example：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ReflectDemo1</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">NoSuchMethodException</span><span class="o">,</span> <span class="n">InvocationTargetException</span><span class="o">,</span> <span class="n">IllegalAccessException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Student</span><span class="o">(</span><span class="s">&#34;张三&#34;</span><span class="o">,</span> <span class="mi">23</span><span class="o">,</span> <span class="s">&#34;大三&#34;</span><span class="o">,</span> <span class="s">&#34;广州&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Student</span><span class="o">(</span><span class="s">&#34;张三&#34;</span><span class="o">,</span> <span class="n">23</span><span class="o">,</span> <span class="s">&#34;大三&#34;</span><span class="o">,</span> <span class="s">&#34;广州&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获取Class对象
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;com.linner.reflect.Student&#34;</span><span class="o">);</span>
@@ -814,7 +814,7 @@ Linner
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Method</span> <span class="n">studyMethod</span> <span class="o">=</span> <span class="n">clazz</span><span class="o">.</span><span class="na">getDeclaredMethod</span><span class="o">(</span><span class="s">&#34;study&#34;</span><span class="o">,</span> <span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 临时取消访问权限
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">studyMethod</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">studyMethod</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">student</span><span class="o">,</span> <span class="mi">180</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">studyMethod</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">student</span><span class="o">,</span> <span class="n">180</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><hr>
@@ -890,7 +890,7 @@ Linner
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">MyAnnotationField</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="nf">name</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 使用default定义默认值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="nf">length</span><span class="o">()</span> <span class="k">default</span> <span class="mi">0</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="nf">length</span><span class="o">()</span> <span class="k">default</span> <span class="n">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div></li>
 <li>
@@ -899,7 +899,7 @@ Linner
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@MyAnnotationType</span><span class="o">(</span><span class="s">&#34;Annotation&#34;</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 或（有多个元素时需要指定元素名）：@MyAnnotation1(value = &#34;Annotation&#34;)
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UsingAnnotations</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nd">@MyAnnotationField</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;张三&#34;</span><span class="o">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">12</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@MyAnnotationField</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;张三&#34;</span><span class="o">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">12</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="n">a</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nd">@MyAnnotationField</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;李四&#34;</span><span class="o">)</span>   <span class="c1">// length将使用默认值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">String</span> <span class="n">b</span><span class="o">;</span>
@@ -1583,12 +1583,12 @@ Linner
   <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
 </div>
 </footer>
-<script data-precache src="/assets/main/bundle.min.67fea83894c964b385accead61283b1ea3bfb26367431c831233ddc9f1fafac8.js" crossorigin="anonymous" async></script>
-<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/main/bundle.min.53e0e32e4d054f28b31bc681959fdeff7baa9e728cf9378b54450945f44cb3f7.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.fdebb7aeec9126663292814fd95fe6005995f3e5a1eedbb7b9ff84da96a39dbb.js" crossorigin="anonymous" defer></script>
 
-<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.e5a7213f2100ce0c5c22bd9f113527cd503672ffe57b00e9d6bf5f2abb0d86b2.js" crossorigin="anonymous" defer></script>
   
-  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+  <script data-precache defer src="/assets/katex/bundle.min.68202f2ad0a23ffe876cc403066e3d2609bddee4beca531ae701afdc518abec8.js" crossorigin="anonymous"></script>
 
 
 <script src="/js/sw-register.js" defer></script>

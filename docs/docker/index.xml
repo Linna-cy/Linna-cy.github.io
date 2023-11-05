@@ -5,7 +5,6 @@
     <link>/docs/docker/</link>
     <description>Recent content in Docker on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Wed, 02 Aug 2023 08:32:18 +0000</lastBuildDate><atom:link href="/docs/docker/index.xml" rel="self" type="application/rss+xml" />
@@ -27,17 +26,17 @@
 <p><code>docker-compose.yml</code>的配置案例如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">version: &#34;3.8&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">  mysql</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">    image: mysql:5.7.25</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mysql</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">image: mysql:5.7.25</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="m">123456</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">    volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;/tmp/mysql/data:/var/lib/mysql&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;/tmp/mysql/conf/hmy.cnf:/etc/mysql/conf.d/hmy.cnf&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">  web</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">    build: .</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">    ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;8090:8090&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>-<span class="w"> </span><span class="s2">&#34;/tmp/mysql/data:/var/lib/mysql&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>-<span class="w"> </span><span class="s2">&#34;/tmp/mysql/conf/hmy.cnf:/etc/mysql/conf.d/hmy.cnf&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">build: .</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>- <span class="s2">&#34;8090:8090&#34;</span><span class="w">
 </span></span></span></code></pre></div><p>上方的<code>docker-compose.yml</code>描述了一个项目，其中包含两个容器：</p>
 <ul>
 <li><code>mysql</code>：一个基于<code>mysql:5.7.25</code>镜像构建的容器，并且挂载了两个目录。</li>

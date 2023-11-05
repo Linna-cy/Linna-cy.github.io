@@ -5,7 +5,6 @@
     <link>/tags/springboot/</link>
     <description>Recent content in SpringBoot on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Tue, 21 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="/tags/springboot/index.xml" rel="self" type="application/rss+xml" />
@@ -161,11 +160,11 @@
 <li>
 <p><code>properties</code>格式：</p>
 <p>文件名为<code>application.properties</code>，格式如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 端口</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">81</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 访问路径</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.servlet.context-path</span><span class="o">=</span><span class="s">/</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 端口
+server.port=81
+# 访问路径
+server.servlet.context-path=/
+</code></pre></li>
 <li>
 <p><code>yaml</code>格式：</p>
 <p>文件名为<code>application.yml</code>或<code>application.yaml</code>，格式如下：</p>
@@ -340,20 +339,20 @@
 <ul>
 <li>
 <p><code>application-dev.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">80</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=80
+</code></pre></li>
 <li>
 <p><code>application-pro.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">81</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=81
+</code></pre></li>
 <li>
 <p><code>application-test.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">82</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=82
+</code></pre></li>
 </ul>
 <p>SpringBoot只会默认加载名为 <code>application.properties</code> 的配置文件，所以需要在 <code>application.properties</code> 配置文件中设置启用哪个配置文件。如：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">spring.profiles.active</span><span class="o">=</span><span class="s">pro</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">spring.profiles.active=pro
+</code></pre></li>
 </ul>
 <p>SpringBoot提供了在运行<code>jar</code>时设置开启指定的环境的方式。如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">java –jar springbootdemo.jar –-spring.profiles.active<span class="o">=</span><span class="nb">test</span>
@@ -498,7 +497,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="n">bookDao</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="n">bookDao</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">book</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>

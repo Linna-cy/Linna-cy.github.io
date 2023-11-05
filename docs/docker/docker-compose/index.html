@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
   data-bs-theme="auto" data-palette="blue-gray">
-  <head><script src="/assets/init/bundle.min.3020ee296250c6f6a6ecdb19638caff240d3b1ac91094e8089aaec326aec54c1.js" crossorigin="anonymous"></script>
+  <head><script src="/assets/init/bundle.min.3263b6a22e9d322fd2064619a80984aac7b40726b56f9e8376854cb0bfd26281.js" crossorigin="anonymous"></script>
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,13 +22,13 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/docker/docker-compose/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2023-08-02T08:32:18+00:00" />
-<meta property="article:modified_time" content="2023-08-02T08:32:18+00:00" />
+<meta property="article:modified_time" content="2023-08-02T08:32:18+00:00" /><meta property="og:site_name" content="Linner&#39;s Blog" />
 <meta property="og:see_also" content="/docs/docker/dockerfile/" /><meta property="og:see_also" content="/docs/docker/container-options/" /><meta property="og:see_also" content="/docs/docker/images-options/" /><meta property="og:see_also" content="/docs/docker/docker-hub/" /><meta property="og:see_also" content="/docs/docker/introduction/" />
 
 <meta itemprop="name" content="Docker Compose">
 <meta itemprop="description" content="介绍 Docker Compose是一个文本文件，用于定义和运行多容器 Docker应用程序的工具。通过Compose，可以使用YML文件来配置应用程序需要"><meta itemprop="datePublished" content="2023-08-02T08:32:18+00:00" />
 <meta itemprop="dateModified" content="2023-08-02T08:32:18+00:00" />
-<meta itemprop="wordCount" content="1003">
+<meta itemprop="wordCount" content="1006">
 <meta itemprop="keywords" content="Docker," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -763,17 +763,17 @@ Linner
 <p><code>docker-compose.yml</code>的配置案例如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">version: &#34;3.8&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">  mysql</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">    image: mysql:5.7.25</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mysql</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">image: mysql:5.7.25</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="m">123456</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">    volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;/tmp/mysql/data:/var/lib/mysql&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;/tmp/mysql/conf/hmy.cnf:/etc/mysql/conf.d/hmy.cnf&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">  web</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">    build: .</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">    ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">     - &#34;8090:8090&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>-<span class="w"> </span><span class="s2">&#34;/tmp/mysql/data:/var/lib/mysql&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>-<span class="w"> </span><span class="s2">&#34;/tmp/mysql/conf/hmy.cnf:/etc/mysql/conf.d/hmy.cnf&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">build: .</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>- <span class="s2">&#34;8090:8090&#34;</span><span class="w">
 </span></span></span></code></pre></div><p>上方的<code>docker-compose.yml</code>描述了一个项目，其中包含两个容器：</p>
 <ul>
 <li><code>mysql</code>：一个基于<code>mysql:5.7.25</code>镜像构建的容器，并且挂载了两个目录。</li>
@@ -1043,12 +1043,12 @@ Linner
   <div class="col-12 col-lg-8 offset-0 offset-lg-1"></div>
 </div>
 </footer>
-<script data-precache src="/assets/main/bundle.min.67fea83894c964b385accead61283b1ea3bfb26367431c831233ddc9f1fafac8.js" crossorigin="anonymous" async></script>
-<script data-precache src="/assets/icons/bundle.min.4f30d5267a9f2f9d45ed93969d45ec626100a969a8b91f71f753315a261e9034.js" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/main/bundle.min.53e0e32e4d054f28b31bc681959fdeff7baa9e728cf9378b54450945f44cb3f7.js" crossorigin="anonymous" async></script>
+<script data-precache src="/assets/icons/bundle.min.fdebb7aeec9126663292814fd95fe6005995f3e5a1eedbb7b9ff84da96a39dbb.js" crossorigin="anonymous" defer></script>
 
-<script data-precache src="/assets/viewer/bundle.min.0a0d0099935beee41b7a7bf4543cd55e793e5f830a571b0794ef8c3602c5823c.js" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.e5a7213f2100ce0c5c22bd9f113527cd503672ffe57b00e9d6bf5f2abb0d86b2.js" crossorigin="anonymous" defer></script>
   
-  <script data-precache defer src="/assets/katex/bundle.min.39b7cc11b3bfb94e072084f84bae45ca5febdeda74350ccafba040a96e9a5113.js" crossorigin="anonymous"></script>
+  <script data-precache defer src="/assets/katex/bundle.min.68202f2ad0a23ffe876cc403066e3d2609bddee4beca531ae701afdc518abec8.js" crossorigin="anonymous"></script>
 
 
 <script src="/js/sw-register.js" defer></script>

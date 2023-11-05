@@ -5,7 +5,6 @@
     <link>/docs/spring/springboot/</link>
     <description>Recent content in Spring Boot on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Fri, 28 Jul 2023 07:20:31 +0000</lastBuildDate><atom:link href="/docs/spring/springboot/index.xml" rel="self" type="application/rss+xml" />
@@ -278,7 +277,7 @@ Slave_SQL_Running: Yes
 </span></span><span class="line"><span class="cl"><span class="nd">@ApiModel</span><span class="o">(</span><span class="s">&#34;菜品&#34;</span><span class="o">)</span>   <span class="c1">// 标识实体类的名称
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dish</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">1L</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="n">1L</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@ApiModelProperty</span><span class="o">(</span><span class="s">&#34;菜品ID&#34;</span><span class="o">)</span>     <span class="c1">// 标识实体类属性的名称
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
@@ -383,7 +382,7 @@ Slave_SQL_Running: Yes
 </span></span><span class="line"><span class="cl">        <span class="c1">// 添加排序条件（降序排序）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">orderByDesc</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getUpdateTime</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// isDeleted不为1（为1表示被删除）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">queryWrapper</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Dish</span><span class="o">::</span><span class="n">getIsDeleted</span><span class="o">,</span> <span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 执行分页查询
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">dishService</span><span class="o">.</span><span class="na">page</span><span class="o">(</span><span class="n">pageInfo</span><span class="o">,</span> <span class="n">queryWrapper</span><span class="o">);</span>
@@ -438,7 +437,7 @@ Slave_SQL_Running: Yes
       <pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate>
       
       <guid>/docs/spring/springboot/sharding-jdbc/</guid>
-      <description><![CDATA[介绍 Sharding Jdbc是一个用于实现数据库读写分离的框架。 依赖 Sharding Jdbc依赖坐标： &lt;dependency&gt; &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt; &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.0.0-RC1&lt;/version&gt; &lt;/dependency&gt; 配置 配置application.yaml： spring: sharding-sphere: # 旧版为 shardingsphere]]></description>
+      <description><![CDATA[介绍 Sharding Jdbc是一个用于实现数据库读写分离的框架。 依赖 Sharding Jdbc依赖坐标： &lt;dependency&gt; &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt; &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.0.0-RC1&lt;/version&gt; &lt;/dependency&gt; 配置 配置application.yaml： spring:sharding-sphere:# 旧版为 shardingspheredatasource:# 数据]]></description>
       <content:encoded><![CDATA[<h1 id="介绍" data-numberify>介绍<a class="anchor ms-1" href="#介绍"></a></h1>
 <p>Sharding Jdbc是一个用于实现数据库读写分离的框架。</p>
 <hr>
@@ -757,13 +756,13 @@ OK
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">city</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 设置超时
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valueOperations</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;key1&#34;</span><span class="o">,</span> <span class="s">&#34;value1&#34;</span><span class="o">,</span> <span class="mi">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valueOperations</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;key1&#34;</span><span class="o">,</span> <span class="s">&#34;value1&#34;</span><span class="o">,</span> <span class="n">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 不存在才设置
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Boolean</span> <span class="n">setIfAbsent1</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">setIfAbsent</span><span class="o">(</span><span class="s">&#34;city&#34;</span><span class="o">,</span> <span class="s">&#34;foshang&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">setIfAbsent1</span><span class="o">)</span> <span class="o">?</span> <span class="s">&#34;city设置成功&#34;</span> <span class="o">:</span> <span class="s">&#34;city已存在&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Boolean</span> <span class="n">setIfAbsent2</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">setIfAbsent</span><span class="o">(</span><span class="s">&#34;city_name&#34;</span><span class="o">,</span> <span class="s">&#34;foshang&#34;</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">                                                   <span class="mi">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                                                   <span class="n">10L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Object</span> <span class="n">cityName</span> <span class="o">=</span> <span class="n">valueOperations</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;city_name&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setIfAbsent2</span> <span class="o">?</span> <span class="s">&#34;city_name设置成功:&#34;</span> <span class="o">+</span> <span class="n">cityName</span>
 </span></span><span class="line"><span class="cl">                                        <span class="o">:</span> <span class="s">&#34;city_name已存在&#34;</span><span class="o">);</span>
@@ -818,7 +817,7 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;入队：&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">myList</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
@@ -827,7 +826,7 @@ OK
 </span></span><span class="line"><span class="cl">        <span class="c1">// 获得列表长度 llen
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">size</span><span class="o">(</span><span class="n">key</span><span class="o">).</span><span class="na">intValue</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;出队：&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// 出队列
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">String</span> <span class="n">element</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">listOperations</span><span class="o">.</span><span class="na">rightPop</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">element</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
@@ -873,27 +872,27 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&#34;myZset&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 存储
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="mf">10.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="mf">11.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">,</span> <span class="mf">12.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;d&#34;</span><span class="o">,</span> <span class="mf">13.</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="mf">14.</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">10</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">11</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">,</span> <span class="n">12</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;d&#34;</span><span class="o">,</span> <span class="n">13</span><span class="o">.);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">14</span><span class="o">.);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 修改分数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">incrementScore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="mf">20.</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">incrementScore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">.);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 删除成员
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">zSetOperations</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="s">&#34;c&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 取值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">range</span> <span class="o">=</span> <span class="n">zSetOperations</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">s</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
@@ -1285,11 +1284,11 @@ OK
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;/resources&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="nt">&lt;/build&gt;</span>
 </span></span></code></pre></div><p>修改<code>jdbc.properties</code>（属性值的使用方式与<code>pom.xml</code>中相同）：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">jdbc.driver</span><span class="o">=</span><span class="s">com.mysql.jdbc.Driver</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.url</span><span class="o">=</span><span class="s">${jdbc.url}</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.username</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">jdbc.password</span><span class="o">=</span><span class="s">root</span>
-</span></span></code></pre></div><p>如果需要在多个项目中解析属性值，可以使用<code>${project.basedir}</code>（Maven的内置系统属性）来简化书写：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=${jdbc.url}
+jdbc.username=root
+jdbc.password=root
+</code></pre><p>如果需要在多个项目中解析属性值，可以使用<code>${project.basedir}</code>（Maven的内置系统属性）来简化书写：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;build&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;resources&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="c">&lt;!--
@@ -1547,11 +1546,11 @@ OK
 <li>
 <p><code>properties</code>格式：</p>
 <p>文件名为<code>application.properties</code>，格式如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 端口</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">81</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 访问路径</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.servlet.context-path</span><span class="o">=</span><span class="s">/</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 端口
+server.port=81
+# 访问路径
+server.servlet.context-path=/
+</code></pre></li>
 <li>
 <p><code>yaml</code>格式：</p>
 <p>文件名为<code>application.yml</code>或<code>application.yaml</code>，格式如下：</p>
@@ -1726,20 +1725,20 @@ OK
 <ul>
 <li>
 <p><code>application-dev.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">80</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=80
+</code></pre></li>
 <li>
 <p><code>application-pro.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">81</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=81
+</code></pre></li>
 <li>
 <p><code>application-test.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">82</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">server.port=82
+</code></pre></li>
 </ul>
 <p>SpringBoot只会默认加载名为 <code>application.properties</code> 的配置文件，所以需要在 <code>application.properties</code> 配置文件中设置启用哪个配置文件。如：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">spring.profiles.active</span><span class="o">=</span><span class="s">pro</span>
-</span></span></code></pre></div></li>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">spring.profiles.active=pro
+</code></pre></li>
 </ul>
 <p>SpringBoot提供了在运行<code>jar</code>时设置开启指定的环境的方式。如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">java –jar springbootdemo.jar –-spring.profiles.active<span class="o">=</span><span class="nb">test</span>
@@ -1884,7 +1883,7 @@ OK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetById</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="n">bookDao</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="n">bookDao</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">book</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>

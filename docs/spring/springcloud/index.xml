@@ -5,7 +5,6 @@
     <link>/docs/spring/springcloud/</link>
     <description>Recent content in Spring Cloud on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
     <lastBuildDate>Fri, 04 Aug 2023 08:40:11 +0000</lastBuildDate><atom:link href="/docs/spring/springcloud/index.xml" rel="self" type="application/rss+xml" />
@@ -91,19 +90,19 @@
 
 </p>
 <p>接着修改在<code>conf</code>目录里的<code>application.properties</code>文件（如果没有，就将<code>application.properties.example</code>文件复制一份，改名为<code>application.properties</code>）。需要修改的配置如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 数据源</span>
-</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 数据库数量</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 连接第1个数据库的url（替换成自己的）</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 连接第1个数据库的用户和密码（替换成自己的）</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 数据库驱动（如果其它配置正确，但无法启动时，修改该配置）</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># db.driver-class-name=com.mysql.cj.jdbc.Driver</span>
-</span></span></code></pre></div><p>接下来重启Nacos即可：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 数据源
+spring.datasource.platform=mysql
+# 数据库数量
+db.num=1
+# 连接第1个数据库的url（替换成自己的）
+db.url.0=jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC
+# 连接第1个数据库的用户和密码（替换成自己的）
+db.user.0=root
+db.password.0=root
+
+# 数据库驱动（如果其它配置正确，但无法启动时，修改该配置）
+# db.driver-class-name=com.mysql.cj.jdbc.Driver
+</code></pre><p>接下来重启Nacos即可：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./shutdown.sh <span class="c1"># 也可以直接 CTRL+C 结束</span>
 </span></span><span class="line"><span class="cl">./startup.sh -m standalone
 </span></span></code></pre></div><hr>
@@ -111,26 +110,26 @@
 <p>在本地部署Nacos集群首先将Nacos整个应用目录复制，要在集群中部署几个Nacos就复制几份。接着再分别修改它们的配置文件<code>application.properties</code>。</p>
 <p>例如要部署两个Nacos，做负载均衡：</p>
 <p>第一个Nacos的配置文件可以如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 服务端口</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">8841</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 数据库配置</span>
-</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://localhost:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
-</span></span></code></pre></div><p>第二个Nacos的配置文件可以如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 服务端口</span>
-</span></span><span class="line"><span class="cl"><span class="na">server.port</span><span class="o">=</span><span class="s">8842</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 数据库配置</span>
-</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
-</span></span></code></pre></div><blockquote>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 服务端口
+server.port=8841
+
+# 数据库配置
+spring.datasource.platform=mysql
+db.num=1
+db.url.0=jdbc:mysql://localhost:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC
+db.user.0=root
+db.password.0=root
+</code></pre><p>第二个Nacos的配置文件可以如下：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 服务端口
+server.port=8842
+
+# 数据库配置
+spring.datasource.platform=mysql
+db.num=1
+db.url.0=jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC
+db.user.0=root
+db.password.0=root
+</code></pre><blockquote>
 <p>因为是部署在本地（即一台机器上），所以两个Nacos的端口不能相同（否则会发生冲突）。</p>
 </blockquote>
 <p>接着使用<code>startup.cmd</code>或<code>startup.sh</code>分别启动这两个Nacos（这里要使用集群模式启动，Nacos默认使用集群模式启动，所以不能加上<code>-m standalone</code>参数）。</p>
@@ -191,13 +190,13 @@ server {
 </span></span></code></pre></div><hr>
 <h1 id="基于-docker-使用-mysql-部署" data-numberify>基于 Docker 使用 MySQL 部署<a class="anchor ms-1" href="#基于-docker-使用-mysql-部署"></a></h1>
 <p>根据如上方法创建Nacos容器，然后修改映射到本地的配置文件。例如修改<code>/home/nacos/nacos-server/conf</code>下的<code>application.properties</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 数据库配置（根据你的配置环境修改）</span>
-</span></span><span class="line"><span class="cl"><span class="na">spring.datasource.platform</span><span class="o">=</span><span class="s">mysql</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.num</span><span class="o">=</span><span class="s">1</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://localhost:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.user.0</span><span class="o">=</span><span class="s">root</span>
-</span></span><span class="line"><span class="cl"><span class="na">db.password.0</span><span class="o">=</span><span class="s">root</span>
-</span></span></code></pre></div><blockquote>
+<pre tabindex="0"><code class="language-properties" data-lang="properties"># 数据库配置（根据你的配置环境修改）
+spring.datasource.platform=mysql
+db.num=1
+db.url.0=jdbc:mysql://localhost:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC
+db.user.0=root
+db.password.0=root
+</code></pre><blockquote>
 <p>注：这个MySQL需要使用<code>mysql-schema.sql</code>创建<code>nacos</code>数据库。</p>
 </blockquote>
 <p>如果MySQL也是使用Docker创建的，可以给Nacos容器和MySQL容器添加一个Docker Network，并将它们都加入这个Network中：</p>
@@ -213,8 +212,8 @@ server {
 </span></span></code></pre></div></li>
 </ol>
 <p>之后在加入这个Network的容器中，可以将它们的容器名当作IP地址来使用。所以在<code>nacos-server</code>中可以将<code>db.url</code>修改为如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">db.url.0</span><span class="o">=</span><span class="s">jdbc:mysql://mysql:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC</span>
-</span></span></code></pre></div><p>其实使用Docker部署并使用MySQL数据库还有一个简便的方法（按照上述方法直接修改配置文件可能不生效），可以在创建容器的Docker命令中通过<code>nacos-server</code>提供的环境变量直接指定MySQL服务的配置信息（<code>nacos-server</code>容器在创建时会自动生成对应的配置文件）：</p>
+<pre tabindex="0"><code class="language-properties" data-lang="properties">db.url.0=jdbc:mysql://mysql:3306/nacos?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true&amp;useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC
+</code></pre><p>其实使用Docker部署并使用MySQL数据库还有一个简便的方法（按照上述方法直接修改配置文件可能不生效），可以在创建容器的Docker命令中通过<code>nacos-server</code>提供的环境变量直接指定MySQL服务的配置信息（<code>nacos-server</code>容器在创建时会自动生成对应的配置文件）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker run -d <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name nacos-server <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 8848:8848 <span class="se">\
@@ -1369,7 +1368,7 @@ docker restart nacos2
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * 识别用户权限
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="mi">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
+</span></span><span class="line"><span class="cl"><span class="nd">@Order</span><span class="o">(-</span><span class="n">1</span><span class="o">)</span>   <span class="c1">// 顺序注解（定义过滤器的执行顺序），值越小优先级越高
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nd">@Component</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizeFilter</span> <span class="kd">implements</span> <span class="n">GlobalFilter</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
@@ -1437,7 +1436,7 @@ docker restart nacos2
 </span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div></li>
