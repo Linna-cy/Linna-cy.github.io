@@ -7,7 +7,226 @@
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Thu, 07 Dec 2023 08:08:35 +0000</lastBuildDate><atom:link href="/docs/java/concurrent/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 10 Dec 2023 07:53:03 +0000</lastBuildDate><atom:link href="/docs/java/concurrent/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 线程的创建</title>
+      <link>/docs/java/concurrent/create-thread/</link>
+      <pubDate>Sun, 10 Dec 2023 07:53:03 +0000</pubDate>
+      
+      <guid>/docs/java/concurrent/create-thread/</guid>
+      <description><![CDATA[Java提供了三种创建线程的方法： 重写Thread类的run()； 通过实现Runnable接口； 通过Callable和FutureTask创]]></description>
+      <content:encoded><![CDATA[<p>Java提供了三种创建线程的方法：</p>
+<ul>
+<li>重写<code>Thread</code>类的<code>run()</code>；</li>
+<li>通过实现<code>Runnable</code>接口；</li>
+<li>通过<code>Callable</code>和<code>FutureTask</code>创建线程。</li>
+</ul>
+<hr>
+<h1 id="通过-thread-类创建" data-numberify>通过 Thread 类创建<a class="anchor ms-1" href="#通过-thread-类创建"></a></h1>
+<p>在Java中，每一个线程实际的创建和运行都是通过<code>Thread</code>类。<code>Thread</code>类的<code>run()</code>方法就是当前线程的入口点（入口方法）。</p>
+<blockquote>
+<p>在Java中，在运行<code>main()</code>方法时，实际上是创建了一个名为<code>main</code>的线程。而<code>main()</code>方法则是当前应用程序<code>main</code>线程的入口点（入口方法）。</p>
+</blockquote>
+<p>直接通过<code>Thread</code>类的无参构造函数创建<code>Thread</code>对象，创建出来的线程并没有任何实际的作用。也就是说它的<code>run()</code>方法并没有执行任何实际的任务。</p>
+<p>通过<code>Thread</code>类直接创建线程，需要重写<code>Thread</code>的<code>run()</code>方法。重写方法有两种方式：</p>
+<ul>
+<li>
+<p>通过匿名内部类重写<code>run()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Slf4j</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CreateThread</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 匿名内部类创建线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Thread</span> <span class="n">thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;running...&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">thread</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">// 运行线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;running...&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><blockquote>
+<p><code>Thread</code>类的<code>start()</code>方法可以用于启动线程。当线程被创建之后，需要手动执行<code>start()</code>方法，线程才会被真正启动。</p>
+<p>需要注意的是，每个<code>thread</code>对象的<u><code>start()</code>方法仅能被执行一次</u>。如果<code>start()</code>方法被多次执行，<code>start()</code>会抛出一个<code>IllegalThreadStateException</code>异常。</p>
+</blockquote>
+<p>输出如下：</p>
+<pre tabindex="0"><code>16:47:40.097 [main] DEBUG CreateThread - running...
+16:47:40.097 [Thread-0] DEBUG CreateThread - running...
+</code></pre></li>
+<li>
+<p>通过继承重写<code>run()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Slf4j</span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">MyThread</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;running...&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">MyThread</span><span class="o">(</span><span class="s">&#34;my-thread&#34;</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;running...&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>输出如下：</p>
+<pre tabindex="0"><code>16:47:40.097 [main] DEBUG MyThread - running...
+16:47:40.097 [Thread-0] DEBUG MyThread - running...
+</code></pre></li>
+</ul>
+<blockquote>
+<p>PS：</p>
+<p>为了更好地区分各线程，可以引入<code>logback</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;version&gt;</span>1.2.3<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>接着在项目的<code>resources</code>的目录下添加一个<code>logback.xml</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;configuration</span>
+</span></span><span class="line"><span class="cl">    <span class="na">xmlns=</span><span class="s">&#34;http://ch.qos.logback/xml/ns/logback&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://ch.qos.logback/xml/ns/logback logback.xsd&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&#34;STDOUT&#34;</span> <span class="na">class=</span><span class="s">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;encoder&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;pattern&gt;</span>%date{HH:mm:ss} [%t] %logger - %m%n<span class="nt">&lt;/pattern&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/encoder&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;/appender&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&#34;c&#34;</span> <span class="na">level=</span><span class="s">&#34;debug&#34;</span> <span class="na">additivity=</span><span class="s">&#34;false&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&#34;STDOUT&#34;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;/logger&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">&#34;ERROR&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&#34;STDOUT&#34;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;/root&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/configuration&gt;</span>
+</span></span></code></pre></div></blockquote>
+<hr>
+<h1 id="线程名称" data-numberify>线程名称<a class="anchor ms-1" href="#线程名称"></a></h1>
+<p>通过<code>Thread</code>创建线程时，可以为线程设置名称，设置线程的名称有两种方式：</p>
+<ul>
+<li>
+<p>通过构造函数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="s">&#34;my-thread&#34;</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 设置线程名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}.</span><span class="na">start</span><span class="o">();</span>
+</span></span></code></pre></div></li>
+<li>
+<p>通过<code>setName()</code>方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Thread</span> <span class="n">thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">thread</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&#34;my-thread&#34;</span><span class="o">);</span>  <span class="c1">// 设置线程名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">thread</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h1 id="通过-runnable-创建" data-numberify>通过 Runnable 创建<a class="anchor ms-1" href="#通过-runnable-创建"></a></h1>
+<p><code>Runnable</code>是一个接口类，它只包含了<code>run()</code>这一个接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@FunctionalInterface</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>使用<code>Runnable</code>创建<code>Thread</code>，首先需要实现<code>Runnable</code>接口，然后再将实现的<code>Runnable</code>对象传递给Thread的构造函数进行实例化。实现<code>Runnable</code>的方式如下几种：</p>
+<ul>
+<li>
+<p>通过匿名内部类实现<code>run()</code>方法。</p>
+</li>
+<li>
+<p>通过Lambda表达式直接实现<code>run()</code>方法。</p>
+<blockquote>
+<p>由于<code>Runnable</code>中有且仅有一个接口<code>run()</code>，并且<code>Runnable</code>被<code>@FunctionalInterface</code>注解标注（标注了<code>@FunctionalInterface</code>的接口类可以直接使用Lambda来实现）。所以<code>Runnable</code>可以直接通过Lambda表达式来实现。</p>
+</blockquote>
+<p>示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 实现 Runnable
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;running...&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 将 Runnable 传递给 Thread 的构造函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span></code></pre></div></li>
+<li>
+<p>通过创建新的类来实现<code>Runnable</code>接口。</p>
+</li>
+</ul>
+<blockquote>
+<p>当使用<code>Runnable</code>来实例化<code>Thread</code>时，可以在实例化<code>Thread</code>的同时传递一个<code>String</code>类型的参数来指定<code>Thread</code>的名称。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">,</span> <span class="s">&#34;my-thread&#34;</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span></code></pre></div></blockquote>
+<p>使用<code>Runnable</code>实例化<code>Thread</code>的好处是，可以实现“线程”（<code>Thread</code>）和“任务”（要执行的代码，即<code>Runnable</code>）的分离。</p>
+<h2 id="runnable-和-thread" data-numberify>Runnable 和 Thread<a class="anchor ms-1" href="#runnable-和-thread"></a></h2>
+<p>实际上，<code>Thread</code>实现了<code>Runnable</code>接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Thread</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="n">Runnable</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="nf">Thread</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">init</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="s">&#34;Thread-&#34;</span> <span class="o">+</span> <span class="n">nextThreadNum</span><span class="o">(),</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 此时 target 为 null, run() 方法没有实际的执行代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="nf">Thread</span><span class="o">(</span><span class="n">Runnable</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">init</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">target</span><span class="o">,</span> <span class="s">&#34;Thread-&#34;</span> <span class="o">+</span> <span class="n">nextThreadNum</span><span class="o">(),</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// init() 中会将 target 赋给成员变量, 也就是 this.target = target (下同)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="nf">Thread</span><span class="o">(</span><span class="n">Runnable</span> <span class="n">target</span><span class="o">,</span> <span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">init</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">target</span><span class="o">,</span> <span class="n">name</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">target</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* 省略其它... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>在<code>Thread</code>中</p>
+<hr>
+<h1 id="通过-callable-和-futuretask-创建" data-numberify>通过 Callable 和 FutureTask 创建<a class="anchor ms-1" href="#通过-callable-和-futuretask-创建"></a></h1>
+<p><code>Callable</code>是一个接口类，它和<code>Runnable</code>一样只包含了一个方法，并且都被<code>@FunctionalInterface</code>所修饰。只不过<code>Callable</code>需要实现的不是<code>run()</code>接口，而是<code>call()</code>接口。<code>Callable</code>的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@FunctionalInterface</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Callable</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">V</span> <span class="nf">call</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>可以看到<code>Callable</code>需要指定一个泛型<code>V</code>，而这个泛型<code>V</code>是作为<code>call()</code>接口的返回值。</p>
+<p><code>Callable</code>和<code>Runnable</code>一样可以使用三种方式实现（此处略）。与<code>Runnable</code>不同的是，<code>Callable</code>不是作为<code>Thread</code>构造方法的参数传入，而是作为<code>FutureTask</code>的参数传入。</p>
+<p>通过<code>Callable</code>和<code>FutureTask</code>创建<code>Thread</code>通常包含以下步骤：</p>
+<ol>
+<li>实现<code>Callable</code>；</li>
+<li>通过<code>Callable</code>构造<code>FutureTask</code>；</li>
+<li>通过<code>FutureTask</code>构造<code>Thread</code>。</li>
+</ol>
+<p>由于<code>Callable</code>被<code>@FunctionalInterface</code>所修饰，所以可以使用Lambda简化代码。代码示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">FutureTask</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FutureTask</span><span class="o">&lt;&gt;(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;running...&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">1000</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">100</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">task</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 获取线程执行结果, 等待返回结果 (阻塞)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;{}&#34;</span><span class="o">,</span> <span class="n">task</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+</span></span></code></pre></div><p>如上所示，通过<code>Callable</code>和<code>FutureTask</code>创建<code>Thread</code>的好处就是，可以使用<code>FutureTask</code>对象来获取<code>call()</code>方法的执行结果。</p>
+<blockquote>
+<p><code>FutureTask</code>同样有<code>run()</code>方法。因为<code>FutureTask</code>实现了<code>RunnableFuture</code>接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FutureTask</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">RunnableFuture</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>而<code>RunnableFuture</code>继承了<code>Runnable</code>接口。所以<code>FutureTask</code>是被作为<code>Runnable</code>的一个实现类被传入<code>Thread</code>的构造函数中。</p>
+</blockquote>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>并发编程</title>
       <link>/docs/java/concurrent/introduction/</link>
