@@ -7,7 +7,130 @@
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2023 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Fri, 04 Aug 2023 08:40:11 +0000</lastBuildDate><atom:link href="/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 07 Dec 2023 08:08:35 +0000</lastBuildDate><atom:link href="/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 并发编程</title>
+      <link>/docs/java/concurrent/introduction/</link>
+      <pubDate>Thu, 07 Dec 2023 08:08:35 +0000</pubDate>
+      
+      <guid>/docs/java/concurrent/introduction/</guid>
+      <description><![CDATA[概念 Java 并发编程中涵盖了以下这些概念： 进程 线程 并发 并行 进程 进程（Process）是指在计算机中正在运行的一个程序的实例。进程是操作系统进行资源]]></description>
+      <content:encoded><![CDATA[<h1 id="概念" data-numberify>概念<a class="anchor ms-1" href="#概念"></a></h1>
+<p>Java 并发编程中涵盖了以下这些概念：</p>
+<ul>
+<li>进程</li>
+<li>线程</li>
+<li>并发</li>
+<li>并行</li>
+</ul>
+<hr>
+<h1 id="进程" data-numberify>进程<a class="anchor ms-1" href="#进程"></a></h1>
+<p><strong>进程</strong>（Process）是指在计算机中正在运行的一个<strong>程序的实例</strong>。进程是操作系统进行资源分配和调度的<strong>基本单位</strong>（<strong>资源分配的最小单位</strong>），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。</p>
+<p>进程的一些相关概念：</p>
+<ul>
+<li>
+<p><strong>程序</strong>：程序是静态的，是<u>一组指令和数据的集合</u>；而进程是<u>程序在执行时的一个<strong>实例</strong></u>，是一个<u>动态的实体</u>。</p>
+<p>程序被运行时，程序的代码从硬盘被加载到内存中，此时就开启了一个进程。</p>
+<p>程序可以同时运行多个实例进程，也可以仅运行一个实例线程。</p>
+</li>
+<li>
+<p><strong>地址空间</strong>：进程的地址空间包括<u>代码段</u>、<u>数据段</u>、<u>堆</u>和<u>栈</u>。</p>
+<p>地址空间使得每个进程都在自己的独立内存空间中运行，不受其他进程的影响（隔离）。</p>
+</li>
+<li>
+<p><strong>资源分配</strong>：操作系统负责为每个进程分配分配和管理资源，例如处理器时间、文件和输入/输出设备等。</p>
+</li>
+<li>
+<p><strong>并发执行</strong>：在多核CPU中，多个进程可以并发执行（在相同的时间段内运行）。操作系统通过调度算法控制进程的执行顺序。</p>
+</li>
+<li>
+<p><strong>进程状态</strong>：一个进程可以处于不同的状态。一般进程有三种状态（进程的三态模型）：就绪、运行、阻塞。</p>
+</li>
+<li>
+<p><strong>多线程</strong>：一个进程可以包含多个线程，这些线程<strong>共享同一地址空间和资源</strong>。多线程可以提高程序的并发性和效率。</p>
+</li>
+</ul>
+<hr>
+<h1 id="线程" data-numberify>线程<a class="anchor ms-1" href="#线程"></a></h1>
+<p><strong>线程</strong>（Thread）是进程中的一个<strong>执行流</strong>，是操作系统能够进行运算调度的<strong>最小单位</strong>（<strong>最小调度单位</strong>）。与进程相比，线程更轻量级，多个线程可以共享同一进程的资源，包括地址空间、文件描述符和其他相关的进程状态信息。线程之间的共享和通信相对于进程来说更加容易。</p>
+<p>线程的一些相关概念：</p>
+<ul>
+<li><strong>轻量级</strong>：相对于进程而言，线程是轻量级的。创建、撤销和切换线程的<u>开销相对较小</u>。</li>
+<li><strong>共享资源</strong>：同一进程内的线程共享相同的地址空间和其他资源。这使得线程之间的通信更加方便，但也需要考虑同步和互斥的问题。</li>
+<li><strong>独立调度</strong>：线程在进程内独立调度，每个线程都有自己的执行状态、程序计数器、寄存器集合等信息。</li>
+<li><strong>并发执行</strong>：多个线程可以并发执行，它们在同一进程内共享进程的资源。这提高了程序的并发性和性能。</li>
+<li><strong>多线程编程</strong>：多线程编程是一种并发编程的方式，允许程序中的多个执行流同时执行。多线程可以用于提高程序的响应性、资源利用率和性能。</li>
+<li><strong>线程同步</strong>：由于线程共享相同的资源，需要通过同步机制来避免竞态条件和数据访问冲突。常见的同步机制包括互斥锁、信号量、条件变量等。</li>
+</ul>
+<hr>
+<h1 id="进程和线程的对比" data-numberify>进程和线程的对比<a class="anchor ms-1" href="#进程和线程的对比"></a></h1>
+<ul>
+<li>
+<p>进程基本上是相互独立的，而<strong>线程存在于进程内，是进程的一个子集</strong>。</p>
+<p>一个进程包含了一个或多个线程。一个线程不能独立的存在，它必须是进程的一部分。</p>
+<p>一个进程一直运行，直到所有的非守护线程都结束运行后才能结束。</p>
+</li>
+<li>
+<p>在Java中，<strong>线程</strong>作为<strong>运算调度的最小单位</strong>，<strong>进程</strong>作为<strong>资源分配的最小单位</strong>。</p>
+</li>
+<li>
+<p>进程拥有共享的资源，如内存空间等，供其内部的线程共享。</p>
+</li>
+<li>
+<p><strong>进程间通信较为复杂</strong>：</p>
+<ul>
+<li>同一台计算机的进程通信称为 IPC（Inter-Process Communication）。</li>
+<li>不同计算机之间的进程通信，需要通过网络，并遵守共同的协议，例如HTTP协议。</li>
+</ul>
+</li>
+<li>
+<p><strong>线程通信相对简单</strong>，因为它们共享进程内的内存。多个线程可以访问同一个共享变量。</p>
+</li>
+<li>
+<p><strong>线程更轻量</strong>，线程上下文切换成本一般上要比进程上下文切换低。比起多进程，<strong>多线程使用了更小的资源开销</strong>。</p>
+</li>
+</ul>
+<hr>
+<h1 id="并行与并发" data-numberify>并行与并发<a class="anchor ms-1" href="#并行与并发"></a></h1>
+<ul>
+<li>
+<p><strong>并行</strong>（Parallel）：指两个或多个任务在同一时刻发生。</p>
+<p>并行通常是在多核处理器上同时执行多个线程或进程，其中每个核心独立执行一个任务。</p>
+</li>
+<li>
+<p><strong>并发</strong>（Concurrent）：指两个或多个任务在重叠的时间段内执行，但不一定同时进行。</p>
+<p>并发可以通过时间片轮转等方式实现任务间的快速切换。例如通过操作系统中的多任务处理，多个任务之间通过时间片共享CPU资源，看起来好像在同时执行。</p>
+</li>
+<li>
+<p><strong>串行</strong>（Serial）：指任务按照顺序一个接一个地执行，每个任务必须等待前一个任务完成后才能开始。</p>
+<p>在单核CPU下，线程实际是<strong>串行执行</strong>的。当CPU时间片很小时，CPU在线程间的切换速度快到人类无法察觉时，从宏观上来看就是并行执行。也就是说，微观串行，宏观并行。</p>
+<blockquote>
+<p>多线程串行执行意味着当一个线程在执行时，其它线程会处于阻塞或等待状态。在这种情况下，CPU频繁地切换线程执行，实际上执行的效率会下降，不如单线程执行。</p>
+</blockquote>
+<blockquote>
+<p>多线程的目标是实现并发执行，充分利用多核处理器或多处理单元的优势。也就是说，单核CPU并不能充分发挥多线程的优势。</p>
+</blockquote>
+</li>
+</ul>
+<p>它们的关键区别在于：</p>
+<ul>
+<li><strong>并行</strong>：强调<u>多个任务在同一时刻发生</u>，通常需要多个处理单元。</li>
+<li><strong>并发</strong>：强调<u>多个任务在重叠的时间段内执行</u>，不一定需要多个处理单元。</li>
+<li><strong>串行</strong>：强调<u>任务按照顺序</u>一个接一个地<u>执行</u>。</li>
+</ul>
+<p>引用 Rob Pike 的一段描述：</p>
+<blockquote>
+<p>并发是同一时间应对（dealing with）多件事情的能力；并行是同一时间动手做（doing）多件事情的能力。</p>
+</blockquote>
+<hr>
+<h1 id="多线程的应用" data-numberify>多线程的应用<a class="anchor ms-1" href="#多线程的应用"></a></h1>
+<ul>
+<li><strong>异步调用</strong>：多线程可以让方法的执行变为异步的。程序在处理多个任务时，可以创建一些新的线程，将这些任务交给线程去同时处理，而无需等待任务执行完成后再接着执行下一个任务。</li>
+<li><strong>提高效率</strong>：利用多核CPU的优势来提高程序的运行效率。</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Spring AMQP</title>
       <link>/docs/spring/springcloud/communications/spring-amqp/</link>
@@ -6531,11 +6654,11 @@ FirstInterceptor afterCompletion...
     </item>
     
     <item>
-      <title>Java 进阶</title>
-      <link>/blog/2023/02/java-%E8%BF%9B%E9%98%B6/</link>
+      <title>Java 反射</title>
+      <link>/docs/java/reflect/</link>
       <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2023/02/java-%E8%BF%9B%E9%98%B6/</guid>
+      <guid>/docs/java/reflect/</guid>
       <description><![CDATA[反射 反射是Java中一种用于动态获取类或对象的信息以及动态调用对象方法的功能机制。在运行状态中，对于任意一个类，使用反射可以获取这个类的所有]]></description>
       <content:encoded><![CDATA[<h1 id="反射" data-numberify>反射<a class="anchor ms-1" href="#反射"></a></h1>
 <p>反射是Java中一种用于动态获取类或对象的信息以及动态调用对象方法的功能机制。在运行状态中，对于任意一个类，使用反射可以获取这个类的所有属性和方法；对于任意一个对象，使用反射能够调用它的任意属性和方法。利用反射可以无视对象的修饰符，调用类里面的内容。利用反射可以跟配置文件结合起来使用，把要创建的对象信息和方法写在配置文件中。</p>
