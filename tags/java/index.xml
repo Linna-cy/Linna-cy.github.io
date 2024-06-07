@@ -7,7 +7,345 @@
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2024 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Tue, 04 Jun 2024 06:04:04 +0000</lastBuildDate><atom:link href="/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Jun 2024 06:51:15 +0000</lastBuildDate><atom:link href="/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java List</title>
+      <link>/docs/java/collection/list/</link>
+      <pubDate>Tue, 04 Jun 2024 06:51:15 +0000</pubDate>
+      
+      <guid>/docs/java/collection/list/</guid>
+      <description><![CDATA[概述 List 是 Java 中的一种有序、可重复的集合接口类型。其常用的实现类有： ArrayList：动态数组。 LinkedList：链表。 ArrayList 和 LinkedList 的区别 ArrayList 和 LinkedList]]></description>
+      <content:encoded><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p><code>List</code> 是 Java 中的一种有序、可重复的集合接口类型。其常用的实现类有：</p>
+<ul>
+<li><strong><code>ArrayList</code></strong>：动态数组。</li>
+<li><strong><code>LinkedList</code></strong>：链表。</li>
+</ul>
+<hr>
+<h1 id="arraylist-和-linkedlist-的区别" data-numberify>ArrayList 和 LinkedList 的区别<a class="anchor ms-1" href="#arraylist-和-linkedlist-的区别"></a></h1>
+<p><code>ArrayList</code> 和 <code>LinkedList</code> 的区别主要体现在数据结构、用途、是否支持随机访问、内存占用等方面。</p>
+<h2 id="数据结构" data-numberify>数据结构<a class="anchor ms-1" href="#数据结构"></a></h2>
+<ul>
+<li><code>ArrayList</code> 基于<strong>数组</strong>实现。</li>
+<li><code>LinkedList</code> 基于（双向）<strong>链表</strong>实现。</li>
+</ul>
+<h2 id="适用性" data-numberify>适用性<a class="anchor ms-1" href="#适用性"></a></h2>
+<ol>
+<li>查找访问：<code>ArrayList</code> 在使用下标进行查找时更有优势。</li>
+</ol>
+<ul>
+<li><code>ArrayList</code> 调用 <code>get(int index)</code> 方法时可以直接通过数组下标获取元素，查找的时间复杂度是 $O(1)$；</li>
+<li><code>LinkedList</code> 调用 <code>get(int index)</code> 方法时需要按顺序遍历链表，查找的时间复杂度是 $O(n), \space n = index$。</li>
+</ul>
+<p>如果使用 <code>List&lt;E&gt;#get(E element)</code> 方法进行查找，这两种类型的集合都需要对集合中的元素进行遍历，并通过元素的 <code>equals()</code> 方法进行比较。所以使用 <code>get(E element)</code> 时间复杂度都是 $O(n)$。</p>
+<ol start="2">
+<li>增删操作：<code>LinkedList</code> 在增删时更有效率。</li>
+</ol>
+<ul>
+<li>
+<p><code>ArrayList</code>：</p>
+<ul>
+<li>在尾部进行增删：一般情况下，直接在数组尾部进行插入或删除，时间复杂度是 $O(1)$；当 <code>add()</code> 操作涉及到扩容时，时间复杂度会提升到 $O(n)$。</li>
+<li>在中间或头部进行增删：在数组中间进行插入（或删除）时，需要对插入（或删除）元素位置后的其它所有元素向后（或向前）移动一个位置，并且在插入时还有可能触发扩容，时间复杂度为 $O(n)$。</li>
+<li>使用 <code>remove(Object o)</code> 进行删除：需要进行遍历，找到对应元素，时间复杂度为 $O(n)$。</li>
+</ul>
+<blockquote>
+<p>在扩容时，需要将元素从原数组复制到新数组上，这一步骤的时间复杂度为 $O(n)$。</p>
+</blockquote>
+</li>
+<li>
+<p><code>LinkedList</code>：链表结构的插入和删除操作只需要改变对应节点（例如前置、后置或插入节点）的引用，不需要移动元素。</p>
+<ul>
+<li>在头部或尾部进行增删：时间复杂度是 $O(1)$。</li>
+<li>在中间进行增删：需要遍历链表找到插入位置，时间复杂度是 $O(n)$。</li>
+<li>使用 <code>remove(Object o)</code> 进行删除：需要进行遍历，找到对应元素，时间复杂度为 $O(n)$。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>LinkedList</code> 更利于增删不是体现在时间复杂度上，因为二者增删的时间复杂度都是 $O(n)$，都有可能需要遍历列表。<code>LinkedList</code> 在增删上的优势体现在操作效率上，因为 <code>LinkedList</code> 的增删只需要改变引用，而 <code>ArrayList</code> 的增删可能需要移动元素。</p>
+</blockquote>
+<p>所以，<code>ArrayList</code> 适合于频繁的随机访问和较少的增删操作，而 <code>LinkedList</code> 适合于频繁的增删操作和较少的随机访问。</p>
+<h2 id="随机访问" data-numberify>随机访问<a class="anchor ms-1" href="#随机访问"></a></h2>
+<ul>
+<li><code>ArrayList</code> 是基于数组的，并实现了 <code>RandomAccess</code> 接口，<u>支持随机访问</u>，可通过下标直接获取元素。</li>
+<li><code>LinkedList</code> 是基于链表的，需要按顺序遍历访问，无法根据下标直接获取元素，不支持随机访问，并没有实现 <code>RandomAccess</code> 接口。</li>
+</ul>
+<blockquote>
+<p><code>RandomAccess</code> 接口是一个标记接口（Marker Interface）。这个接口并没有定义任何方法，它存在的主要目的是为了指示实现这个接口的列表（<code>List</code>）支持随机访问。</p>
+</blockquote>
+<h2 id="内存占用" data-numberify>内存占用<a class="anchor ms-1" href="#内存占用"></a></h2>
+<ul>
+<li><code>ArrayList</code> 是基于数组的，是一块连续的内存空间，在内存空间中的结构紧凑。但如果涉及到扩容，就会重新分配内存。默认情况下是将空间增加到原来的 1.5 倍，存在一定的空间浪费。</li>
+<li><code>LinkedList</code> 是基于双向链表的，每个节点都有一个指向下一个（后置）节点和上一个（前置）节点的引用，在内存空间中的结构是松散的。因为每个节点都需要额外记录前置和后置节点的引用，所以占用的内存空间比起同样大小的数组来说会稍微大一点。</li>
+</ul>
+<hr>
+<h1 id="arraylist" data-numberify>ArrayList<a class="anchor ms-1" href="#arraylist"></a></h1>
+<h2 id="扩容机制" data-numberify>扩容机制<a class="anchor ms-1" href="#扩容机制"></a></h2>
+<p><code>ArrayList</code> 的底层是基于动态数组实现。当往 <code>ArrayList</code> 中添加元素时，会先检查是否需要扩容，如果 $当前容量+1$ 超过数组长度，就会进行扩容。一般情况下，扩容后的新数组长度是原来的 1.5 倍，然后再把原数组的值拷贝到新数组中。</p>
+<blockquote>
+<p>注意：<code>ArrayList</code> 的容量（$c$）和长度（$l$）是两个概念，容量并不一定等于其长度，它们的关系是 $l \le c$。</p>
+</blockquote>
+<p><code>ArrayList#grow(int)</code> 方法用于计算扩容后的容量大小。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">grow</span><span class="o">(</span><span class="kt">int</span> <span class="n">minCapacity</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// overflow-conscious code
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">oldCapacity</span> <span class="o">=</span> <span class="n">elementData</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">oldCapacity</span> <span class="o">+</span> <span class="o">(</span><span class="n">oldCapacity</span> <span class="o">&gt;&gt;</span> <span class="n">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">(</span><span class="n">newCapacity</span> <span class="o">-</span> <span class="n">minCapacity</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">minCapacity</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">(</span><span class="n">newCapacity</span> <span class="o">-</span> <span class="n">MAX_ARRAY_SIZE</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="c1">// 超出索引的最大值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">hugeCapacity</span><span class="o">(</span><span class="n">minCapacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// minCapacity is usually close to size, so this is a win:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">elementData</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">copyOf</span><span class="o">(</span><span class="n">elementData</span><span class="o">,</span> <span class="n">newCapacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h2 id="序列化和反序列化机制" data-numberify>序列化和反序列化机制<a class="anchor ms-1" href="#序列化和反序列化机制"></a></h2>
+<p>在 <code>ArrayList</code> 的定义中可以发现有如下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">AbstractList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">implements</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;,</span> <span class="n">RandomAccess</span><span class="o">,</span> <span class="n">Cloneable</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">Serializable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kd">transient</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">elementData</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 将 ArrayList 实例的状态保存到流中(序列化, Serialize).
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">writeObject</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">ObjectOutputStream</span> <span class="n">s</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">throws</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span><span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// modCount 快照, 用于后续判断是否有并发处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">expectedModCount</span> <span class="o">=</span> <span class="n">modCount</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 序列化没有标记为 static、transient 的字段, 包括 size 等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">s</span><span class="o">.</span><span class="na">defaultWriteObject</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="o">.</span><span class="na">writeInt</span><span class="o">(</span><span class="n">size</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 按顺序序列化元素的前 size 个元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s</span><span class="o">.</span><span class="na">writeObject</span><span class="o">(</span><span class="n">elementData</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">modCount</span> <span class="o">!=</span> <span class="n">expectedModCount</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ConcurrentModificationException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 从流重新构造 ArrayList 实例(反序列化, Deserialize).
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">readObject</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">ObjectInputStream</span> <span class="n">s</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">throws</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">elementData</span> <span class="o">=</span> <span class="n">EMPTY_ELEMENTDATA</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 反序列化没有标记为 static、transient 的字段, 包括 size 等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">s</span><span class="o">.</span><span class="na">defaultReadObject</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 读取最大容量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">s</span><span class="o">.</span><span class="na">readInt</span><span class="o">();</span> <span class="c1">// ignored
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 就像 clone() 方法一样, 基于大小而不是最大容量进行扩容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">capacity</span> <span class="o">=</span> <span class="n">calculateCapacity</span><span class="o">(</span><span class="n">elementData</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">SharedSecrets</span><span class="o">.</span><span class="na">getJavaOISAccess</span><span class="o">().</span><span class="na">checkArray</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">Object</span><span class="o">[].</span><span class="na">class</span><span class="o">,</span> <span class="n">capacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ensureCapacityInternal</span><span class="o">(</span><span class="n">size</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">Object</span><span class="o">[]</span> <span class="n">a</span> <span class="o">=</span> <span class="n">elementData</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 按顺序反序列化前 size 个元素, 并填充到数组中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><hr>
+<h1 id="错误检测机制" data-numberify>错误检测机制<a class="anchor ms-1" href="#错误检测机制"></a></h1>
+<p><strong>快速失败</strong>（<strong>fail-fast</strong>）和<strong>安全失败</strong>（<strong>fail-safe</strong>）是 Java 集合框架中处理和迭代时使用的两种不同的错误检测机制，主要用于处理多线程环境下的并发访问问题。</p>
+<h2 id="快速失败fail-fast" data-numberify>快速失败（fail-fast）<a class="anchor ms-1" href="#快速失败fail-fast"></a></h2>
+<p>快速失败是一种设计模式。Java 中的安全失败是指在用迭代器遍历一个集合对象时，如果当前线程在遍历过程中，其它线程对集合对象的内容进行了修改（增删改），则会抛出 <code>ConcurrentModificationException</code>，终止迭代操作。这种机制确保了对并发修改的快速响应，避免了潜在的不一致状态。</p>
+<p>原理：通过成员变量 <code>modCount</code> 实现。<code>modCount</code> 在 <code>AbstractList</code> 中被定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">protected</span> <span class="kd">transient</span> <span class="kt">int</span> <span class="n">modCount</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span></code></pre></div><p>每当 <code>ArrayList</code> 的内容发生结构性变化时，如添加、删除元素或清空列表等操作，<code>modCount</code> 的值就会递增。</p>
+<p>当创建一个迭代器时，迭代器会保留一个对 <code>modCount</code> 的快照（通常命名为 <code>expectedModCount</code>），用于在迭代过程中比较。每次迭代器访问元素前后，都会检查<code>modCount</code>是否仍然等于迭代器创建时的 <code>expectedModCount</code>。如果这两个值不相等，说明在迭代过程中集合已经被其他线程修改，这时迭代器会立即抛出 <code>ConcurrentModificationException</code> 异常，阻止进一步的迭代操作。</p>
+<p>例如上方 <code>ArrayList</code> 序列化过程中对 <code>modCount</code> 进行检测：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// modCount 快照, 用于后续判断是否有并发处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">expectedModCount</span> <span class="o">=</span> <span class="n">modCount</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 遍历... */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 当遍历前后 modCount 的值被改变, 说明当前集合实例被修改了
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 于是抛出 ConcurrentModificationException
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="o">(</span><span class="n">modCount</span> <span class="o">!=</span> <span class="n">expectedModCount</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="k">new</span> <span class="n">ConcurrentModificationException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>当迭代器使用 <code>next()</code> 遍历下一个元素之前，会检测 <code>modCount</code> 变量是否为 <code>expectedmodCount</code> 值，是的话就返回遍历；否则抛出异常，终止遍历。</p>
+<p>例如 <code>ArrayList</code> 的 <code>Iterator</code> 是使用内部私有类实现的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kd">class</span> <span class="nc">Itr</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cursor</span><span class="o">;</span>       <span class="c1">// 下一个元素的索引
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">lastRet</span> <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span> <span class="c1">// 最后一个元素的索引, 如果没用元素则返回 -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 在创建 Iterator 时会保存一次快照, 当调用其它方法如 remove()、
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * ListIterator#add(E) 时会再次保存 modCount 的快照
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">expectedModCount</span> <span class="o">=</span> <span class="n">modCount</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">E</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 在遍历前检查 modCount
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">checkForComodification</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">NoSuchElementException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Object</span><span class="o">[]</span> <span class="n">elementData</span> <span class="o">=</span> <span class="n">ArrayList</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">elementData</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">elementData</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ConcurrentModificationException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cursor</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">elementData</span><span class="o">[</span><span class="n">lastRet</span> <span class="o">=</span> <span class="n">i</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="kt">void</span> <span class="nf">checkForComodification</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">modCount</span> <span class="o">!=</span> <span class="n">expectedModCount</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ConcurrentModificationException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><blockquote>
+<p>注：</p>
+<ol>
+<li>不能依赖于 <code>ConcurrentModificationException</code> 是否被抛出判断集合是否有并发操作。<code>ConcurrentModificationException</code> 仅是保证集合在遍历过程中结构没用被其它线程修改，只建议用于检测并发修改。</li>
+<li><code>java.util</code> 包下的集合类都是快速失败的，不能在多线程环境下发生并发修改（迭代过程中被修改），如 <code>ArrayList</code>、<code>HashMap</code>，以及它们的标准迭代器。</li>
+</ol>
+</blockquote>
+<h2 id="安全失败fail-safe" data-numberify>安全失败（fail-safe）<a class="anchor ms-1" href="#安全失败fail-safe"></a></h2>
+<p>安全失败机制被设计用于在并发访问过程中，即使集合正在被迭代，其他线程对集合的修改也不会影响迭代过程，不会抛出异常。</p>
+<p>采用安全失败机制的集合容器，在遍历时不是直接在原始集合内容上访问的，而是在遍历前先创建原始集合的副本或视图，在副本或视图的集合上进行遍历。在遍历过程中对原始集合所作的修改并不能被迭代器检测到，因此原集合的修改不会影响到迭代过程，不会触发 <code>ConcurrentModificationException</code>。</p>
+<p>缺点：基于拷贝副本进行遍历的优点是避免了 <code>ConcurrentModificationException</code> 被触发，但同样地，迭代器在遍历过程中并不能访问到集合修改后的内容。即，遍历期间原始集合发生的修改迭代器检测不到，迭代器可能获取不到实时的集合状态。</p>
+<blockquote>
+<p>注：<code>java.util.concurrent</code> 包下的容器都是安全失败的，可以在多线程下并发使用，并发修改，如 <code>CopyOnWriteArrayList</code> 和 <code>ConcurrentHashMap.KeySetView</code> 等并发集合类。</p>
+</blockquote>
+<hr>
+<h1 id="线程安全" data-numberify>线程安全<a class="anchor ms-1" href="#线程安全"></a></h1>
+<p><strong>线程安全</strong>是指在多线程环境下，集合能够正确地处理并发访问，确保数据的一致性和完整性。安全失败仅仅只是实现线程安全集合的一个方面，但仅凭安全失败这一点不足以断言一个集合就是线程安全的。集合是否线程安全还需看其是否在所有操作上都能正确地处理并发场景，包括添加、删除、查询等。</p>
+<h2 id="collectionssynchronizedlist" data-numberify>Collections.synchronizedList()<a class="anchor ms-1" href="#collectionssynchronizedlist"></a></h2>
+<p>一种方式是使用 <code>Collections.synchronizedList()</code> 方法，它将返回一个线程安全的 <code>List</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">synchronizedList</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;());</span>
+</span></span></code></pre></div><p>在 <code>Collections.synchronizedList()</code> 方法中，使用了两个 <code>Collections</code> 的静态子类 <code>SynchronizedRandomAccessList</code> 和 <code>SynchronizedList</code> 来实现线程安全的 <code>List</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">synchronizedList</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">(</span><span class="n">list</span> <span class="k">instanceof</span> <span class="n">RandomAccess</span> <span class="o">?</span>
+</span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">SynchronizedRandomAccessList</span><span class="o">&lt;&gt;(</span><span class="n">list</span><span class="o">)</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">SynchronizedList</span><span class="o">&lt;&gt;(</span><span class="n">list</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 支持随机访问的线程安全 List
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">SynchronizedRandomAccessList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">extends</span> <span class="n">SynchronizedList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">implements</span> <span class="n">RandomAccess</span> <span class="o">{</span><span class="cm">/* ... */</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 普通的线程安全 List
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">SynchronizedList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">extends</span> <span class="n">SynchronizedCollection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">implements</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="o">{</span><span class="cm">/* ... */</span><span class="o">}</span>
+</span></span></code></pre></div><blockquote>
+<p>在 <code>SynchronizedList</code> 和 <code>SynchronizedRandomAccessList</code> 内部，是通过 <code>synchronized</code> 关键字加锁来实现的。Java 中，<code>synchronized</code> 关键字是一种用于控制多线程并发访问共享资源的同步机制，它提供了一种锁的实现，保证了在任何时刻，只有一个线程可以执行特定的代码块或方法。<code>synchronized</code> 可以用于方法或代码块上，确保线程间的互斥访问，防止数据的不一致性问题。</p>
+<ul>
+<li>
+<p>同步方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">synchronizedMethod</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>同步代码块:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">synchronized</span><span class="o">(</span><span class="n">对象引用</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 需要同步的代码块... */</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><code>Collections</code> 类是 Java 标准库中的一个工具类，它提供了大量的静态方法，用于执行各种集合操作。在 <code>Collections</code> 提供了一系列实现 <code>synchronized</code> 集合的方法：</p>
+<ul>
+<li><code>synchronizedCollection()</code></li>
+<li><code>synchronizedSortedSet()</code></li>
+<li><code>synchronizedNavigableSet()</code></li>
+<li><code>synchronizedList()</code></li>
+<li><code>synchronizedMap()</code></li>
+<li><code>synchronizedSortedMap()</code></li>
+<li><code>synchronizedNavigableMap()</code></li>
+<li><code>synchronizedNavigableMap()</code></li>
+</ul>
+</blockquote>
+<h2 id="写时复制-copyonwritearraylist" data-numberify>写时复制 CopyOnWriteArrayList<a class="anchor ms-1" href="#写时复制-copyonwritearraylist"></a></h2>
+<p>另一种方式是基于<strong>写时复制</strong>（<strong>Copy-On-Write</strong>, <strong>COW</strong>）原则实现线程安全的 <code>List</code>。写时复制是指每当对列表进行修改（添加、删除或更改元素）时，都会创建列表的一个新副本，这个新副本会替换旧的列表，而对旧列表的所有读取操作仍然可以继续。Java 中的 <code>CopyOnWriteArrayList</code> 就是基于写时复制来实现线程安全的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">CopyOnWriteArrayList</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;&gt;();</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">CopyOnWriteArrayList</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">copyOnWriteArrayList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;());</span>
+</span></span></code></pre></div><p>但对于写操作来说，</p>
+<p>优点：</p>
+<p><code>CopyOnWriteArrayList</code> 采用了一种读写分离的并发策略。<code>CopyOnWriteArrayList</code> 容器允许并发读，读操作是无锁的，性能较高。</p>
+<p>缺点：</p>
+<ul>
+<li>写操作开销大：每次写操作都需要复制整个数据结构或数据页，开销较大，对于大数据集或频繁写入的情况，这可能成为性能瓶颈。</li>
+<li>数据不一致：在写入操作完成并更新引用之前，其他线程看到的仍然是旧数据，可能导致短暂的数据不一致。</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Java 集合框架</title>
+      <link>/docs/java/collection/introduction/</link>
+      <pubDate>Tue, 04 Jun 2024 06:51:15 +0000</pubDate>
+      
+      <guid>/docs/java/collection/introduction/</guid>
+      <description><![CDATA[概述 Java 集合框架可以分类两大类型： Collection：最基本的集合类型的接口，提供了添加、删除、清空等基本操作，还提供了一些对集合进行排序、]]></description>
+      <content:encoded><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>Java 集合框架可以分类两大类型：</p>
+<ul>
+<li>
+<p><strong><code>Collection</code></strong>：最基本的集合类型的接口，提供了添加、删除、清空等基本操作，还提供了一些对集合进行排序、二分查找、同步的静态方法。</p>
+<p>其主要的子接口有：</p>
+<ul>
+<li><strong><code>List</code></strong>：有序、可重复的集合。常用的实现类有：
+<ul>
+<li><strong><code>ArrayList</code></strong>：动态数组。</li>
+<li><strong><code>LinkedList</code></strong>：链表。</li>
+</ul>
+</li>
+<li><strong><code>Set</code></strong>：无序、不可重复的集合。常用的实现类有：
+<ul>
+<li><strong><code>HashSet</code></strong>：哈希集合。实际上是通过一个 <code>HashMap</code> 来实现。</li>
+<li><strong><code>LinkedHashSet</code></strong>：链哈希集合。</li>
+<li><strong><code>TreeSet</code></strong>：属性集合。是在 <code>TreeMap</code> 的基础上进行实现。</li>
+</ul>
+</li>
+<li><strong><code>Queue</code></strong>：队列。常用的实现类有：
+<ul>
+<li><strong><code>ArrayDeque</code></strong>：双端队列。</li>
+<li><strong><code>PriorityQueue</code></strong>：优先级队列。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Map</code></strong>：键值对集合类型的接口，还提供了一些对数组进行排序、打印、和对 <code>List</code> 进行转换的静态方法。</p>
+<p>常用的实现类有：</p>
+<ul>
+<li><code>HashMap</code>：哈希图。</li>
+<li><code>LinkedHashMap</code>：链哈希图。</li>
+<li><code>TreeMap</code>：树形哈希图。</li>
+</ul>
+</li>
+</ul>
+<p>Java 集合框架主要位于 <code>java.util</code> 包中，它们的继承关系图谱如下：</p>
+<p><picture><img class="img-fluid " alt="集合类型继承关系图" src="/docs/java/collection/introduction/1717486211257.png" loading="lazy" width="1240" height="572" />
+</picture>
+
+</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Java 概述</title>
       <link>/docs/java/introduction/</link>
