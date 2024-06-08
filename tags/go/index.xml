@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Go on Linner&#39;s Blog</title>
+    <link>/tags/go/</link>
+    <description>Recent content in Go on Linner&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2020-2024 Linner. All Rights Reserved.
+</copyright>
+    <lastBuildDate>Sat, 08 Jun 2024 06:27:21 +0000</lastBuildDate><atom:link href="/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>创建 Go Module</title>
+      <link>/docs/golang/module/create/</link>
+      <pubDate>Sat, 08 Jun 2024 06:27:21 +0000</pubDate>
+      
+      <guid>/docs/golang/module/create/</guid>
+      <description><![CDATA[Go Path 在 Golang 1.11 之前，Go 采用的是手动依赖管理，也就是使用 Go Path 的方式管理依赖。 使用 Go Path 会有以下问题： 代码开发必须在 Go Path 的 src 目录下。 依赖手动管理。 依]]></description>
+      <content:encoded><![CDATA[<h1 id="go-path" data-numberify>Go Path<a class="anchor ms-1" href="#go-path"></a></h1>
+<p>在 Golang 1.11 之前，Go 采用的是手动依赖管理，也就是使用 Go Path 的方式管理依赖。</p>
+<p>使用 Go Path 会有以下问题：</p>
+<ol>
+<li>代码开发必须在 Go Path 的 <code>src</code> 目录下。</li>
+<li>依赖手动管理。</li>
+<li>依赖包没有版本可言。</li>
+</ol>
+<hr>
+<h1 id="go-modules" data-numberify>Go Modules<a class="anchor ms-1" href="#go-modules"></a></h1>
+<p>Go Modules 是 Golang 1.11 新加的特性。Go Modules 的特点如下：</p>
+<ul>
+<li>模块是相关 Go 包的集合。</li>
+<li>Modules 是源代码交换和版本控制的单元。</li>
+<li>Go 命令直接支持使用 Modules，包括记录和解析对其他模块的依赖性。</li>
+<li>Modules 替换了旧的 Go Path 方法。</li>
+</ul>
+<p>在使用 Go Modules 之前需要对环境变量进行一些设置：</p>
+<ul>
+<li>设置 <code>GO111MODULE</code> 为 <code>on</code>；</li>
+<li>设置 <code>GOPROXY</code> 为 <code>https://goproxy.cn</code>（七牛云的 Go 代理，）。</li>
+</ul>
+<p>根据不同平台有不同的设置方式：</p>
+<ul>
+<li>
+<p>Golang 1.13 及以上：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go env -w <span class="nv">GO111MODULE</span><span class="o">=</span>on
+</span></span><span class="line"><span class="cl">$ go env -w <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
+</span></span></code></pre></div></li>
+<li>
+<p>MacOS 或 Linux</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">export</span> <span class="nv">GO111MODULE</span><span class="o">=</span>on
+</span></span><span class="line"><span class="cl">$ <span class="nb">export</span> <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn
+</span></span></code></pre></div><p>或者</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;export GO111MODULE=on&#34;</span> &gt;&gt; ~/.profile
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;export GOPROXY=https://goproxy.cn&#34;</span> &gt;&gt; ~/.profile
+</span></span><span class="line"><span class="cl">$ <span class="nb">source</span> ~/.profile
+</span></span></code></pre></div></li>
+<li>
+<p>Windows：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">C:<span class="se">\&gt;</span> <span class="nv">$env</span>:GO111MODULE <span class="o">=</span> <span class="s2">&#34;on&#34;</span>
+</span></span><span class="line"><span class="cl">C:<span class="se">\&gt;</span> <span class="nv">$env</span>:GOPROXY <span class="o">=</span> <span class="s2">&#34;https://goproxy.cn&#34;</span>
+</span></span></code></pre></div><p>或者，直接在“高级系统设置”中的“环境变量”中添加对应的环境变量。</p>
+</li>
+</ul>
+<hr>
+<h1 id="创建模块" data-numberify>创建模块<a class="anchor ms-1" href="#创建模块"></a></h1>
+<p>创建 <code>greetings</code> 模块：</p>
+<ol>
+<li>
+<p>创建一个模块目录（在任意位置都可以，此时不用指定在 Go Path 下），并切换到目录中。</p>
+<p>假设工作目录为 <code>example.com</code>，在工作目录下创建 <code>greetings</code> 模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> example.com
+</span></span><span class="line"><span class="cl">$ mkdir greetings
+</span></span><span class="line"><span class="cl">$ <span class="nb">cd</span> greetings
+</span></span></code></pre></div></li>
+<li>
+<p>使用 <code>go mod init &lt;module-name&gt;</code> 初始化模块。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go mod init example.com/greetings
+</span></span></code></pre></div><p><code>go mod init</code> 会在 <code>greetings</code> 目录下创建一个 <code>go.mod</code> 文件。<code>go.mod</code> 用于记录当前模块的名称、Golang SDK 版本以及项目依赖等信息。</p>
+<p><code>go.mod</code> 的基本内容如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go.mod" data-lang="go.mod"><span class="line"><span class="cl"><span class="c1">// 模块名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">module</span> <span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">greetings</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Golang SDK 版本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">go</span> <span class="mf">1.22</span><span class="p">.</span><span class="mi">4</span>
+</span></span></code></pre></div><p>在后续的使用中，<code>go.mod</code> 还可能包含以下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go.mod" data-lang="go.mod"><span class="line"><span class="cl"><span class="c1">// 项目所需依赖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">require</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="err">依赖的格式如下：</span>
+</span></span><span class="line"><span class="cl">  <span class="n">dependencyName</span> <span class="n">vision</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 项目中排除的依赖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">exclude</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="err">格式同上</span>
+</span></span><span class="line"><span class="cl">  <span class="n">dependencyName</span> <span class="n">vision</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 替换第三方依赖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">replace</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="n">sourceName</span> <span class="n">vision</span> <span class="o">=&gt;</span> <span class="n">targetName</span> <span class="n">vision</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 撤回当前项目中有问题的版本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">retract</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="n">version</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>在 <code>greetings</code> 创建对应的 <code>greetings.go</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">grettings</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Hello</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">message</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">message</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Hi, %v. Welcome!&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">message</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+</ol>
+<p>创建 <code>hello</code> 模块：</p>
+<ol>
+<li>
+<p>在 <code>example.com</code> 创建 <code>hello</code> 目录并初始化：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ mkdir hello
+</span></span><span class="line"><span class="cl">$ <span class="nb">cd</span> hello
+</span></span><span class="line"><span class="cl">$ go mod init example.com/hello
+</span></span></code></pre></div></li>
+<li>
+<p>在 <code>hello</code> 目录下创建 <code>hello.go</code> 并编写 <code>main()</code> 来调用 <code>greetings.Hello(name string)</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;example.com/greetings&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">message</span> <span class="o">:=</span> <span class="nx">greetings</span><span class="p">.</span><span class="nf">Hello</span><span class="p">(</span><span class="s">&#34;Linner&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>由于 <code>hello.go</code> 使用到了 <code>example.com/greetings</code>，所以需要对其进行导入。由于 <code>example.com/greetings</code> 是当前 <code>example.com</code> 中的子模块，<code>example.com/greetings</code> 并未使用任何版本管理工具，所以需要使用 <code>mod replace</code> 为其指定路径。</p>
+<p>在 <code>hello</code> 目录下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 指定模块路径（一般实在开发环境下使用）</span>
+</span></span><span class="line"><span class="cl">$ go mod edit -replace example.com/greetings<span class="o">=</span>../greetings
+</span></span><span class="line"><span class="cl"><span class="c1"># 导入 example.com/greetings</span>
+</span></span><span class="line"><span class="cl">$ go get example.com/greetings
+</span></span></code></pre></div><p>执行以上命令后，在 <code>hello/go.mod</code> 中会添加如下内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go.mod" data-lang="go.mod"><span class="line"><span class="cl"><span class="n">replace</span> <span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">greetings</span> <span class="o">=&gt;</span> <span class="p">..</span><span class="o">/</span><span class="n">greetings</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">require</span> <span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">greetings</span> <span class="n">v0</span><span class="p">.</span><span class="mf">0.0</span><span class="o">-</span><span class="mi">00010101000000</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">//</span> <span class="n">indirect</span>
+</span></span></code></pre></div><p>由于没用使用版本工具发布版本（如使用 Git Tag），所以导入之后，Go Get 会使用一个伪版本号（pseudo-version number）暂替。</p>
+</li>
+</ol>
+<p>完成创建后，可以在 <code>hello</code> 目录中 <code>run</code> 或 <code>build</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go run .
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go build
+</span></span><span class="line"><span class="cl">$ ./hello.exe
+</span></span></code></pre></div><hr>
+<h1 id="go-mod-命令" data-numberify>go mod 命令<a class="anchor ms-1" href="#go-mod-命令"></a></h1>
+<p>使用 <code>go help mod</code> 可以查看 <code>go mod</code> 命令的信息：</p>
+<pre tabindex="0"><code>$ go mod
+Go mod provides access to operations on modules.
+
+Note that support for modules is built into all the go commands,
+not just &#39;go mod&#39;. For example, day-to-day adding, removing, upgrading,
+and downgrading of dependencies should be done using &#39;go get&#39;.
+See &#39;go help modules&#39; for an overview of module functionality.
+
+Usage:
+
+        go mod &lt;command&gt; [arguments]
+
+The commands are:
+
+        download    download modules to local cache
+        edit        edit go.mod from tools or scripts
+        graph       print module requirement graph
+        init        initialize new module in current directory
+        tidy        add missing and remove unused modules
+        vendor      make vendored copy of dependencies
+        verify      verify dependencies have expected content
+        why         explain why packages or modules are needed
+
+Use &#34;go help mod &lt;command&gt;&#34; for more information about a command.
+</code></pre><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>download</code></td>
+<td>下载依赖包到本地缓存</td>
+</tr>
+<tr>
+<td><code>edit</code></td>
+<td>编辑 <code>go.mod</code></td>
+</tr>
+<tr>
+<td><code>graph</code></td>
+<td>打印模块依赖图</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>在当前目录初始化新的模块</td>
+</tr>
+<tr>
+<td><code>tidy</code></td>
+<td>拉取缺少的模块，移除不用的模块</td>
+</tr>
+<tr>
+<td><code>vendor</code></td>
+<td>将依赖复制到 <code>vendor</code> 下</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>验证依赖是否正确</td>
+</tr>
+<tr>
+<td><code>why</code></td>
+<td>解释为什么包或模块依赖被依赖</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="代码仓库" data-numberify>代码仓库<a class="anchor ms-1" href="#代码仓库"></a></h1>
+<p>通常情况下 Go Modules 是和 Git 一同使用的，在 Go 中创建一个模块的标准流程实际是：</p>
+<ol>
+<li>
+<p>初始化。</p>
+<p>在模块目录中进行如下操作：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go mod init &lt;module-name&gt;
+</span></span><span class="line"><span class="cl">$ git init
+</span></span><span class="line"><span class="cl">$ git commit -am <span class="s2">&#34;init&#34;</span>
+</span></span><span class="line"><span class="cl">$ git remote add origin &lt;remote-url&gt;
+</span></span><span class="line"><span class="cl">$ git push -u origin main
+</span></span></code></pre></div></li>
+<li>
+<p>开发模块。</p>
+<p>模块开发完成后，需要进行发布。Go Modules 中的发布实际就是使用 Git 提交代码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git push
+</span></span></code></pre></div></li>
+<li>
+<p>在任意机器上运行如下命令即可自动安装依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go get &lt;module-name&gt;<span class="o">[</span>@modle-version<span class="o">]</span>
+</span></span></code></pre></div></li>
+</ol>
+<p>在发布模块的时候需要注意。模块对应的远程仓库需要设置为 Public。如果要导入的模块存放在你的私有仓库中，需要将环境变量 <code>GOPRIVATE</code> 设置为你的远程仓库的用户目录。例如我的 Github 主页是 <a href="https://github.com/Linna-cy/" target="_blank" rel="noopener noreferrer">https://github.com/Linna-cy/<i class="fas fa-external-link-square-alt ms-1"></i></a> 那么我需要设置 <code>GOPRIVATE=github.com/Linna-cy/*</code>，在通过用户名密码验证后就能正常访问我的私有仓库。</p>
+<p>一般情况下，在创建模块和远程仓库的时候，会将模块名称设置为 <code>远程仓库地址/用户名/仓库名</code> 的形式。</p>
+<hr>
+<h1 id="版本管理" data-numberify>版本管理<a class="anchor ms-1" href="#版本管理"></a></h1>
+<p>Go Modules 中并没有与版本相关的配置项，而是依靠于 Git 进行版本管理。</p>
+<p>如上例，假设模块名称为 <code>github.com/Linna-cy/go-utils</code>，运行 <code>go get github.com/Linna-cy/go-utils</code> 时，在 <code>go.mod</code> 中的结果可能如下：</p>
+<pre tabindex="0"><code>require github.com/Linna-cy/go-utils v0.0.0-20240608124125-a86730578714
+</code></pre><p>可以观察到，当没有指定版本时，默认的版本号（伪版本号）是通过时间戳等信息生成的。</p>
+<p>要设置版本，需要通过 Git Tag 进行设置。例如给 <code>github.com/Linna-cy/go-utils</code> 设置一个 <code>v1.0.0</code> 的版本号并进行发布：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git tag v1.0.0
+</span></span><span class="line"><span class="cl">$ git push --tags
+</span></span></code></pre></div><p>然后就可以导入指定版本的依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go get github.com/Linna-cy/go-utils@v1.0.0
+</span></span><span class="line"><span class="cl">go: downloading github.com/Linna-cy/go-utils v1.0.0
+</span></span><span class="line"><span class="cl">go: upgraded github.com/Linna-cy/go-utils v0.0.0-20240608124125-a86730578714 <span class="o">=</span>&gt; v1.0.0
+</span></span></code></pre></div><p><code>go.mod</code> 中 <code>github.com/Linna-cy/go-utils</code> 将更新为：</p>
+<pre tabindex="0"><code>require github.com/Linna-cy/go-utils v1.0.0
+</code></pre><p>依赖导入成功后，就可以在代码中导入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/Linna-cy/go-utils&#34;</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>
+
