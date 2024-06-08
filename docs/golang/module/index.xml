@@ -160,7 +160,17 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go run .
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go build
 </span></span><span class="line"><span class="cl">$ ./hello.exe
-</span></span></code></pre></div><hr>
+</span></span></code></pre></div><blockquote>
+<p>Go 中的伪版本号的格式遵循语义化版本控制的原则，并在此基础上增加了一段额外的信息来唯一标识Git提交。通常伪版本号使用如下格式生成：</p>
+<pre tabindex="0"><code>v0.0.0-YYYYMMDDHHMMSS-CommitHash
+</code></pre><ul>
+<li><code>v0.0.0</code> 表示模块尚未定义正式版本，或依赖的是一个无标签的提交；</li>
+<li><code>YYYYMMDDHHMMSS</code> 是提交日期的时间戳，精确到秒，确保了时间上的唯一性；</li>
+<li><code>CommitHash</code> 是 Git 提交的前几位哈希值，进一步确保了每个提交的唯一性。</li>
+</ul>
+<p>由于 <code>example.com/greetings</code> 模块并未使用 Git，所以伪版本号是固定的 <code>v0.0.0-00010101000000-000000000000</code>。</p>
+</blockquote>
+<hr>
 <h1 id="go-mod-命令" data-numberify>go mod 命令<a class="anchor ms-1" href="#go-mod-命令"></a></h1>
 <p>使用 <code>go help mod</code> 可以查看 <code>go mod</code> 命令的信息：</p>
 <pre tabindex="0"><code>$ go mod
@@ -249,7 +259,7 @@ Use &#34;go help mod &lt;command&gt;&#34; for more information about a command.
 </span></span></code></pre></div></li>
 <li>
 <p>在任意机器上运行如下命令即可自动安装依赖：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go get &lt;module-name&gt;<span class="o">[</span>@modle-version<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go get &lt;module-name&gt;<span class="o">[</span>@version<span class="o">]</span>
 </span></span></code></pre></div></li>
 </ol>
 <p>在发布模块的时候需要注意。模块对应的远程仓库需要设置为 Public。如果要导入的模块存放在你的私有仓库中，需要将环境变量 <code>GOPRIVATE</code> 设置为你的远程仓库的用户目录。例如我的 Github 主页是 <a href="https://github.com/Linna-cy/" target="_blank" rel="noopener noreferrer">https://github.com/Linna-cy/<i class="fas fa-external-link-square-alt ms-1"></i></a> 那么我需要设置 <code>GOPRIVATE=github.com/Linna-cy/*</code>，在通过用户名密码验证后就能正常访问我的私有仓库。</p>
@@ -259,7 +269,10 @@ Use &#34;go help mod &lt;command&gt;&#34; for more information about a command.
 <p>Go Modules 中并没有与版本相关的配置项，而是依靠于 Git 进行版本管理。</p>
 <p>如上例，假设模块名称为 <code>github.com/Linna-cy/go-utils</code>，运行 <code>go get github.com/Linna-cy/go-utils</code> 时，在 <code>go.mod</code> 中的结果可能如下：</p>
 <pre tabindex="0"><code>require github.com/Linna-cy/go-utils v0.0.0-20240608124125-a86730578714
-</code></pre><p>可以观察到，当没有指定版本时，默认的版本号（伪版本号）是通过时间戳等信息生成的。</p>
+</code></pre><p>可以观察到，当没有使用 Git 给模块指定版本时，默认的版本号（伪版本号）是通过时间戳等信息生成的。</p>
+<blockquote>
+<p><code>go get github.com/Linna-cy/go-utils</code> 在没有指定版本时，会自动获取 <code>github.com/Linna-cy/go-utils</code> 的最新版本。而模块 <code>github.com/Linna-cy/go-utils</code> 恰巧没有使用 Gti 设置任何版本，所以获取到的最新的版本就是 Go 自动生成的。</p>
+</blockquote>
 <p>要设置版本，需要通过 Git Tag 进行设置。例如给 <code>github.com/Linna-cy/go-utils</code> 设置一个 <code>v1.0.0</code> 的版本号并进行发布：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git tag v1.0.0
 </span></span><span class="line"><span class="cl">$ git push --tags
