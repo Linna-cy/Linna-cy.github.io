@@ -273,24 +273,79 @@ Use &#34;go help mod &lt;command&gt;&#34; for more information about a command.
 <blockquote>
 <p><code>go get github.com/Linna-cy/go-utils</code> 在没有指定版本时，会自动获取 <code>github.com/Linna-cy/go-utils</code> 的最新版本。而模块 <code>github.com/Linna-cy/go-utils</code> 恰巧没有使用 Gti 设置任何版本，所以获取到的最新的版本就是 Go 自动生成的。</p>
 </blockquote>
+<h2 id="设置版本号" data-numberify>设置版本号<a class="anchor ms-1" href="#设置版本号"></a></h2>
 <p>要设置版本，需要通过 Git Tag 进行设置。例如给 <code>github.com/Linna-cy/go-utils</code> 设置一个 <code>v1.0.0</code> 的版本号并进行发布：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git tag v1.0.0
 </span></span><span class="line"><span class="cl">$ git push --tags
-</span></span></code></pre></div><p>然后就可以导入指定版本的依赖：</p>
+</span></span></code></pre></div><p>Git Tag 创建标签时，也可以在标签中包含一些信息（这种标签称为附注标签）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git tag -a &lt;tagname&gt; -m <span class="s2">&#34;Tag message describing the version.&#34;</span>
+</span></span></code></pre></div><h2 id="导入依赖" data-numberify>导入依赖<a class="anchor ms-1" href="#导入依赖"></a></h2>
+<p>然后就可以导入指定版本的依赖：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ go get github.com/Linna-cy/go-utils@v1.0.0
 </span></span><span class="line"><span class="cl">go: downloading github.com/Linna-cy/go-utils v1.0.0
 </span></span><span class="line"><span class="cl">go: upgraded github.com/Linna-cy/go-utils v0.0.0-20240608124125-a86730578714 <span class="o">=</span>&gt; v1.0.0
 </span></span></code></pre></div><p><code>go.mod</code> 中 <code>github.com/Linna-cy/go-utils</code> 将更新为：</p>
 <pre tabindex="0"><code>require github.com/Linna-cy/go-utils v1.0.0
-</code></pre><p>在 <code>go.mod</code> 更新的同时，还生成了 <code>go.sum</code>，其中包含软件包的哈希值，以确保具有正确的版本和文件。</p>
-<p>依赖导入成功后，就可以在代码中导入：</p>
+</code></pre><p>在 <code>go.mod</code> 更新的同时，还生成了 <code>go.sum</code>，其中除了软件包名和版本号，还包含了软件包的哈希值，以确保具有正确的版本和文件。</p>
+<p>依赖导入成功后，就可以在代码中使用 <code>import</code> 进行导入：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/Linna-cy/go-utils&#34;</span>
-</span></span></code></pre></div><p>在使用 Git Tag 给提交标记上版本号后，假设当前标记的版本号是当前主版本下的第一个版本，一般情况下会给当前主版本创建一个新的分支，用于当前主版本后续的修复推送。例如 <code>github.com/Linna-cy/go-utils</code>，在推送版本号之后，还可以：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git checkout -b v1
+</span></span></code></pre></div><p>通常情况下，版本号使用语义化版本号（Semantic Versioning，SemVer）。SemVer 的格式通常为 <code>MAJOR.MINOR.PATCH</code>，每个部分都是一个非负整数，并且在数值上递增。其具体含义如下：</p>
+<ol>
+<li><code>MAJOR</code>（主版本号）：当做了不兼容的 API 修改时，主版本号应该递增。这表明新版本无法向后兼容旧版本，使用者可能需要修改代码才能适配新版本。</li>
+<li><code>MINOR</code>（次版本号）：当新增了向后兼容的功能时，次版本号应该递增。这意味着新版本添加了功能，但所有公共接口保持与旧版本兼容，用户无需修改代码即可安全升级。</li>
+<li><code>PATCH</code>（修订号）：当进行了向后兼容的错误修正时，修订号应该递增。这类更新修复了问题，但不对公开的 API 做任何改变，因此对用户而言是透明的升级。</li>
+</ol>
+<h2 id="分支" data-numberify>分支<a class="anchor ms-1" href="#分支"></a></h2>
+<p>在使用 Git Tag 给提交标记上版本号后，假设当前标记的版本号是当前主版本下的第一个版本，一般情况下会给当前主版本创建一个新的分支，用于当前主版本后续的修复推送。例如 <code>github.com/Linna-cy/go-utils</code>，在推送版本号之后，还可以：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git checkout -b v1 v1.0.0
 </span></span><span class="line"><span class="cl">$ git push -u origin v1
-</span></span></code></pre></div><blockquote>
-<p>一般版本后续的迭代修复，不会直接在主分支（<code>main</code>、<code>master</code>）上进行修改，而是创建新的分支进行修改。当修改后的内容通过测试，再将其合并到主分支上。</p>
-</blockquote>
+</span></span></code></pre></div><p>其中，<code>checkout</code> 的含义如下（<code>tag-name</code> 是可选的）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git checkout -b &lt;new-branch&gt; <span class="o">[</span>tag-name<span class="o">]</span>
+</span></span></code></pre></div><h2 id="迭代和修复" data-numberify>迭代和修复<a class="anchor ms-1" href="#迭代和修复"></a></h2>
+<p>一般版本后续的迭代和修复，不会直接在主分支（<code>main</code>、<code>master</code>）上进行修改，而是创建新的分支进行修改。当修改后的内容通过测试，再将其合并到主分支上。</p>
+<p>例如 <code>github.com/Linna-cy/go-utils v1.0.0</code> 有 Bug。当我们修复完成后，可以：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 提交示例（根据实际情况进行修改）</span>
+</span></span><span class="line"><span class="cl">$ git commit -am <span class="s2">&#34;fix: 修复了 xxx 问题&#34;</span>
+</span></span><span class="line"><span class="cl">$ git tag v1.0.1
+</span></span><span class="line"><span class="cl">$ git push --tags origin v1
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果已经 git push -u origin v1，可以直接 git push --tags</span>
+</span></span><span class="line"><span class="cl">$ git push origin v1:v1
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果已经 git push -u origin v1，可以直接 git push</span>
+</span></span></code></pre></div><p>当修复完成后，在使用了 <code>github.com/Linna-cy/go-utils v1.0.0</code> 的模块中，需要对 <code>github.com/Linna-cy/go-utils</code> 进行更新。更新通常有以下方式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 对所有依赖进行更新升级</span>
+</span></span><span class="line"><span class="cl">$ go get -u
+</span></span><span class="line"><span class="cl">$ go get -u<span class="o">=</span>patch
+</span></span><span class="line"><span class="cl"><span class="c1"># 指定包和版本进行更新升级</span>
+</span></span><span class="line"><span class="cl">$ go get github.com/Linna-cy/go-utils@v1.0.1
+</span></span></code></pre></div><p>如果要对主版本进行迭代，即发布新的主版本，一般步骤如下：</p>
+<ol>
+<li>
+<p>修改 <code>go.mod</code>。</p>
+<p>由于主要版本可能会破坏向后兼容性，所以可以通过修改 <code>go.mod</code> 的 <code>module</code> 项的方式，告知两个版本并不兼容。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go.mod" data-lang="go.mod"><span class="line"><span class="cl"><span class="n">module</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">major</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">go</span> <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>例如在 <code>github.com/Linna-cy/go-utils</code> 中添加了一系列新的接口，或对原有的接口进行修改，且修改后的接口不兼容旧版本。此时就需要对主版本进行迭代。假设将主版本迭代到 <code>v2</code>，并且发布了新的版本 <code>v2.0.0</code>，此时对应的 <code>go.mod</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go.mod" data-lang="go.mod"><span class="line"><span class="cl"><span class="n">module</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">Linna</span><span class="o">-</span><span class="n">cy</span><span class="o">/</span><span class="n">go</span><span class="o">-</span><span class="n">utils</span><span class="o">/</span><span class="n">v2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span> <span class="mf">1.22</span><span class="p">.</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 省略其它内容...
+</span></span></span></code></pre></div></li>
+<li>
+<p>发布新版本</p>
+<p>假设要发布 <code>github.com/Linna-cy/go-utils v2.0.0</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 提交示例（根据实际情况进行修改）</span>
+</span></span><span class="line"><span class="cl">$ git commit -am <span class="s2">&#34;feat: 发布新版本 v2.0.0，xxx&#34;</span>
+</span></span><span class="line"><span class="cl">$ git tag -a v2.0.0 -m <span class="s2">&#34;添加了 xxx，修改了 xxx，新版支持 xxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 签出分支</span>
+</span></span><span class="line"><span class="cl">$ git checkout -b v2 v2.0.0
+</span></span><span class="line"><span class="cl">$ git push --tags origin v2
+</span></span></code></pre></div></li>
+<li>
+<p>使用新版本。</p>
+</li>
+</ol>
+<p>原先使用了 <code>github.com/Linna-cy/go-utils</code> 的模块并不会受到影响。如果需要升级模块的主版本，或在其它模块中使用  <code>github.com/Linna-cy/go-utils/v2</code> 需要将 <code>import &quot;github.com/Linna-cy/go-utils&quot;</code> 修改为 <code>import &quot;github.com/Linna-cy/go-utils/v2&quot;</code>。</p>
 ]]></content:encoded>
     </item>
     
