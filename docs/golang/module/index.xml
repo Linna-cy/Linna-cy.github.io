@@ -285,7 +285,13 @@ Use &#34;go help mod &lt;command&gt;&#34; for more information about a command.
 </code></pre><p>在 <code>go.mod</code> 更新的同时，还生成了 <code>go.sum</code>，其中包含软件包的哈希值，以确保具有正确的版本和文件。</p>
 <p>依赖导入成功后，就可以在代码中导入：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/Linna-cy/go-utils&#34;</span>
-</span></span></code></pre></div>]]></content:encoded>
+</span></span></code></pre></div><p>在使用 Git Tag 给提交标记上版本号后，假设当前标记的版本号是当前主版本下的第一个版本，一般情况下会给当前主版本创建一个新的分支，用于当前主版本后续的修复推送。例如 <code>github.com/Linna-cy/go-utils</code>，在推送版本号之后，还可以：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git checkout -b v1
+</span></span><span class="line"><span class="cl">$ git push -u origin v1
+</span></span></code></pre></div><blockquote>
+<p>一般版本后续的迭代修复，不会直接在主分支（<code>main</code>、<code>master</code>）上进行修改，而是创建新的分支进行修改。当修改后的内容通过测试，再将其合并到主分支上。</p>
+</blockquote>
+]]></content:encoded>
     </item>
     
   </channel>
