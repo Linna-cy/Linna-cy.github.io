@@ -27,7 +27,7 @@
 <meta itemprop="name" content="创建 Go Module">
 <meta itemprop="description" content="Go Path 在 Golang 1.11 之前，Go 采用的是手动依赖管理，也就是使用 Go Path 的方式管理依赖。 使用 Go Path 会有以下问题： 代码开发必须在 Go Path 的 src 目录下。 依赖手动管理。 依"><meta itemprop="datePublished" content="2024-06-08T06:27:21+00:00" />
 <meta itemprop="dateModified" content="2024-06-08T06:27:21+00:00" />
-<meta itemprop="wordCount" content="2103">
+<meta itemprop="wordCount" content="2148">
 <meta itemprop="keywords" content="Golang,Go," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -1098,7 +1098,8 @@ Use &#34;go help mod &lt;command&gt;&#34; for more information about a command.
 </span></span><span class="line"><span class="cl">go: upgraded github.com/Linna-cy/go-utils v0.0.0-20240608124125-a86730578714 <span class="o">=</span>&gt; v1.0.0
 </span></span></code></pre></div><p><code>go.mod</code> 中 <code>github.com/Linna-cy/go-utils</code> 将更新为：</p>
 <pre tabindex="0"><code>require github.com/Linna-cy/go-utils v1.0.0
-</code></pre><p>依赖导入成功后，就可以在代码中导入：</p>
+</code></pre><p>在 <code>go.mod</code> 更新的同时，还生成了 <code>go.sum</code>，其中包含软件包的哈希值，以确保具有正确的版本和文件。</p>
+<p>依赖导入成功后，就可以在代码中导入：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/Linna-cy/go-utils&#34;</span>
 </span></span></code></pre></div></div>
 </div>
