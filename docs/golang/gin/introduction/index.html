@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Gin">
 <meta itemprop="description" content="Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。 使用 Gin 下载并安装 Gin： $ go get -u github.com/gin-gonic/gin 引入 Gin： import &#34;github.com/gin-gonic/gin&#34; 如果需要使用诸如 http.StatusOK 之类的 HTTP 状态码常"><meta itemprop="datePublished" content="2024-06-29T07:15:50+00:00" />
 <meta itemprop="dateModified" content="2024-06-29T07:15:50+00:00" />
-<meta itemprop="wordCount" content="747">
+<meta itemprop="wordCount" content="769">
 <meta itemprop="keywords" content="Golang,Go," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -864,6 +864,13 @@ Linner
 </span></span><span class="line"><span class="cl">      <span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 捕获并记录错误
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 监听并在 0.0.0.0:8080 上启动服务（默认即为 8080）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">routers</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>

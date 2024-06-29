@@ -47,6 +47,13 @@
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl">  <span class="p">})</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 捕获并记录错误
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}()</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 监听并在 0.0.0.0:8080 上启动服务（默认即为 8080）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">routers</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
