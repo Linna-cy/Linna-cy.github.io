@@ -6,7 +6,134 @@
     <description>Recent content in Gin on Linner&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2024 Linner. All Rights Reserved.
-</copyright><atom:link href="/docs/golang/gin/index.xml" rel="self" type="application/rss+xml" />
+</copyright>
+    <lastBuildDate>Sat, 29 Jun 2024 07:15:50 +0000</lastBuildDate><atom:link href="/docs/golang/gin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gin</title>
+      <link>/docs/golang/gin/introduction/</link>
+      <pubDate>Sat, 29 Jun 2024 07:15:50 +0000</pubDate>
+      
+      <guid>/docs/golang/gin/introduction/</guid>
+      <description><![CDATA[Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。 使用 Gin 下载并安装 Gin： $ go get -u github.com/gin-gonic/gin 引入 Gin： import &#34;github.com/gin-gonic/gin&#34; 如果需要使用诸如 http.StatusOK 之类的 HTTP 状态码常]]></description>
+      <content:encoded><![CDATA[<p>Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。</p>
+<hr>
+<h1 id="使用-gin" data-numberify>使用 Gin<a class="anchor ms-1" href="#使用-gin"></a></h1>
+<ol>
+<li>下载并安装 Gin：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ go get -u github.com/gin-gonic/gin
+</span></span></code></pre></div><ol start="2">
+<li>引入 Gin：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/gin-gonic/gin&#34;</span>
+</span></span></code></pre></div><p>如果需要使用诸如 <code>http.StatusOK</code> 之类的 HTTP 状态码常量，可以引入 <code>net/http</code> 包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;net/http&#34;</span>
+</span></span></code></pre></div><ol start="3">
+<li>开始使用 Gin。</li>
+</ol>
+<p><code>main.go</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/gin-gonic/gin&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 获取 gin.Engine 实例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">routers</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 接收 GET /hello 请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">routers</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 监听并在 0.0.0.0:8080 上启动服务（默认即为 8080）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">routers</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>接着运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ go run main.go
+</span></span></code></pre></div><p>或者，运行以下命令也可获取 Gin 官方代码示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl https://raw.githubusercontent.com/gin-gonic/examples/master/basic/main.go &gt; main.go
+</span></span></code></pre></div><hr>
+<h1 id="gin-请求" data-numberify>Gin 请求<a class="anchor ms-1" href="#gin-请求"></a></h1>
+<p>在如上示例中，使用 <code>routers.GET()</code> 创建了一个接收 <code>GET /hello</code> 请求的路由，并且绑定了其路由的处理函数。<code>GET()</code> 的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">GET</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodGet</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>其中：</p>
+<ul>
+<li>
+<p><code>RouterGroup</code>：即 <code>gin.RouterGroup</code>。表示一个路由组实例。</p>
+<p>由于 <code>gin.Engine</code> 继承了 <code>gin.RouterGroup</code>，所以 <code>gin.Engine</code> 本质上也是一个路由组实例。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Engine</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RouterGroup</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>relativePath</code>：表示路由接收的请求相对路径。例如 <code>/hello</code>。</p>
+</li>
+<li>
+<p><code>handlers</code>：是一系列请求处理函数 <code>HandlerFunc</code>。在 <code>GET()</code> 中可以指定多个 <code>HandlerFunc</code>，它们将按照指定的顺序执行。中间件（middleware）、过滤器（filter）、拦截器（interceptor）等，可以基于此进行实现。</p>
+</li>
+<li>
+<p><code>IRoutes</code>：定义了一系列路由请求方法。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">IRoutes</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">Use</span><span class="p">(</span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">Handle</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">Any</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">GET</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">POST</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">DELETE</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">PATCH</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">PUT</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">OPTIONS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">HEAD</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">Match</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">StaticFile</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">StaticFileFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">Static</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">StaticFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通过返回 <code>IRoutes</code>，可以使用链式调用风格来配置路由或中间件。</p>
+</li>
+</ul>
+<p>Gin 除了 Get 请求之外，还有可以配置其它请求方式，它们的使用方式差距不大：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">POST</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodPost</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">GET</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodGet</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">DELETE</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodDelete</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">PATCH</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodPatch</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">PUT</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodPut</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">OPTIONS</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodOptions</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">HEAD</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodHead</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
   </channel>
 </rss>
 
