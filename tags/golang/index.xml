@@ -7,7 +7,134 @@
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2024 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Sat, 29 Jun 2024 17:03:06 +0000</lastBuildDate><atom:link href="/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Jun 2024 05:42:11 +0000</lastBuildDate><atom:link href="/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gin 路由</title>
+      <link>/docs/golang/gin/routers/</link>
+      <pubDate>Sun, 30 Jun 2024 05:42:11 +0000</pubDate>
+      
+      <guid>/docs/golang/gin/routers/</guid>
+      <description><![CDATA[Gin 中许多类型都可以认为它是一个路由（IRoutes）类型，这包括了 RouterGroup、Engine等。并且 IRoutes 接口中定义的方法都会有一个 IRoutes]]></description>
+      <content:encoded><![CDATA[<p>Gin 中许多类型都可以认为它是一个路由（<code>IRoutes</code>）类型，这包括了 <code>RouterGroup</code>、<code>Engine</code>等。并且 <code>IRoutes</code> 接口中定义的方法都会有一个 <code>IRoutes</code> 类型的返回值，使得 Gin Routers 可以支持链式调用，让代码更加简洁。</p>
+<hr>
+<h1 id="路由分组" data-numberify>路由分组<a class="anchor ms-1" href="#路由分组"></a></h1>
+<p><code>RouterGroup</code> 是一种路由组对象（<code>Engine</code> 继承自 <code>RouterGroup</code>，所以也可以认为是一个路由组）。通过 <code>Group()</code> 方法可以创建一个新的 <code>RouterGroup</code>。<code>Group()</code> 方法的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">Group</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="o">*</span><span class="nx">RouterGroup</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">RouterGroup</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Handlers</span><span class="p">:</span> <span class="nx">group</span><span class="p">.</span><span class="nf">combineHandlers</span><span class="p">(</span><span class="nx">handlers</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">basePath</span><span class="p">:</span> <span class="nx">group</span><span class="p">.</span><span class="nf">calculateAbsolutePath</span><span class="p">(</span><span class="nx">relativePath</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">engine</span><span class="p">:</span>   <span class="nx">group</span><span class="p">.</span><span class="nx">engine</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li><code>relativePath</code>：路由组的相对路径。与 <a href="../request#handle-%e5%92%8c-match"><code>handle()</code> 方法</a> 相同，<code>relativePath</code> 同样需要使用 <code>group.calculateAbsolutePath()</code> 来计算出绝对路径。</li>
+<li><code>handlers</code>：路由组的处理方法，一般是将其作为中间处理函数（中间件）来定义。</li>
+</ul>
+<p><code>RouterGroup</code> 类型的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">RouterGroup</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Handlers</span> <span class="nx">HandlersChain</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">basePath</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">engine</span>   <span class="o">*</span><span class="nx">Engine</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">root</span>     <span class="kt">bool</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>其中：</p>
+<ul>
+<li>使用 <code>root</code> 和 <code>engine</code> 字段来标记当前路由组是否为根路由，以及根路由的地址（<code>Engine</code> 可以认为是当前 Gin 程序中所有路由组的根路由组）；</li>
+<li><code>Handlers</code> 记录了当前路由组中所需要的一系列路由处理函数（其中也包括了它上层路由的处理函数）；</li>
+<li><code>basePath</code> 指明了当前路由组的绝对路径。</li>
+</ul>
+<p>路由组的使用方式如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 创建路由组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">user</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddleware</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User get\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User post\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">PUT</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User put\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">DELETE</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User delete\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<h1 id="routers-包" data-numberify>Routers 包<a class="anchor ms-1" href="#routers-包"></a></h1>
+<p>一般在项目中，会专门创建一个 <code>routers</code> 包来存放项目中路由配置的相关代码。</p>
+<p>将一系列相关的路由抽取为理由组后，可以专门为其在 <code>routers</code> 包下创建一个文件来存放这一系列路由的配置。例如可以将 <code>user</code> 路由中的内容配置在 <code>user.go</code> 中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">UserRoutersInit</span><span class="p">(</span><span class="nx">engin</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Engine</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span> <span class="o">:=</span> <span class="nx">engin</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddleware</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User get\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User post\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">PUT</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User put\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="p">.</span><span class="nf">DELETE</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User delete\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 相对路径传入空串，表示请求路径与路由组的路径相同
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 需要注意，不能使用 &#34;/&#34; 来表示 “当前请求路径与路由组的路径相同” 这一含义
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>在 <code>routers</code> 包中可以创建一个 <code>routers.go</code> 来配置根路由、设置全局中间件以及初始化其它路由：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Router</span><span class="p">()</span> <span class="p">(</span><span class="nx">engine</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Engine</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 创建根路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 初始化其它子路由
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">UserRoutersInit</span><span class="p">(</span><span class="nx">engine</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>根路由的创建除了使用 <code>gin.Default()</code> 外，还可以使用 <code>gin.New()</code>。<code>gin.Default()</code> 默认使用了 <code>gin.Logger()</code> 和 <code>gin.Recovery()</code>。使用 <code>gin.New()</code> 来创建路由，需要自己手动配置 <code>Logger</code> 和 <code>Recovery</code> 中间件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nx">engine</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">gin</span><span class="p">.</span><span class="nf">Logger</span><span class="p">(),</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Recovery</span><span class="p">())</span>
+</span></span></code></pre></div><blockquote>
+<ul>
+<li><code>gin.Logger()</code>：日志。</li>
+<li><code>gin.Recovery()</code>：错误管理，它会 <code>recover()</code> 任何 <code>panic()</code>，并且返回给客户端 <code>500</code> 响应码。</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="controllers-包" data-numberify>Controllers 包<a class="anchor ms-1" href="#controllers-包"></a></h1>
+<p>除了路由，路由处理器也可以定义在专门的 <code>controllers</code> 包中。例如，<code>user</code> 路由，首先在 <code>controllers</code> 包中创建 <code>user.go</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// userController 类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">userController</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// UserController 示例
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 通过内部类型，以及定义外部实例，模拟一个简单的单例模式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">UserController</span> <span class="nx">userController</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">userController</span><span class="p">)</span> <span class="nf">GetUser</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User get\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">userController</span><span class="p">)</span> <span class="nf">AddUser</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User post\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">userController</span><span class="p">)</span> <span class="nf">UpdateUser</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User put\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">userController</span><span class="p">)</span> <span class="nf">DeleteUser</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;User delete\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>接着，修改 <code>routers/user.go</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">user</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">GetUser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">user</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">AddUser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">user</span><span class="p">.</span><span class="nf">PUT</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">UpdateUser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">user</span><span class="p">.</span><span class="nf">DELETE</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">DeleteUser</span><span class="p">)</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    
     <item>
       <title>Gin 获取请求</title>
       <link>/docs/golang/gin/request/</link>
