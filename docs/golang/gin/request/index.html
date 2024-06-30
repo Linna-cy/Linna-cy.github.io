@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>笔记 | Linner&#39;s Blog</title>
+    <title>Gin 获取请求 | Linner&#39;s Blog</title>
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_16x16_resize_q75_h2_box_2.webp" sizes="16x16" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_32x32_resize_q75_h2_box_2.webp" sizes="32x32" type="image/webp">
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_150x150_resize_q75_h2_box_2.webp" sizes="150x150" type="image/webp">
@@ -13,22 +13,28 @@
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
 <meta name="keywords" content="Linner Blog 博客" />
+  <meta name="description" content="Gin 请求在 Gin 介绍 中做了简单的介绍。 Gin 请求与 RouterGroup 和 IRoutes 息息相关。IRoutes是一个接口类型，它定义了一系列用于配置路由处理的方法： type IRoutes interface { // 用于配" />
     <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="笔记"/>
-<meta name="twitter:description" content=""/>
-<meta property="og:title" content="笔记" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/docs/" /><meta property="og:site_name" content="Linner&#39;s Blog" />
+<meta name="twitter:title" content="Gin 获取请求"/>
+<meta name="twitter:description" content="Gin 请求在 Gin 介绍 中做了简单的介绍。 Gin 请求与 RouterGroup 和 IRoutes 息息相关。IRoutes是一个接口类型，它定义了一系列用于配置路由处理的方法： type IRoutes interface { // 用于配"/>
+<meta property="og:title" content="Gin 获取请求" />
+<meta property="og:description" content="Gin 请求在 Gin 介绍 中做了简单的介绍。 Gin 请求与 RouterGroup 和 IRoutes 息息相关。IRoutes是一个接口类型，它定义了一系列用于配置路由处理的方法： type IRoutes interface { // 用于配" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/golang/gin/request/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2024-06-29T17:03:06+00:00" />
+<meta property="article:modified_time" content="2024-06-29T17:03:06+00:00" /><meta property="og:site_name" content="Linner&#39;s Blog" />
 
-<meta itemprop="name" content="笔记">
-<meta itemprop="description" content="">
+<meta itemprop="name" content="Gin 获取请求">
+<meta itemprop="description" content="Gin 请求在 Gin 介绍 中做了简单的介绍。 Gin 请求与 RouterGroup 和 IRoutes 息息相关。IRoutes是一个接口类型，它定义了一系列用于配置路由处理的方法： type IRoutes interface { // 用于配"><meta itemprop="datePublished" content="2024-06-29T17:03:06+00:00" />
+<meta itemprop="dateModified" content="2024-06-29T17:03:06+00:00" />
+<meta itemprop="wordCount" content="1307">
+<meta itemprop="keywords" content="Golang,Go," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
-  <meta property="og:image:alt" content="笔记" />
-  <meta name="twitter:image:alt" content="笔记" />
+  <meta property="og:image:alt" content="Gin 获取请求" />
+  <meta name="twitter:image:alt" content="Gin 获取请求" />
   <link rel="manifest" href="/manifest.json">
-<link rel="alternate" type="application/rss+xml" href="/docs/index.xml" title="Linner's Blog" />
+
 <link data-precache rel="stylesheet" href="/assets/main/bundle.min.5d2cef75ebbe961fea594e4454bba142c3b4bb72f172f5d6a0f6a5c39a8714f8.css" crossorigin="anonymous">
 
 
@@ -122,7 +128,7 @@ Linner
               </li>
             </ul>
           </li><li class="nav-item col-6 col-xxl-auto">
-            <a class="nav-link py-2 px-0 px-xxl-2 active" href="/docs/">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/docs/">
 <span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
             </a>
           </li>
@@ -462,32 +468,32 @@ Linner
             </div>
           </div>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/golang/"><span class="docs-nav-title">Golang</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-33c2c22bdfd4946ed44b4a4b4782e4c5" aria-expanded="false" aria-controls="nav-33c2c22bdfd4946ed44b4a4b4782e4c5">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-33c2c22bdfd4946ed44b4a4b4782e4c5" aria-expanded="true" aria-controls="nav-33c2c22bdfd4946ed44b4a4b4782e4c5">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-33c2c22bdfd4946ed44b4a4b4782e4c5">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-33c2c22bdfd4946ed44b4a4b4782e4c5">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/golang/create-module/"><span class="docs-nav-title">创建 Module</span></a>
         </li><li class="mb-2" tabindex="-1">
-          <div class="py-1 d-flex justify-content-between align-items-center ms-3">
+          <div class="py-1 d-flex justify-content-between align-items-center ms-3 text-primary">
             <a class="docs-nav-link d-flex align-items-center" href="/docs/golang/gin/"><span class="docs-nav-title">Gin</span></a>
-            <a class="btn-toggle ms-1 collapsed" role="button" data-bs-toggle="collapse"
-              data-bs-target="#nav-4a749116dc50c3b374f7bffbe4d70f64" aria-expanded="false" aria-controls="nav-4a749116dc50c3b374f7bffbe4d70f64">
+            <a class="btn-toggle ms-1" role="button" data-bs-toggle="collapse"
+              data-bs-target="#nav-4a749116dc50c3b374f7bffbe4d70f64" aria-expanded="true" aria-controls="nav-4a749116dc50c3b374f7bffbe4d70f64">
               <i class="btn-toggle-icon fas fa-chevron-down ms-auto" data-fa-transform="rotate-270"></i>
             </a>
           </div>
-          <div class="docs-nav-subnavs border-start mt-2 collapse " id="nav-4a749116dc50c3b374f7bffbe4d70f64">
+          <div class="docs-nav-subnavs border-start mt-2 collapse  show border-primary" id="nav-4a749116dc50c3b374f7bffbe4d70f64">
             <div class="btn-toggle-nav fw-normal ms-2 small">
               <ul class="list-unstyled mb-2 w-100"><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/golang/gin/introduction/"><span class="docs-nav-title">介绍</span></a>
         </li><li class="mb-2 py-1 ms-3" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/golang/gin/response/"><span class="docs-nav-title">响应数据</span></a>
-        </li><li class="mb-2 py-1 ms-3" tabindex="-1">
+        </li><li class="mb-2 py-1 ms-3 text-primary" tabindex="-1">
           <a class="docs-nav-link d-flex align-items-center" href="/docs/golang/gin/request/"><span class="docs-nav-title">获取请求</span></a>
         </li></ul>
             </div>
@@ -780,242 +786,393 @@ Linner
         </li></ul></div>
   </div>
 </aside><div class="col-xxl-7 ms-auto">
-  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="container-fluid"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body pb-0">
-    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item active">笔记</li></ol>
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/docs/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/docs/golang/">Golang</a></li><li class="breadcrumb-item text-surface"><a href="/docs/golang/gin/">Gin</a></li><li class="breadcrumb-item active">Gin 获取请求</li></ol>
   </div>
-</nav><div class="post-sections row card component">
-  <div class="card-header">
-    <h2 class="card-title fs-4 text-surface my-2">Sections</h2>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    
+
+<a class="action action-toc d-block d-xxl-none" href="#post-toc-container" role="button" title="目录">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+
+<a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    
+
+<a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
   </div>
-  <div class="card-body">
-    <ul class="nav nav-pills justify-content-between"><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/docker/">Docker</a>
-        </li><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/golang/">Golang</a>
-        </li><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/java/">Java</a>
-        </li><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/node-js/">Node.js</a>
-        </li><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/spring/">Spring</a>
-        </li><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/vue/">Vue</a>
-        </li><li class="nav-item post-section my-2 mx-1">
-          <a class="btn btn-sm btn-secondary" href="/docs/ruan-she/">软件设计师</a>
-        </li></ul>
-  </div>
-</div><div class="posts mb-4"><article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/golang/gin/request/">Gin 获取请求</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
+</div><article class="row card component mb-4 post">
+<div class="card-header ">
+    <h1 class="card-title post-title my-2">Gin 获取请求</h1>
+</div>
+<div class="card-body"><div class="post-meta mb-3">
   <span class="post-date me-1 mb-1" title="创建于 2024-06-29 17:03:06 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
 </div>
 
-    <div class="post-summary"><p>Gin 请求在 Gin 介绍 中做了简单的介绍。
-Gin 请求与 RouterGroup 和 IRoutes 息息相关。IRoutes是一个接口类型，它定义了一系列用于配置路由处理的方法：
-type...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/golang/gin/request/#post-content-body">阅读更多</a></div>
+<div class="mt-2 mb-3 d-block d-xxl-none">
+    <h2 class="text-surface mb-3">目录</h2>
+    <div id="post-toc-container">
+        </div>
+    <hr class="text-secondary">
+</div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body"><p>Gin 请求在 <a href="../introduction#gin-%e8%af%b7%e6%b1%82">Gin 介绍</a> 中做了简单的介绍。</p>
+<p>Gin 请求与 <code>RouterGroup</code> 和 <code>IRoutes</code> 息息相关。<code>IRoutes</code>是一个接口类型，它定义了一系列用于配置路由处理的方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">IRoutes</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 用于配置路由中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Use</span><span class="p">(</span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 路由处理方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Handle</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Any</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GET</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">POST</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">DELETE</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">PATCH</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">PUT</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">OPTIONS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">HEAD</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Match</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 静态文件处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">StaticFile</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">StaticFileFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Static</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">StaticFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span> <span class="nx">IRoutes</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>而 <code>RouterGroup</code> 是 <code>IRoutes</code> 的一个实现。</p>
+<blockquote>
+<p>在 Gin 中，路由类型的继承关系为 <code>IRoutes</code> $\leftarrow$ <code>RouterGroup</code> $\leftarrow$ <code>Engine</code>。</p>
+</blockquote>
+<hr>
+<h1 id="基本请求路由方法" data-numberify>基本请求路由方法<a class="anchor ms-1" href="#基本请求路由方法"></a></h1>
+<p><code>net/http</code> 中支持的请求方式，Gin 均支持：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">const</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodGet</span>     <span class="p">=</span> <span class="s">&#34;GET&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodHead</span>    <span class="p">=</span> <span class="s">&#34;HEAD&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodPost</span>    <span class="p">=</span> <span class="s">&#34;POST&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodPut</span>     <span class="p">=</span> <span class="s">&#34;PUT&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodPatch</span>   <span class="p">=</span> <span class="s">&#34;PATCH&#34;</span> <span class="c1">// RFC 5789
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">MethodDelete</span>  <span class="p">=</span> <span class="s">&#34;DELETE&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodConnect</span> <span class="p">=</span> <span class="s">&#34;CONNECT&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodOptions</span> <span class="p">=</span> <span class="s">&#34;OPTIONS&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">MethodTrace</span>   <span class="p">=</span> <span class="s">&#34;TRACE&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>其中，Gin 给 <code>GET</code>、<code>HEAD</code>、<code>POST</code>、<code>PUT</code>、<code>PATCH</code>、<code>DELETE</code>、<code>OPTIONS</code> 提供了对应快捷的路由方法，它们的定义大致如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">POST</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodPost</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">GET</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodGet</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">DELETE</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodDelete</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">PATCH</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodPatch</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">PUT</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodPut</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">OPTIONS</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodOptions</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">HEAD</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodHead</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>除此之外，Gin 还提供了一个可以接收所有请求方式的路由方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 可以接收如下请求方式：
+</span></span></span><span class="line"><span class="cl"><span class="c1">// GET, POST, PUT, PATCH, HEAD, OPTIONS, DELETE, CONNECT, TRACE.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">Any</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">method</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">anyMethods</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">returnObj</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>上方 <code>Any()</code>、<code>GET()</code> 等一系列方法的使用方式均相同：</p>
+<ul>
+<li>
+<p><code>relativePath</code>：表示路由接收的请求相对路径。例如 <code>/hello</code>。</p>
+</li>
+<li>
+<p><code>handlers</code>：是一系列请求处理函数 <code>HandlerFunc</code>。可以指定多个 <code>HandlerFunc</code>，它们将按照指定的顺序执行。中间件（middleware）、过滤器（filter）、拦截器（interceptor）等，都可以基于此进行实现。</p>
+<p><code>HandlerFunc</code> 的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">HandlerFunc</span> <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">Context</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>IRoutes</code>：定义了一系列路由请求方法。</p>
+</li>
+</ul>
+<hr>
+<h1 id="handle-和-match" data-numberify>Handle 和 Match<a class="anchor ms-1" href="#handle-和-match"></a></h1>
+<p>通过观察上方一系列请求路由方法，可以发现它们都调用了 <code>group.handle()</code> 方法。<code>group.handle()</code> 方法的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">httpMethod</span><span class="p">,</span> <span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="nx">HandlersChain</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">absolutePath</span> <span class="o">:=</span> <span class="nx">group</span><span class="p">.</span><span class="nf">calculateAbsolutePath</span><span class="p">(</span><span class="nx">relativePath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">handlers</span> <span class="p">=</span> <span class="nx">group</span><span class="p">.</span><span class="nf">combineHandlers</span><span class="p">(</span><span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">group</span><span class="p">.</span><span class="nx">engine</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="nx">httpMethod</span><span class="p">,</span> <span class="nx">absolutePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">returnObj</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li><code>httpMethod</code>：它的参数一般使用的是 <code>net/http</code> 包下的 <code>MethodXxx</code> 常量。</li>
+<li><code>relativePath</code>：请求的相对路径。通过 <code>group.calculateAbsolutePath()</code> 计算出<u>绝对路径</u>，其内部是使用 <code>path</code> 包下的 <code>Join()</code> 实现的。</li>
+<li><code>handlers</code>：路由处理方法。<code>HandlersChain</code> 的定义是 <code>type HandlersChain []HandlerFunc</code>。</li>
+</ul>
+<p>最终是通过 <code>group.engine.addRoute()</code>，也就是 <code>gin.Engine</code> 的 <code>addRoute()</code> 方法，传入请求方式、绝对路径以及请求处理函数来创建一个新的路由。</p>
+<h2 id="handle" data-numberify>Handle<a class="anchor ms-1" href="#handle"></a></h2>
+<p>Gin 对外提供了一个接口 <code>Handle()</code> 让用户能够直接使用更加基础的 <code>handle()</code> 方法。其定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">Handle</span><span class="p">(</span><span class="nx">httpMethod</span><span class="p">,</span> <span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">matched</span> <span class="o">:=</span> <span class="nx">regEnLetter</span><span class="p">.</span><span class="nf">MatchString</span><span class="p">(</span><span class="nx">httpMethod</span><span class="p">);</span> <span class="p">!</span><span class="nx">matched</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;http method &#34;</span> <span class="o">+</span> <span class="nx">httpMethod</span> <span class="o">+</span> <span class="s">&#34; is not valid&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">httpMethod</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用 <code>Handle()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodGet</span><span class="p">,</span> <span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>等价于：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><blockquote>
+<p>上述两种获取 GET 请求的方式并没有任何明显的区别。不过 <code>Handle()</code> 可以支持其它更多的请求方式，例如要接收 Gin 没有提供简便路由方法的 <code>TRACE</code> 请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">MethodTrace</span><span class="p">,</span> <span class="s">&#34;/trace&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Success!&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></blockquote>
+<h2 id="match" data-numberify>Match<a class="anchor ms-1" href="#match"></a></h2>
+<p>对于 <code>Handle()</code>、<code>All()</code>、<code>GET()</code> 这些路由方法来说，它们每次调用都只能配置一种请求方式，而 Gin 提供了 <code>Match()</code> 来支持同时配置多种请求方式的路由。<code>Match()</code> 的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">Match</span><span class="p">(</span><span class="nx">methods</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">method</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">methods</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">group</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">relativePath</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">group</span><span class="p">.</span><span class="nf">returnObj</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>可以发现 <code>methods</code> 参数是一个 <code>[]string</code> 类型的。<code>Match()</code> 通过遍历 <code>methods</code>，然后为其中每一个元素 <code>method</code> 调用 <code>group.handle()</code> 方法。</p>
+<p><code>Match()</code> 的示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">Match</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">http</span><span class="p">.</span><span class="nx">MethodPut</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">MethodPost</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></div>
+</div>
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title text-surface" id="rewardModalLabel"><i class="fas fa-fw fa-coffee me-1"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn-close" aria-label="Close"></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay me-1"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin me-1"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content text-center show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.jpg" loading="lazy" data-viewer-invisible />
+          </div><div class="tab-pane fade post-reward-content text-center show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/wechat.png" loading="lazy" data-viewer-invisible />
+          </div></div>
+      </div>
     </div>
   </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
+</div></div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
       <a href="/docs/golang/gin/response/">Gin 响应数据</a>
-    </h2>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
   </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 07:48:18 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
+
+  <a class="post-title" href="/docs/golang/gin/response/">
+    Gin 响应数据
+  </a>
+  <div class="post-meta mb-0">
+    2024年6月29日
+
+  </div>
 </div>
 
-    <div class="post-summary"><p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。
- 响应 Text 类型数据 r := gin.Default() r.GET(&#34;/hello&#34;, func(ctx...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/golang/gin/response/#post-content-body">阅读更多</a></div>
-    </div>
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
   </div>
-</article>
-<article class="row card post component">
+
+  <a class="post-title" href="/docs/golang/gin/introduction/">
+    Gin
+  </a>
+  <div class="post-meta mb-0">
+    2024年6月29日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/golang/create-module/">
+    创建 Go Module
+  </a>
+  <div class="post-meta mb-0">
+    2024年6月8日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/java/collection/map/">
+    Java Map
+  </a>
+  <div class="post-meta mb-0">
+    2024年6月7日
+
+  </div>
+</div>
+
+          </div><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/docs/java/collection/list/">
+    Java List
+  </a>
+  <div class="post-meta mb-0">
+    2024年6月4日
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
   <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/golang/gin/introduction/">Gin</a>
-    </h2>
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
   </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 07:15:50 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
-</div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="Linna-cy/Linna-cy.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
 
-    <div class="post-summary"><p>Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。
- 使用 Gin  下载并安装 Gin：  $ go get -u github.com/gin-gonic/gin...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/golang/gin/introduction/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/golang/create-module/">创建 Go Module</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-08 06:27:21 &#43;0000 UTC。">2024年6月8日</span><span class="post-reading-time me-1 mb-1">7 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
-</div>
 
-    <div class="post-summary"><p>Go Path 在 Golang 1.11 之前，Go 采用的是手动依赖管理，也就是使用 Go Path 的方式管理依赖。
-使用 Go Path 会有以下问题：
- 代码开发必须在 Go Path...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/golang/create-module/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/java/collection/map/">Java Map</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-07 05:54:36 &#43;0000 UTC。">2024年6月7日</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
-</div>
 
-    <div class="post-summary"><p>概述 Map 是 Java 中的一种键值对集合类型的接口，它还提供了一些对数组进行排序、打印、和对 List 进行转换的静态方法。
-常用的实现类有：
- HashMap：哈希图。...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/java/collection/map/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/java/collection/list/">Java List</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-04 06:51:15 &#43;0000 UTC。">2024年6月4日</span><span class="post-reading-time me-1 mb-1">8 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
 </div>
-
-    <div class="post-summary"><p>概述 List 是 Java 中的一种有序、可重复的集合接口类型。其常用的实现类有：
- ArrayList：动态数组。 LinkedList：链表。   ArrayList 和 LinkedList ...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/java/collection/list/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/java/collection/introduction/">Java 集合框架</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-04 06:51:15 &#43;0000 UTC。">2024年6月4日</span><span class="post-reading-time me-1 mb-1">1 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
-</div>
-
-    <div class="post-summary"><p>概述 Java 集合框架可以分类两大类型：
-  Collection：最基本的集合类型的接口，提供了添加、删除、清空等基本操作，还提供了一些对集合进行排序、二分查找、同步的静态方法。
-其主要的子接口...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/java/collection/introduction/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/java/introduction/">Java 概述</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-04 06:04:04 &#43;0000 UTC。">2024年6月4日</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
-</div>
-
-    <div class="post-summary"><p>特点 Java 比较突出的特点：
- 面向对象：封装，继承，多态。 平台无关性（跨平台）：Java 是一种 “一次编写，到处运行（Write Once，Run any Where）” 的语言。也就是说，...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/java/introduction/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/java/concurrent/create-thread/">Java 线程的创建</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-12-10 07:53:03 &#43;0000 UTC。">2023年12月10日</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
-</div>
-
-    <div class="post-summary"><p>Java提供了三种创建线程的方法：
- 重写Thread类的run()； 通过实现Runnable接口； 通过Callable和FutureTask创建线程。   通过 Thread 类创建 在Java...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/java/concurrent/create-thread/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component">
-  <div class="card-header">
-    <h2 class="card-title post-title my-2 fs-4">
-      <a href="/docs/java/concurrent/introduction/">Java 并发编程</a>
-    </h2>
-  </div>
-  <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2023-12-07 08:08:35 &#43;0000 UTC。">2023年12月7日</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
-      <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
-      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
-</div>
-
-    <div class="post-summary"><p>概念 Java 并发编程中涵盖了以下这些概念：
- 进程 线程 并发 并行   进程 进程（Process）是指在计算机中正在运行的一个程序的实例。进程是操作系统进行资源分配和调度的基本单位（资源分配的...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/docs/java/concurrent/introduction/#post-content-body">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-</div><div class="row table-responsive mb-3">
-    <ul class="pagination pagination-default">
-      <li class="page-item disabled">
-        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      <li class="page-item disabled">
-        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
-      </li>
-      <li class="page-item active">
-        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
-      </li>
-      <li class="page-item">
-        <a href="/docs/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
-      </li>
-      <li class="page-item">
-        <a href="/docs/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
-      </li>
-      <li class="page-item">
-        <a href="/docs/page/4/" aria-label="Page 4" class="page-link" role="button">4</a>
-      </li>
-      <li class="page-item">
-        <a href="/docs/page/5/" aria-label="Page 5" class="page-link" role="button">5</a>
-      </li>
-      <li class="page-item">
-        <a href="/docs/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/docs/page/11/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-    </ul></div>
-</div>
-
+</div></div>
 </div>
 <aside class="sidebar d-flex docs-sidebar col-xxl-3 position-sticky order-xxl-5">
   <div class="container">
     
-    
+    <div class="accordion post-toc d-none d-lg-block">
+  <div class="accordion-item row mb-4 card component" id="postTOC">
+    <div class="card-header accordion-header">
+      <h2 class="card-title fs-4 my-2 text-surface d-none d-lg-block">目录</h2>
+      <a class="accordion-button d-lg-none mb-1 collapsed shadow-none p-0 bg-transparent" role="button" data-bs-toggle="collapse" href="#post-toc" aria-expanded="false" aria-controls="post-toc">
+        目录
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block" id="post-toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本请求路由方法">基本请求路由方法</a></li>
+    <li><a href="#handle-和-match">Handle 和 Match</a>
+      <ul>
+        <li><a href="#handle">Handle</a></li>
+        <li><a href="#match">Match</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </div>
+</div>
     
 
   </div>
@@ -1075,6 +1232,7 @@ type...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/d
 
 
 <script src="/js/sw-register.js" defer></script>
+
 
   </body>
 </html>
