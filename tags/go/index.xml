@@ -290,7 +290,211 @@
 </span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
-</span></span></code></pre></div>]]></content:encoded>
+</span></span></code></pre></div><hr>
+<h1 id="获取请求数据" data-numberify>获取请求数据<a class="anchor ms-1" href="#获取请求数据"></a></h1>
+<p>请求数据的获取需要使用到 <code>gin.Context</code>。</p>
+<h2 id="query-参数" data-numberify>Query 参数<a class="anchor ms-1" href="#query-参数"></a></h2>
+<p>Query 参数一般和 GET 请求一同使用，获取指定的 Query 参数，可以使用 <code>Query()</code> 或 <code>DefaultQuery()</code> 方法。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 通过 Query() 方法获取指定的 Query 参数值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">idStr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Query</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 类型转换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">id</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">idStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">username</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Query</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取并指定默认值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">sexStr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">DefaultQuery</span><span class="p">(</span><span class="s">&#34;sex&#34;</span><span class="p">,</span> <span class="s">&#34;0&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 类型转换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">sex</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">sexStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 响应数据对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">user</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;id&#34;</span><span class="p">:</span>       <span class="nx">id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;username&#34;</span><span class="p">:</span> <span class="nx">username</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;sex&#34;</span><span class="p">:</span>      <span class="nx">sex</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 响应
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X GET <span class="s1">&#39;http://127.0.0.1:8080/user/info?id=123456&amp;username=zhangsan&amp;sex=1&#39;</span>
+</span></span></code></pre></div><ul>
+<li><code>Query()</code>：获取 Query 参数但不指定默认值。当请求时没有传递指定的参数，或指定参数为空时，其返回值将是一个空串。</li>
+<li><code>DefaultQuery()</code>：获取 Query 参数且为其指定默认值。当请求时没有传递指定的参数，其返回值将是指定的默认值；如果指定的参数是空串，那么获取到的返回值也是一个空串。</li>
+</ul>
+<p><code>Query()</code> 和 <code>DefaultQuery()</code> 内部是通过 <code>GetQuery()</code> 实现的，所以也可以直接使用 <code>GetQuery()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">id</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 通过 GetQuery() 获取 id 参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">GetQuery</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 如果获取成功，就将其转为 int64
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">result</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">id</span> <span class="p">=</span> <span class="nx">result</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="绑定-query" data-numberify>绑定 Query<a class="anchor ms-1" href="#绑定-query"></a></h3>
+<p>对于一些结构固定的 Query 请求对象，可以直接定义一个结构体并绑定其实例，而无需使用 <code>Query()</code>、<code>DefaultQuery()</code> 或 <code>GetQuery()</code> 手动获取表单中的每一个字段。</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 字段使用指针类型，以便获取 null 值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">UserQuery</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;username&#34; json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="o">*</span><span class="kt">uint8</span>  <span class="s">`form:&#34;sex&#34; json:&#34;sex&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">query</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">UserQuery</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">BindQuery</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">query</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 或者，使用以下方式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindQuery(&amp;query)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindWith(&amp;query, binding.Query)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><blockquote>
+<p>在 Gin 中，绑定 Query 实例时，同样需要在结构体字段中使用 Tags 指定字段的 Query 参数名称，否则它将按照原有的首字母大写形式获取对应值。在指定结构体字段 Query 参数别名时，使用的是 <code>form</code> 这一 Tag。</p>
+</blockquote>
+<h2 id="form-参数" data-numberify>Form 参数<a class="anchor ms-1" href="#form-参数"></a></h2>
+<p>通过 <code>PostForm()</code> 或 <code>DefaultPostForm()</code> 可以获取任何类型的 Form 表单数据，包括 <code>multipart/form-data</code> 和 <code>application/x-www-form-urlencoded</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 通过 PostForm() 方法获取指定的 Form 参数值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">idStr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">id</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">idStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">username</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">sexStr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">DefaultPostForm</span><span class="p">(</span><span class="s">&#34;sex&#34;</span><span class="p">,</span> <span class="s">&#34;0&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">sex</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">sexStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 响应数据对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">user</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;id&#34;</span><span class="p">:</span>       <span class="nx">id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;username&#34;</span><span class="p">:</span> <span class="nx">username</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;sex&#34;</span><span class="p">:</span>      <span class="nx">sex</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>PostForm()</code> 和 <code>DefaultPostForm()</code> 与 <code>Query()</code> 和 <code>DefaultQuery()</code> 的用法类似。<code>PostForm()</code> 和 <code>DefaultPostForm()</code> 内部同样都有一个相同的实现，它就是 <code>GetPostForm()</code>。<code>GetPostForm()</code> 的用法与 <code>GetQuery()</code> 的用法相似。</p>
+<blockquote>
+<p>虽然 <code>PostForm()</code>、<code>DefaultPostForm()</code> 和 <code>GetPostForm()</code> 名称中显式指定了是获取在 POST 请求中提交的表单，但在 Gin 中，<code>PostForm()</code> 同样可以用于其它请求方法接收 Form 数据。</p>
+</blockquote>
+<h3 id="绑定表单" data-numberify>绑定表单<a class="anchor ms-1" href="#绑定表单"></a></h3>
+<p>对于一些结构固定的表单请求对象，同样可以直接定义一个结构体并绑定其实例，无需手动获取表单中的每一个字段。方法与绑定 Query 实例相似：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">UserForm</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;username&#34; json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Nickname</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;nickname&#34; json:&#34;nickname&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="o">*</span><span class="kt">uint8</span>  <span class="s">`form:&#34;sex&#34; json:&#34;sex&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">form</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">UserForm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">ShouldBind</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">form</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 或者使用 ShouldBindWith() 显示声明绑定 Form
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindWith(&amp;form, binding.Form)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">form</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h2 id="获取-json-数据" data-numberify>获取 JSON 数据<a class="anchor ms-1" href="#获取-json-数据"></a></h2>
+<p>要获取 JSON 数据，需要绑定实例。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">UserDto</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;username&#34; json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Nickname</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;nickname&#34; json:&#34;nickname&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="o">*</span><span class="kt">uint8</span>  <span class="s">`form:&#34;sex&#34; json:&#34;sex&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">form</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">UserDto</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">ShouldBindJSON</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">form</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 或者使用 ShouldBindWith() 显式声明绑定 JSON
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindWith(&amp;form, binding.JSON)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">form</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h2 id="获取-uri-参数" data-numberify>获取 URI 参数<a class="anchor ms-1" href="#获取-uri-参数"></a></h2>
+<p>获取 URI 参数可以使用 <code>Param()</code> 方法。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello/:username&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">username</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Param</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Hello, %s!&#34;</span><span class="p">,</span> <span class="nx">username</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h3 id="绑定-uri" data-numberify>绑定 URI<a class="anchor ms-1" href="#绑定-uri"></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">ArticleQo</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span>    <span class="o">*</span><span class="kt">string</span> <span class="s">`uri:&#34;username&#34; json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ArticleName</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`uri:&#34;article-name&#34; json:&#34;article-name&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/article/:username/:article-name&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">query</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">ArticleQo</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">ShouldBindUri</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">query</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h2 id="数据绑定的注意事项" data-numberify>数据绑定的注意事项<a class="anchor ms-1" href="#数据绑定的注意事项"></a></h2>
+<p><code>Context.Bind()</code> 和 <code>Context.ShouldBind()</code> 可以绑定任意类型的请求数据，包括 Query、Form、JSON 等等。它们都是通用的数据绑定方法，会根据请求的内容类型（Content-Type）自动选择合适的数据绑定器。</p>
+<p>比起 <code>Context.Bind()</code>，<code>Context.ShouldBind()</code> 是一种更高级、更灵活的数据绑定方法，它提供了额外的错误处理机制。<code>Context.Bind()</code> 在绑定失败时会直接结束处理流程，而<code>Context.ShouldBind()</code> 在绑定失败时不直接结束请求处理流程，而是返回一个错误，这允许我们在处理函数中根据这个错误做出进一步的响应操作。更确切地说，<code>ShouldBind</code> 系列的数据绑定方法，在遇到绑定错误时，并不会立即中断请求处理流程；而 <code>Bind</code> 系列会立即终止执行后续的处理逻辑。</p>
+<p>从 Gin 实现中来说，<code>Bind</code> 系列的绑定方法几乎都是使用 <code>Context.MustBindWith()</code> 实现的，而 <code>Context.MustBindWith()</code> 内部是使用 <code>Context.ShouldBindWith()</code> 实现的。并且 <code>ShouldBind</code>（不包括 <code>ShouldBindBody</code>）系列的绑定方法几乎都是使用 <code>Context.ShouldBindWith()</code> 方法实现。也就是说，<code>Context.ShouldBindWith()</code> 实现了 <code>Context</code> 中大部份的绑定方法。</p>
+<p>在使用数据绑定时，可以使用 <code>binding</code> Tag 来设定字段的约束条件。例如，在字段上设置 <code>binding:&quot;required&quot;</code> 来规定该字段是必须的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">ArticleQo</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span>    <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;name&#34; json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ArticleName</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;article-name&#34; json:&#34;article-name&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ArticleID</span>   <span class="o">*</span><span class="kt">uint64</span> <span class="s">`form:&#34;article-id&#34; json:&#34;article-id&#34; binding:&#34;required&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/article&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">query</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">ArticleQo</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">ShouldBind</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">query</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>在发送请求时，必须传入 <code>article-id</code> 这个字段，否则将会出现错误。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -299,8 +503,16 @@
       <pubDate>Sat, 29 Jun 2024 07:48:18 +0000</pubDate>
       
       <guid>/docs/golang/gin/response/</guid>
-      <description><![CDATA[Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。 响应 Text 类型数据 r := gin.Default() r.GET(&#34;/hello&#34;, func(ctx *gin.Context) { // 响应 Text 类型数据 ctx.String(http.StatusOK, &#34;Hello World!&#34;) }) 其中 http.StatusOK 是 net/http 包]]></description>
-      <content:encoded><![CDATA[<p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。</p>
+      <description><![CDATA[Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获]]></description>
+      <content:encoded><![CDATA[<p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 <code>gin.Context</code> 类型。<code>gin.Context</code> 类型的作用有：</p>
+<ul>
+<li>获取请求数据，包括请求头、Query 参数、Form 数据、Path 参数、请求体等。</li>
+<li>响应管理，包括设置 HTTP 状态码、编写响应体、设置响应头等。</li>
+<li>中间件支持。<code>Context</code> 可以携带当前处理函数的信息传递到下一个处理函数，直到达到最终的处理函数。在中间件中可以使用 <code>Context</code> 读取、修改 <code>Context</code> 的内容或终止请求处理流程。</li>
+<li>Cookie 操作。</li>
+<li>读写请求和响应体的原始字节流，以此来处理自定义协议或二进制数据传输。</li>
+<li>错误处理。可以记录错误并中断请求处理流程。</li>
+</ul>
 <hr>
 <h1 id="响应-text-类型数据" data-numberify>响应 Text 类型数据<a class="anchor ms-1" href="#响应-text-类型数据"></a></h1>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
@@ -503,7 +715,38 @@
 </span></span></code></pre></div><blockquote>
 <p>注：<code>ctx.SecureJSON()</code> 并不能彻底防范 XSS 攻击。</p>
 </blockquote>
-]]></content:encoded>
+<h2 id="struct-的-json-序列化" data-numberify>Struct 的 JSON 序列化<a class="anchor ms-1" href="#struct-的-json-序列化"></a></h2>
+<p>由于 <code>ctx.JSON()</code> 等方法，的数据参数 <code>obj</code> 是 <code>any</code> 类型的，因此可以传入自定义的类型的实例。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">User</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>       <span class="kt">uint64</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="kt">uint8</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">User</span><span class="p">{</span><span class="nx">Id</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nx">Username</span><span class="p">:</span> <span class="s">&#34;zhangsan&#34;</span><span class="p">,</span> <span class="nx">Sex</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>发送请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X GET <span class="err">&#39;</span>http://127.0.0.1:8080/user/info
+</span></span></code></pre></div><p>结果为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Id&#34;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Username&#34;</span><span class="p">:</span> <span class="s2">&#34;zhangsan&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Sex&#34;</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>由于 Golang 结构体字段必须得首字母大写，才能在其它包中访问。所以，要序列化的结构体字段，其首字母必须得是大写的。但这也导致了序列化后的 JSON 串，字段首字母也同样是大写的。为此，可以通过为结构体字段指定 Tags 来设置 JSON 序列化后的字段名称，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">User</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>       <span class="kt">uint64</span> <span class="s">`json:&#34;id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="kt">string</span> <span class="s">`json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="kt">uint8</span>  <span class="s">`json:&#34;sex&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>再次执行请求，结果如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;zhangsan&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;sex&#34;</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>

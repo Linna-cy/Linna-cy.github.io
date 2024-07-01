@@ -13,21 +13,21 @@
     <link rel="icon" href="/favicon_hu7d8357c37aa4700cbeb3320b18d97c55_1458_192x192_resize_q75_h2_box_2.webp" sizes="192x192" type="image/webp">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
 <meta name="keywords" content="Linner Blog 博客" />
-  <meta name="description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。 响应 Text 类型数据 r := gin.Default() r.GET(&#34;/hello&#34;, func(ctx *gin.Context) { // 响应 Text 类型数据 ctx.String(http.StatusOK, &#34;Hello World!&#34;) }) 其中 http.StatusOK 是 net/http 包" />
+  <meta name="description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获" />
     <meta name="robots" content="index, follow" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Gin 响应数据"/>
-<meta name="twitter:description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。 响应 Text 类型数据 r := gin.Default() r.GET(&#34;/hello&#34;, func(ctx *gin.Context) { // 响应 Text 类型数据 ctx.String(http.StatusOK, &#34;Hello World!&#34;) }) 其中 http.StatusOK 是 net/http 包"/>
+<meta name="twitter:description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获"/>
 <meta property="og:title" content="Gin 响应数据" />
-<meta property="og:description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。 响应 Text 类型数据 r := gin.Default() r.GET(&#34;/hello&#34;, func(ctx *gin.Context) { // 响应 Text 类型数据 ctx.String(http.StatusOK, &#34;Hello World!&#34;) }) 其中 http.StatusOK 是 net/http 包" />
+<meta property="og:description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/golang/gin/response/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2024-06-29T07:48:18+00:00" />
 <meta property="article:modified_time" content="2024-06-29T07:48:18+00:00" /><meta property="og:site_name" content="Linner&#39;s Blog" />
 
 <meta itemprop="name" content="Gin 响应数据">
-<meta itemprop="description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。 响应 Text 类型数据 r := gin.Default() r.GET(&#34;/hello&#34;, func(ctx *gin.Context) { // 响应 Text 类型数据 ctx.String(http.StatusOK, &#34;Hello World!&#34;) }) 其中 http.StatusOK 是 net/http 包"><meta itemprop="datePublished" content="2024-06-29T07:48:18+00:00" />
+<meta itemprop="description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获"><meta itemprop="datePublished" content="2024-06-29T07:48:18+00:00" />
 <meta itemprop="dateModified" content="2024-06-29T07:48:18+00:00" />
-<meta itemprop="wordCount" content="1251">
+<meta itemprop="wordCount" content="1723">
 <meta itemprop="keywords" content="Golang,Go," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -828,7 +828,7 @@ Linner
     <h1 class="card-title post-title my-2">Gin 响应数据</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 07:48:18 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 07:48:18 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
 </div>
@@ -839,7 +839,15 @@ Linner
         </div>
     <hr class="text-secondary">
 </div><div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
-        <div id="post-content-body"><p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。</p>
+        <div id="post-content-body"><p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 <code>gin.Context</code> 类型。<code>gin.Context</code> 类型的作用有：</p>
+<ul>
+<li>获取请求数据，包括请求头、Query 参数、Form 数据、Path 参数、请求体等。</li>
+<li>响应管理，包括设置 HTTP 状态码、编写响应体、设置响应头等。</li>
+<li>中间件支持。<code>Context</code> 可以携带当前处理函数的信息传递到下一个处理函数，直到达到最终的处理函数。在中间件中可以使用 <code>Context</code> 读取、修改 <code>Context</code> 的内容或终止请求处理流程。</li>
+<li>Cookie 操作。</li>
+<li>读写请求和响应体的原始字节流，以此来处理自定义协议或二进制数据传输。</li>
+<li>错误处理。可以记录错误并中断请求处理流程。</li>
+</ul>
 <hr>
 <h1 id="响应-text-类型数据" data-numberify>响应 Text 类型数据<a class="anchor ms-1" href="#响应-text-类型数据"></a></h1>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
@@ -1042,7 +1050,38 @@ Linner
 </span></span></code></pre></div><blockquote>
 <p>注：<code>ctx.SecureJSON()</code> 并不能彻底防范 XSS 攻击。</p>
 </blockquote>
-</div>
+<h2 id="struct-的-json-序列化" data-numberify>Struct 的 JSON 序列化<a class="anchor ms-1" href="#struct-的-json-序列化"></a></h2>
+<p>由于 <code>ctx.JSON()</code> 等方法，的数据参数 <code>obj</code> 是 <code>any</code> 类型的，因此可以传入自定义的类型的实例。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">User</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>       <span class="kt">uint64</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="kt">uint8</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">User</span><span class="p">{</span><span class="nx">Id</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nx">Username</span><span class="p">:</span> <span class="s">&#34;zhangsan&#34;</span><span class="p">,</span> <span class="nx">Sex</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>发送请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X GET <span class="err">&#39;</span>http://127.0.0.1:8080/user/info
+</span></span></code></pre></div><p>结果为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Id&#34;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Username&#34;</span><span class="p">:</span> <span class="s2">&#34;zhangsan&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Sex&#34;</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>由于 Golang 结构体字段必须得首字母大写，才能在其它包中访问。所以，要序列化的结构体字段，其首字母必须得是大写的。但这也导致了序列化后的 JSON 串，字段首字母也同样是大写的。为此，可以通过为结构体字段指定 Tags 来设置 JSON 序列化后的字段名称，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">User</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>       <span class="kt">uint64</span> <span class="s">`json:&#34;id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Username</span> <span class="kt">string</span> <span class="s">`json:&#34;username&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="kt">uint8</span>  <span class="s">`json:&#34;sex&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>再次执行请求，结果如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;zhangsan&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;sex&#34;</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></div>
 </div>
 <div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -1237,6 +1276,7 @@ Linner
         <li><a href="#ctxpurejson">ctx.PureJSON</a></li>
         <li><a href="#json-劫持">JSON 劫持</a></li>
         <li><a href="#ctxsecurejson">ctx.SecureJSON</a></li>
+        <li><a href="#struct-的-json-序列化">Struct 的 JSON 序列化</a></li>
       </ul>
     </li>
   </ul>
