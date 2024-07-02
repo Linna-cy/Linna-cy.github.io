@@ -7,7 +7,173 @@
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2024 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Sun, 30 Jun 2024 05:42:11 +0000</lastBuildDate><atom:link href="/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Jun 2024 07:12:14 +0000</lastBuildDate><atom:link href="/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gin 中间件</title>
+      <link>/docs/golang/gin/middlewares/</link>
+      <pubDate>Sun, 30 Jun 2024 07:12:14 +0000</pubDate>
+      
+      <guid>/docs/golang/gin/middlewares/</guid>
+      <description><![CDATA[Gin 中间件的配置方式有许多种，大致为： 在 Handle()、Any()、Match()、GET() 等基本路由方法中配置 HandlerFunc。 在]]></description>
+      <content:encoded><![CDATA[<p>Gin 中间件的配置方式有许多种，大致为：</p>
+<ol>
+<li>在 <code>Handle()</code>、<code>Any()</code>、<code>Match()</code>、<code>GET()</code> 等基本路由方法中配置 <code>HandlerFunc</code>。</li>
+<li>在 <code>RouterGroup</code> 的 <code>Group()</code> 方法中配置 <code>HandlerFunc</code>。</li>
+<li>使用 <code>Use()</code> 方法配置 <code>HandlerFunc</code>。</li>
+</ol>
+<hr>
+<h1 id="特定请求的中间件" data-numberify>特定请求的中间件<a class="anchor ms-1" href="#特定请求的中间件"></a></h1>
+<p>为特定请求配置中间件，可以直接在请求路由的 <code>HandlerFunc</code> 参数中配置。例如：</p>
+<ul>
+<li>
+<p><code>controllers/user</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">userController</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">UserController</span> <span class="nx">userController</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">userController</span><span class="p">)</span> <span class="nf">GetUser</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">id</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Param</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 获取 Context 内部字典的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">token</span><span class="p">,</span> <span class="nx">exists</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">middlewares</span><span class="p">.</span><span class="nx">TOKEN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">!</span><span class="nx">exists</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;error&#34;</span><span class="p">:</span> <span class="s">&#34;Unauthorized...&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">PureJSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;id&#34;</span><span class="p">:</span> <span class="nx">id</span><span class="p">,</span> <span class="s">&#34;username&#34;</span><span class="p">:</span> <span class="s">&#34;zhangsan&#34;</span><span class="p">,</span> <span class="s">&#34;token&#34;</span><span class="p">:</span> <span class="nx">token</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>middlewares/user</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">userMiddlewares</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">UserMiddlewares</span> <span class="nx">userMiddlewares</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">const</span> <span class="nx">Authorization</span> <span class="p">=</span> <span class="s">&#34;Authorization&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">userMiddlewares</span><span class="p">)</span> <span class="nf">VerifyToken</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">auth</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">TrimSpace</span><span class="p">(</span><span class="nx">ctx</span><span class="p">.</span><span class="nf">GetHeader</span><span class="p">(</span><span class="nx">Authorization</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="nx">auth</span> <span class="o">==</span> <span class="s">&#34;Bearer 123456&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 使用 Context.Set() 设置键值对
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 这个键值对只能在当前处理链中按顺序流转
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 换句话说，这个键值对只是存储在当前 Context 中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">ctx</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">TOKEN</span><span class="p">,</span> <span class="s">&#34;123456&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ctx</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;error&#34;</span><span class="p">:</span> <span class="s">&#34;Unauthorized...&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ctx</span><span class="p">.</span><span class="nf">Abort</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p>中间件也可专门为其定义一个 <code>middlewares</code> 包来存放项目中所有的中间件。</p>
+<p>处理链：即一组按顺序执行的中间件和处理函数。</p>
+</blockquote>
+</li>
+<li>
+<p><code>routers/user.go</code>：</p>
+<p>将中间函数和处理函数绑定到路由上：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">UserRoutersInit</span><span class="p">(</span><span class="nx">engin</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Engine</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">engin</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddleware</span><span class="p">).</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/:id&#34;</span><span class="p">,</span> <span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">GetUser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h1 id="全局中间件" data-numberify>全局中间件<a class="anchor ms-1" href="#全局中间件"></a></h1>
+<p>全局中间件就是绑定在根路由上的、全局生效的中间件，可以使用 <code>RouterGroup.Use()</code> 方法绑定全局中间件。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Router</span><span class="p">()</span> <span class="p">(</span><span class="nx">engine</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Engine</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置全局中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">engine</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">middlewares</span><span class="p">.</span><span class="nx">GlobalMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>如果需要绑定的中间件过多，除了多次调用 <code>User()</code> 方法绑定或在 <code>User()</code> 方法中传入多个中间件外，还能使用 <code>gin.HandlersChain</code> 类型。<code>gin.HandlersChain</code> 的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">HandlersChain</span> <span class="p">[]</span><span class="nx">HandlerFunc</span>
+</span></span></code></pre></div><p>使用 <code>gin.HandlersChain</code> 来聚集多个中间件，然后将它们一次性传入 <code>User()</code> 中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">globalMiddlewares</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">HandlersChain</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">middlewares</span><span class="p">.</span><span class="nx">GlobalMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">middlewares</span><span class="p">.</span><span class="nx">GlobalMiddlewares</span><span class="p">.</span><span class="nx">VerifyAuthorization</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"> 	<span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Router</span><span class="p">()</span> <span class="p">(</span><span class="nx">engine</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Engine</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置全局中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">engine</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">globalMiddlewares</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>通过使用 <code>gin.HandlersChain</code> 聚集并注册全局中间件后，中间函数的执行顺序将按照 <code>gin.HandlersChain</code> 中的顺序执行。</p>
+<hr>
+<h1 id="分组中间件" data-numberify>分组中间件<a class="anchor ms-1" href="#分组中间件"></a></h1>
+<p>分组中间件同样可以使用 <code>RouterGroup.Use()</code> 方法，不同的是调用方法的对象是具体的路由分组对象，也就是 <code>Engin.Group()</code> 调用之后返回的对象。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">engin</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">).</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Use</span><span class="p">(</span><span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">)</span>
+</span></span></code></pre></div><p>除了使用 <code>RouterGroup.Use()</code> 方法，分组中间件还可以在 <code>Engin.Group()</code> 调用的时候注册。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">engin</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="err">，</span> <span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">)</span>
+</span></span></code></pre></div><p>同样地，也可以使用 <code>gin.HandlersChain</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">groupMiddlewares</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">HandlersChain</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"> 	<span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">engin</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="err">，</span> <span class="o">...</span><span class="nx">groupMiddlewares</span><span class="p">)</span>
+</span></span></code></pre></div><blockquote>
+<p>注：<code>User()</code> 方法注册的中间件，和使用其它路由方法（如 <code>Handle()</code>、<code>Any()</code>、<code>GET()</code>、<code>Match()</code> 等等）注册的中间件、处理函数它们之间的调用顺序也是按照注册的顺序执行。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">engin</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/user&#34;</span><span class="p">,</span> <span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddlewares</span><span class="p">.</span><span class="nx">VerifyToken</span><span class="p">).</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/info/:username&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">GetInfo</span><span class="p">).</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/list&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">GetList</span><span class="p">).</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 在此之前的路由，在执行时不会调用 middlewares.UserMiddlewares.VerifyAuthorization
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 只会调用 middlewares.UserMiddlewares.VerifyToken
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Use</span><span class="p">(</span><span class="nx">middlewares</span><span class="p">.</span><span class="nx">UserMiddlewares</span><span class="p">.</span><span class="nx">VerifyAuthorization</span><span class="p">).</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 在此之前的路由，在执行时会按顺序调用 middlewares.UserMiddlewares.VerifyToken
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 和 middlewares.UserMiddlewares.VerifyAuthorization
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/:id&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserController</span><span class="p">.</span><span class="nx">GetUser</span><span class="p">)</span>
+</span></span></code></pre></div></blockquote>
+<hr>
+<h1 id="中间件-context" data-numberify>中间件 Context<a class="anchor ms-1" href="#中间件-context"></a></h1>
+<p>在中间件中，<code>Context</code> 有一些方法可用于中间件的编写：</p>
+<ul>
+<li>
+<p><code>Context.Next()</code>：将控制权传递给下一个中间件或处理函数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">MyMiddleware</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 执行某些预处理逻辑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 执行某些后处理逻辑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><pre tabindex="0"><code></code></pre></li>
+<li>
+<p><code>Context.Abort()</code>：立即停止执行后续的中间件和处理函数，可以用来处理错误或特殊请求。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">ErrorMiddleware</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Query</span><span class="p">(</span><span class="s">&#34;error&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#34;true&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nf">Abort</span><span class="p">()</span>	<span class="c1">// 停止执行后续的中间件和处理函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><pre tabindex="0"><code></code></pre></li>
+<li>
+<p><code>Context.Set()</code> 和 <code>Context.Get()</code>：在当前请求处理链中存储和检索数据，允许在处理链中不同的中间件和处理函数之间共享信息。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">StoreDataMiddleware</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 存储数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">c</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;user_id&#34;</span><span class="p">,</span> <span class="mi">123</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">RetrieveDataMiddleware</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">userId</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;user_id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 使用 userId ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><pre tabindex="0"><code>
+`Context.Set()` 和 `Context.Get()` 存储和获取的数据，是存储在当前 `Context` 对象的内部字典（`store` 字段）中。在 Gin 中，对于一条处理链中所有的中间件和处理函数共享同一个 `Context` 对象。
+</code></pre></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Gin 路由</title>
       <link>/docs/golang/gin/routers/</link>
