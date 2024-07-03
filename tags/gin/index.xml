@@ -171,6 +171,9 @@
 `Context.Set()` 和 `Context.Get()` 存储和获取的数据，是存储在当前 `Context` 对象的内部字典（`store` 字段）中。在 Gin 中，对于一条处理链中所有的中间件和处理函数共享同一个 `Context` 对象。
 </code></pre></li>
 </ul>
+<blockquote>
+<p><code>Contex</code> 中除了上述的 4 个方法外，还有其它可以用于控制中间件或处理函数执行流的方法。例如以 <code>Abort</code> 开头的 <code>Abort</code> 系方法，它们在终止执行链执行的同时，还提供了其它一些额外的操作。比如说 <code>Context.AbortWithStatus()</code>，在中止执行链的同时设置响应状态码。</p>
+</blockquote>
 ]]></content:encoded>
     </item>
     
@@ -467,8 +470,7 @@
 </span></span><span class="line"><span class="cl">	<span class="c1">// 类型转换
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">id</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">idStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">username</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Query</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">)</span>
@@ -477,8 +479,7 @@
 </span></span><span class="line"><span class="cl">	<span class="c1">// 类型转换
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">sex</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">sexStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -505,8 +506,7 @@
 </span></span><span class="line"><span class="cl">	<span class="c1">// 如果获取成功，就将其转为 int64
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">result</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">id</span> <span class="p">=</span> <span class="nx">result</span>
@@ -527,8 +527,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindQuery(&amp;query)
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindWith(&amp;query, binding.Query)
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -544,16 +543,14 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">idStr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">id</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">idStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">username</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">sexStr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">DefaultPostForm</span><span class="p">(</span><span class="s">&#34;sex&#34;</span><span class="p">,</span> <span class="s">&#34;0&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">sex</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="nx">sexStr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -584,8 +581,7 @@
 </span></span><span class="line"><span class="cl">	<span class="c1">// 或者使用 ShouldBindWith() 显示声明绑定 Form
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindWith(&amp;form, binding.Form)
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -605,8 +601,7 @@
 </span></span><span class="line"><span class="cl">	<span class="c1">// 或者使用 ShouldBindWith() 显式声明绑定 JSON
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//err := ctx.ShouldBindWith(&amp;form, binding.JSON)
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -630,17 +625,18 @@
 </span></span><span class="line"><span class="cl">	<span class="nx">query</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">ArticleQo</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">ShouldBindUri</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">query</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div><h2 id="数据绑定的注意事项" data-numberify>数据绑定的注意事项<a class="anchor ms-1" href="#数据绑定的注意事项"></a></h2>
+<h3 id="contextshouldbindwith" data-numberify>Context.ShouldBindWith<a class="anchor ms-1" href="#contextshouldbindwith"></a></h3>
 <p><code>Context.Bind()</code> 和 <code>Context.ShouldBind()</code> 可以绑定任意类型的请求数据，包括 Query、Form、JSON 等等。它们都是通用的数据绑定方法，会根据请求的内容类型（Content-Type）自动选择合适的数据绑定器。</p>
 <p>比起 <code>Context.Bind()</code>，<code>Context.ShouldBind()</code> 是一种更高级、更灵活的数据绑定方法，它提供了额外的错误处理机制。<code>Context.Bind()</code> 在绑定失败时会直接结束处理流程，而<code>Context.ShouldBind()</code> 在绑定失败时不直接结束请求处理流程，而是返回一个错误，这允许我们在处理函数中根据这个错误做出进一步的响应操作。更确切地说，<code>ShouldBind</code> 系列的数据绑定方法，在遇到绑定错误时，并不会立即中断请求处理流程；而 <code>Bind</code> 系列会立即终止执行后续的处理逻辑。</p>
 <p>从 Gin 实现中来说，<code>Bind</code> 系列的绑定方法几乎都是使用 <code>Context.MustBindWith()</code> 实现的，而 <code>Context.MustBindWith()</code> 内部是使用 <code>Context.ShouldBindWith()</code> 实现的。并且 <code>ShouldBind</code>（不包括 <code>ShouldBindBody</code>）系列的绑定方法几乎都是使用 <code>Context.ShouldBindWith()</code> 方法实现。也就是说，<code>Context.ShouldBindWith()</code> 实现了 <code>Context</code> 中大部份的绑定方法。</p>
+<h3 id="binding-tag" data-numberify>Binding Tag<a class="anchor ms-1" href="#binding-tag"></a></h3>
 <p>在使用数据绑定时，可以使用 <code>binding</code> Tag 来设定字段的约束条件。例如，在字段上设置 <code>binding:&quot;required&quot;</code> 来规定该字段是必须的：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">ArticleQo</span> <span class="kd">struct</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">Username</span>    <span class="o">*</span><span class="kt">string</span> <span class="s">`form:&#34;name&#34; json:&#34;username&#34;`</span>
@@ -652,15 +648,274 @@
 </span></span><span class="line"><span class="cl">	<span class="nx">query</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">ArticleQo</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">ShouldBind</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">query</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div><p>在发送请求时，必须传入 <code>article-id</code> 这个字段，否则将会出现错误。</p>
-]]></content:encoded>
+<h3 id="shouldbind-和-shouldbindbodywith" data-numberify>ShouldBind 和 ShouldBindBodyWith<a class="anchor ms-1" href="#shouldbind-和-shouldbindbodywith"></a></h3>
+<ul>
+<li>
+<p><code>Context.ShouldBind()</code>：包括 <code>Context.ShouldBindWith()</code>、<code>Context.Bind()</code> 等。它们使用的是 <code>ctx.Request.Body</code> 绑定数据，只能进行一次数据绑定，多次调用时将会出现错误。这是因为第一绑定数据后，<code>ctx.Request.Body</code> 中的数据被读取完毕，<code>ctx.Request.Body</code> 中只剩下了 <code>EOF</code>。</p>
+</li>
+<li>
+<p><code>Context.ShouldBindBodyWith()</code>：支持多次绑定。这是因为 <code>Context.ShouldBindBodyWith()</code> 会在绑定之前将 <code>body</code> 存储到上下文中。也就是相当于在 <code>body</code> 的副本上进行读取。但这会对性能造成轻微影响，应该尽量避免多次调用它。</p>
+<blockquote>
+<p>只有某些格式需要此功能，如 JSON, XML, MsgPack, ProtoBuf。 对于其他格式, 如 Query, Form, FormPost, FormMultipart 可以多次调用 c.ShouldBind() 而不会造成任任何性能损失。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h1 id="文件上传" data-numberify>文件上传<a class="anchor ms-1" href="#文件上传"></a></h1>
+<h2 id="单文件上传" data-numberify>单文件上传<a class="anchor ms-1" href="#单文件上传"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">imageFilesPath</span> <span class="p">=</span> <span class="nf">absPath</span><span class="p">(</span><span class="s">&#34;./static/images&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">maxMultipartMemory</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">8</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span> <span class="c1">// 8MiB
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 允许上传的文件类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">allowExtMap</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">bool</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;.jpg&#34;</span><span class="p">:</span>  <span class="kc">true</span><span class="p">,</span> <span class="s">&#34;.png&#34;</span><span class="p">:</span>  <span class="kc">true</span><span class="p">,</span> <span class="s">&#34;.gif&#34;</span><span class="p">:</span>  <span class="kc">true</span><span class="p">,</span> <span class="s">&#34;.jpeg&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 设置内存限制为 8MiB（全局），默认为 32MiB
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 这个内存限制是限制每次处理文件所占用的最大内存，防止因文件过大占用太多内存
+</span></span></span><span class="line"><span class="cl"><span class="c1">//r.MaxMultipartMemory = maxMultipartMemory
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/upload&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 在请求中限制每次处理内存大小（作用同上）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">Request</span><span class="p">.</span><span class="nf">ParseMultipartForm</span><span class="p">(</span><span class="nx">maxMultipartMemory</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取从客户端上传的文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">image</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">FormFile</span><span class="p">(</span><span class="s">&#34;image&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">filename</span> <span class="o">:=</span> <span class="nx">image</span><span class="p">.</span><span class="nx">Filename</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 限制文件上传类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 获取文件名后缀
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">extname</span> <span class="o">:=</span> <span class="nx">path</span><span class="p">.</span><span class="nf">Ext</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 判断文件名后缀是否存在且合法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">allowed</span><span class="p">,</span> <span class="nx">isExisted</span> <span class="o">:=</span> <span class="nx">allowExtMap</span><span class="p">[</span><span class="nx">extname</span><span class="p">];</span> <span class="p">!(</span><span class="nx">isExisted</span> <span class="o">&amp;&amp;</span> <span class="nx">allowed</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">msg</span> <span class="o">:=</span> <span class="s">&#34;The file type is not valid&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="nx">msg</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 根据日期创建图片保存目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">today</span> <span class="o">:=</span> <span class="nx">utils2</span><span class="p">.</span><span class="nf">Today</span><span class="p">(</span><span class="s">&#34;20060102&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">dir</span> <span class="o">:=</span> <span class="nf">absPath</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">imageFilesPath</span><span class="p">,</span> <span class="nx">today</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 创建基础目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">MkdirAll</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="mo">0666</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Server error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 生成唯一的文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">uniqueFilename</span> <span class="o">:=</span> <span class="nf">generateUniqueFilename</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 拼接文件保存路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">dst</span> <span class="o">:=</span> <span class="nx">path</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">uniqueFilename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 将文件保存到本地
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">SaveUploadedFile</span><span class="p">(</span><span class="nx">image</span><span class="p">,</span> <span class="nx">dst</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">logrus</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="s">&#34;Save image %v&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;originFilename&#34;</span><span class="p">:</span> <span class="nx">filename</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;savedFilename&#34;</span><span class="p">:</span>  <span class="nx">uniqueFilename</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;size&#34;</span><span class="p">:</span>           <span class="nx">image</span><span class="p">.</span><span class="nx">Size</span><span class="p">,</span> <span class="c1">// 文件大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="s">&#34;saved_dir&#34;</span><span class="p">:</span>      <span class="nx">dir</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Success!&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>其中 <code>absPath()</code> 和 <code>generateUniqueFilename()</code> 的实现如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">absPath</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">dir</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">generateUniqueFilename</span><span class="p">(</span><span class="nx">originalName</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取时间戳
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">timestamp</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">UnixNano</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 生成随机字符串
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">randomBytes</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">randomBytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">randomStr</span> <span class="o">:=</span> <span class="nx">base64</span><span class="p">.</span><span class="nx">URLEncoding</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">randomBytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取文件扩展名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">extension</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Ext</span><span class="p">(</span><span class="nx">originalName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取文件名（去除扩展名）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">baseName</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">TrimSuffix</span><span class="p">(</span><span class="nx">originalName</span><span class="p">,</span> <span class="nx">extension</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 生成不冲突的文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%s_%d_%s%s&#34;</span><span class="p">,</span> <span class="nx">baseName</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">randomStr</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="nx">extension</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>从 Form 表单中获取单个文件，需要使用 <code>Context.FormFile()</code> 获取 <code>multipart.FileHeader</code> 实例的地址：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">image</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">FormFile</span><span class="p">(</span><span class="s">&#34;image&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通过这个实例，可以获取到 <code>Filename</code>、<code>Size</code> 等信息，使用 <code>Context.SaveUploadedFile()</code> 可以将 <code>multipart.FileHeader</code> 中的文件内容保存到本地：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 获取文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">filename</span> <span class="o">:=</span> <span class="nx">image</span><span class="p">.</span><span class="nx">Filename</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 将文件保存到本地
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">SaveUploadedFile</span><span class="p">(</span><span class="nx">image</span><span class="p">,</span> <span class="nx">dst</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">logrus</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="s">&#34;Save image %v&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;originFilename&#34;</span><span class="p">:</span> <span class="nx">filename</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;savedFilename&#34;</span><span class="p">:</span>  <span class="nx">uniqueFilename</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;size&#34;</span><span class="p">:</span>           <span class="nx">image</span><span class="p">.</span><span class="nx">Size</span><span class="p">,</span> <span class="c1">// 文件大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="s">&#34;saved_dir&#34;</span><span class="p">:</span>      <span class="nx">dir</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>然后使用 <code>path</code> 包中的方法对文件名、文件名后缀以及文件路径进行处理。</p>
+<h2 id="多文件上传" data-numberify>多文件上传<a class="anchor ms-1" href="#多文件上传"></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">imageFilesPath</span> <span class="p">=</span> <span class="nf">absPath</span><span class="p">(</span><span class="s">&#34;./static/images&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/upload&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取表单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">form</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">MultipartForm</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 读取上传的多个文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">images</span> <span class="o">:=</span> <span class="nx">form</span><span class="p">.</span><span class="nx">File</span><span class="p">[</span><span class="s">&#34;images[]&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">image</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">images</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">filename</span> <span class="o">:=</span> <span class="nx">image</span><span class="p">.</span><span class="nx">Filename</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 生成唯一的文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">uniqueFilename</span> <span class="o">:=</span> <span class="nf">generateUniqueFilename</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 拼接文件保存路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">dst</span> <span class="o">:=</span> <span class="nx">path</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">imageFilesPath</span><span class="p">,</span> <span class="nx">uniqueFilename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 将文件保存到本地
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">SaveUploadedFile</span><span class="p">(</span><span class="nx">image</span><span class="p">,</span> <span class="nx">dst</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="s">&#34;Save image %v&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;originFilename&#34;</span><span class="p">:</span> <span class="nx">filename</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;savedFilename&#34;</span><span class="p">:</span>  <span class="nx">uniqueFilename</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;size&#34;</span><span class="p">:</span>           <span class="nx">image</span><span class="p">.</span><span class="nx">Size</span><span class="p">,</span> <span class="c1">// 文件大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Success!&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>读取上传的多个文件，首先需要获取 <code>multipart.Form</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">form</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">MultipartForm</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>然后再通过 <code>multipart.Form</code> 读取上传的多个文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">images</span> <span class="o">:=</span> <span class="nx">form</span><span class="p">.</span><span class="nx">File</span><span class="p">[</span><span class="s">&#34;images[]&#34;</span><span class="p">]</span>
+</span></span></code></pre></div><h2 id="文件读取" data-numberify>文件读取<a class="anchor ms-1" href="#文件读取"></a></h2>
+<p>通过调用 <code>multipart.FileHeader</code> 的 <code>Open()</code> 方法，可以获取到一个 <code>multipart.File</code>。<code>multipart.File</code> 实现了 <code>io.ReadCloser</code> 接口。通过 <code>multipart.File</code>，可以对上传后的文件进行一些操作。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/upload&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取从客户端上传的文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">image</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">FormFile</span><span class="p">(</span><span class="s">&#34;image&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 打开上传的文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">image</span><span class="p">.</span><span class="nf">Open</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 结束时关闭文件流
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">file</span> <span class="nx">multipart</span><span class="p">.</span><span class="nx">File</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}(</span><span class="nx">file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 创建一个缓冲区来读取文件内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">buffer</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 假设对文件进行了一些操作...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">Header</span><span class="p">(</span><span class="s">&#34;Content-Disposition&#34;</span><span class="p">,</span> <span class="s">&#34;attachment; filename=&#34;</span><span class="o">+</span><span class="nx">image</span><span class="p">.</span><span class="nx">Filename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 响应字节数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">Data</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;application/octet-stream&#34;</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>如果操作的文件过于庞大，将整个文件读入内存，可能导致内存不足的问题。对于大文件，推荐使用流式处理，即逐块读取文件内容，而不是一次性读取所有数据。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/upload&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取从客户端上传的文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">image</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">FormFile</span><span class="p">(</span><span class="s">&#34;image&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 打开上传的文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">image</span><span class="p">.</span><span class="nf">Open</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">file</span> <span class="nx">multipart</span><span class="p">.</span><span class="nx">File</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}(</span><span class="nx">file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 使用一个缓冲区来逐块读取和响应数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">buffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 循环读取数据并写入响应，每次最多读取 1024 byte 数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">size</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="nx">io</span><span class="p">.</span><span class="nx">EOF</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">break</span> <span class="c1">// 读取到数据流结尾，结束循环
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// 将读取的数据写入响应
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">writeErr</span> <span class="o">:=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">Writer</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">buffer</span><span class="p">[:</span><span class="nx">size</span><span class="p">]);</span> <span class="nx">writeErr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">_</span> <span class="p">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nf">AbortWithError</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span> <span class="nx">writeErr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">Header</span><span class="p">(</span><span class="s">&#34;Content-Disposition&#34;</span><span class="p">,</span> <span class="s">&#34;attachment; filename=&#34;</span><span class="o">+</span><span class="nx">image</span><span class="p">.</span><span class="nx">Filename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">Header</span><span class="p">(</span><span class="s">&#34;Content-Type&#34;</span><span class="p">,</span> <span class="s">&#34;application/octet-stream&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>]]></content:encoded>
     </item>
     
     <item>
