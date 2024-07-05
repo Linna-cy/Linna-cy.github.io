@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Gin 响应数据">
 <meta itemprop="description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获"><meta itemprop="datePublished" content="2024-06-29T07:48:18+00:00" />
 <meta itemprop="dateModified" content="2024-06-29T07:48:18+00:00" />
-<meta itemprop="wordCount" content="2254">
+<meta itemprop="wordCount" content="2262">
 <meta itemprop="keywords" content="Golang,Go,Gin," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -1060,9 +1060,13 @@ Linner
 </span></span><span class="line"><span class="cl">	<span class="nx">Sex</span>      <span class="kt">uint8</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">User</span><span class="p">{</span><span class="nx">Id</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nx">Username</span><span class="p">:</span> <span class="s">&#34;zhangsan&#34;</span><span class="p">,</span> <span class="nx">Sex</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">User</span><span class="p">{</span><span class="nx">Id</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nx">Username</span><span class="p">:</span> <span class="s">&#34;zhangsan&#34;</span><span class="p">,</span> <span class="nx">Sex</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
 </span></span></code></pre></div><p>发送请求：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X GET <span class="err">&#39;</span>http://127.0.0.1:8080/user/info
 </span></span></code></pre></div><p>结果为：</p>
