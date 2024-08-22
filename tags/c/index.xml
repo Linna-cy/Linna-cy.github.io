@@ -922,7 +922,45 @@ $$</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">swap</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span></span></code></pre></div><p>缺点：</p>
+</span></span></code></pre></div><p>这个算法使用了按位异或的性质。假设x变量上的值为X，y变量上的值为Y。</p>
+<ol>
+<li>
+<p>首先，第一次异或操作得到了掩码M。M记录了X和Y两个二进制值中相等位和不相等位的信息。</p>
+<p>例如：</p>
+<pre tabindex="0"><code>x =         0110 1011
+y =         1100 0010
+x = x ^ y = 1010 1001   # 得到了掩码M，M记录了两个数中相等的位和不相等的位
+</code></pre></li>
+<li>
+<p>然后，通过掩码M与要交换的其中一个值进行异或，就可以复原得到另外一个值。</p>
+<p>例如，掩码M被存储在x中，那么将x和y进行异或，就可以复原出X。</p>
+<pre tabindex="0"><code>y = x ^ y = 0110 1011   # 通过M与Y按位异或可以复原出X
+</code></pre></li>
+<li>
+<p>最后一次异或，其原理同上。</p>
+<p>例如，将x和y再次进行异或，也就是两数差异位信息和X进行异或，就可以得到Y。</p>
+<pre tabindex="0"><code>x = x ^ y = 1100 0010   # 同理，再次异或后可以复原出Y
+</code></pre></li>
+</ol>
+<p>这种方式是利用了按位异或的 “切换” 性质。按位异或会根据掩码中为1的位对另一个操作数进行切换（将1变成0，将0变成1）。</p>
+<p>$$
+\begin{array}{lll}
+&amp; 1100 &amp; 0010 &amp; = Y \\
+\oplus &amp; 1010 &amp; 1001 &amp; = M \\
+\hline
+&amp;
+\textcolor{red}{\underline 0}
+1
+\textcolor{red}{\underline 1}
+0
+&amp;
+\textcolor{red}{\underline 1}
+01
+\textcolor{red}{\underline 1}
+&amp; = X
+\end{array}
+$$</p>
+<p>缺点：</p>
 <p>只能对整数类型执行位操作，不能对实数类型进行位操作。</p>
 ]]></content:encoded>
     </item>
