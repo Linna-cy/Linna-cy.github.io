@@ -526,7 +526,16 @@
 </span></span><span class="line"><span class="cl">		<span class="nx">Data</span><span class="p">:</span>        <span class="nx">data</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">	<span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="响应-string-数据" data-numberify>响应 String 数据<a class="anchor ms-1" href="#响应-string-数据"></a></h2>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// HTML renders the HTTP template specified by its file name.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also updates the HTTP code and sets the Content-Type as &#34;text/html&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// See http://golang.org/doc/articles/wiki/
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">HTML</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">instance</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">engine</span><span class="p">.</span><span class="nx">HTMLRender</span><span class="p">.</span><span class="nf">Instance</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">instance</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通过上述响应数据方法的定义可以发现，它们都是调用了 <code>Render()</code> 这个方法。</p>
+<h2 id="响应-string-数据" data-numberify>响应 String 数据<a class="anchor ms-1" href="#响应-string-数据"></a></h2>
 <p>响应 String 数据需要使用 <code>ctx.String()</code> 方法，其使用方式如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/string&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">)</span>
