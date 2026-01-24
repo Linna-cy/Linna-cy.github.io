@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Gin 获取请求">
 <meta itemprop="description" content="Gin 请求在 Gin 介绍 中做了简单的介绍。 Gin 请求与 RouterGroup 和 IRoutes 息息相关。IRoutes是一个接口类型，它定义了一系列用于配置路由处理的方法： type IRoutes interface { // 用于配"><meta itemprop="datePublished" content="2024-06-29T17:03:06+00:00" />
 <meta itemprop="dateModified" content="2024-06-29T17:03:06+00:00" />
-<meta itemprop="wordCount" content="4833">
+<meta itemprop="wordCount" content="5590">
 <meta itemprop="keywords" content="Golang,Go,Gin," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -830,7 +830,7 @@ Linner
     <h1 class="card-title post-title my-2">Gin 获取请求</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 17:03:06 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">10 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 17:03:06 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">12 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/gin/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Gin</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
 </div>
@@ -989,8 +989,133 @@ Linner
 </span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span></code></pre></div><hr>
+<h1 id="响应数据" data-numberify>响应数据<a class="anchor ms-1" href="#响应数据"></a></h1>
+<p>向客户端响应数据，需要使用到 <code>gin.Context</code>。</p>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSONP</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">Response</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Code</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Date</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>常见的响应数据方法有：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="c1">// String writes the given string into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">String</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">format</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">values</span> <span class="o">...</span><span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">String</span><span class="p">{</span><span class="nx">Format</span><span class="p">:</span> <span class="nx">format</span><span class="p">,</span> <span class="nx">Data</span><span class="p">:</span> <span class="nx">values</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// JSON serializes the given struct as JSON into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also sets the Content-Type as &#34;application/json&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">JSON</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">JSON</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// PureJSON serializes the given struct as JSON into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// PureJSON, unlike JSON, does not replace special html characters with their unicode entities.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">PureJSON</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">PureJSON</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// XML serializes the given struct as XML into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also sets the Content-Type as &#34;application/xml&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">XML</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">XML</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// YAML serializes the given struct as YAML into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">YAML</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">YAML</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// JSONP serializes the given struct as JSON into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It adds padding to response body to request data from a server residing in a different domain than the client.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also sets the Content-Type as &#34;application/javascript&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">JSONP</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">callback</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">DefaultQuery</span><span class="p">(</span><span class="s">&#34;callback&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">callback</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">JSON</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">JsonpJSON</span><span class="p">{</span><span class="nx">Callback</span><span class="p">:</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Data writes some data into the body stream and updates the HTTP code.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Data</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">contentType</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">Data</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ContentType</span><span class="p">:</span> <span class="nx">contentType</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Data</span><span class="p">:</span>        <span class="nx">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="响应-string-数据" data-numberify>响应 String 数据<a class="anchor ms-1" href="#响应-string-数据"></a></h2>
+<p>响应 String 数据需要使用 <code>ctx.String()</code> 方法，其使用方式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/string&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h2 id="响应-json-数据" data-numberify>响应 Json 数据<a class="anchor ms-1" href="#响应-json-数据"></a></h2>
+<p>响应 Json 数据需要使用 <code>ctx.JSON()</code> 方法，其使用方式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="c1">// 通常情况下可以使用 map[string]interface{} 传递
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/json1&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 由于 any 的定义是 interface{} 所以也可以写成 map[string]any
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Gin 给 map[string]interface{} 提供了一个简便的类型定义 gin.H
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/json2&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ctx.JSON 也支持传入结构体类型实例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Response</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Code</span> <span class="kt">uint8</span>       <span class="s">`json:&#34;code&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Data</span> <span class="kd">interface</span><span class="p">{}</span> <span class="s">`json:&#34;data&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/json3&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">Response</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Code</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Data</span><span class="p">:</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><blockquote>
+<p>使用结构体实例作为 <code>ctx.JSON()</code> 的响应数据时，由于结构体属性首字母需要大写才能被外部访问，而 Json 序列化器默认按照属性名进行序列化，所以需要在结构体字段中使用 Tags 指定字段的 Json 参数名称，否则它将按照原有的首字母大写形式获取对应值。在指定结构体字段 Json 参数别名时，使用的是 <code>json</code> 这一 Tag</p>
+</blockquote>
+<blockquote>
+<p>JSONP 主要用于处理跨域：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Response</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Code</span> <span class="kt">uint8</span>       <span class="s">`json:&#34;code&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Data</span> <span class="kd">interface</span><span class="p">{}</span> <span class="s">`json:&#34;data&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/jsonp&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">data</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">any</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;foo&#34;</span><span class="p">:</span> <span class="s">&#34;bar&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// 请求：/jsonp?callback=x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 响应：x({&#34;code&#34;:200,&#34;data&#34;:{&#34;foo&#34;:&#34;bar&#34;}});
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSONP</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">Response</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Code</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Data</span><span class="p">:</span> <span class="nx">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span></code></pre></div></blockquote>
+<hr>
 <h1 id="获取请求数据" data-numberify>获取请求数据<a class="anchor ms-1" href="#获取请求数据"></a></h1>
-<p>请求数据的获取需要使用到 <code>gin.Context</code>。</p>
+<p>请求数据的获取也需要使用到 <code>gin.Context</code>。</p>
 <h2 id="query-参数" data-numberify>Query 参数<a class="anchor ms-1" href="#query-参数"></a></h2>
 <p>Query 参数一般和 GET 请求一同使用，获取指定的 Query 参数，可以使用 <code>Query()</code> 或 <code>DefaultQuery()</code> 方法。例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/user/info&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
@@ -1645,6 +1770,12 @@ Linner
       <ul>
         <li><a href="#handle">Handle</a></li>
         <li><a href="#match">Match</a></li>
+      </ul>
+    </li>
+    <li><a href="#响应数据">响应数据</a>
+      <ul>
+        <li><a href="#响应-string-数据">响应 String 数据</a></li>
+        <li><a href="#响应-json-数据">响应 Json 数据</a></li>
       </ul>
     </li>
     <li><a href="#获取请求数据">获取请求数据</a>

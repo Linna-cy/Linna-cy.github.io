@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Gin">
 <meta itemprop="description" content="Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。 使用 Gin 下载并安装 Gin： $ go get -u github.com/gin-gonic/gin 引入 Gin： import &#34;github.com/gin-gonic/gin&#34; 如果需要使用诸如 http.StatusOK 之类的 HTTP 状态码常"><meta itemprop="datePublished" content="2024-06-29T07:15:50+00:00" />
 <meta itemprop="dateModified" content="2024-06-29T07:15:50+00:00" />
-<meta itemprop="wordCount" content="769">
+<meta itemprop="wordCount" content="825">
 <meta itemprop="keywords" content="Golang,Go,Gin," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -889,7 +889,11 @@ Linner
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ go run main.go
 </span></span></code></pre></div><p>或者，运行以下命令也可获取 Gin 官方代码示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl https://raw.githubusercontent.com/gin-gonic/examples/master/basic/main.go &gt; main.go
-</span></span></code></pre></div><hr>
+</span></span></code></pre></div><blockquote>
+<p>在上方代码示例中，<code>logrus.Error(err)</code> 的作用是输出 <code>Error</code> 级日志。在使用它之前需要先获取 <code>logrus</code> 包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ go get -u github.com/sirupsen/logrus
+</span></span></code></pre></div></blockquote>
+<hr>
 <h1 id="gin-请求" data-numberify>Gin 请求<a class="anchor ms-1" href="#gin-请求"></a></h1>
 <p>在如上示例中，使用 <code>routers.GET()</code> 创建了一个接收 <code>GET /hello</code> 请求的路由，并且绑定了其路由的处理函数。<code>GET()</code> 的定义如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">group</span> <span class="o">*</span><span class="nx">RouterGroup</span><span class="p">)</span> <span class="nf">GET</span><span class="p">(</span><span class="nx">relativePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handlers</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="nx">IRoutes</span> <span class="p">{</span>
