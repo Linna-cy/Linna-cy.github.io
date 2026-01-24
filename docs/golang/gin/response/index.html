@@ -27,7 +27,7 @@
 <meta itemprop="name" content="Gin 响应数据">
 <meta itemprop="description" content="Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 gin.Context 类型。gin.Context 类型的作用有： 获"><meta itemprop="datePublished" content="2024-06-29T07:48:18+00:00" />
 <meta itemprop="dateModified" content="2024-06-29T07:48:18+00:00" />
-<meta itemprop="wordCount" content="2262">
+<meta itemprop="wordCount" content="3465">
 <meta itemprop="keywords" content="Golang,Go,Gin," />
   <meta property="og:image" content="/images/favicon.ico"/>
   <meta name="twitter:image" content="/images/favicon.ico"/>
@@ -830,7 +830,7 @@ Linner
     <h1 class="card-title post-title my-2">Gin 响应数据</h1>
 </div>
 <div class="card-body"><div class="post-meta mb-3">
-  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 07:48:18 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+  <span class="post-date me-1 mb-1" title="创建于 2024-06-29 07:48:18 &#43;0000 UTC。">2024年6月29日</span><span class="post-reading-time me-1 mb-1">7 分钟阅读</span><a href="/authors/linner/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
       <i class="fas fa-fw fa-user me-1"></i>Linner</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
       <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/gin/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Gin</a><a href="/tags/go/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Go</a><a href="/tags/golang/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Golang</a>
 </div>
@@ -850,6 +850,79 @@ Linner
 <li>读写请求和响应体的原始字节流，以此来处理自定义协议或二进制数据传输。</li>
 <li>错误处理。可以记录错误并中断请求处理流程。</li>
 </ul>
+<p>响应数据示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSONP</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">Response</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Code</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Date</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>常见的响应数据方法有：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="c1">// String writes the given string into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">String</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">format</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">values</span> <span class="o">...</span><span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">String</span><span class="p">{</span><span class="nx">Format</span><span class="p">:</span> <span class="nx">format</span><span class="p">,</span> <span class="nx">Data</span><span class="p">:</span> <span class="nx">values</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// JSON serializes the given struct as JSON into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also sets the Content-Type as &#34;application/json&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">JSON</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">JSON</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// PureJSON serializes the given struct as JSON into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// PureJSON, unlike JSON, does not replace special html characters with their unicode entities.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">PureJSON</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">PureJSON</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// XML serializes the given struct as XML into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also sets the Content-Type as &#34;application/xml&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">XML</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">XML</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// YAML serializes the given struct as YAML into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">YAML</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">YAML</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// JSONP serializes the given struct as JSON into the response body.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It adds padding to response body to request data from a server residing in a different domain than the client.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also sets the Content-Type as &#34;application/javascript&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">JSONP</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">callback</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">DefaultQuery</span><span class="p">(</span><span class="s">&#34;callback&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">callback</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">JSON</span><span class="p">{</span><span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">JsonpJSON</span><span class="p">{</span><span class="nx">Callback</span><span class="p">:</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">Data</span><span class="p">:</span> <span class="nx">obj</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Data writes some data into the body stream and updates the HTTP code.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Data</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">contentType</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">render</span><span class="p">.</span><span class="nx">Data</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ContentType</span><span class="p">:</span> <span class="nx">contentType</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Data</span><span class="p">:</span>        <span class="nx">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// HTML renders the HTTP template specified by its file name.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// It also updates the HTTP code and sets the Content-Type as &#34;text/html&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// See http://golang.org/doc/articles/wiki/
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">HTML</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">obj</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">instance</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">engine</span><span class="p">.</span><span class="nx">HTMLRender</span><span class="p">.</span><span class="nf">Instance</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Render</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">instance</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通过上述响应数据方法的定义可以发现，它们都是调用了 <code>Render()</code> 这个方法。</p>
 <hr>
 <h1 id="响应-text-类型数据" data-numberify>响应 Text 类型数据<a class="anchor ms-1" href="#响应-text-类型数据"></a></h1>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
@@ -944,6 +1017,107 @@ Linner
 </span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>张三, Welcome!<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><h2 id="渲染多个模板" data-numberify>渲染多个模板<a class="anchor ms-1" href="#渲染多个模板"></a></h2>
+<p>在项目目录下创建 <code>templates/index.html</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>首页<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>网站首页: {{ .data }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>创建 <code>templates/login.html</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>登录<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>登录页: {{ .data }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>接着在 Golang 中加载：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 加载 templates 目录下所有的页面模板（需要在 gin.Default() 后立即调用）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">LoadHTMLGlob</span><span class="p">(</span><span class="s">&#34;templates/*&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/index&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 渲染数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;index.html&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;渲染数据&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 渲染数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;login.html&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;渲染数据&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="渲染多层页面" data-numberify>渲染多层页面<a class="anchor ms-1" href="#渲染多层页面"></a></h2>
+<p>使用 <code>r.LoadHTMLGlob(&quot;templates/*&quot;)</code> 只能渲染 <code>templates</code> 目录下的 HTML 文件，如果在 <code>templates</code> 目录下建立多层目录，编译时会报错。要渲染多层页面需要使用以下方式：</p>
+<p>重新创建一个 <code>templates</code>，创建 <code>templates/login/index.html</code> 和 <code>templates/home/index.html</code>。</p>
+<p><code>templates/login/index.html</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 通过 define 给模板指定名称，define 和 end 需成对出现 --&gt;</span>
+</span></span><span class="line"><span class="cl">{{ define &#34;login/index.html&#34; }}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>登录<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>登录页面：{{ .data }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span></code></pre></div><p><code>templates/home/index.html</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">{{ define &#34;home/index.html&#34; }}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>首页<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>网站首页: {{ .data }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span></code></pre></div><p><code>main.go</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 只能加载 templates 下一级目录的页面模板
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 当需要通配目录时，使用的是 “**”，通配页面模板文件仅需 “*”
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">LoadHTMLGlob</span><span class="p">(</span><span class="s">&#34;templates/**/*&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;login/index.html&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;请登录&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/home&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;home/index.html&#34;</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;渲染数据&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><hr>
 <h1 id="响应-yaml-类型数据" data-numberify>响应 YAML 类型数据<a class="anchor ms-1" href="#响应-yaml-类型数据"></a></h1>
 <p>响应和渲染 YAML 类型数据可以使用 <code>ctx.YAML()</code> 方法。其使用方式与 <code>ctx.XML()</code> 相同：</p>
@@ -974,8 +1148,39 @@ Linner
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;\u003ch2\u003e你好，世界!\u003c/h2\u003e&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="mi">200</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p><code>ctx.JSON()</code> 会使用 Unicode 替换特殊 HTML 字符。</p>
-<h2 id="ctxasciijson" data-numberify>ctx.AsciiJSON<a class="anchor ms-1" href="#ctxasciijson"></a></h2>
+</span></span></code></pre></div><blockquote>
+<p><code>ctx.JSON()</code> 会使用 Unicode 替换特殊 HTML 字符。</p>
+</blockquote>
+<p>常见的 <code>ctx.JSON()</code> 用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 通常情况下可以使用 map[string]interface{} 传递
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/json1&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 由于 any 的定义是 interface{} 所以也可以写成 map[string]any
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Gin 给 map[string]interface{} 提供了一个简便的类型定义 gin.H
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/json2&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ctx.JSON 也支持传入结构体类型实例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Response</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Code</span> <span class="kt">uint8</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Data</span> <span class="kd">interface</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/json3&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">Response</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Code</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Data</span><span class="p">:</span> <span class="s">&#34;Hello Gin!&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h2 id="ctxasciijson" data-numberify>ctx.AsciiJSON<a class="anchor ms-1" href="#ctxasciijson"></a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">ctx</span><span class="p">.</span><span class="nf">AsciiJSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="s">&#34;&lt;h2&gt;你好，世界!&lt;/h2&gt;&#34;</span><span class="p">,</span>
@@ -1379,6 +1584,8 @@ Linner
     <li><a href="#响应-html-类型数据">响应 HTML 类型数据</a>
       <ul>
         <li><a href="#html-渲染">HTML 渲染</a></li>
+        <li><a href="#渲染多个模板">渲染多个模板</a></li>
+        <li><a href="#渲染多层页面">渲染多层页面</a></li>
       </ul>
     </li>
     <li><a href="#响应-yaml-类型数据">响应 YAML 类型数据</a></li>
