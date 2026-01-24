@@ -913,13 +913,13 @@ Linner
 </span></span></code></pre></div><p>在 <code>routers</code> 包中可以创建一个 <code>routers.go</code> 来配置根路由、设置全局中间件以及初始化其它路由：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Router</span><span class="p">()</span> <span class="p">(</span><span class="nx">engine</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Engine</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 创建根路由
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 初始化其它子路由
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">UserRoutersInit</span><span class="p">(</span><span class="nx">engine</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// ...
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>根路由的创建除了使用 <code>gin.Default()</code> 外，还可以使用 <code>gin.New()</code>。<code>gin.Default()</code> 默认使用了 <code>gin.Logger()</code> 和 <code>gin.Recovery()</code>。使用 <code>gin.New()</code> 来创建路由，需要自己手动配置 <code>Logger</code> 和 <code>Recovery</code> 中间件：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">engine</span> <span class="p">=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
