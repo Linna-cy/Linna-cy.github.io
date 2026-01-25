@@ -7,7 +7,181 @@
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020-2026 Linner. All Rights Reserved.
 </copyright>
-    <lastBuildDate>Sun, 30 Jun 2024 07:12:14 +0000</lastBuildDate><atom:link href="/tags/gin/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 02 Jul 2024 14:49:41 +0000</lastBuildDate><atom:link href="/tags/gin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gin Cookie 和 Session</title>
+      <link>/docs/golang/gin/cookie-and-session/</link>
+      <pubDate>Tue, 02 Jul 2024 14:49:41 +0000</pubDate>
+      
+      <guid>/docs/golang/gin/cookie-and-session/</guid>
+      <description><![CDATA[Cookie 在 Gin 中，使用 Cookie 涉及到两个方法，Context.Cookie() 和 Context.SetCookie()： func SetCookie(c *gin.Context) { // 设置 Cookie c.SetCookie(&#34;gin-cookie&#34;, &#34;test&#34;, 3600, &#34;/&#34;, &#34;localhost&#34;, false, false) c.JSON(http.StatusOK, gin.H{]]></description>
+      <content:encoded><![CDATA[<h1 id="cookie" data-numberify>Cookie<a class="anchor ms-1" href="#cookie"></a></h1>
+<p>在 Gin 中，使用 Cookie 涉及到两个方法，<code>Context.Cookie()</code> 和 <code>Context.SetCookie()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">SetCookie</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置 Cookie
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">c</span><span class="p">.</span><span class="nf">SetCookie</span><span class="p">(</span><span class="s">&#34;gin-cookie&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="s">&#34;localhost&#34;</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="nx">value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">GetCookie</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取 Cookie
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cookie</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="nx">value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/cookie&#34;</span><span class="p">,</span> <span class="nx">SetCookie</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/cookie&#34;</span><span class="p">,</span> <span class="nx">GetCookie</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>其中：</p>
+<ul>
+<li>
+<p><code>Context.Cookie()</code>：获取指定名称的 Cookie。</p>
+</li>
+<li>
+<p><code>Context.SetCookie()</code>：设置 Cookie。它的方法签名如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">SetCookie</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">maxAge</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">domain</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">secure</span><span class="p">,</span> <span class="nx">httpOnly</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><pre tabindex="0"><code>
+�数解释如下：
+
+`name`：设置 Cookie 的名称。
+`value`：设置 Cookie 的值。
+`maxAge`：Cookie 的最大存活时间，单位为秒。如果为负数，则表示会话 Cookie（在浏览器关闭之后删除）；如果为零，则表示立即删除Cookie。
+`path`：Cookie 的生效路径。如果为空字符串，则使用当前请求的 URI 路径作为默认值。如果是 `&#34;/&#34;`，那么所有路径都访问该 Cookie。
+`domain`：Cookie 的生效域。如果为空字符串，则不设置域名。
+`secure`：Cookie 是否仅用于 HTTPS 连接。如果为 `true`，则仅通过 HTTPS 连接发送 Cookie；否则，使用 HTTP 或 HTTPS 连接都可以发送 Cookie。
+`httpOnly`：Cookie 是否允许通过客户端程序访问。如果为 `true`，则无法通过客户端程序访问 Cookie；否则，可以通过客户端程序访问 Cookie。
+</code></pre></li>
+</ul>
+<blockquote>
+<p><code>httpOnly</code> 是微软对 Cookie 做的扩展。如果在 Cookie 中设置了 <code>httpOnly</code> 属性，则通过程序（JS 脚本、Applet 等）将无法读取到 Cookie 信息，防止 XSS 攻击产生。</p>
+</blockquote>
+<h2 id="多个二级域名共享-cookie" data-numberify>多个二级域名共享 Cookie<a class="anchor ms-1" href="#多个二级域名共享-cookie"></a></h2>
+<p>服务器的 IP 配置了多个域名解析，此时设置 Cookie 就需要配置多个生效域。</p>
+<p>例如，服务器的 IP 配置了域名泛解析 <code>*.linner.com</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">c</span><span class="p">.</span><span class="nf">SetCookie</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="s">&#34;.linner.com&#34;</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
+<h1 id="session" data-numberify>Session<a class="anchor ms-1" href="#session"></a></h1>
+<p>Gin 是一个轻量的 Web 框架，在 Gin 中并不直接对 Session 提供支持，但是可以通过其他第三方中间件让 Gin 支持 Session。</p>
+<p>在使用 Session 前，需要 <code>get</code> 对应的模块：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">go get github.com/gin-contrib/sessions
+</span></span></code></pre></div><p>然后在需要使用到 Session 的地方引入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/gin-contrib/sessions&#34;</span>
+</span></span></code></pre></div><p>接着设置 Session 中间件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 创建基于 Cookie 的存储引擎，secret 参数是加密密钥
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">store</span> <span class="o">:=</span> <span class="nx">cookie</span><span class="p">.</span><span class="nf">NewStore</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;secret&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 配置 Session 中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">r</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">sessions</span><span class="p">.</span><span class="nf">Sessions</span><span class="p">(</span><span class="s">&#34;mysession&#34;</span><span class="p">,</span> <span class="nx">store</span><span class="p">))</span>
+</span></span></code></pre></div><p>具体示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">SetSession</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 从 Context 中获取 Session 数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">session</span> <span class="o">:=</span> <span class="nx">sessions</span><span class="p">.</span><span class="nf">Default</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置 Session
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">session</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">,</span> <span class="s">&#34;lisi&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">session</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;nickname&#34;</span><span class="p">,</span> <span class="s">&#34;李四&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 保存设置的 Session，设置完成之后必须要调用 Save()
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">GetSession</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 从 Context 中获取 Session 数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">session</span> <span class="o">:=</span> <span class="nx">sessions</span><span class="p">.</span><span class="nf">Default</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取 Session
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">username</span> <span class="o">:=</span> <span class="nx">session</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">nickname</span> <span class="o">:=</span> <span class="nx">session</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;nickname&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;code&#34;</span><span class="p">:</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;data&#34;</span><span class="p">:</span> <span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;username&#34;</span><span class="p">:</span> <span class="nx">username</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;nickname&#34;</span><span class="p">:</span> <span class="nx">nickname</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">store</span> <span class="p">=</span> <span class="nx">cookie</span><span class="p">.</span><span class="nf">NewStore</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;secret&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置 Session 中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">r</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">sessions</span><span class="p">.</span><span class="nf">Sessions</span><span class="p">(</span><span class="s">&#34;mysession&#34;</span><span class="p">,</span> <span class="nx">store</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/session&#34;</span><span class="p">,</span> <span class="nx">SetSession</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/session&#34;</span><span class="p">,</span> <span class="nx">GetSession</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="redis" data-numberify>Redis<a class="anchor ms-1" href="#redis"></a></h2>
+<p><code>github.com/gin-contrib/sessions</code> 支持通过 Redis 缓存 Session，使其能够支持分布式系统。</p>
+<p>在使用前需要先引入其 Redis 包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="err">$</span> <span class="k">go</span> <span class="nx">get</span> <span class="o">-</span><span class="nx">u</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">gin</span><span class="o">-</span><span class="nx">contrib</span><span class="o">/</span><span class="nx">sessions</span><span class="o">/</span><span class="nx">redis</span>
+</span></span></code></pre></div><p>接着配置 Redis Store：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 配置 Redis Store
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">RedisStore</span><span class="p">()</span> <span class="p">(</span><span class="nx">store</span> <span class="nx">sessions</span><span class="p">.</span><span class="nx">Store</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">store</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">redis</span><span class="p">.</span><span class="nf">NewStore</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#34;tcp&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;localhost:6379&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;123456&#34;</span><span class="p">,</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;secret&#34;</span><span class="p">));</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">store</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">store</span> <span class="p">=</span> <span class="nf">RedisStore</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span> <span class="o">:=</span> <span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 设置 Session 中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">r</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">sessions</span><span class="p">.</span><span class="nf">Sessions</span><span class="p">(</span><span class="s">&#34;mysession&#34;</span><span class="p">,</span> <span class="nx">store</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/session&#34;</span><span class="p">,</span> <span class="nx">SetSession</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/session&#34;</span><span class="p">,</span> <span class="nx">GetSession</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>redis.NewStore()</code> 的定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">NewStore</span><span class="p">(</span><span class="nx">size</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">network</span><span class="p">,</span> <span class="nx">address</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">keyPairs</span> <span class="o">...</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">Store</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>其中：</p>
+<ul>
+<li><code>size</code>：最大连接数；</li>
+<li><code>network</code>：连接方式，值为 <code>tcp</code> 或 <code>udp</code>；</li>
+<li><code>address</code>：服务器地址，需要指定端口号；</li>
+<li><code>username</code>：Redis 用户名，没有配置用户名可传入空字符串；</li>
+<li><code>password</code>：Redis 密码，没有配置密码可传入空字符串；</li>
+<li><code>keyPairs</code>：Session 加密密钥。</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>Gin 中间件</title>
       <link>/docs/golang/gin/middlewares/</link>
