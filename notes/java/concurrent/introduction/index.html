@@ -1,0 +1,966 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="purple">
+  <head><script src="/assets/init/bundle.min.443086eab1033cb4fce820b41a21727adbaef1f7173bd18a1c9d5b62c570d136.js" integrity="sha256-RDCG6rEDPLT86CC0GiFyetuu8fcXO9GKHJ1bYsVw0TY=" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Java 并发编程 | Roam Tech-verse | Roamverse Technical Blog</title>
+    <link rel="icon" href="/favicon_hu_c6b42904aedc2978.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="/favicon_hu_5b6d3ffdaf5dd401.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon_hu_70e71d078ede1229.png" sizes="150x150" type="image/png">
+    <link rel="apple-touch-icon" href="/favicon_hu_4d02c86e3fc083ba.png" sizes="180x180" type="image/png">
+    <link rel="icon" href="/favicon_hu_cf9df98554ae5c4d.png" sizes="192x192" type="image/png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner, RideUni, Ride, Universe, RideUni Technical Blog, RideUni 技术博客, 技术博客, Technical Blog, Programming, Coding, Web Development, Software Development, Computer Science, Technology, Open Source, Programming Languages, Frameworks, Libraries, Tools, Tutorials, Guides, Tips and Tricks, 编程, 编码, Web 开发, 软件开发, 计算机科学, 技术, 开源, 编程语言, 框架, 库, 工具, 教程, 指南, 技巧和窍门" />
+  <meta name="description" content="概念
+Java 并发编程中涵盖了以下这些概念：
+
+进程
+线程
+并发
+并行
+
+
+
+进程
+进程（Process）是指在计算机中正在运行的一个程序的实例。进程是操作系统进行资源分配和调度的基本单位（资源分配的最小单位），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。" />
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Java 并发编程">
+	<meta name="twitter:description" content="概念 Java 并发编程中涵盖了以下这些概念：
+进程 线程 并发 并行 进程 进程（Process）是指在计算机中正在运行的一个程序的实例。进程是操作系统进行资源分配和调度的基本单位（资源分配的最小单位），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。">
+<meta property="og:url" content="/notes/java/concurrent/introduction/">
+	<meta property="og:site_name" content="Roam Tech-verse | Roamverse Technical Blog">
+	<meta property="og:title" content="Java 并发编程">
+	<meta property="og:description" content="概念 Java 并发编程中涵盖了以下这些概念：
+进程 线程 并发 并行 进程 进程（Process）是指在计算机中正在运行的一个程序的实例。进程是操作系统进行资源分配和调度的基本单位（资源分配的最小单位），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="notes">
+		<meta property="article:published_time" content="2023-12-07T08:08:35+00:00">
+		<meta property="article:modified_time" content="2026-09-23T11:24:48+08:00">
+		<meta property="article:tag" content="Java">
+
+	<meta itemprop="name" content="Java 并发编程">
+	<meta itemprop="description" content="概念 Java 并发编程中涵盖了以下这些概念：
+进程 线程 并发 并行 进程 进程（Process）是指在计算机中正在运行的一个程序的实例。进程是操作系统进行资源分配和调度的基本单位（资源分配的最小单位），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。">
+	<meta itemprop="datePublished" content="2023-12-07T08:08:35+00:00">
+	<meta itemprop="dateModified" content="2026-09-23T11:24:48+08:00">
+	<meta itemprop="wordCount" content="2036">
+	<meta itemprop="keywords" content="Java">
+  <meta property="og:image" content="/images/logo.png"/>
+  <meta name="twitter:image" content="/images/logo.png"/>
+  <meta property="og:image:alt" content="Java 并发编程" />
+  <meta name="twitter:image:alt" content="Java 并发编程" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.308b50570e6364702348d52824e5194793b9dd3dd02b100a828f841c1ea0474e.css" integrity="sha256-MItQVw5jZHAjSNUoJOUZR5O53T3QKxAKgo+EHB6gR04=" crossorigin="anonymous">
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.a886788faf7d8b4b13a0398bf9e9434cc952f8d6297efdad1453da43257e8a30.css" integrity="sha256-qIZ4j699i0sToDmL&#43;elDTMlS&#43;NYpfv2tFFPaQyV&#43;ijA=" crossorigin="anonymous">
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/logo.webp?v=3216bac746935c31b6c57c64c49ea348" loading="lazy" width="2048" height="2048" />
+</picture>
+Roam Tech-verse
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Roam Tech-verse</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto"><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/posts/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>文章
+            </a>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/series/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-columns text-info"></i></span>专栏
+            </a>
+          </li>
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">更多
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-warning"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">分类</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of Categories</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">标签</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of Tags</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user text-danger"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto my-auto" action="/search/" novalidate>
+      <div class="input-group align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="text-dark bg-white opacity-75 rounded-3 shadow border border-primary py-1 fw-bold">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" data-rss-feed href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+    <span class="ms-1 d-xxl-none">RSS</span>
+  </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label="蓝灰色"
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container has-sidebar" data-kind="page"><script data-precache src="/js/main-init.438d746df887b64d7ef015c107c8eadd316716944aeaf6cdd2b74eb04c51f17b.js" integrity="sha256-Q410bfiHtk1&#43;8BXBB8jq3TFnFpRK6vbN0rdOsExR8Xs=" crossorigin="anonymous"></script>
+
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="content-posts col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/java/">Java</a></li><li class="breadcrumb-item text-surface"><a href="/notes/java/concurrent/">并发编程</a></li><li class="breadcrumb-item active">Java 并发编程</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    
+    
+    
+    <a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="切换侧边栏">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title my-2">Java 并发编程</h1>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-12-07 08:08:35 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">December 7, 2023</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/tags/java/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-tag">Java</a>
+</div>
+
+<div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body">
+<h1 id="概念" data-numberify>概念<a class="anchor ms-1" href="#概念"></a></h1>
+<p>Java 并发编程中涵盖了以下这些概念：</p>
+<ul>
+<li>进程</li>
+<li>线程</li>
+<li>并发</li>
+<li>并行</li>
+</ul>
+<hr>
+
+<h1 id="进程" data-numberify>进程<a class="anchor ms-1" href="#进程"></a></h1>
+<p><strong>进程</strong>（Process）是指在计算机中正在运行的一个<strong>程序的实例</strong>。进程是操作系统进行资源分配和调度的<strong>基本单位</strong>（<strong>资源分配的最小单位</strong>），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。</p>
+<p>进程的一些相关概念：</p>
+<ul>
+<li>
+<p><strong>程序</strong>：程序是静态的，是<u>一组指令和数据的集合</u>；而进程是<u>程序在执行时的一个<strong>实例</strong></u>，是一个<u>动态的实体</u>。</p>
+<p>程序被运行时，程序的代码从硬盘被加载到内存中，此时就开启了一个进程。</p>
+<p>程序可以同时运行多个实例进程，也可以仅运行一个实例线程。</p>
+</li>
+<li>
+<p><strong>地址空间</strong>：进程的地址空间包括<u>代码段</u>、<u>数据段</u>、<u>堆</u>和<u>栈</u>。</p>
+<p>地址空间使得每个进程都在自己的独立内存空间中运行，不受其他进程的影响（隔离）。</p>
+</li>
+<li>
+<p><strong>资源分配</strong>：操作系统负责为每个进程分配分配和管理资源，例如处理器时间、文件和输入/输出设备等。</p>
+</li>
+<li>
+<p><strong>并发执行</strong>：在多核CPU中，多个进程可以并发执行（在相同的时间段内运行）。操作系统通过调度算法控制进程的执行顺序。</p>
+</li>
+<li>
+<p><strong>进程状态</strong>：一个进程可以处于不同的状态。一般进程有三种状态（进程的三态模型）：就绪、运行、阻塞。</p>
+</li>
+<li>
+<p><strong>多线程</strong>：一个进程可以包含多个线程，这些线程<strong>共享同一地址空间和资源</strong>。多线程可以提高程序的并发性和效率。</p>
+</li>
+</ul>
+<hr>
+
+<h1 id="线程" data-numberify>线程<a class="anchor ms-1" href="#线程"></a></h1>
+<p><strong>线程</strong>（Thread）是进程中的一个<strong>执行流</strong>，是操作系统能够进行运算调度的<strong>最小单位</strong>（<strong>最小调度单位</strong>）。与进程相比，线程更轻量级，多个线程可以共享同一进程的资源，包括地址空间、文件描述符和其他相关的进程状态信息。线程之间的共享和通信相对于进程来说更加容易。</p>
+<p>线程的一些相关概念：</p>
+<ul>
+<li><strong>轻量级</strong>：相对于进程而言，线程是轻量级的。创建、撤销和切换线程的<u>开销相对较小</u>。</li>
+<li><strong>共享资源</strong>：同一进程内的线程共享相同的地址空间和其他资源。这使得线程之间的通信更加方便，但也需要考虑同步和互斥的问题。</li>
+<li><strong>独立调度</strong>：线程在进程内独立调度，每个线程都有自己的执行状态、程序计数器、寄存器集合等信息。</li>
+<li><strong>并发执行</strong>：多个线程可以并发执行，它们在同一进程内共享进程的资源。这提高了程序的并发性和性能。</li>
+<li><strong>多线程编程</strong>：多线程编程是一种并发编程的方式，允许程序中的多个执行流同时执行。多线程可以用于提高程序的响应性、资源利用率和性能。</li>
+<li><strong>线程同步</strong>：由于线程共享相同的资源，需要通过同步机制来避免竞态条件和数据访问冲突。常见的同步机制包括互斥锁、信号量、条件变量等。</li>
+</ul>
+<hr>
+
+<h1 id="进程和线程的对比" data-numberify>进程和线程的对比<a class="anchor ms-1" href="#进程和线程的对比"></a></h1>
+<ul>
+<li>
+<p>进程基本上是相互独立的，而<strong>线程存在于进程内，是进程的一个子集</strong>。</p>
+<p>一个进程包含了一个或多个线程。一个线程不能独立的存在，它必须是进程的一部分。</p>
+<p>一个进程一直运行，直到所有的非守护线程都结束运行后才能结束。</p>
+</li>
+<li>
+<p>在Java中，<strong>线程</strong>作为<strong>运算调度的最小单位</strong>，<strong>进程</strong>作为<strong>资源分配的最小单位</strong>。</p>
+</li>
+<li>
+<p>进程拥有共享的资源，如内存空间等，供其内部的线程共享。</p>
+</li>
+<li>
+<p><strong>进程间通信较为复杂</strong>：</p>
+<ul>
+<li>同一台计算机的进程通信称为 IPC（Inter-Process Communication）。</li>
+<li>不同计算机之间的进程通信，需要通过网络，并遵守共同的协议，例如HTTP协议。</li>
+</ul>
+</li>
+<li>
+<p><strong>线程通信相对简单</strong>，因为它们共享进程内的内存。多个线程可以访问同一个共享变量。</p>
+</li>
+<li>
+<p><strong>线程更轻量</strong>，线程上下文切换成本一般上要比进程上下文切换低。比起多进程，<strong>多线程使用了更小的资源开销</strong>。</p>
+</li>
+</ul>
+<hr>
+
+<h1 id="并行与并发" data-numberify>并行与并发<a class="anchor ms-1" href="#并行与并发"></a></h1>
+<ul>
+<li>
+<p><strong>并行</strong>（Parallel）：指两个或多个任务在同一时刻发生。</p>
+<p>并行通常是在多核处理器上同时执行多个线程或进程，其中每个核心独立执行一个任务。</p>
+</li>
+<li>
+<p><strong>并发</strong>（Concurrent）：指两个或多个任务在重叠的时间段内执行，但不一定同时进行。</p>
+<p>并发可以通过时间片轮转等方式实现任务间的快速切换。例如通过操作系统中的多任务处理，多个任务之间通过时间片共享CPU资源，看起来好像在同时执行。</p>
+</li>
+<li>
+<p><strong>串行</strong>（Serial）：指任务按照顺序一个接一个地执行，每个任务必须等待前一个任务完成后才能开始。</p>
+<p>在单核CPU下，线程实际是<strong>串行执行</strong>的。当CPU时间片很小时，CPU在线程间的切换速度快到人类无法察觉时，从宏观上来看就是并行执行。也就是说，微观串行，宏观并行。</p>
+<blockquote>
+<p>多线程串行执行意味着当一个线程在执行时，其它线程会处于阻塞或等待状态。在这种情况下，CPU频繁地切换线程执行，实际上执行的效率会下降，不如单线程执行。</p>
+</blockquote>
+<blockquote>
+<p>多线程的目标是实现并发执行，充分利用多核处理器或多处理单元的优势。也就是说，单核CPU并不能充分发挥多线程的优势。</p>
+</blockquote>
+</li>
+</ul>
+<p>它们的关键区别在于：</p>
+<ul>
+<li><strong>并行</strong>：强调<u>多个任务在同一时刻发生</u>，通常需要多个处理单元。</li>
+<li><strong>并发</strong>：强调<u>多个任务在重叠的时间段内执行</u>，不一定需要多个处理单元。</li>
+<li><strong>串行</strong>：强调<u>任务按照顺序</u>一个接一个地<u>执行</u>。</li>
+</ul>
+<p>引用 Rob Pike 的一段描述：</p>
+<blockquote>
+<p>并发是同一时间应对（dealing with）多件事情的能力；并行是同一时间动手做（doing）多件事情的能力。</p>
+</blockquote>
+<hr>
+
+<h1 id="多线程的应用" data-numberify>多线程的应用<a class="anchor ms-1" href="#多线程的应用"></a></h1>
+<ul>
+<li><strong>异步调用</strong>：多线程可以让方法的执行变为异步的。程序在处理多个任务时，可以创建一些新的线程，将这些任务交给线程去同时处理，而无需等待任务执行完成后再接着执行下一个任务。</li>
+<li><strong>提高效率</strong>：利用多核CPU的优势来提高程序的运行效率。</li>
+</ul>
+</div>
+</div>
+</div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-next">
+      <a href="/notes/java/concurrent/create-thread/">Java 线程的创建</a>
+      <i class="fas fa-fw fa-chevron-down post-next-icon ms-1" data-fa-transform="rotate-270"></i>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+      <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">
+          相关文章
+        </h2>
+      </div>
+      <div class="card-body slide px-1">
+        <div class="slide-inner row gx-0"><div class="col-12 col-md-6 col-lg-4 me-2">
+            <div class="post-card card card-body p-0 border-0 surface">
+  
+  <div
+    class="post-card-default-img card-img-top d-flex align-items-center justify-content-center bg-body-secondary mb-1">
+    NO IMAGE
+  </div>
+
+  <a class="post-title" href="/posts/reggie-note/">
+    瑞吉外卖项目实战
+  </a>
+  <div class="post-meta mb-0">
+    March 21, 2023
+
+  </div>
+</div>
+
+          </div></div>
+        <button class="slide-control-left">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i>
+          <span class="visually-hidden">Left</span>
+        </button>
+        <button class="slide-control-right">
+          <i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-270"></i>
+          <span class="visually-hidden">Right</span>
+        </button>
+      </div>
+    </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body">
+
+<div class="giscus"></div>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+<div class="row component card">
+    <div class="card-body">
+        <form action="/search/">
+            <div class="input-group">
+                <input name="q" class="form-control rounded" placeholder="搜索">
+                <button class="btn btn-sm btn-search position-absolute end-0 border-0 border-start border-secondary p-2" type="submit">
+                    <i class="fas fa-fw fa-search text-primary"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        Profile
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Roamverse · Lin" src="/images/profile.webp?v=cc7bb3f3d9b4e001e3da696127c31672" loading="lazy" data-viewer-invisible width="2048" height="2048" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Roamverse · Lin</div><div class="profile-bio">专注软件开发，沉淀技术心得，分享可落地的技术实践。</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>广东 · 中国</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link" target="_blank" data-rss-feed href="/archives/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss"></i>
+  </a>
+</nav>
+</div>
+  </div>
+</div>
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                Taxonomies
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomySeriesTab" data-bs-toggle="tab" data-bs-target="#taxonomySeries" 
+                            type="button" role="tab" aria-controls="taxonomySeries" aria-selected="true">
+                            专栏
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomySeries" role="tabpanel" aria-labelledby="taxonomySeriesTab" tabindex="0">
+                        <a href="/series/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">30</span>
+                        </a>
+                        <a href="/series/vue/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Vue">
+                            Vue
+                            <span class="badge badge-sm text-secondary bg-white ms-1">30</span>
+                        </a>
+                        <a href="/series/node.js/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Node.js">
+                            Node.js
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/ruan-she/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Ruan-She">
+                            Ruan-She
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/series/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/note/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="笔记">
+                            笔记
+                            <span class="badge badge-sm text-secondary bg-white ms-1">112</span>
+                        </a>
+                        <a href="/categories/memo/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="备忘录">
+                            备忘录
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">33</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">23</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/go/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Go">
+                            Go
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/golang/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Golang">
+                            Golang
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/gin/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Gin">
+                            Gin
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">45</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/roamverse/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Roamverse · Lin">
+                            Roamverse · Lin
+                            <span class="badge badge-sm text-secondary bg-white ms-1">106</span>
+                        </a>
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+    </a>
+
+    <a href="" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">16</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/repo-sync/">
+        局域网同步 Git 仓库
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          September 24, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/web-storage/">
+        WebStorage 浏览器本地存储
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          September 18, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/vscode-markdown-font/">
+        VS Code 中英字符对齐
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          August 10, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/nvm-install/">
+        NVM 安装
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          August 6, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/reggie-note/">
+        瑞吉外卖项目实战
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          March 21, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="social-share mb-4 d-flex overflow-auto">
+      <a class="btn-social-share d-flex flex-column align-items-center me-3" rel="noopener noreferrer" aria-label="X Share Button"
+      target="_blank" href="https://x.com/intent/tweet?title=Java%20%e5%b9%b6%e5%8f%91%e7%bc%96%e7%a8%8b&url=%2fnotes%2fjava%2fconcurrent%2fintroduction%2f">
+        <i class="fab fa-2x fa-fw fa-x-twitter mb-2"></i> X
+      </a>
+      <a class="btn-social-share d-flex flex-column align-items-center me-3" rel="noopener noreferrer" aria-label="Facebook Share Button"
+        target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fnotes%2fjava%2fconcurrent%2fintroduction%2f">
+        <i class="fab fa-2x fa-fw fa-facebook-f mb-2"></i> Facebook
+      </a>
+    </div>
+    <hr class="mb-4"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center text-lg-start">
+  <div class="text-center justify-content-between">
+    <p class="mb-2">Roam Tech-verse | Roamverse Technical Blog</p>
+    <p class="text-secondary mb-2"><small>记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。</small></p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2026 Razon Yang. All Rights Reserved.
+</small>
+</div>
+</div>
+  
+  <div class="justify-content-center" style="justify-content: center; display: flex; flex-wrap: wrap;">
+
+
+<nav class="social-links nav justify-content-center justify-content-between mb-2 mt-3">
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-envelope"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" data-rss-feed href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+  </a>
+</nav>
+</div>
+</div>
+
+<div class="sponsors mt-3">
+    
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.249bc1d0e1fe184c92930643b07551703a85535b34f6a46f0ded7f3733ada009.js" integrity="sha256-JJvB0OH&#43;GEySkwZDsHVRcDqFU1s09qRvDe1/NzOtoAk=" crossorigin="anonymous" async></script><script data-precache src="/assets/icons/bundle.min.99bec5e8300e2daa1a33631789a66ed4775dad2b9466d43b5d71e8a7a9a3b236.js" integrity="sha256-mb7F6DAOLaoaM2MXiaZu1HddrSuUZtQ7XXHop6mjsjY=" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.700f97acd7c0b80f6acb9e7543c719d50b2ab84a9a15e46cf63149af990eb4fb.js" integrity="sha256-cA&#43;XrNfAuA9qy551Q8cZ1QsquEqaFeRs9jFJr5kOtPs=" crossorigin="anonymous" defer></script>
+<script src="/js/sw-register.js" defer></script>
+<script src="https://giscus.app/client.js"
+    data-repo="razonyang/hugo-theme-bootstrap"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkzMDQzMzI4NTM="
+    data-category="General"
+    data-category-id="MDE4OkRpcG9zaXRvcnkzODkzODg2"
+    data-mapping="pathname"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    defer>
+</script>
+
+
+  </body>
+</html>

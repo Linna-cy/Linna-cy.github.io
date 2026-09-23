@@ -1,0 +1,930 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="purple">
+  <head><script src="/assets/init/bundle.min.443086eab1033cb4fce820b41a21727adbaef1f7173bd18a1c9d5b62c570d136.js" integrity="sha256-RDCG6rEDPLT86CC0GiFyetuu8fcXO9GKHJ1bYsVw0TY=" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>路由 | Roam Tech-verse | Roamverse Technical Blog</title>
+    <link rel="icon" href="/favicon_hu_c6b42904aedc2978.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="/favicon_hu_5b6d3ffdaf5dd401.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon_hu_70e71d078ede1229.png" sizes="150x150" type="image/png">
+    <link rel="apple-touch-icon" href="/favicon_hu_4d02c86e3fc083ba.png" sizes="180x180" type="image/png">
+    <link rel="icon" href="/favicon_hu_cf9df98554ae5c4d.png" sizes="192x192" type="image/png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner, RideUni, Ride, Universe, RideUni Technical Blog, RideUni 技术博客, 技术博客, Technical Blog, Programming, Coding, Web Development, Software Development, Computer Science, Technology, Open Source, Programming Languages, Frameworks, Libraries, Tools, Tutorials, Guides, Tips and Tricks, 编程, 编码, Web 开发, 软件开发, 计算机科学, 技术, 开源, 编程语言, 框架, 库, 工具, 教程, 指南, 技巧和窍门" />
+  <meta name="description" content="记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。" />
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="路由">
+	<meta name="twitter:description" content="记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。">
+<meta property="og:url" content="/notes/vue/routers/">
+	<meta property="og:site_name" content="Roam Tech-verse | Roamverse Technical Blog">
+	<meta property="og:title" content="路由">
+	<meta property="og:description" content="记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="website">
+
+	<meta itemprop="name" content="路由">
+	<meta itemprop="description" content="记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。">
+	<meta itemprop="dateModified" content="2026-09-23T11:24:48+08:00">
+  <meta property="og:image" content="/images/logo.png"/>
+  <meta name="twitter:image" content="/images/logo.png"/>
+  <meta property="og:image:alt" content="路由" />
+  <meta name="twitter:image:alt" content="路由" />
+  <link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" href="/notes/vue/routers/index.xml" title="Roam Tech-verse | Roamverse Technical Blog" />
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.308b50570e6364702348d52824e5194793b9dd3dd02b100a828f841c1ea0474e.css" integrity="sha256-MItQVw5jZHAjSNUoJOUZR5O53T3QKxAKgo+EHB6gR04=" crossorigin="anonymous">
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.a886788faf7d8b4b13a0398bf9e9434cc952f8d6297efdad1453da43257e8a30.css" integrity="sha256-qIZ4j699i0sToDmL&#43;elDTMlS&#43;NYpfv2tFFPaQyV&#43;ijA=" crossorigin="anonymous">
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/logo.webp?v=3216bac746935c31b6c57c64c49ea348" loading="lazy" width="2048" height="2048" />
+</picture>
+Roam Tech-verse
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Roam Tech-verse</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto"><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/posts/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>文章
+            </a>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/series/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-columns text-info"></i></span>专栏
+            </a>
+          </li>
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">更多
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-warning"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">分类</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of Categories</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">标签</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of Tags</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user text-danger"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto my-auto" action="/search/" novalidate>
+      <div class="input-group align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="text-dark bg-white opacity-75 rounded-3 shadow border border-primary py-1 fw-bold">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" data-rss-feed href="/notes/vue/routers/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+    <span class="ms-1 d-xxl-none">RSS</span>
+  </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label="蓝灰色"
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container has-sidebar" data-kind="section"><script data-precache src="/js/main-init.438d746df887b64d7ef015c107c8eadd316716944aeaf6cdd2b74eb04c51f17b.js" integrity="sha256-Q410bfiHtk1&#43;8BXBB8jq3TFnFpRK6vbN0rdOsExR8Xs=" crossorigin="anonymous"></script>
+
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/vue/">Vue</a></li><li class="breadcrumb-item active">路由</li></ol>
+  </div>
+</nav><div class="post-sections row card component">
+  <div class="card-header">
+    <h2 class="card-title fs-4 text-surface my-2"></h2>
+  </div>
+  <div class="card-body">
+    <ul class="nav nav-pills justify-content-between"><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/docker/">Docker</a>
+        </li><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/golang/">Golang</a>
+        </li><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/java/">Java</a>
+        </li><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/node-js/">Node.js</a>
+        </li><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/spring/">Spring</a>
+        </li><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/vue/">Vue</a>
+        </li><li class="nav-item post-section my-2 mx-1">
+          <a class="btn btn-sm btn-secondary" href="/notes/ruan-she/">软件设计师</a>
+        </li></ul>
+  </div>
+</div>
+  <div class="posts mb-4"><article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/two-modes/">Vue Router 两种工作模式</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-28 06:09:10 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 28, 2023</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>Vue Router中有两种工作模式，它们分别是：
+hash模式：使用URL的hash来模拟一个完整的URL。
+hash：在URL中，#符号及其之后的内容。
+当URL改变时，页面不会重新加载。 URL中会包含一个/#/，不够美观。 在浏览器中，hash的内容并不会被浏览器作为请求中的一部分发送给后端服务器。 hash模式兼容性强。 工作原理：通过监听hashchange事件，从而监控hash的变化。当hash发生变化时，Vue Router会解析hash之后的内容，并将对应的结果呈现出来。
+history模式（依赖于HTML5）：通过HTML5新增的history，将hash URL中的#符号去除。
+去除了URL中的#符号之后，在刷...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/two-modes/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/guards/">Vue 路由守卫</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-27 03:17:58 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 27, 2023</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>Vue Router提供的路由守卫主要用来通过跳转或取消的方式守卫导航。
+在路由守卫中，你可以自定义何时何种情况放行或拦截页面的路由。通过Vue Router，可以实现对前端页面路由的权限控制。
+Vue 路由守卫有以下分类：
+全局守卫 独享守卫 组件内守卫 全局路由守卫 全局路由守卫，是在Router配置文件中，在router上配置的路由守卫。
+在配置路由守卫之前，在Router配置文件中需要先接收到router实例：
+1const router = new VueRouter({ 2 /* ... */ 3}) 全局路由守卫对整个Vue Router下的所有路由都生效。
+全局前置守卫 全局前置路由守卫的使用方式如下：...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/guards/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/hooks/">Vue 路由组件钩子</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-26 08:28:34 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 26, 2023</span><span class="post-reading-time me-1 mb-1">1 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p> 路由组件生命周期钩子 Vue路由组件除了能使用组件的那些生命钩子外，还能使用两个专用于路由组件的生命周期钩子。
+当用户打开链接，路由到相应的组件时，这个被路由的组件就呈现激活状态；反之则呈现失活状态。
+activated()：在路由组件被激活时自动调用。 deactivated()：在路由组件失活时自动调用。 路由组件的生命周期钩子使用方式与生命周期钩子相同：
+1export default { 2 activated() { 3 /* ... */ 4 }, 5 deactivated() { 6 /* ... */ 7 }, 8} 组件内路由守卫 Vue路由组件钩子除了生命周期钩子外，还有组件内路由守卫。、
+组件内路由守卫和生...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/hooks/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/cache/">Vue 路由组件缓存</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-26 07:12:36 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 26, 2023</span><span class="post-reading-time me-1 mb-1">1 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>Vue Router中，开启路由组件缓存可以使用&lt;keep-alive&gt;将&lt;router-view&gt;包裹起来。使用了&lt;keep-alive&gt;之后，路由组件被用户切换掉时，不会被销毁。
+1&lt;keep-alive&gt; 2 &lt;router-view&gt;&lt;/router-view&gt; 3&lt;/keep-alive&gt; &lt;keep-alive&gt;默认会缓存当前在&lt;router-view&gt;中展示的所有组件。如果要指定缓存的组件，可以使用include。在include中指定要缓存的组件的名称即可。
+例如：
+1&lt;keep-alive include=&#34;Home&#34;&gt; 2 &lt;router-view&gt;&lt;/router-view&gt; 3&lt;/keep-alive&gt; 如果...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/cache/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/navigation/">Vue 编程式路由导航</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-26 05:19:57 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 26, 2023</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>编程式路由导航是指不通过&lt;router-link&gt;创建&lt;a&gt;标签来定义导航链接，而是借助路由组件实例中的$router实例，通过编写代码来实现路由导航。
+使用编程式路由导航，可以让路由的跳转方式变得更加灵活。
+两种导航方式 $router也有与&lt;router-link&gt;相同两种导航方式，分别是push和replace。这两种方式分别调用两个不同的API，不过这两个API的使用方式是一致的。并且他们传入的参数与&lt;router-link&gt;中to props的值一样，可以传入两种类型的参数。
+$router.push()：
+1this.$router.push(&#39;/user/zhangsan&#39;) 1router.push({ 2...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/navigation/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/passing-props/">Vue 路由通过 Props 传参</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-26 02:27:58 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 26, 2023</span><span class="post-reading-time me-1 mb-1">2 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>路由的props配置可以让路由组件更方便地接收到参数。在组件中使用$route会让组件与路由紧耦合（使用组件必须配置路由）。通过props可以解除组件与路由的紧耦合。
+注：使用props，让组件通过props接收参数，让路由通过props给组件传递参数。这样当组件被用在其它不使用路由的组件中时，组件依然可以通过props接收参数，而无需配置路由。
+对象模式 当props是一个对象时，它将被作为组件的props，原封不动地被传递给组件props。在props为静态的时候可以使用这种方式。
+1routes: [ 2 { 3 path: &#39;/promotion/from-newsletter&#39;, 4 component:...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/passing-props/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/nested-routes/">Vue 嵌套路由</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-25 04:29:24 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 25, 2023</span><span class="post-reading-time me-1 mb-1">5 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>Vue 嵌套路由又称多级路由。一些应用程序的UI由多层嵌套的组件组成（即一个路由下又配置了其它几个路由）。通过Vue Router，可以使用嵌套路由配置来表达这种关系。
+接路由介绍中的案例，为Home组件新增两个路由News和Message。
+配置嵌套路由 首先是配置Router（router/index.js）：
+1import Vue from &#39;vue&#39; 2import VueRouter from &#39;vue-router&#39; // 引入 VueRouter 3 4// 引入组件 5import Home from &#39;../pages/Home.vue&#39; 6import About from...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/nested-routes/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/dynamic-matching/">Vue 动态路由匹配</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-25 04:27:20 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 25, 2023</span><span class="post-reading-time me-1 mb-1">3 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>在Vue Router中，路由路径有以下几种匹配形式：
+静态匹配：即完全按照path中的内容，进行相等匹配。 动态匹配：根据path中定义的路径匹配规则匹配多个路径。 路径参数 Vue中的动态参数匹配使用的是路径参数匹配。路径参数是路径中的一个动态字段。路径参数的值会动态变化，根据这些路径参数的值，可以读取相应的数据或展示相应的页面。
+例如，有个User组件对所有用户进行渲染，但用户ID不同。使用路径参数，可以让用户ID像路径中的某个资源或目录一样在URL中展示。变换不同的用户ID，就像切换目录一样路由到不同的用户界面。
+使用路径参数包含3个步骤：
+在Router配置文件（router/index.js）中，配置路径参数的匹配规则。...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/dynamic-matching/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component">
+  <div class="card-header">
+    <h2 class="card-title post-title my-2 fs-4">
+      <a href="/notes/vue/routers/introduction/">Vue Router 入门</a>
+    </h2>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-09-23 05:27:36 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">September 23, 2023</span><span class="post-reading-time me-1 mb-1">4 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/vue/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Vue</a>
+</div>
+
+    <div class="post-summary"><p>Vue.js路由（Router）允许通过不同的URL访问不同的内容。通过Vue Router，可以实现SPA（Single Page web Application，单页Web应用）。
+SPA是指整个Web应用中，只有一个完整的页面。在点击SPA中的导航链接时，浏览器不会刷新页面，而是做页面的局部更新。Vue SPA的数据通过Ajax请求获取。
+在使用Router之前，需要理清SPA中Route和Router之间的关系：
+Route：指的是SPA的路径与页面（组件）之间的一个对应关系。通常是将路径作为某条特定Route的key，将页面作为该Route的value。
+在前端路由中，Route Value指的是页面（组件）；在后端路由中...</p><div><a class="btn btn-sm btn-outline-primary btn-read-more" href="/notes/vue/routers/introduction/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+
+  </div><div class="row table-responsive mb-3"></div>
+
+</div>
+
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+<div class="row component card">
+    <div class="card-body">
+        <form action="/search/">
+            <div class="input-group">
+                <input name="q" class="form-control rounded" placeholder="搜索">
+                <button class="btn btn-sm btn-search position-absolute end-0 border-0 border-start border-secondary p-2" type="submit">
+                    <i class="fas fa-fw fa-search text-primary"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        Profile
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Roamverse · Lin" src="/images/profile.webp?v=cc7bb3f3d9b4e001e3da696127c31672" loading="lazy" data-viewer-invisible width="2048" height="2048" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Roamverse · Lin</div><div class="profile-bio">专注软件开发，沉淀技术心得，分享可落地的技术实践。</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>广东 · 中国</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link" target="_blank" data-rss-feed href="/archives/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss"></i>
+  </a>
+</nav>
+</div>
+  </div>
+</div>
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                Taxonomies
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomySeriesTab" data-bs-toggle="tab" data-bs-target="#taxonomySeries" 
+                            type="button" role="tab" aria-controls="taxonomySeries" aria-selected="true">
+                            专栏
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomySeries" role="tabpanel" aria-labelledby="taxonomySeriesTab" tabindex="0">
+                        <a href="/series/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">30</span>
+                        </a>
+                        <a href="/series/vue/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Vue">
+                            Vue
+                            <span class="badge badge-sm text-secondary bg-white ms-1">30</span>
+                        </a>
+                        <a href="/series/node.js/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Node.js">
+                            Node.js
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/ruan-she/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Ruan-She">
+                            Ruan-She
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/series/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/note/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="笔记">
+                            笔记
+                            <span class="badge badge-sm text-secondary bg-white ms-1">112</span>
+                        </a>
+                        <a href="/categories/memo/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="备忘录">
+                            备忘录
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">33</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">23</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/go/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Go">
+                            Go
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/golang/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Golang">
+                            Golang
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/gin/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Gin">
+                            Gin
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">45</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/roamverse/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Roamverse · Lin">
+                            Roamverse · Lin
+                            <span class="badge badge-sm text-secondary bg-white ms-1">106</span>
+                        </a>
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+    </a>
+
+    <a href="" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">16</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/repo-sync/">
+        局域网同步 Git 仓库
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          September 24, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/web-storage/">
+        WebStorage 浏览器本地存储
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          September 18, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/vscode-markdown-font/">
+        VS Code 中英字符对齐
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          August 10, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/nvm-install/">
+        NVM 安装
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          August 6, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/reggie-note/">
+        瑞吉外卖项目实战
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          March 21, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="social-share mb-4 d-flex overflow-auto">
+      <a class="btn-social-share d-flex flex-column align-items-center me-3" rel="noopener noreferrer" aria-label="X Share Button"
+      target="_blank" href="https://x.com/intent/tweet?title=%e8%b7%af%e7%94%b1&url=%2fnotes%2fvue%2frouters%2f">
+        <i class="fab fa-2x fa-fw fa-x-twitter mb-2"></i> X
+      </a>
+      <a class="btn-social-share d-flex flex-column align-items-center me-3" rel="noopener noreferrer" aria-label="Facebook Share Button"
+        target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fnotes%2fvue%2frouters%2f">
+        <i class="fab fa-2x fa-fw fa-facebook-f mb-2"></i> Facebook
+      </a>
+    </div>
+    <hr class="mb-4"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center text-lg-start">
+  <div class="text-center justify-content-between">
+    <p class="mb-2">Roam Tech-verse | Roamverse Technical Blog</p>
+    <p class="text-secondary mb-2"><small>记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。</small></p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2026 Razon Yang. All Rights Reserved.
+</small>
+</div>
+</div>
+  
+  <div class="justify-content-center" style="justify-content: center; display: flex; flex-wrap: wrap;">
+
+
+<nav class="social-links nav justify-content-center justify-content-between mb-2 mt-3">
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-envelope"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" data-rss-feed href="/notes/vue/routers/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+  </a>
+</nav>
+</div>
+</div>
+
+<div class="sponsors mt-3">
+    
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.249bc1d0e1fe184c92930643b07551703a85535b34f6a46f0ded7f3733ada009.js" integrity="sha256-JJvB0OH&#43;GEySkwZDsHVRcDqFU1s09qRvDe1/NzOtoAk=" crossorigin="anonymous" async></script><script data-precache src="/assets/icons/bundle.min.99bec5e8300e2daa1a33631789a66ed4775dad2b9466d43b5d71e8a7a9a3b236.js" integrity="sha256-mb7F6DAOLaoaM2MXiaZu1HddrSuUZtQ7XXHop6mjsjY=" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.700f97acd7c0b80f6acb9e7543c719d50b2ab84a9a15e46cf63149af990eb4fb.js" integrity="sha256-cA&#43;XrNfAuA9qy551Q8cZ1QsquEqaFeRs9jFJr5kOtPs=" crossorigin="anonymous" defer></script>
+<script src="/js/sw-register.js" defer></script>
+
+  </body>
+</html>

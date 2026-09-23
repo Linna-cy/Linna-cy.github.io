@@ -1,0 +1,1096 @@
+<!doctype html>
+<html class="position-relative" itemscope itemtype="https://schema.org/WebPage" lang="zh-hans"
+  data-bs-theme="auto" data-palette="purple">
+  <head><script src="/assets/init/bundle.min.443086eab1033cb4fce820b41a21727adbaef1f7173bd18a1c9d5b62c570d136.js" integrity="sha256-RDCG6rEDPLT86CC0GiFyetuu8fcXO9GKHJ1bYsVw0TY=" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Node.js Express 跨域请求 | Roam Tech-verse | Roamverse Technical Blog</title>
+    <link rel="icon" href="/favicon_hu_c6b42904aedc2978.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="/favicon_hu_5b6d3ffdaf5dd401.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon_hu_70e71d078ede1229.png" sizes="150x150" type="image/png">
+    <link rel="apple-touch-icon" href="/favicon_hu_4d02c86e3fc083ba.png" sizes="180x180" type="image/png">
+    <link rel="icon" href="/favicon_hu_cf9df98554ae5c4d.png" sizes="192x192" type="image/png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6f42c1">
+<meta name="keywords" content="Linner, RideUni, Ride, Universe, RideUni Technical Blog, RideUni 技术博客, 技术博客, Technical Blog, Programming, Coding, Web Development, Software Development, Computer Science, Technology, Open Source, Programming Languages, Frameworks, Libraries, Tools, Tutorials, Guides, Tips and Tricks, 编程, 编码, Web 开发, 软件开发, 计算机科学, 技术, 开源, 编程语言, 框架, 库, 工具, 教程, 指南, 技巧和窍门" />
+  <meta name="description" content="跨域请求问题
+跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求（同源策略）。" />
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Node.js Express 跨域请求">
+	<meta name="twitter:description" content="跨域请求问题 跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求（同源策略）。">
+<meta property="og:url" content="/notes/node-js/express/cors-request/">
+	<meta property="og:site_name" content="Roam Tech-verse | Roamverse Technical Blog">
+	<meta property="og:title" content="Node.js Express 跨域请求">
+	<meta property="og:description" content="跨域请求问题 跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求（同源策略）。">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="notes">
+		<meta property="article:published_time" content="2023-08-18T08:16:03+00:00">
+		<meta property="article:modified_time" content="2026-09-23T11:24:48+08:00">
+			<meta property="og:see_also" content="/notes/node-js/typescript/">
+			<meta property="og:see_also" content="/notes/node-js/express/middleware/">
+			<meta property="og:see_also" content="/notes/node-js/express/router/">
+			<meta property="og:see_also" content="/notes/node-js/nodemon/">
+			<meta property="og:see_also" content="/notes/node-js/express/base/">
+			<meta property="og:see_also" content="/notes/node-js/npm-and-package/">
+
+	<meta itemprop="name" content="Node.js Express 跨域请求">
+	<meta itemprop="description" content="跨域请求问题 跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求（同源策略）。">
+	<meta itemprop="datePublished" content="2023-08-18T08:16:03+00:00">
+	<meta itemprop="dateModified" content="2026-09-23T11:24:48+08:00">
+	<meta itemprop="wordCount" content="3231">
+	<meta itemprop="keywords" content="Roamverse · Lin,笔记,Node.js">
+  <meta property="og:image" content="/images/logo.png"/>
+  <meta name="twitter:image" content="/images/logo.png"/>
+  <meta property="og:image:alt" content="Node.js Express 跨域请求" />
+  <meta name="twitter:image:alt" content="Node.js Express 跨域请求" />
+  <link rel="manifest" href="/manifest.json">
+
+<link data-precache rel="stylesheet" href="/assets/main/bundle.min.308b50570e6364702348d52824e5194793b9dd3dd02b100a828f841c1ea0474e.css" integrity="sha256-MItQVw5jZHAjSNUoJOUZR5O53T3QKxAKgo+EHB6gR04=" crossorigin="anonymous">
+
+    <link data-precache rel="stylesheet" href="/assets/viewer/bundle.min.a886788faf7d8b4b13a0398bf9e9434cc952f8d6297efdad1453da43257e8a30.css" integrity="sha256-qIZ4j699i0sToDmL&#43;elDTMlS&#43;NYpfv2tFFPaQyV&#43;ijA=" crossorigin="anonymous">
+
+
+</head>
+  <body><header class="mb-4 sticky-top">
+  
+<nav class="top-app-bar shadow navbar navbar-expand-xxl">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center flex-grow-1 flex-xxl-grow-0 justify-content-xxl-start ms-2 ms-xxl-0 mx-auto me-xxl-2"
+    href="/">
+    <picture><img class="logo " alt="Logo" src="/images/logo.webp?v=3216bac746935c31b6c57c64c49ea348" loading="lazy" width="2048" height="2048" />
+</picture>
+Roam Tech-verse
+</a>
+
+    <div class="offcanvas-xxl offcanvas-end flex-grow-1" data-bs-scroll="true" tabindex="-1" id="navbarMenus" aria-labelledby="navbarMenusLabel">
+      <div class="offcanvas-header px-4 pb-0">
+        <div class="offcanvas-title h5" id="navbarMenusLabel">Roam Tech-verse</div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#navbarMenus" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-4 pt-0 p-xxl-0">
+        <hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center me-auto"><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/notes/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-book"></i></span>笔记
+            </a>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/posts/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-blog"></i></span>文章
+            </a>
+          </li><li class="nav-item col-6 col-xxl-auto">
+            <a class="nav-link py-2 px-0 px-xxl-2" href="/series/">
+<span class="menu-icon me-1"><i class="fas fa-fw fa-columns text-info"></i></span>专栏
+            </a>
+          </li>
+          <li class="nav-item col-12 col-xxl-auto dropdown px-0">
+            <a href="#"
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">更多
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" data-bs-popper="none">
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/archives/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-archive text-primary"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">归档</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/categories/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-folder text-warning"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">分类</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of Categories</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/tags/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-tags text-success"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-1">标签</p>
+                      <p class="dropdown-item-description mb-0 text-secondary">List of Tags</p>
+                  </div></a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center text-wrap text-xxl-nowrap"
+                  href="/authors/">
+                    <span class="dropdown-item-icon me-2 p-2 rounded">
+                      <i class="fas fa-fw fa-user text-danger"></i>
+                    </span>
+                  <div class="dropdown-item-content">
+                    <p class="dropdown-item-title mb-0">作者</p>
+                  </div></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+    <hr class="d-xxl-none">
+    <form class="search-bar ms-auto my-auto" action="/search/" novalidate>
+      <div class="input-group align-items-center">
+        <span class="btn btn-search disabled position-absolute left-0 border-0 px-1">
+          <i class="fas fa-fw fa-search fa-lg"></i>
+        </span>
+        <input
+          class="my-1 form-control border-white rounded-5 search-input bg-body"
+          name="q"
+          type="search"
+          placeholder="搜索"
+          aria-label="Search"
+          required>
+          <span class="search-shortcut position-absolute end-0 top-0 me-2">
+            <kbd class="text-dark bg-white opacity-75 rounded-3 shadow border border-primary py-1 fw-bold">/</kbd>
+          </span>
+      </div>
+    </form><hr class="d-xxl-none">
+        <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto">
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+
+
+<nav class="social-links nav justify-content-center flex-row">
+      <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+        <span class="ms-1 d-xxl-none">Github</span>
+      </a>
+  <a class="nav-link social-link col-6 col-xxl-auto p-1" target="_blank" data-rss-feed href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+    <span class="ms-1 d-xxl-none">RSS</span>
+  </a>
+</nav>
+
+</li>
+<li class="nav-item py-2 py-xxl-1 col-12 col-xxl-auto">
+  <div class="vr d-none d-xxl-flex h-100 mx-xxl-2 text-white"></div>
+  <hr class="d-xxl-none my-2">
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="fontSizeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-font"></i>
+        <span class="d-xxl-none">字体大小</span>
+    </a>
+    <ul class="font-size-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="fontSizeDropdown">
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xs">
+                特小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="sm">
+                小号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item active" data-size="md">
+                中等
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="lg">
+                大号
+            </button>
+        </li>
+        <li>
+            <button class="font-size-item dropdown-item" data-size="xl">
+                特大号
+            </button>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="paletteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-fw fa-palette"></i>
+        <span class="d-xxl-none">配色</span>
+    </a>
+    <ul class="palette-dropdown-menu dropdown-menu dropdown-menu-end px-2 row g-2" aria-labelledby="paletteDropdown">
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue" aria-label="蓝色"
+                    class="btn btn-sm w-100 palette text-bg-blue" data-palette="blue">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-blue-gray" aria-label="蓝灰色"
+                    class="btn btn-sm w-100 palette text-bg-blue-gray" data-palette="blue-gray">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-brown" aria-label="棕色"
+                    class="btn btn-sm w-100 palette text-bg-brown" data-palette="brown">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-cyan" aria-label="青色"
+                    class="btn btn-sm w-100 palette text-bg-cyan" data-palette="cyan">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-green" aria-label="绿色"
+                    class="btn btn-sm w-100 palette text-bg-green" data-palette="green">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-indigo" aria-label="靛青色"
+                    class="btn btn-sm w-100 palette text-bg-indigo" data-palette="indigo">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-orange" aria-label="橙色"
+                    class="btn btn-sm w-100 palette text-bg-orange" data-palette="orange">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-pink" aria-label="粉色"
+                    class="btn btn-sm w-100 palette text-bg-pink" data-palette="pink">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-purple" aria-label="紫色"
+                    class="btn btn-sm w-100 palette text-bg-purple" data-palette="purple">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-red" aria-label="红色"
+                    class="btn btn-sm w-100 palette text-bg-red" data-palette="red">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-teal" aria-label="蓝绿色"
+                    class="btn btn-sm w-100 palette text-bg-teal" data-palette="teal">
+                </a>
+            </li>
+            <li class="col-4 my-1">
+                <a role="button" id="palette-yellow" aria-label="黄色"
+                    class="btn btn-sm w-100 palette text-bg-yellow" data-palette="yellow">
+                </a>
+            </li>
+    </ul>
+</li>
+<li class="nav-item dropdown col-6 col-xxl-auto">
+    <a class="nav-link px-0 py-2 px-xxl-1" href="#" id="modeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="mode-icon fas fa-fw fa-adjust" id="modeIcon"></i>
+        <span class="d-xxl-none">模式</span>
+    </a>
+    <ul class="mode-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+        <li class="mode-item" data-color-mode="light" data-icon="sun">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-sun"></i> 浅色
+            </button>
+        </li>
+        <li class="mode-item" data-color-mode="dark" data-icon="moon">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-moon"></i> 深色
+            </button>
+        </li>
+        <li class="mode-item active" data-color-mode="auto" data-icon="adjust">
+            <button class="dropdown-item">
+                <i class="mode-icon fas fa-fw fa-adjust"></i> 自动
+            </button>
+        </li>
+    </ul>
+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="navbar-toggler order-5 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenus"
+        aria-controls="navbarMenus" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+    <main class="container has-sidebar" data-kind="page"><script data-precache src="/js/main-init.438d746df887b64d7ef015c107c8eadd316716944aeaf6cdd2b74eb04c51f17b.js" integrity="sha256-Q410bfiHtk1&#43;8BXBB8jq3TFnFpRK6vbN0rdOsExR8Xs=" crossorigin="anonymous"></script>
+
+      <div class="row content"><noscript>
+    <div class="alert alert-danger" role="alert">你的浏览器不支持 JavaScript。</div>
+</noscript>
+
+<div class="content-posts col-xxl-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body pb-0">
+    <ol class="hbs-breadcrumb breadcrumb flex-nowrap"><li class="breadcrumb-item text-surface"><a href="/">主页</a></li><li class="breadcrumb-item text-surface"><a href="/notes/">笔记</a></li><li class="breadcrumb-item text-surface"><a href="/notes/node-js/">Node.js</a></li><li class="breadcrumb-item text-surface"><a href="/notes/node-js/express/">Express</a></li><li class="breadcrumb-item active">Node.js Express 跨域请求</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper position-relative d-flex justify-content-center">
+  <div class="d-flex flex-row justify-content-center rounded-5 border post-panel position-fixed px-3 py-1 surface shadow-1">
+    
+    
+
+    
+    
+    
+    <a class="action action-copyright" href="#post-copyright" role="button" aria-label="Copyright" title="版权">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action action-post-comments" href="#post-comments" role="button" aria-label="Comments" title="评论">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    
+<a id="sidebarToggler" class="action action-sidebar-toggler d-none d-xxl-block" role="button" title="切换侧边栏">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+  </div>
+</div><article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title my-2">Node.js Express 跨域请求</h1>
+  </div>
+  <div class="card-body"><div class="post-meta mb-3">
+  <span class="post-date me-1 mb-1" title="创建于 2023-08-18 08:16:03 &#43;0000 UTC，更新于 2026-09-23 03:24:48 &#43;0000 UTC。">August 18, 2023</span><span class="post-reading-time me-1 mb-1">7 分钟阅读</span><a href="/authors/roamverse/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-author">
+      <i class="fas fa-fw fa-user me-1"></i>Roamverse · Lin</a><a href="/categories/note/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-category">
+      <i class="fas fa-fw fa-folder me-1"></i>笔记</a><a href="/series/node.js/" class="btn btn-sm btn-secondary mb-1 me-2 py-0 pe-1 post-taxonomy post-taxonomy-sm post-series">
+      <i class="fas fa-fw fa-columns me-1"></i>Node.js</a>
+</div>
+
+<div class="post-content mb-3" data-bs-spy="scroll" data-bs-target="#TableOfContents" tabindex="0">
+        <div id="post-content-body">
+<h1 id="跨域请求问题" data-numberify>跨域请求问题<a class="anchor ms-1" href="#跨域请求问题"></a></h1>
+<p>跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求（同源策略）。</p>
+<p>演示跨域问题：</p>
+<ul>
+<li>
+<p>编辑一个<code>html</code>页面：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.staticfile.org/jquery/3.7.0/jquery.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;btnGET&#34;</span><span class="p">&gt;</span>GET<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;btnPOST&#34;</span><span class="p">&gt;</span>POST<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">            <span class="c1">// 测试GET接口
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl">            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnGET&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">                <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">                    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">                    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost/get&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">                    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">                        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Zhangsan&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">                        <span class="nx">age</span><span class="o">:</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">                    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">                    <span class="nx">success</span><span class="o">:</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">                        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">                <span class="p">})</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">            <span class="c1">// 测试POST接口
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl">            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnPOST&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">                <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">                    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">                    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost/post&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">                    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">                        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;人间失格&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">                        <span class="nx">author</span><span class="o">:</span> <span class="s1">&#39;太宰治&#39;</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">                    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">                    <span class="nx">success</span><span class="o">:</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">                        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">                <span class="p">})</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">        <span class="p">})</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>创建Express Server：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/get&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/post&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Server running at http://127.0.0.1/&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>只要页面打开的协议、地址或端口与服务器不同，浏览器就会阻止该请求的发送。解决方案有CORS和JSONP等，推荐使用CORS，因为JSONP仅支持GET请求。</p>
+<p>在Express中，可以通过使用<code>cors</code>这个第三方中间件来解决跨域问题：</p>
+<ol>
+<li>
+<p>安装<code>cors</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">npm i cors
+</span></span></code></pre></div></li>
+<li>
+<p>导入<code>cors</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>注册<code>cors</code>中间件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">())</span>
+</span></span></code></pre></div><blockquote>
+<p>注：<code>cors</code>中间件要在所有路由之前注册。</p>
+</blockquote>
+</li>
+</ol>
+<p>完整示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1">// 导入并注册 cors 中间件
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="kr">const</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/get&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;GET请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/post&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;POST请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">
+</span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Server running at http://127.0.0.1/&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><hr>
+
+<h1 id="cors" data-numberify>CORS<a class="anchor ms-1" href="#cors"></a></h1>
+<p>CORS（Cross-Origin Resource Sharing，跨域资源共享）由<u>一系列HTTP响应头组成</u>，这些HTTP响应头决定浏览器是否阻止前端JS代码跨域获取资源。</p>
+<p>浏览器的同源安全策路默认会阻止网页“跨域”获取资源。但如果接口服务器配置了CORS相关的HTTP响应头，就可以解除浏览器端的跨域访问限制。相当于服务器告诉浏览器我同意其它“域”来使用我的接口。</p>
+<p>CORS的注意事项：</p>
+<ul>
+<li>CORS主要在服务器端进行配置。客户端浏览器无须做任何额外的配置，即可请求开启了CORS的接口。</li>
+<li>CORS在浏览器中有兼容性。只有支持XMLHttpRequest Level2的浏览器，才能正常访问开启了CORS的服务端接口（例如：IE10+、Chrome4+、FireFox3.5+）。</li>
+</ul>
+<p>与CORS相关的响应头，基本上都是以<code>Access-Control-Allow-</code>开头。常见的CORS相关响应头有：</p>
+<ul>
+<li>
+<p><code>Access-Control-Allow-Origin</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Access-Control-Allow-Origin: &lt;origin&gt; | *
+</span></span></code></pre></div><p>其中，<code>origin</code>参数的值指定了允许访问该资源的外域URL；如果要允许所有网站进行跨域请求，可以使用<code>*</code>符号。</p>
+<p>例如在服务端设置仅允许<code>https://blog.linner.asia</code>进行跨域请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;https://blog.linner.asia&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Access-Control-Allow-Headers</code>：</p>
+<p>默认情况下，CORS仅支持客户端向服务器发送如下的9种请求头：</p>
+<p><code>Accept</code>、<code>Accept-Language</code>、<code>Content-Language</code>、<code>DPR</code>、<code>Downlink</code>、<code>Save-Data</code>、<code>Viewport-Width</code>、<code>Width</code>、<code>Content-Type</code>（值仅限于<code>text/plain</code>、<code>multipart/form-data</code>、<code>application/x-wwnw-form-urlencoded</code>三者之）。</p>
+<p>如果客户端向服务器发送了额外的请求头信息，则需要在服务器端，通过<code>Access-Control-Allow-Headers</code>对额外的请求头进行声明；否则这次请求将会失败。</p>
+<p>例如在服务器中通过设置<code>Access-Control-Allow-Headers</code>来允许客户端发送<code>Content-Type</code>和<code>XCustom-Header</code>请求头：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="sb">`Access-Control-Allow-Headers`</span><span class="p">,</span> <span class="s1">&#39;Content-Type, XCustom-Header&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><blockquote>
+<p>注：<code>res.setHeader()</code>中设置<code>Access-Control-Allow-Headers</code>时，多个请求头之间使用<code>,</code>分隔。</p>
+</blockquote>
+</li>
+<li>
+<p><code>Access-Control-Allow-Methods</code>：</p>
+<p>默认情况下，CORS仅支持客户端发起GET、POST、HEAD请求。如果客户端希望通过PUT、DELETE等方式请求服务器的资源，则需要在服务器端。通过<code>Access-Control-Allow-Methods</code>来指明实际请求所允许使用的HTTP方法，</p>
+<ul>
+<li>
+<p>只允许 POST、GET、DELETE、HEAD 请求（多个请求之间使用<code>,</code>分隔）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;POST, GET, DELETE, HEAD&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用<code>*</code>符号允许所有的 HTTP 请求：</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>客户端在请求CORS接口时，根据请求方式和请求头的不同，可以将CORS的请求分为两大类，分别是：</p>
+<ul>
+<li>
+<p><strong>简单请求</strong>：</p>
+<p>同时满足以下两大条件的请求，就属于简单请求：</p>
+<ul>
+<li>
+<p>请求方式必须是 GET、POST、HEAD 之一。</p>
+</li>
+<li>
+<p>HTTP头部信息不超过以下几种字段：</p>
+<p>无自定义头部字段、<code>Accept</code>、<code>Accept-Language</code>、<code>Content-Language</code>、<code>DPR</code>、<code>Downlink</code>、<code>Save-Data</code>、<code>Viewport-Width</code>、<code>Width</code>、<code>Content-Type</code>（值仅限于<code>text/plain</code>、<code>multipart/form-data</code>、<code>application/x-wwnw-form-urlencoded</code>三者之）。</p>
+</li>
+</ul>
+<p>特点：客户端与服务器之间只会发生一次请求。</p>
+</li>
+<li>
+<p><strong>预检请求</strong>：</p>
+<p>只要符合以下任一条件的请求，都需要进行预检请求：</p>
+<ul>
+<li>请求方式为 GET、POST、HEAD 之外的请求类型。</li>
+<li>请求头中包含了自定义头部字段。</li>
+<li>发送的请求数据包含<code>application/json</code>格式的数据。</li>
+</ul>
+<p>在浏览器与服务器正式通信之前，浏览器会先发送<code>OPTION</code>请求进行预检，以获知服务器是否允许该实际请求，所以这一次的<code>OPTION</code>请求被称为“预检请求”。服务器成功响应预检请求后，才会发送真正的请求，井且携带真实数据。</p>
+<p>特点：客户端与服务器之间会发生两次请求，OPTION预检请求成功之后，才会发起真正的请求。</p>
+<p>演示：</p>
+<ul>
+<li>
+<p>在HTML中添加以下按钮和Ajax请求：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;btnDELETE&#34;</span><span class="p">&gt;</span>DELETE<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 测试DELETE接口（演示预检请求）
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnDELETE&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://127.0.0.1/delete&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;1&#39;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div></li>
+<li>
+<p>在Express Server中添加以下接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s1">&#39;/delete&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="nx">msg</span><span class="o">:</span> <span class="s1">&#39;DELETE请求成功!&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div></li>
+</ul>
+<p>在Edge、Firefox等能显示预检请求的浏览器（Google Chrome需要在<a href="chrome://flags/#out-of-blink-cors" target="_blank" rel="noopener noreferrer">chrome://flags/#out-of-blink-cors<i class="fas fa-external-link-square-alt ms-1"></i></a>中开启显示预检请求）中打开HTML页面，点击DELETE按钮发起请求。然后在开发者工具的网络监测中可以看到发送了一条大小为0的OPTION预检请求。</p>
+</li>
+</ul>
+<hr>
+
+<h1 id="jsonp-接口" data-numberify>JSONP 接口<a class="anchor ms-1" href="#jsonp-接口"></a></h1>
+<p>浏览器端通过<code>&lt;script&gt;</code>标签的<code>src</code>属性，请求服务器上的数据。同时，服务器返回一个函数的调用。这种请求数据的方式叫做JSONP。</p>
+<p>JSONP的特点：</p>
+<ul>
+<li>JSONP不属于真正的Ajax请求，因为它没有使用XMLHttpRequest这个对象。</li>
+<li>JSONP仅支持GET请求，不支持POST、PUT、DELETE等请求。</li>
+</ul>
+<p>实现JSONP接口的步骤：</p>
+<ol>
+<li>
+<p>获取客户端发送过来的回调函数的名字。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">funcName</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">callback</span>
+</span></span></code></pre></div></li>
+<li>
+<p>得到要通过JSONP形式发送给客户端的响应数据。</p>
+</li>
+<li>
+<p>根据前两步得到的数据，拼接出一个函数调用的字符串。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="cm">/* get response data... */</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// 拼接函数调用的字符串
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="kr">const</span> <span class="nx">scriptStr</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">funcName</span><span class="si">}</span><span class="sb">(</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="si">}</span><span class="sb">)`</span>
+</span></span></code></pre></div></li>
+<li>
+<p>把上一步拼接得到的字符串，响应给客户端的<code>&lt;script&gt;</code>标签进行解析执行。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">scriptStr</span><span class="p">)</span>
+</span></span></code></pre></div></li>
+</ol>
+<p>客户端进行JSONP请求的示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;btnJSONP&#34;</span><span class="p">&gt;</span>JSONP<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#btnJSONP&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://127.0.0.1/jsonp&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span><span class="p">,</span>  <span class="c1">// 表示发起JSONP请求
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl">        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>完整的JSONP接口实现示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/jsonp&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="c1">// TODO: 定义 JSONP 接口具体的实现过程
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="c1">// 获取回调函数名称
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="kr">const</span> <span class="nx">funcName</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">callback</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="c1">// 获取响应数据
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Zhangsan&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="mi">22</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="c1">// 拼接函数调用的字符串
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="kr">const</span> <span class="nx">scriptStr</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">funcName</span><span class="si">}</span><span class="sb">(</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="si">}</span><span class="sb">)`</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="c1">// 将函数调用字符串响应给客户端的 &lt;script&gt; 标签进行解析执行
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">scriptStr</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// 如果同时启用了 CORS 和 JSONP，CORS中间件要放在JSONP接口后面，否则JSONP接口也会以CORS形式进行相应
+</span></span></span></code></pre></div></div>
+</div>
+</div><div class="card-footer">
+  <div class="post-navs d-flex justify-content-evenly"><div class="post-nav post-prev">
+      <i class="fas fa-fw fa-chevron-down post-prev-icon me-1" data-fa-transform="rotate-90"></i>
+      <a href="/notes/node-js/express/middleware/">Node.js Express 中间件</a>
+    </div></div>
+</div></article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title fs-4 my-2 text-surface">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title my-2 fs-4 text-surface">评论</h2>
+  </div>
+  <div class="card-body">
+
+<div class="giscus"></div>
+
+
+
+</div>
+</div></div>
+</div>
+<aside class="col-xxl-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+<div class="row component card">
+    <div class="card-body">
+        <form action="/search/">
+            <div class="input-group">
+                <input name="q" class="form-control rounded" placeholder="搜索">
+                <button class="btn btn-sm btn-search position-absolute end-0 border-0 border-start border-secondary p-2" type="submit">
+                    <i class="fas fa-fw fa-search text-primary"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    
+<div class="accordion profile">
+  <div class="accordion-item card row text-center component">
+    <div class="accordion-header card-header border-0" id="profile-header">
+      <a
+        class="accordion-button d-lg-none mb-2 shadow-none p-0 bg-transparent text-surface"
+        role="button" data-bs-toggle="collapse" href="#profile" aria-expanded="true" aria-controls="profile">
+        Profile
+      </a>
+    </div>
+    <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="profile" aria-labelledby="profile-header">
+      <div class="col-12 d-flex align-items-center justify-content-center"><picture><img class="profile-avatar rounded-circle " alt="Roamverse · Lin" src="/images/profile.webp?v=cc7bb3f3d9b4e001e3da696127c31672" loading="lazy" data-viewer-invisible width="2048" height="2048" />
+</picture>
+</div>
+      <div class="col-12 profile-meta"><div class="profile-name fw-fold fs-lg">Roamverse · Lin</div><div class="profile-bio">专注软件开发，沉淀技术心得，分享可落地的技术实践。</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>广东 · 中国</div><a class="profile-about text-primary" href="/about/"><i class="fas fa-fw fa-user"></i>关于</a><a class="profile-contact text-primary" href="/contact/"><i class="fas fa-fw fa-question-circle"></i>联系我</a></div>
+
+
+<nav class="social-links nav justify-content-center mt-1 justify-content-around">
+    <a class="nav-link social-link" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a>
+      <a class="nav-link social-link" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fa-2x fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link" target="_blank" data-rss-feed href="/archives/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-2x fa-rss"></i>
+  </a>
+</nav>
+</div>
+  </div>
+</div>
+
+<div class="accordion taxonomies-toggle">
+    <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+            <a
+                class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+                role="button" data-bs-toggle="collapse" href="#taxonomies-toggle" aria-expanded="true" aria-controls="taxonomies-toggle">
+                Taxonomies
+            </a>
+        </div>
+        <div class="card-body collapse accordion-collapse accordion-body d-lg-block show" id="taxonomies-toggle">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="taxonomySeriesTab" data-bs-toggle="tab" data-bs-target="#taxonomySeries" 
+                            type="button" role="tab" aria-controls="taxonomySeries" aria-selected="true">
+                            专栏
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyCategoriesTab" data-bs-toggle="tab" data-bs-target="#taxonomyCategories" 
+                            type="button" role="tab" aria-controls="taxonomyCategories" aria-selected="true">
+                            分类
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyTagsTab" data-bs-toggle="tab" data-bs-target="#taxonomyTags" 
+                            type="button" role="tab" aria-controls="taxonomyTags" aria-selected="true">
+                            标签
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="taxonomyAuthorsTab" data-bs-toggle="tab" data-bs-target="#taxonomyAuthors" 
+                            type="button" role="tab" aria-controls="taxonomyAuthors" aria-selected="true">
+                            作者
+                        </button>
+                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taxonomyArchivesTab" data-bs-toggle="tab" data-bs-target="#taxonomyArchives" 
+                        type="button" role="tab" aria-controls="taxonomyArchives" aria-selected="true">
+                        归档
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="taxonomySeries" role="tabpanel" aria-labelledby="taxonomySeriesTab" tabindex="0">
+                        <a href="/series/spring/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Spring">
+                            Spring
+                            <span class="badge badge-sm text-secondary bg-white ms-1">30</span>
+                        </a>
+                        <a href="/series/vue/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Vue">
+                            Vue
+                            <span class="badge badge-sm text-secondary bg-white ms-1">30</span>
+                        </a>
+                        <a href="/series/node.js/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Node.js">
+                            Node.js
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/ruan-she/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Ruan-She">
+                            Ruan-She
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/series/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/series/python/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-series me-2 mb-2" title="Python">
+                            Python
+                            <span class="badge badge-sm text-secondary bg-white ms-1">2</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyCategories" role="tabpanel" aria-labelledby="taxonomyCategoriesTab" tabindex="0">
+                        <a href="/categories/note/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="笔记">
+                            笔记
+                            <span class="badge badge-sm text-secondary bg-white ms-1">112</span>
+                        </a>
+                        <a href="/categories/memo/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-category me-2 mb-2" title="备忘录">
+                            备忘录
+                            <span class="badge badge-sm text-secondary bg-white ms-1">15</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyTags" role="tabpanel" aria-labelledby="taxonomyTagsTab" tabindex="0">
+                        <a href="/tags/java/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Java">
+                            Java
+                            <span class="badge badge-sm text-secondary bg-white ms-1">33</span>
+                        </a>
+                        <a href="/tags/maven/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Maven">
+                            Maven
+                            <span class="badge badge-sm text-secondary bg-white ms-1">23</span>
+                        </a>
+                        <a href="/tags/%E8%BD%AF%E8%80%83/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="软考">
+                            软考
+                            <span class="badge badge-sm text-secondary bg-white ms-1">13</span>
+                        </a>
+                        <a href="/tags/javaweb/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="JavaWeb">
+                            JavaWeb
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/springcloud/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="SpringCloud">
+                            SpringCloud
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="数据库">
+                            数据库
+                            <span class="badge badge-sm text-secondary bg-white ms-1">10</span>
+                        </a>
+                        <a href="/tags/docker/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Docker">
+                            Docker
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/go/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Go">
+                            Go
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/golang/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Golang">
+                            Golang
+                            <span class="badge badge-sm text-secondary bg-white ms-1">7</span>
+                        </a>
+                        <a href="/tags/gin/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title="Gin">
+                            Gin
+                            <span class="badge badge-sm text-secondary bg-white ms-1">6</span>
+                        </a>
+                        <a href="/tags" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-tag me-2 mb-2" title='全部'>
+                        全部
+                        <span class="badge badge-sm text-secondary bg-white ms-1">45</span>
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="taxonomyAuthors" role="tabpanel" aria-labelledby="taxonomyAuthorsTab" tabindex="0">
+                        <a href="/authors/roamverse/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Roamverse · Lin">
+                            Roamverse · Lin
+                            <span class="badge badge-sm text-secondary bg-white ms-1">106</span>
+                        </a>
+                        <a href="/authors/linner/" class="btn btn-sm btn-secondary post-taxonomy ps-3 post-author me-2 mb-2" title="Linner">
+                            Linner
+                            <span class="badge badge-sm text-secondary bg-white ms-1">21</span>
+                        </a>
+                    </div>
+                <div class="tab-pane" id="taxonomyArchives" role="tabpanel" aria-labelledby="taxonomyArchivesTab" tabindex="0">
+
+    <a href="" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2023">
+    2023 <span class="badge badge-sm text-secondary bg-white ms-1">5</span>
+    </a>
+
+    <a href="" class="btn btn-sm btn-secondary post-taxonomy ps-3 me-2 mb-2" title="2022">
+    2022 <span class="badge badge-sm text-secondary bg-white ms-1">16</span>
+    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="accordion posts-toggle">
+      <div class="row card component accordion-item">
+        <div class="accordion-header card-header border-0">
+          <a
+            class="accordion-button d-lg-none mb-1 shadow-none p-0 bg-transparent"
+            role="button"
+            data-bs-toggle="collapse"
+            href="#posts-toggle"
+            aria-expanded="true"
+            aria-controls="posts-toggle">
+            文章
+          </a>
+        </div>
+        <div
+          class="card-body collapse accordion-collapse accordion-body d-lg-block show"
+          id="posts-toggle">
+          <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="recent-posts-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#recent-posts"
+                  type="button"
+                  role="tab"
+                  aria-controls="recent-posts"
+                  aria-selected="true">
+                  最近文章
+                </button>
+              </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+              <div
+                class="tab-pane active"
+                id="recent-posts"
+                role="tabpanel"
+                aria-labelledby="recent-posts-tab"
+                tabindex="0">
+                <ul class="post-list list-unstyled ms-1">
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/repo-sync/">
+        局域网同步 Git 仓库
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          September 24, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/web-storage/">
+        WebStorage 浏览器本地存储
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          September 18, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/vscode-markdown-font/">
+        VS Code 中英字符对齐
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          August 10, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/nvm-install/">
+        NVM 安装
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          August 6, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                    <li class="mb-2">
+  <div class="d-flex">
+    <div
+      class="flex-grow-1 d-flex flex-column h-auto justify-content-center">
+      <a class="post-title" href="/posts/reggie-note/">
+        瑞吉外卖项目实战
+      </a>
+      <div class="post-meta mt-2">
+        <span class="post-date">
+          March 21, 2023
+        </span>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    
+  </div>
+</aside>
+
+      </div>
+    </main><footer class="footer mt-auto py-3 text-center container"><div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasActionsPanel"
+  aria-labelledby="offcanvasActionsPanelLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title h5" id="offcanvasActionsPanelLabel">
+      <i class="fas fa-fw fa-th-large me-1"></i>
+      操作
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" data-bs-target="offcanvasActionsPanel" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mt-2"><div class="social-share mb-4 d-flex overflow-auto">
+      <a class="btn-social-share d-flex flex-column align-items-center me-3" rel="noopener noreferrer" aria-label="X Share Button"
+      target="_blank" href="https://x.com/intent/tweet?title=Node.js%20Express%20%e8%b7%a8%e5%9f%9f%e8%af%b7%e6%b1%82&url=%2fnotes%2fnode-js%2fexpress%2fcors-request%2f">
+        <i class="fab fa-2x fa-fw fa-x-twitter mb-2"></i> X
+      </a>
+      <a class="btn-social-share d-flex flex-column align-items-center me-3" rel="noopener noreferrer" aria-label="Facebook Share Button"
+        target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fnotes%2fnode-js%2fexpress%2fcors-request%2f">
+        <i class="fab fa-2x fa-fw fa-facebook-f mb-2"></i> Facebook
+      </a>
+    </div>
+    <hr class="mb-4"><div class="actions d-flex overflow-auto align-items-center">
+      <a role="button" class="action action-go-back d-flex flex-column align-items-center me-3" href="javascript: window.history.back();">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-chevron-circle-down" data-fa-transform="rotate-90"></i></span> 返回
+      </a>
+      <a role="button" class="action action-reload-page d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+      </a>
+      <a role="button" class="action action-copy-url d-flex flex-column align-items-center me-3">
+        <span class="action-icon mb-2"><i class="fas fa-2x fa-link"></i></span> 复制链接
+      </a>
+    </div>
+  </div>
+</div><div class="row text-center text-lg-start">
+  <div class="text-center justify-content-between">
+    <p class="mb-2">Roam Tech-verse | Roamverse Technical Blog</p>
+    <p class="text-secondary mb-2"><small>记录软件开发实践、技术踩坑与工程化思考，分享实用技术笔记。</small></p><div class="copyright mb-2 text-secondary">
+  <small>Copyright © 2020-2026 Razon Yang. All Rights Reserved.
+</small>
+</div>
+</div>
+  
+  <div class="justify-content-center" style="justify-content: center; display: flex; flex-wrap: wrap;">
+
+
+<nav class="social-links nav justify-content-center justify-content-between mb-2 mt-3">
+    <a class="nav-link social-link p-0 me-1 mb-2" href="mailto:linner.cheng@qq.com" title="电子邮箱">
+      <i class="fas fa-fw fa-envelope"></i>
+    </a>
+      <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" href="https://github.com/Linna-cy" title="GitHub" rel="me">
+        <i class="fa-fw fab fa-github"
+          ></i>
+      </a>
+  <a class="nav-link social-link p-0 me-1 mb-2" target="_blank" data-rss-feed href="/index.xml" title="RSS" rel="me">
+    <i class="fas fa-fw fa-rss"></i>
+  </a>
+</nav>
+</div>
+</div>
+
+<div class="sponsors mt-3">
+    
+</div>
+</footer>
+<script data-precache src="/assets/main/bundle.min.249bc1d0e1fe184c92930643b07551703a85535b34f6a46f0ded7f3733ada009.js" integrity="sha256-JJvB0OH&#43;GEySkwZDsHVRcDqFU1s09qRvDe1/NzOtoAk=" crossorigin="anonymous" async></script><script data-precache src="/assets/icons/bundle.min.99bec5e8300e2daa1a33631789a66ed4775dad2b9466d43b5d71e8a7a9a3b236.js" integrity="sha256-mb7F6DAOLaoaM2MXiaZu1HddrSuUZtQ7XXHop6mjsjY=" crossorigin="anonymous" defer></script>
+<script data-precache src="/assets/viewer/bundle.min.700f97acd7c0b80f6acb9e7543c719d50b2ab84a9a15e46cf63149af990eb4fb.js" integrity="sha256-cA&#43;XrNfAuA9qy551Q8cZ1QsquEqaFeRs9jFJr5kOtPs=" crossorigin="anonymous" defer></script>
+<script src="/js/sw-register.js" defer></script>
+<script src="https://giscus.app/client.js"
+    data-repo="razonyang/hugo-theme-bootstrap"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkzMDQzMzI4NTM="
+    data-category="General"
+    data-category-id="MDE4OkRpcG9zaXRvcnkzODkzODg2"
+    data-mapping="pathname"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    defer>
+</script>
+
+
+  </body>
+</html>
