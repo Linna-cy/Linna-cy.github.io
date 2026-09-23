@@ -9,6 +9,135 @@
     <copyright>Copyright © 2020-2026 Razon Yang. All Rights Reserved.
 </copyright>
     <lastBuildDate>Fri, 04 Aug 2023 08:40:11 +0000</lastBuildDate><atom:link href="/tags/springcloud/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spring AMQP</title>
+      <link>/notes/spring/springcloud/communications/spring-amqp/</link>
+      <pubDate>Fri, 04 Aug 2023 08:40:11 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/spring-amqp/</guid>
+      <description><![CDATA[<p>AMQP（Advanced Message Queuing Protocol）是用于在应用程序之间传递业务消息的开放标准。该协议与语言和平台无关，更符合微服务中独立性的要求。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>RabbitMQ</title>
+      <link>/notes/spring/springcloud/communications/rabbit-mq/</link>
+      <pubDate>Thu, 03 Aug 2023 08:10:45 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/rabbit-mq/</guid>
+      <description><![CDATA[<p>RabbitMQ官网：<a href="https://www.rabbitmq.com/" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方文档：<a href="https://rabbitmq.com/documentation.html" target="_blank" rel="noopener noreferrer">https://rabbitmq.com/documentation.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方Demo：<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/getstarted.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+
+<h1 id="部署-rabbitmq" data-numberify>部署 RabbitMQ<a class="anchor ms-1" href="#部署-rabbitmq"></a></h1>
+<p>使用Docker来部署RabbitMQ只需要两个步骤：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>通讯方式</title>
+      <link>/notes/spring/springcloud/communications/introduction/</link>
+      <pubDate>Thu, 03 Aug 2023 07:34:34 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/introduction/</guid>
+      <description><![CDATA[<p>微服务间通讯有两种方式：</p>
+<ul>
+<li>同步通讯：实时响应。</li>
+<li>异步通讯：不需要马上回复。</li>
+</ul>
+<p>两种方式各有优劣，同步通讯可以立即得到响应，但是却不能跟多个服务同时通讯。异步通讯可以同时与多个服务通讯，但是往往响应会有所延迟。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Eureka</title>
+      <link>/notes/spring/springcloud/eureka/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/eureka/</guid>
+      <description><![CDATA[<h1 id="eureka-服务注册中心" data-numberify>Eureka 服务注册中心<a class="anchor ms-1" href="#eureka-服务注册中心"></a></h1>
+<p>Eureka架构下将服务分为以下两个角色：</p>
+<ul>
+<li>注册中心（Eureka Server，服务端）。</li>
+<li>客户端（Eureka Client）。</li>
+</ul>
+<p>Eureka会将客户端（即服务）的信息进行注册，让客户端可以通过Eureka注册中心获取服务信息并进行调用。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Feign</title>
+      <link>/notes/spring/springcloud/feign/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/feign/</guid>
+      <description><![CDATA[<p>尽管使用了注册中心来解决URL的硬编码等问题，但是如今使用<code>RestTemplate</code>还是存在以下问题：</p>
+<ul>
+<li>代码可读性差，编程体验不统一；</li>
+<li>参数复杂URL难以维护。</li>
+</ul>
+<p>Feign是一个声明式的HTTP客户端，作用于服务消费者，在服务消费者中为服务提供者创建一个HTTP远程调用。官方地址：<a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener noreferrer">https://github.com/OpenFeign/feign<i class="fas fa-external-link-square-alt ms-1"></i></a>。其作用就是帮助我们优雅的实现HTTP请求的发送，解决上面提到的问题。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gateway</title>
+      <link>/notes/spring/springcloud/gateway/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/gateway/</guid>
+      <description><![CDATA[<h1 id="网关" data-numberify>网关<a class="anchor ms-1" href="#网关"></a></h1>
+<p>网关是所有微服务的统一入口。网关的核心功能特性：</p>
+<ul>
+<li><strong>请求路由</strong>：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个微服务，这个过程叫做路由。当路由的目标服务有多个时，还需要做<strong>负载均衡</strong>。</li>
+<li><strong>权限控制</strong>：网关作为微服务入口，需要校验用户是是否有请求资格，如果没有则进行拦截。</li>
+<li><strong>限流</strong>：当请求流量过高时，在网关中按照下流的微服务能够接受的速度来放行请求，避免服务压力过大。</li>
+</ul>
+<p>在SpringCloud中网关的实现包括两种：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Nacos</title>
+      <link>/notes/spring/springcloud/nacos/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/nacos/</guid>
+      <description><![CDATA[<h1 id="部署-nacos-server" data-numberify>部署 Nacos Server<a class="anchor ms-1" href="#部署-nacos-server"></a></h1>
+<p>安装和配置好Nacos后，在<code>nacos</code>的<code>bin</code>目录中使用脚本启动：</p>
+<ul>
+<li>
+<p>Windows：</p>
+<p>单机启动：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">startup.cmd -m standalone
+</span></span></code></pre></div></li>
+<li>
+<p>Linux：</p>
+<p>单机启动：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">sh startup.sh -m standalone
+</span></span></code></pre></div></li>
+</ul>
+<p>在浏览器中使用对应的IP和端口访问，如<code>http://localhost:8848/nacos</code>。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>RestTemplate</title>
+      <link>/notes/spring/springcloud/remote-call/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/remote-call/</guid>
+      <description><![CDATA[<h1 id="微服务远程调用" data-numberify>微服务远程调用<a class="anchor ms-1" href="#微服务远程调用"></a></h1>
+<p>在微服务架构中，不同微服务都应该有自己独立的数据库以减少服务之间的冗余。而不同的服务之间可能需要共享数据。但拆分后的服务，它们的数据库是相互独立的，一个服务不可能去调用另一个服务的数据库，所以服务之间的信息共享成为一个问题。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Spring 环境和配置</title>
+      <link>/notes/spring/springcloud/config/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/config/</guid>
+      <description><![CDATA[<p>微服务需要根据业务模块拆分，做到单一职责，不要重复开发相同业务。</p>
+
+<h1 id="父工程" data-numberify>父工程<a class="anchor ms-1" href="#父工程"></a></h1>
+<p>微服务是一种分布式开发，要将一个项目拆分为若干个服务，所以会有很多个服务模块。而要统一管理这些服务模块，可以创建一个父工程来管理。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>微服务简介</title>
+      <link>/notes/spring/springcloud/introduction/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/introduction/</guid>
+      <description><![CDATA[<h1 id="微服务架构" data-numberify>微服务架构<a class="anchor ms-1" href="#微服务架构"></a></h1>
+<p>从前的项目是使用单体架构，单体架构是指<u>将业务的所有功能集中在一个项目中开发，打成一个包部署</u>。</p>
+<p>单体架构的优点是：</p>]]></description>
+    </item>
+    
   </channel>
 </rss>
 

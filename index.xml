@@ -10,12 +10,490 @@
 </copyright>
     <lastBuildDate>Tue, 02 Jul 2024 14:49:41 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Gin Cookie 和 Session</title>
+      <link>/notes/golang/gin/cookie-and-session/</link>
+      <pubDate>Tue, 02 Jul 2024 14:49:41 +0000</pubDate>
+      <guid>/notes/golang/gin/cookie-and-session/</guid>
+      <description><![CDATA[<h1 id="cookie" data-numberify>Cookie<a class="anchor ms-1" href="#cookie"></a></h1>
+<p>在 Gin 中，使用 Cookie 涉及到两个方法，<code>Context.Cookie()</code> 和 <code>Context.SetCookie()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">SetCookie</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">	</span><span class="c1">// 设置 Cookie</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">	</span><span class="nx">c</span><span class="p">.</span><span class="nf">SetCookie</span><span class="p">(</span><span class="s">&#34;gin-cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;test&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;/&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;localhost&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">	</span><span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">		</span><span class="s">&#34;code&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">		</span><span class="s">&#34;data&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">	</span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">GetCookie</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">	</span><span class="c1">// 获取 Cookie</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nf">Cookie</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">		</span><span class="nx">c</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">		</span><span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">			</span><span class="s">&#34;code&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">			</span><span class="s">&#34;data&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">		</span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">	</span><span class="nx">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">	</span><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="nx">SetCookie</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">	</span><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="nx">GetCookie</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">		</span><span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>其中：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 中间件</title>
+      <link>/notes/golang/gin/middlewares/</link>
+      <pubDate>Sun, 30 Jun 2024 07:12:14 +0000</pubDate>
+      <guid>/notes/golang/gin/middlewares/</guid>
+      <description><![CDATA[<p>Gin 中间件的配置方式有许多种，大致为：</p>
+<ol>
+<li>在 <code>Handle()</code>、<code>Any()</code>、<code>Match()</code>、<code>GET()</code> 等基本路由方法中配置 <code>HandlerFunc</code>。</li>
+<li>在 <code>RouterGroup</code> 的 <code>Group()</code> 方法中配置 <code>HandlerFunc</code>。</li>
+<li>使用 <code>Use()</code> 方法配置 <code>HandlerFunc</code>。</li>
+</ol>
+<hr>
+
+<h1 id="特定请求的中间件" data-numberify>特定请求的中间件<a class="anchor ms-1" href="#特定请求的中间件"></a></h1>
+<p>为特定请求配置中间件，可以直接在请求路由的 <code>HandlerFunc</code> 参数中配置。例如：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 路由</title>
+      <link>/notes/golang/gin/routers/</link>
+      <pubDate>Sun, 30 Jun 2024 05:42:11 +0000</pubDate>
+      <guid>/notes/golang/gin/routers/</guid>
+      <description><![CDATA[<p>Gin 中许多类型都可以认为它是一个路由（<code>IRoutes</code>）类型，这包括了 <code>RouterGroup</code>、<code>Engine</code>等。并且 <code>IRoutes</code> 接口中定义的方法都会有一个 <code>IRoutes</code> 类型的返回值，使得 Gin Routers 可以支持链式调用，让代码更加简洁。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 获取请求</title>
+      <link>/notes/golang/gin/request/</link>
+      <pubDate>Sat, 29 Jun 2024 17:03:06 +0000</pubDate>
+      <guid>/notes/golang/gin/request/</guid>
+      <description><![CDATA[<p>Gin 请求在 <a href="../introduction#gin-%e8%af%b7%e6%b1%82">Gin 介绍</a> 中做了简单的介绍。</p>
+<p>Gin 请求与 <code>RouterGroup</code> 和 <code>IRoutes</code> 息息相关。<code>IRoutes</code>是一个接口类型，它定义了一系列用于配置路由处理的方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">  </span><span class="c1">// 用于配置路由中间件</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">	</span><span class="nf">Use</span><span class="p">(</span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="c1">// 路由处理方法</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">	</span><span class="nf">Handle</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">	</span><span class="nf">Any</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">	</span><span class="nf">GET</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">	</span><span class="nf">POST</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">	</span><span class="nf">DELETE</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">	</span><span class="nf">PATCH</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">	</span><span class="nf">PUT</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">	</span><span class="nf">OPTIONS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">	</span><span class="nf">HEAD</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">	</span><span class="nf">Match</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">  </span><span class="c1">// 静态文件处理</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">	</span><span class="nf">StaticFile</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">	</span><span class="nf">StaticFileFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">	</span><span class="nf">Static</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">	</span><span class="nf">StaticFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>而 <code>RouterGroup</code> 是 <code>IRoutes</code> 的一个实现。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 响应数据</title>
+      <link>/notes/golang/gin/response/</link>
+      <pubDate>Sat, 29 Jun 2024 07:48:18 +0000</pubDate>
+      <guid>/notes/golang/gin/response/</guid>
+      <description><![CDATA[<p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 <code>gin.Context</code> 类型。<code>gin.Context</code> 类型的作用有：</p>
+<ul>
+<li>获取请求数据，包括请求头、Query 参数、Form 数据、Path 参数、请求体等。</li>
+<li>响应管理，包括设置 HTTP 状态码、编写响应体、设置响应头等。</li>
+<li>中间件支持。<code>Context</code> 可以携带当前处理函数的信息传递到下一个处理函数，直到达到最终的处理函数。在中间件中可以使用 <code>Context</code> 读取、修改 <code>Context</code> 的内容或终止请求处理流程。</li>
+<li>Cookie 操作。</li>
+<li>读写请求和响应体的原始字节流，以此来处理自定义协议或二进制数据传输。</li>
+<li>错误处理。可以记录错误并中断请求处理流程。</li>
+</ul>
+<p>响应数据示例：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin</title>
+      <link>/notes/golang/gin/introduction/</link>
+      <pubDate>Sat, 29 Jun 2024 07:15:50 +0000</pubDate>
+      <guid>/notes/golang/gin/introduction/</guid>
+      <description><![CDATA[<p>Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。</p>
+<hr>
+
+<h1 id="使用-gin" data-numberify>使用 Gin<a class="anchor ms-1" href="#使用-gin"></a></h1>
+<ol>
+<li>下载并安装 Gin：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ go get -u github.com/gin-gonic/gin
+</span></span></code></pre></div><ol start="2">
+<li>引入 Gin：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="s">&#34;github.com/gin-gonic/gin&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>如果需要使用诸如 <code>http.StatusOK</code> 之类的 HTTP 状态码常量，可以引入 <code>net/http</code> 包：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>创建 Go Module</title>
+      <link>/notes/golang/create-module/</link>
+      <pubDate>Sat, 08 Jun 2024 06:27:21 +0000</pubDate>
+      <guid>/notes/golang/create-module/</guid>
+      <description><![CDATA[<h1 id="go-path" data-numberify>Go Path<a class="anchor ms-1" href="#go-path"></a></h1>
+<p>在 Golang 1.11 之前，Go 采用的是手动依赖管理，也就是使用 Go Path 的方式管理依赖。</p>
+<p>使用 Go Path 会有以下问题：</p>
+<ol>
+<li>代码开发必须在 Go Path 的 <code>src</code> 目录下。</li>
+<li>依赖手动管理。</li>
+<li>依赖包没有版本可言。</li>
+</ol>
+<hr>
+
+<h1 id="go-modules" data-numberify>Go Modules<a class="anchor ms-1" href="#go-modules"></a></h1>
+<p>Go Modules 是 Golang 1.11 新加的特性。Go Modules 的特点如下：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java Map</title>
+      <link>/notes/java/collection/map/</link>
+      <pubDate>Fri, 07 Jun 2024 05:54:36 +0000</pubDate>
+      <guid>/notes/java/collection/map/</guid>
+      <description><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p><code>Map</code> 是 Java 中的一种键值对集合类型的接口，它还提供了一些对数组进行排序、打印、和对 <code>List</code> 进行转换的静态方法。</p>
+<p>常用的实现类有：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java List</title>
+      <link>/notes/java/collection/list/</link>
+      <pubDate>Tue, 04 Jun 2024 06:51:15 +0000</pubDate>
+      <guid>/notes/java/collection/list/</guid>
+      <description><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p><code>List</code> 是 Java 中的一种有序、可重复的集合接口类型。其常用的实现类有：</p>
+<ul>
+<li><strong><code>ArrayList</code></strong>：动态数组。</li>
+<li><strong><code>LinkedList</code></strong>：链表。</li>
+</ul>
+<hr>
+
+<h1 id="arraylist-和-linkedlist-的区别" data-numberify>ArrayList 和 LinkedList 的区别<a class="anchor ms-1" href="#arraylist-和-linkedlist-的区别"></a></h1>
+<p><code>ArrayList</code> 和 <code>LinkedList</code> 的区别主要体现在数据结构、用途、是否支持随机访问、内存占用等方面。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java 集合框架</title>
+      <link>/notes/java/collection/introduction/</link>
+      <pubDate>Tue, 04 Jun 2024 06:51:15 +0000</pubDate>
+      <guid>/notes/java/collection/introduction/</guid>
+      <description><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>Java 集合框架可以分类两大类型：</p>
+<ul>
+<li>
+<p><strong><code>Collection</code></strong>：最基本的集合类型的接口，提供了添加、删除、清空等基本操作，还提供了一些对集合进行排序、二分查找、同步的静态方法。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java 概述</title>
+      <link>/notes/java/introduction/</link>
+      <pubDate>Tue, 04 Jun 2024 06:04:04 +0000</pubDate>
+      <guid>/notes/java/introduction/</guid>
+      <description><![CDATA[<h1 id="特点" data-numberify>特点<a class="anchor ms-1" href="#特点"></a></h1>
+<p>Java 比较突出的特点：</p>
+<ul>
+<li><strong>面向对象</strong>：封装，继承，多态。</li>
+<li><strong>平台无关性</strong>（跨平台）：Java 是一种 “<u>一次编写，到处运行</u>（Write Once，Run any Where）” 的语言。也就是说，采用 Java 语言编写的程序具<u>有很好的可移植性</u>。保证 Java 可移植性的正是 Java 的虚拟机机制。</li>
+<li><strong>多线程</strong>：Java 语言提供了多线程支持。</li>
+<li><strong>JIT</strong>（Just-In-Time）<strong>编译</strong>：指的是<u>即时编译器</u>，它可以在程序运行时将字节码转换为本地机器码来提高程序运行速度。</li>
+<li><strong>编译与解释并存</strong>：需要先将源代码编译成字节码，再解释执行字节码。</li>
+</ul>
+<hr>
+
+<h1 id="jvmjdk-和-jre" data-numberify>JVM、JDK 和 JRE<a class="anchor ms-1" href="#jvmjdk-和-jre"></a></h1>
+<ul>
+<li><strong>JVM</strong>（Java Virtual Machine，Java 虚拟机）：JVM 负责<u>将 Java 字节码转换为特定平台的机器码并执行</u>，是 Java <u>实现跨平台的关键</u>所在。针对不同的操作系统，有不同的 JVM 实现。</li>
+<li><strong>JRE</strong>（Java Runtime Environment，Java 运行时环境）：JRE 包含了<u>运行 Java 程序所必需的库</u>，以及 <u>JVM</u>。</li>
+<li><strong>JDK</strong>（Java Development Kit，Java 开发工具包）：JDK 是一套完整的 Java SDK（Software Development Kit，软件开发工具包），包括了 <u>JRE</u> 以及<u>编译器</u>（<u><code>javac</code></u>）、<u>Java 文档生成工具</u>（<u>Javadoc</u>）、<u>Java 调试器</u>等开发工具。为开发者提供了开发、编译、调试 Java 程序的一整套环境。</li>
+</ul>
+<p>也就是说，JDK 包含了 JRE、<code>javac</code>、Javadoc、Java 调试器等；JRE 包含了 Java 库和JVM。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java 线程的创建</title>
+      <link>/notes/java/concurrent/create-thread/</link>
+      <pubDate>Sun, 10 Dec 2023 07:53:03 +0000</pubDate>
+      <guid>/notes/java/concurrent/create-thread/</guid>
+      <description><![CDATA[<p>Java提供了三种创建线程的方法：</p>
+<ul>
+<li>重写<code>Thread</code>类的<code>run()</code>；</li>
+<li>通过实现<code>Runnable</code>接口；</li>
+<li>通过<code>Callable</code>和<code>FutureTask</code>创建线程。</li>
+</ul>
+<hr>
+
+<h1 id="通过-thread-类创建" data-numberify>通过 Thread 类创建<a class="anchor ms-1" href="#通过-thread-类创建"></a></h1>
+<p>在Java中，每一个线程实际的创建和运行都是通过<code>Thread</code>类。<code>Thread</code>类的<code>run()</code>方法就是当前线程的入口点（入口方法）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java 并发编程</title>
+      <link>/notes/java/concurrent/introduction/</link>
+      <pubDate>Thu, 07 Dec 2023 08:08:35 +0000</pubDate>
+      <guid>/notes/java/concurrent/introduction/</guid>
+      <description><![CDATA[<h1 id="概念" data-numberify>概念<a class="anchor ms-1" href="#概念"></a></h1>
+<p>Java 并发编程中涵盖了以下这些概念：</p>
+<ul>
+<li>进程</li>
+<li>线程</li>
+<li>并发</li>
+<li>并行</li>
+</ul>
+<hr>
+
+<h1 id="进程" data-numberify>进程<a class="anchor ms-1" href="#进程"></a></h1>
+<p><strong>进程</strong>（Process）是指在计算机中正在运行的一个<strong>程序的实例</strong>。进程是操作系统进行资源分配和调度的<strong>基本单位</strong>（<strong>资源分配的最小单位</strong>），用于执行程序的代码和管理与该程序相关的资源。每个进程都有自己的地址空间、内存、文件句柄等资源。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>在 Vue 中使用 Element-UI</title>
+      <link>/notes/vue/element-ui/</link>
+      <pubDate>Thu, 28 Sep 2023 16:34:08 +0800</pubDate>
+      <guid>/notes/vue/element-ui/</guid>
+      <description><![CDATA[<h1 id="vue-ui-组件库" data-numberify>Vue UI 组件库<a class="anchor ms-1" href="#vue-ui-组件库"></a></h1>
+<p>在Vue中，可以通过引入他人编写好的组件库，来构建自己的页面，提高开发效率。</p>
+<p>Vue中常用的UI组件库有：</p>
+<ul>
+<li>移动端常用UI组件库：
+<ul>
+<li><a href="https://vant-ui.github.io/vant/" target="_blank" rel="noopener noreferrer">Vant<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://didi.github.io/cube-ui/" target="_blank" rel="noopener noreferrer">Cube UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://mint-ui.github.io/" target="_blank" rel="noopener noreferrer">Mint UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://nutui.jd.com/" target="_blank" rel="noopener noreferrer">NutUI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+</ul>
+</li>
+<li>PC端常用UI组件库：
+<ul>
+<li><a href="https://element.eleme.cn/" target="_blank" rel="noopener noreferrer">Element UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://www.iviewui.com/" target="_blank" rel="noopener noreferrer">IView UI<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+<li><a href="https://www.antdv.com/components/overview" target="_blank" rel="noopener noreferrer">Ant Design Vue<i class="fas fa-external-link-square-alt ms-1"></i></a></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h1 id="安装-element-ui" data-numberify>安装 Element-UI<a class="anchor ms-1" href="#安装-element-ui"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">npm i element-ui
+</span></span></code></pre></div><hr>
+
+<h1 id="引入并应用-element-ui" data-numberify>引入并应用 Element-UI<a class="anchor ms-1" href="#引入并应用-element-ui"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">import</span> <span class="nx">ElementUI</span> <span class="nx">from</span> <span class="s1">&#39;element-ui&#39;</span><span class="p">;</span> <span class="c1">// 引入 Element-UI
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="kr">import</span> <span class="s1">&#39;element-ui/lib/theme-chalk/index.css&#39;</span><span class="p">;</span>  <span class="c1">// 引入 Element-UI 的全部样式
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">ElementUI</span><span class="p">);</span> <span class="c1">// 应用 Element-UI
+</span></span></span></code></pre></div><p>直接使用以上方式引入Element-UI，引入的是Element-UI中所有的组件以及它们的样式和交互。这会使页面的体积变得十分庞大。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue Router 两种工作模式</title>
+      <link>/notes/vue/routers/two-modes/</link>
+      <pubDate>Thu, 28 Sep 2023 14:09:10 +0800</pubDate>
+      <guid>/notes/vue/routers/two-modes/</guid>
+      <description><![CDATA[<p>Vue Router中有两种工作模式，它们分别是：</p>
+<ul>
+<li>
+<p><code>hash</code>模式：使用URL的<code>hash</code>来模拟一个完整的URL。</p>
+<p><code>hash</code>：在URL中，<code>#</code>符号及其之后的内容。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 路由守卫</title>
+      <link>/notes/vue/routers/guards/</link>
+      <pubDate>Wed, 27 Sep 2023 11:17:58 +0800</pubDate>
+      <guid>/notes/vue/routers/guards/</guid>
+      <description><![CDATA[<p>Vue Router提供的路由守卫主要用来通过<strong>跳转</strong>或<strong>取消</strong>的方式守卫导航。</p>
+<p>在路由守卫中，你可以自定义何时何种情况<strong>放行</strong>或<strong>拦截</strong>页面的路由。通过Vue Router，可以实现对前端页面路由的权限控制。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 路由组件钩子</title>
+      <link>/notes/vue/routers/hooks/</link>
+      <pubDate>Tue, 26 Sep 2023 16:28:34 +0800</pubDate>
+      <guid>/notes/vue/routers/hooks/</guid>
+      <description><![CDATA[<h1 id="路由组件生命周期钩子" data-numberify>路由组件生命周期钩子<a class="anchor ms-1" href="#路由组件生命周期钩子"></a></h1>
+<p>Vue路由组件除了能使用组件的那些生命钩子外，还能使用两个专用于路由组件的生命周期钩子。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 路由组件缓存</title>
+      <link>/notes/vue/routers/cache/</link>
+      <pubDate>Tue, 26 Sep 2023 15:12:36 +0800</pubDate>
+      <guid>/notes/vue/routers/cache/</guid>
+      <description><![CDATA[<p>Vue Router中，开启路由组件缓存可以使用<code>&lt;keep-alive&gt;</code>将<code>&lt;router-view&gt;</code>包裹起来。使用了<code>&lt;keep-alive&gt;</code>之后，路由组件被用户切换掉时，不会被销毁。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 编程式路由导航</title>
+      <link>/notes/vue/routers/navigation/</link>
+      <pubDate>Tue, 26 Sep 2023 13:19:57 +0800</pubDate>
+      <guid>/notes/vue/routers/navigation/</guid>
+      <description><![CDATA[<p>编程式路由导航是指不通过<code>&lt;router-link&gt;</code>创建<code>&lt;a&gt;</code>标签来定义导航链接，而是借助路由组件实例中的<code>$router</code>实例，通过编写代码来实现路由导航。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 路由通过 Props 传参</title>
+      <link>/notes/vue/routers/passing-props/</link>
+      <pubDate>Tue, 26 Sep 2023 10:27:58 +0800</pubDate>
+      <guid>/notes/vue/routers/passing-props/</guid>
+      <description><![CDATA[<p>路由的<code>props</code>配置可以让路由组件更方便地接收到参数。在组件中使用<code>$route</code>会让组件与路由紧耦合（使用组件必须配置路由）。通过<code>props</code>可以解除组件与路由的紧耦合。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 嵌套路由</title>
+      <link>/notes/vue/routers/nested-routes/</link>
+      <pubDate>Mon, 25 Sep 2023 04:29:24 +0000</pubDate>
+      <guid>/notes/vue/routers/nested-routes/</guid>
+      <description><![CDATA[<p>Vue 嵌套路由又称多级路由。一些应用程序的UI由多层嵌套的组件组成（即一个路由下又配置了其它几个路由）。通过Vue Router，可以使用嵌套路由配置来表达这种关系。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 动态路由匹配</title>
+      <link>/notes/vue/routers/dynamic-matching/</link>
+      <pubDate>Mon, 25 Sep 2023 04:27:20 +0000</pubDate>
+      <guid>/notes/vue/routers/dynamic-matching/</guid>
+      <description><![CDATA[<p>在Vue Router中，路由路径有以下几种匹配形式：</p>
+<ul>
+<li><strong>静态匹配</strong>：即完全按照<code>path</code>中的内容，进行相等匹配。</li>
+<li><strong>动态匹配</strong>：根据<code>path</code>中定义的路径匹配规则匹配多个路径。</li>
+</ul>
+<hr>
+
+<h1 id="路径参数" data-numberify>路径参数<a class="anchor ms-1" href="#路径参数"></a></h1>
+<p>Vue中的动态参数匹配使用的是<strong>路径参数匹配</strong>。路径参数是路径中的一个动态字段。路径参数的值会动态变化，根据这些路径参数的值，可以读取相应的数据或展示相应的页面。</p>]]></description>
+    </item>
+    
+    <item>
       <title>局域网同步 Git 仓库</title>
       <link>/posts/repo-sync/</link>
       <pubDate>Sun, 24 Sep 2023 06:48:35 +0000</pubDate>
       <guid>/posts/repo-sync/</guid>
       <description><![CDATA[<h1 id="裸仓库" data-numberify>裸仓库<a class="anchor ms-1" href="#裸仓库"></a></h1>
 <p>在局域网下对仓库进行同步，除了自己搭建Git服务外，还有一种方式，就是搭建一个专用于同步代码的<strong>裸仓库</strong>。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue Router 入门</title>
+      <link>/notes/vue/routers/introduction/</link>
+      <pubDate>Sat, 23 Sep 2023 05:27:36 +0000</pubDate>
+      <guid>/notes/vue/routers/introduction/</guid>
+      <description><![CDATA[<p>Vue.js路由（Router）允许通过不同的URL访问不同的内容。通过Vue Router，可以实现SPA（Single Page web Application，单页Web应用）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vuex 插件</title>
+      <link>/notes/vue/vuex/</link>
+      <pubDate>Fri, 22 Sep 2023 10:47:45 +0000</pubDate>
+      <guid>/notes/vue/vuex/</guid>
+      <description><![CDATA[<p>Vuex是由Vue官方开发的一个专为Vue.js开发的<u>状态管理库</u>。Vuex可以<u>集中存储管理应用的所有组件的状态</u>，并以相应的规则保证状态以一种可预测的方式发生变化。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 插槽 Slots</title>
+      <link>/notes/vue/components/slots/</link>
+      <pubDate>Fri, 22 Sep 2023 04:25:29 +0000</pubDate>
+      <guid>/notes/vue/components/slots/</guid>
+      <description><![CDATA[<p>Vue插槽（Slots）用于向组件传递一些模板片段，让子组件在它们的组件中渲染这些片段。插槽也是属于一种父组件到子组件的组件间通行的方式。</p>
+<p>Vue插槽有以下3种类型：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue CLI 服务代理</title>
+      <link>/notes/vue/components/dev-server-poxy/</link>
+      <pubDate>Thu, 21 Sep 2023 04:59:57 +0000</pubDate>
+      <guid>/notes/vue/components/dev-server-poxy/</guid>
+      <description><![CDATA[<p>通常情况下，跨域问题是由服务端依靠CORS或JSONP等方法解决。为了在开发过程中不依靠后端解决跨域问题，可以使用一台与前端页面服务的Host相同的代理服务器，将请求发送给这台代理服务器，然后再由代理服务器将请求转发给真实的服务器。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 过渡和动画</title>
+      <link>/notes/vue/animations/</link>
+      <pubDate>Wed, 20 Sep 2023 09:47:53 +0000</pubDate>
+      <guid>/notes/vue/animations/</guid>
+      <description><![CDATA[<p>Vue封装了一套可以快速构建基于状态变化的过渡和过度与动画的组件<code>&lt;transition&gt;</code>（<code>&lt;Transition&gt;</code>）和<code>&lt;transition-group&gt;</code>（<code>&lt;TransitionGroup&gt;</code>）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 组件生命周期</title>
+      <link>/notes/vue/components/life-cycle/</link>
+      <pubDate>Wed, 20 Sep 2023 00:12:12 +0000</pubDate>
+      <guid>/notes/vue/components/life-cycle/</guid>
+      <description><![CDATA[<p>在Vue中，每个组件都有其对应的生命周期，这个过程与<a href="../../life-cycle">Vue 生命周期</a>中描述的过程一致。</p>
+<p>Vue组件的生命周期图示如下：</p>
+<p><picture><img class="img-fluid " alt="Vue.js 生命周期" src="/notes/vue/components/life-cycle/1694591410572.png" loading="lazy" width="1266" height="2002" />
+</picture>
+
+</p>
+<p>下图是尚硅谷天禹所给的有关Vue生命周期的解释：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 消息订阅与发布（pubsub-js）</title>
+      <link>/notes/vue/components/pubsub-js/</link>
+      <pubDate>Tue, 19 Sep 2023 10:59:34 +0000</pubDate>
+      <guid>/notes/vue/components/pubsub-js/</guid>
+      <description><![CDATA[<p>Vue组件间的通信还可借助第三方库来实现。而<code>pubsub-js</code>就是一种实现了消息的订阅与发布的库。使用<code>pubsub-js</code>可以实现任意组件间的通信。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 组件自定义事件</title>
+      <link>/notes/vue/components/custom-events/</link>
+      <pubDate>Tue, 19 Sep 2023 03:10:26 +0000</pubDate>
+      <guid>/notes/vue/components/custom-events/</guid>
+      <description><![CDATA[<p>给一个子组件定义自定义事件的步骤大致如下：</p>
+<ul>
+<li>
+<p>在父组件中使用<code>v-on</code>绑定自定义事件，并定义回调。</p>
+<p>例如给一个<code>user-info</code>绑定自定义事件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c">  App.vue
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c"> --&gt;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="c">&lt;!-- 
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c">      通过父组件给子组件绑定一个自定义事件
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c">      实现子组件给父组件传递数据
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c">      使用 .once 修饰符，让事件只在第1次被触发时执行回调
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c">     --&gt;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="p">&lt;</span><span class="nt">user-info</span> <span class="err">@</span><span class="na">get-name</span><span class="err">.</span><span class="na">once</span><span class="o">=</span><span class="s">&#34;getUserName&#34;</span><span class="p">/&gt;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">  <span class="kr">import</span> <span class="nx">UserInfo</span> <span class="nx">from</span> <span class="s1">&#39;./components/user-info.vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">      <span class="nx">UserInfo</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">      <span class="nx">getUserName</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">          <span class="s1">&#39;The event get-name has be trigged.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>然后在子组件中，触发该自定义事件。</p>]]></description>
     </item>
     
     <item>
@@ -28,11 +506,303 @@
     </item>
     
     <item>
+      <title>Vue 组件样式作用域</title>
+      <link>/notes/vue/components/scoped/</link>
+      <pubDate>Mon, 18 Sep 2023 02:18:25 +0000</pubDate>
+      <guid>/notes/vue/components/scoped/</guid>
+      <description><![CDATA[<h1 id="样式冲突" data-numberify>样式冲突<a class="anchor ms-1" href="#样式冲突"></a></h1>
+<p>Vue多组件开发时，组件中的CSS样式默认是全局使用的。例如在<code>A.vue</code>这个组件中定义的样式，也会在<code>B.vue</code>这个组件中生效。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 插件</title>
+      <link>/notes/vue/plugins/</link>
+      <pubDate>Mon, 18 Sep 2023 01:48:20 +0000</pubDate>
+      <guid>/notes/vue/plugins/</guid>
+      <description><![CDATA[<p>Vue插件主要用于增强Vue。</p>
+<hr>
+
+<h1 id="定义插件" data-numberify>定义插件<a class="anchor ms-1" href="#定义插件"></a></h1>
+<p>在Vue中，插件的本质是一个包含<code>install()</code>方法的对象。</p>
+<p><code>install()</code>方法：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 混入配置对象</title>
+      <link>/notes/vue/components/mixins/</link>
+      <pubDate>Mon, 18 Sep 2023 01:22:04 +0000</pubDate>
+      <guid>/notes/vue/components/mixins/</guid>
+      <description><![CDATA[<p>混入（<code>mixin</code>）是指将多个组件重复的、可共用的配置选项提取成一个混入对象，然后在这些组件中对这些配置选项进行重用。</p>
+<hr>
+
+<h1 id="局部混入" data-numberify>局部混入<a class="anchor ms-1" href="#局部混入"></a></h1>
+<p>局部混入是指在组件或特定的Vue实例中引入通用的配置对象。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue Props 属性</title>
+      <link>/notes/vue/components/props/</link>
+      <pubDate>Mon, 18 Sep 2023 01:19:24 +0000</pubDate>
+      <guid>/notes/vue/components/props/</guid>
+      <description><![CDATA[<p>在Vue中，父组件可以往子组件中传递一些属性值。而子组件需要使用<code>props</code>配置项定义这些要从父组件中获取的数据。</p>
+<p>使用<code>props</code>配置项，可以让该组件的标签在被使用时，通过组件标签属性将值传入组件中。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 获取页面元素及延迟执行</title>
+      <link>/notes/vue/components/ref-and-nexttick/</link>
+      <pubDate>Mon, 18 Sep 2023 01:16:55 +0000</pubDate>
+      <guid>/notes/vue/components/ref-and-nexttick/</guid>
+      <description><![CDATA[<h1 id="ref-属性" data-numberify>ref 属性<a class="anchor ms-1" href="#ref-属性"></a></h1>
+<p>在Vue的模板中可以通过为元素或子组件添加<code>ref</code>属性（如<code>ref=&quot;elementRefValue&quot;</code>）来告诉Vue实例（或组件实例）要获取该元素。例如：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 项目开发</title>
+      <link>/notes/vue/components/projects/</link>
+      <pubDate>Sat, 16 Sep 2023 07:47:27 +0000</pubDate>
+      <guid>/notes/vue/components/projects/</guid>
+      <description><![CDATA[<h1 id="单文件组件" data-numberify>单文件组件<a class="anchor ms-1" href="#单文件组件"></a></h1>
+<p>Vue单文件组件是指使用由Vue定义的<code>.vue</code>格式的文件。<code>.vue</code>文件模板如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">&lt;!-- Vue 只能包含以下三种标签 --&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c">&lt;!-- 组件的结构 --&gt;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  <span class="c">&lt;!-- ... --&gt;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c">&lt;!-- 组件交互相关的代码（数据、方法等等） --&gt;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c">&lt;!-- 组件的样式 --&gt;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">  <span class="c">/* ... */</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>其中：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 组件</title>
+      <link>/notes/vue/components/introduction/</link>
+      <pubDate>Thu, 14 Sep 2023 06:33:39 +0000</pubDate>
+      <guid>/notes/vue/components/introduction/</guid>
+      <description><![CDATA[<p>组件是指实现应用中<u>局部功能代码</u>（<code>html</code>、<code>css</code>、<code>js</code>等）和<u>资源</u>（图片、音频、视频等）的<u>集合</u>。</p>
+<p>传统的Web应用存在以下缺点：</p>
+<ul>
+<li>依赖关系混乱，不易于维护。</li>
+<li>代码复用率不高。</li>
+</ul>
+<p>CSS文件可以通过外部引入，不存在复用率不高的问题。JS的模块化解决了JS代码复用率不高的问题。而Html想要复用却不是那么容易。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 生命周期</title>
+      <link>/notes/vue/single-instance/life-cycle/</link>
+      <pubDate>Wed, 13 Sep 2023 07:16:05 +0000</pubDate>
+      <guid>/notes/vue/single-instance/life-cycle/</guid>
+      <description><![CDATA[<p>Vue生命周期指的是Vue实例或Vue组件实例在创建时经历的一系列初始化步骤。</p>
+<p>在这个过程中Vue为用户提供了一些可供用户自定义的函数，即生命周期回调函数。这些函数又称为生命周期函数或生命周期钩子。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 数据代理与监听</title>
+      <link>/notes/vue/single-instance/data-proxy-watch/</link>
+      <pubDate>Tue, 12 Sep 2023 05:03:31 +0000</pubDate>
+      <guid>/notes/vue/single-instance/data-proxy-watch/</guid>
+      <description><![CDATA[<p>数据代理是指通过一个对象代理另一个对象中属性的（读/写）操作。</p>
+
+<h1 id="数据代理的原理" data-numberify>数据代理的原理<a class="anchor ms-1" href="#数据代理的原理"></a></h1>
+<p>数据代理可以通过<code>Object.defineProperty()</code>实现。在Vue中，很多技术的实现都使用到了<code>Object.defineProperty()</code>这个方法。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 插值语法</title>
+      <link>/notes/vue/single-instance/template-syntax/interpolation/</link>
+      <pubDate>Sat, 19 Aug 2023 10:36:30 +0000</pubDate>
+      <guid>/notes/vue/single-instance/template-syntax/interpolation/</guid>
+      <description><![CDATA[<h1 id="文本插值" data-numberify>文本插值<a class="anchor ms-1" href="#文本插值"></a></h1>
+<p>数据绑定最常见的形式就是<strong>文本插值</strong>。</p>
+<p>在HTML标签体中，使用两个花括号<code>{{ }}</code>将JS表达式引起来。文本插值含义是将JS表达式的结果作为文本显示到页面中；并不是指JS表达式的结果为文本。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 模板语法</title>
+      <link>/notes/vue/single-instance/template-syntax/introduction/</link>
+      <pubDate>Sat, 19 Aug 2023 10:36:30 +0000</pubDate>
+      <guid>/notes/vue/single-instance/template-syntax/introduction/</guid>
+      <description><![CDATA[<p>Vue.js 使用了基于 HTML 的模板语法，允许开发者声明式地将 DOM 绑定至底层 Vue 实例的数据。结合响应系统，在应用状态改变时， Vue 能够智能地计算出重新渲染组件的最小代价并应用到 DOM 操作上。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 指令语法</title>
+      <link>/notes/vue/single-instance/template-syntax/directives/</link>
+      <pubDate>Sat, 19 Aug 2023 10:36:30 +0000</pubDate>
+      <guid>/notes/vue/single-instance/template-syntax/directives/</guid>
+      <description><![CDATA[<p>指令是指在Vue模板中由Vue原型对象或用户自定义的、带有<code>v-</code>前缀的特殊HTML属性。指令可以用于解析标签（包括标签属性、标签内容、绑定事件等等）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Vue 入门</title>
+      <link>/notes/vue/introduction/</link>
+      <pubDate>Sat, 19 Aug 2023 07:36:10 +0000</pubDate>
+      <guid>/notes/vue/introduction/</guid>
+      <description><![CDATA[<p>Vue.js 是一套构建用户界面的渐进式框架。Vue 只关注视图层，采用自底向上增量开发的设计。Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的视图组件。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>TypeScript 介绍</title>
+      <link>/notes/node-js/typescript/</link>
+      <pubDate>Fri, 18 Aug 2023 09:21:24 +0000</pubDate>
+      <guid>/notes/node-js/typescript/</guid>
+      <description><![CDATA[<p>TypeScript 是 JavaScript 的超集，扩展了 JavaScript 的语法，因此现有的 JavaScript 代码可与 TypeScript 一起工作无需任何修改TypeScript 是一种给 JavaScript 添加特性的语言扩展。增加的功能包括：</p>
+<ul>
+<li>类型批注和编译时类型检查。</li>
+<li>类型推断。</li>
+<li>类型擦除。</li>
+<li>接口。</li>
+<li>枚举。</li>
+<li>Mixin。</li>
+<li>泛型编程。</li>
+<li>名字空间。</li>
+<li>元组。</li>
+<li>Await。</li>
+</ul>
+<hr>
+
+<h1 id="安装-typescript" data-numberify>安装 TypeScript<a class="anchor ms-1" href="#安装-typescript"></a></h1>
+<p>安装TypeScript：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js Express 跨域请求</title>
+      <link>/notes/node-js/express/cors-request/</link>
+      <pubDate>Fri, 18 Aug 2023 08:16:03 +0000</pubDate>
+      <guid>/notes/node-js/express/cors-request/</guid>
+      <description><![CDATA[<h1 id="跨域请求问题" data-numberify>跨域请求问题<a class="anchor ms-1" href="#跨域请求问题"></a></h1>
+<p>跨域是指发送与当前服务的域名（或端口）不一致的请求。跨域问题的产生原因是浏览器不允许JS请求对域名不同或端口不同的服务发起请求（同源策略）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js Express 中间件</title>
+      <link>/notes/node-js/express/middleware/</link>
+      <pubDate>Mon, 14 Aug 2023 08:48:27 +0000</pubDate>
+      <guid>/notes/node-js/express/middleware/</guid>
+      <description><![CDATA[<p>中间件（Middleware），特指业务流程的中间处理环节。</p>
+<p>当一个请求到达Express的服务器之后，可以连续调用多个中间件，从而对这次请求进行预处理。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js Express 路由</title>
+      <link>/notes/node-js/express/router/</link>
+      <pubDate>Sat, 12 Aug 2023 13:32:52 +0000</pubDate>
+      <guid>/notes/node-js/express/router/</guid>
+      <description><![CDATA[<h1 id="路由的类型" data-numberify>路由的类型<a class="anchor ms-1" href="#路由的类型"></a></h1>
+<p>在Express中，路由指的是客户端的请求与服务器处理函数之间的映射关系。Express中的路由分三部分组成：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js Nodemon 模块</title>
+      <link>/notes/node-js/nodemon/</link>
+      <pubDate>Sat, 12 Aug 2023 13:01:59 +0000</pubDate>
+      <guid>/notes/node-js/nodemon/</guid>
+      <description><![CDATA[<p>Nodemon是一种监听项目文件变动，让项目文件在修改时可以自动重启项目的工具。使用Nodemon时，当代码被修改，Nodemon会自动帮我们重启项目，极大方便了开发和调试。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js Express 模块基础</title>
+      <link>/notes/node-js/express/base/</link>
+      <pubDate>Thu, 10 Aug 2023 15:11:28 +0000</pubDate>
+      <guid>/notes/node-js/express/base/</guid>
+      <description><![CDATA[<p>Express是一个Web开发框架。Express本质上是NPM上的一个第三方模块，提供了快速创建Web服务器、API接口服务器的方法。Express中文网地址为<a href="https://www.expressjs.com.cn/" target="_blank" rel="noopener noreferrer">https://www.expressjs.com.cn/<i class="fas fa-external-link-square-alt ms-1"></i></a>，官网地址为<a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer">https://expressjs.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>]]></description>
+    </item>
+    
+    <item>
       <title>VS Code 中英字符对齐</title>
       <link>/posts/vscode-markdown-font/</link>
       <pubDate>Thu, 10 Aug 2023 08:40:27 +0000</pubDate>
       <guid>/posts/vscode-markdown-font/</guid>
       <description><![CDATA[<p>在VS Code中，编写代码或者Markdown时，中文字符与英文字符通常是无法对齐的。可以通过使用Ubuntu Mono字体，让VS Code的中英字符能够对齐。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>NPM 与包</title>
+      <link>/notes/node-js/npm-and-package/</link>
+      <pubDate>Tue, 08 Aug 2023 08:17:55 +0000</pubDate>
+      <guid>/notes/node-js/npm-and-package/</guid>
+      <description><![CDATA[<h1 id="包" data-numberify>包<a class="anchor ms-1" href="#包"></a></h1>
+<p>在Node.js中，第三方模块又称为<strong>包</strong>。第三方模块与包的概念相同，仅仅在称呼上有差异。包是由第三方个人或团队开发出来的，免费供所有人使用。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js 模块化</title>
+      <link>/notes/node-js/modularization/</link>
+      <pubDate>Mon, 07 Aug 2023 14:23:19 +0000</pubDate>
+      <guid>/notes/node-js/modularization/</guid>
+      <description><![CDATA[<h1 id="模块化概念" data-numberify>模块化概念<a class="anchor ms-1" href="#模块化概念"></a></h1>
+<p>模块化是指解决一个复杂问题时，自顶向下逐层把系统划分成若干模块的过程。对于整个系统来说，模块是可组合、可分解和可更换的单元。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js HTTP 模块</title>
+      <link>/notes/node-js/http-module/</link>
+      <pubDate>Mon, 07 Aug 2023 08:05:53 +0000</pubDate>
+      <guid>/notes/node-js/http-module/</guid>
+      <description><![CDATA[<p><code>http</code>模块是Node.js官方提供的、用于创建Web服务器的模块。通过<code>http</code>模块提供的<code>http.createServer()</code>方法，就能像Web服务器一样对外提供Web资源服务。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js 事件循环</title>
+      <link>/notes/node-js/event/</link>
+      <pubDate>Sun, 06 Aug 2023 14:46:07 +0000</pubDate>
+      <guid>/notes/node-js/event/</guid>
+      <description><![CDATA[<p>Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。</p>
+<p>Node.js 几乎每一个 API 都是支持回调函数的。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js 文件系统模块</title>
+      <link>/notes/node-js/fs/</link>
+      <pubDate>Sun, 06 Aug 2023 07:35:26 +0000</pubDate>
+      <guid>/notes/node-js/fs/</guid>
+      <description><![CDATA[<p>使用<code>fs</code>模块，首先需要导入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
+
+<h1 id="读取文件" data-numberify>读取文件<a class="anchor ms-1" href="#读取文件"></a></h1>
+<p>下方是一个通过<code>fs.readFile()</code>读取文件的示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 1. 导入fs模块，来操作文件
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="cm"> * 2. 调用 fs.readFile() 方法读取文件
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="cm"> *  - 参数1（必须）：读取文件的存放路径
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="cm"> *  - 参数2（可选）：读取文件时采用的编码格式，默认指定utf8
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="cm"> *  - 参数3（必须）：回调函数，拿到读取失败（err）和成功的结果（dataStr）
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;test.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">dataStr</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="cm">     * 2.1 打印失败的结果
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="cm">     *   - 如果读取成功，则 err 的值为 null，dataStr的值为 文件的内容
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="cm">     *   - 如果读取失败，则 err 的值为 错误对象，dataStr的值为 undefined
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;-------------&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="c1">// 2.2 打印成功的结果
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dataStr</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>fs.readFile()</code>用于异步读取文件。当<code>fs.readFile()</code>读取到文件之后，会将信息传递给<code>err</code>和<code>dataStr</code>对象。<code>err</code>对象可用于读取成功与否的判断，并且记录了读取失败时的信息；<code>dataStr</code>对象记录了读取到的文件内容。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Node.js 入门</title>
+      <link>/notes/node-js/introduction/</link>
+      <pubDate>Sun, 06 Aug 2023 06:48:14 +0000</pubDate>
+      <guid>/notes/node-js/introduction/</guid>
+      <description><![CDATA[<p>Node.js是一个基于Chrome V8引擎的JavaScript运行环境。</p>
+<p>浏览器可以当作是JavaScript的前端运行环境；Node.js可以看作是JavaScript的后端运行环境。但是在Node.js中无法调用DOM和BOM等浏览器内置API。</p>]]></description>
     </item>
     
     <item>
@@ -45,6 +815,483 @@
     </item>
     
     <item>
+      <title>Spring AMQP</title>
+      <link>/notes/spring/springcloud/communications/spring-amqp/</link>
+      <pubDate>Fri, 04 Aug 2023 08:40:11 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/spring-amqp/</guid>
+      <description><![CDATA[<p>AMQP（Advanced Message Queuing Protocol）是用于在应用程序之间传递业务消息的开放标准。该协议与语言和平台无关，更符合微服务中独立性的要求。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>RabbitMQ</title>
+      <link>/notes/spring/springcloud/communications/rabbit-mq/</link>
+      <pubDate>Thu, 03 Aug 2023 08:10:45 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/rabbit-mq/</guid>
+      <description><![CDATA[<p>RabbitMQ官网：<a href="https://www.rabbitmq.com/" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方文档：<a href="https://rabbitmq.com/documentation.html" target="_blank" rel="noopener noreferrer">https://rabbitmq.com/documentation.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方Demo：<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/getstarted.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+
+<h1 id="部署-rabbitmq" data-numberify>部署 RabbitMQ<a class="anchor ms-1" href="#部署-rabbitmq"></a></h1>
+<p>使用Docker来部署RabbitMQ只需要两个步骤：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>通讯方式</title>
+      <link>/notes/spring/springcloud/communications/introduction/</link>
+      <pubDate>Thu, 03 Aug 2023 07:34:34 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/introduction/</guid>
+      <description><![CDATA[<p>微服务间通讯有两种方式：</p>
+<ul>
+<li>同步通讯：实时响应。</li>
+<li>异步通讯：不需要马上回复。</li>
+</ul>
+<p>两种方式各有优劣，同步通讯可以立即得到响应，但是却不能跟多个服务同时通讯。异步通讯可以同时与多个服务通讯，但是往往响应会有所延迟。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Docker Compose</title>
+      <link>/notes/docker/docker-compose/</link>
+      <pubDate>Wed, 02 Aug 2023 08:32:18 +0000</pubDate>
+      <guid>/notes/docker/docker-compose/</guid>
+      <description><![CDATA[<h1 id="介绍" data-numberify>介绍<a class="anchor ms-1" href="#介绍"></a></h1>
+<p>Docker Compose是一个文本文件，用于定义和运行多容器 Docker应用程序的工具。通过Compose，可以使用YML文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Dockerfile</title>
+      <link>/notes/docker/dockerfile/</link>
+      <pubDate>Tue, 01 Aug 2023 14:26:03 +0000</pubDate>
+      <guid>/notes/docker/dockerfile/</guid>
+      <description><![CDATA[<p>常见的镜像在Docker Hub就能找到，但是要部署自己的服务可能需要自己构建镜像。构建镜像可以使用Dockerfile。Dockerfile是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Docker 容器操作</title>
+      <link>/notes/docker/container-options/</link>
+      <pubDate>Tue, 01 Aug 2023 14:24:30 +0000</pubDate>
+      <guid>/notes/docker/container-options/</guid>
+      <description><![CDATA[<h1 id="容器状态" data-numberify>容器状态<a class="anchor ms-1" href="#容器状态"></a></h1>
+<p>Docker容器一般会有以下三种状态：</p>
+<ul>
+<li><strong>运行</strong>：进程正常运行。</li>
+<li><strong>暂停</strong>：进程暂停，CPU不再运行，但不会释放内存。</li>
+<li><strong>停止</strong>：进程终止，回收进程占用的内存、CPU等资源。</li>
+</ul>
+<p>相关的命令如下：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Docker 镜像操作</title>
+      <link>/notes/docker/images-options/</link>
+      <pubDate>Tue, 01 Aug 2023 14:22:10 +0000</pubDate>
+      <guid>/notes/docker/images-options/</guid>
+      <description><![CDATA[<h1 id="拉取镜像" data-numberify>拉取镜像<a class="anchor ms-1" href="#拉取镜像"></a></h1>
+<p>在使用容器前，需要先获取相对应的镜像。例如要在Docker中安装MySQL 5.7，需要先获取MySQL 5.7的Docker镜像。相应的命令为：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Docker Hub</title>
+      <link>/notes/docker/docker-hub/</link>
+      <pubDate>Tue, 01 Aug 2023 14:20:26 +0000</pubDate>
+      <guid>/notes/docker/docker-hub/</guid>
+      <description><![CDATA[<p>DockerHub是一个官方的Docker镜像的托管平台，里面存放了人们配置好的镜像。这样的平台称为Docker Registry。</p>
+<p>国内也有这样的Docker仓库，它们被称为Docker的镜像仓库或镜像源。这些镜像源都是与Docker官方仓库同步的。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Docker 简介</title>
+      <link>/notes/docker/introduction/</link>
+      <pubDate>Tue, 01 Aug 2023 14:17:20 +0000</pubDate>
+      <guid>/notes/docker/introduction/</guid>
+      <description><![CDATA[<h1 id="分布式系统的部署问题" data-numberify>分布式系统的部署问题<a class="anchor ms-1" href="#分布式系统的部署问题"></a></h1>
+<p>大多数Web服务都是运行在Linux系统之上，因为Linux开源、免费、安全、稳定等等。Linux计算机的架构大致如图：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>MySQL 分库搭建</title>
+      <link>/notes/spring/springboot/mysql-sharding/</link>
+      <pubDate>Fri, 28 Jul 2023 07:20:31 +0000</pubDate>
+      <guid>/notes/spring/springboot/mysql-sharding/</guid>
+      <description><![CDATA[<p>搭建MySQL主从数据库，首先需要满足以下条件：</p>
+<ul>
+<li>至少两台以上服务器（可用虚拟机模拟）；</li>
+<li>两台服务器中MySQL的版本一致。</li>
+</ul>
+<blockquote>
+<p>最好是使用刚安装的MySQL并且没有任何修改。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>API 测试工具</title>
+      <link>/notes/spring/springmvc/api-tools/</link>
+      <pubDate>Thu, 27 Jul 2023 13:29:13 +0000</pubDate>
+      <guid>/notes/spring/springmvc/api-tools/</guid>
+      <description><![CDATA[<h1 id="postman" data-numberify>Postman<a class="anchor ms-1" href="#postman"></a></h1>
+<p><a href="https://www.postman.com/" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Postman" src="/notes/spring/springmvc/api-tools/96bff51802e8a43c.png" loading="lazy" width="1800" height="1095" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+
+<h1 id="apifox作者也在用" data-numberify>Apifox（作者也在用）<a class="anchor ms-1" href="#apifox作者也在用"></a></h1>
+<p><a href="https://apifox.com/" target="_blank" rel="noopener noreferrer"><picture><img class="img-fluid " alt="Apifox" src="/notes/spring/springmvc/api-tools/dark-purple.png" loading="lazy" width="2600" height="1646" />
+</picture>
+
+<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<blockquote>
+<p>Apifox和Postman差不多，但是比Postman更易用。界面美观、支持中文。而且设置接口参数也很方便，还能自动生成随机的参数。支持将接口导出为HTML、Markdown、PDF等格式。在编写API测试时，还能用它来编写Markdown文档来进一步说明。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Nacos 部署</title>
+      <link>/notes/spring/springcloud/nacos-deploy/</link>
+      <pubDate>Mon, 24 Jul 2023 02:58:36 +0800</pubDate>
+      <guid>/notes/spring/springcloud/nacos-deploy/</guid>
+      <description><![CDATA[<h1 id="本地部署" data-numberify>本地部署<a class="anchor ms-1" href="#本地部署"></a></h1>
+<p>Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问<a href="https://github.com/alibaba/nacos" target="_blank" rel="noopener noreferrer">Nacos项目仓库<i class="fas fa-external-link-square-alt ms-1"></i></a>，你可以选择将该项目<code>clone</code>到本地自己打包后部署，也可以选择直接访问<a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener noreferrer">Nacos的Releases页面<i class="fas fa-external-link-square-alt ms-1"></i></a>下载已经打包好的项目压缩文件进行部署。你也可以访问<a href="https://nacos.io/zh-cn/" target="_blank" rel="noopener noreferrer">Nacos官网<i class="fas fa-external-link-square-alt ms-1"></i></a>查看如何部署。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Eureka</title>
+      <link>/notes/spring/springcloud/eureka/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/eureka/</guid>
+      <description><![CDATA[<h1 id="eureka-服务注册中心" data-numberify>Eureka 服务注册中心<a class="anchor ms-1" href="#eureka-服务注册中心"></a></h1>
+<p>Eureka架构下将服务分为以下两个角色：</p>
+<ul>
+<li>注册中心（Eureka Server，服务端）。</li>
+<li>客户端（Eureka Client）。</li>
+</ul>
+<p>Eureka会将客户端（即服务）的信息进行注册，让客户端可以通过Eureka注册中心获取服务信息并进行调用。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Feign</title>
+      <link>/notes/spring/springcloud/feign/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/feign/</guid>
+      <description><![CDATA[<p>尽管使用了注册中心来解决URL的硬编码等问题，但是如今使用<code>RestTemplate</code>还是存在以下问题：</p>
+<ul>
+<li>代码可读性差，编程体验不统一；</li>
+<li>参数复杂URL难以维护。</li>
+</ul>
+<p>Feign是一个声明式的HTTP客户端，作用于服务消费者，在服务消费者中为服务提供者创建一个HTTP远程调用。官方地址：<a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener noreferrer">https://github.com/OpenFeign/feign<i class="fas fa-external-link-square-alt ms-1"></i></a>。其作用就是帮助我们优雅的实现HTTP请求的发送，解决上面提到的问题。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gateway</title>
+      <link>/notes/spring/springcloud/gateway/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/gateway/</guid>
+      <description><![CDATA[<h1 id="网关" data-numberify>网关<a class="anchor ms-1" href="#网关"></a></h1>
+<p>网关是所有微服务的统一入口。网关的核心功能特性：</p>
+<ul>
+<li><strong>请求路由</strong>：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个微服务，这个过程叫做路由。当路由的目标服务有多个时，还需要做<strong>负载均衡</strong>。</li>
+<li><strong>权限控制</strong>：网关作为微服务入口，需要校验用户是是否有请求资格，如果没有则进行拦截。</li>
+<li><strong>限流</strong>：当请求流量过高时，在网关中按照下流的微服务能够接受的速度来放行请求，避免服务压力过大。</li>
+</ul>
+<p>在SpringCloud中网关的实现包括两种：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Nacos</title>
+      <link>/notes/spring/springcloud/nacos/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/nacos/</guid>
+      <description><![CDATA[<h1 id="部署-nacos-server" data-numberify>部署 Nacos Server<a class="anchor ms-1" href="#部署-nacos-server"></a></h1>
+<p>安装和配置好Nacos后，在<code>nacos</code>的<code>bin</code>目录中使用脚本启动：</p>
+<ul>
+<li>
+<p>Windows：</p>
+<p>单机启动：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">startup.cmd -m standalone
+</span></span></code></pre></div></li>
+<li>
+<p>Linux：</p>
+<p>单机启动：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">sh startup.sh -m standalone
+</span></span></code></pre></div></li>
+</ul>
+<p>在浏览器中使用对应的IP和端口访问，如<code>http://localhost:8848/nacos</code>。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>RestTemplate</title>
+      <link>/notes/spring/springcloud/remote-call/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/remote-call/</guid>
+      <description><![CDATA[<h1 id="微服务远程调用" data-numberify>微服务远程调用<a class="anchor ms-1" href="#微服务远程调用"></a></h1>
+<p>在微服务架构中，不同微服务都应该有自己独立的数据库以减少服务之间的冗余。而不同的服务之间可能需要共享数据。但拆分后的服务，它们的数据库是相互独立的，一个服务不可能去调用另一个服务的数据库，所以服务之间的信息共享成为一个问题。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Spring 环境和配置</title>
+      <link>/notes/spring/springcloud/config/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/config/</guid>
+      <description><![CDATA[<p>微服务需要根据业务模块拆分，做到单一职责，不要重复开发相同业务。</p>
+
+<h1 id="父工程" data-numberify>父工程<a class="anchor ms-1" href="#父工程"></a></h1>
+<p>微服务是一种分布式开发，要将一个项目拆分为若干个服务，所以会有很多个服务模块。而要统一管理这些服务模块，可以创建一个父工程来管理。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>微服务简介</title>
+      <link>/notes/spring/springcloud/introduction/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/introduction/</guid>
+      <description><![CDATA[<h1 id="微服务架构" data-numberify>微服务架构<a class="anchor ms-1" href="#微服务架构"></a></h1>
+<p>从前的项目是使用单体架构，单体架构是指<u>将业务的所有功能集中在一个项目中开发，打成一个包部署</u>。</p>
+<p>单体架构的优点是：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>软考概念总结篇</title>
+      <link>/notes/ruan-she/summary/</link>
+      <pubDate>Thu, 25 May 2023 11:34:54 +0800</pubDate>
+      <guid>/notes/ruan-she/summary/</guid>
+      <description><![CDATA[<h1 id="计算机系统" data-numberify>计算机系统<a class="anchor ms-1" href="#计算机系统"></a></h1>
+<p>跳转连接：<a href="/p/%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e7%af%87/">软件设计师——计算机系统篇</a></p>
+
+<h2 id="基本单位" data-numberify>基本单位<a class="anchor ms-1" href="#基本单位"></a></h2>
+<table>
+<tr>
+    <td>位（比特）<br>最小数据单位</td>
+    <td><b>bit、b</b></td>
+    <td></td>
+</tr>
+<tr>
+    <td>字节<br>最小存储单位</td>
+    <td>byte、B</td>
+    <td>1B = 8b</td>
+</tr>
+<tr>
+    <td>千字节</td>
+    <td>KB</td>
+    <td>1KB = 1024B</td>
+</tr>
+<tr>
+    <td>兆字节</td>
+    <td>MB</td>
+    <td>1MB = 1024KB</td>
+</tr>
+<tr>
+    <td>吉字节</td>
+    <td>GB</td>
+    <td>1GB = 1024MB</td>
+</tr>
+<tr>
+    <td>太字节</td>
+    <td>TB</td>
+    <td>1TB = 1024GB</td>
+</tr>
+</table>
+
+<h2 id="中央处理单元" data-numberify>中央处理单元<a class="anchor ms-1" href="#中央处理单元"></a></h2>
+<p>CPU的功能：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>软考图类汇总篇</title>
+      <link>/notes/ruan-she/all-graphs/</link>
+      <pubDate>Sat, 20 May 2023 13:29:14 +0800</pubDate>
+      <guid>/notes/ruan-she/all-graphs/</guid>
+      <description><![CDATA[<h1 id="数据流图dfd" data-numberify>数据流图（DFD）<a class="anchor ms-1" href="#数据流图dfd"></a></h1>
+<p>数据流图是在逻辑上描述系统的功能、输入、输出和数据存储等。</p>
+<p>数据流图中的基本图形元素包括：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>算法设计与分析篇</title>
+      <link>/notes/ruan-she/algorithm-design-analysis/</link>
+      <pubDate>Wed, 17 May 2023 12:52:42 +0800</pubDate>
+      <guid>/notes/ruan-she/algorithm-design-analysis/</guid>
+      <description><![CDATA[<h1 id="算法概述" data-numberify>算法概述<a class="anchor ms-1" href="#算法概述"></a></h1>
+<p>算法（Algorithm）是对特定问题求解步骤的一种描述，它是指令的有限序列，其中每一条指令表示一个或多个操作。算法具有下列5个重要特性：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>计算机网络篇</title>
+      <link>/notes/ruan-she/computer-nework/</link>
+      <pubDate>Fri, 12 May 2023 06:01:08 +0000</pubDate>
+      <guid>/notes/ruan-she/computer-nework/</guid>
+      <description><![CDATA[<h1 id="网络概述" data-numberify>网络概述<a class="anchor ms-1" href="#网络概述"></a></h1>
+<p>计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。现代计算机网络已具有统一的网络体系结构。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>软件工程篇</title>
+      <link>/notes/ruan-she/software-engineering/</link>
+      <pubDate>Mon, 08 May 2023 10:02:34 +0000</pubDate>
+      <guid>/notes/ruan-she/software-engineering/</guid>
+      <description><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>软件工程是指应用计算机科学、数学及管理科学等原理，以工程化的原则和方法来解决软件问题的工程，其目的是提高软件生产率、提高软件质量、降低软件成本。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>结构化开发篇</title>
+      <link>/notes/ruan-she/structured-dev/</link>
+      <pubDate>Sun, 07 May 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/ruan-she/structured-dev/</guid>
+      <description><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>结构化方法是一种面向数据流的开
+发方法，它由以下构成：</p>
+<ul>
+<li>结构化分析：根据分解与抽象的原则，按照系统中数据处理的流程，用数据流图来建立系统的功能模型，从而完成需求分析工作。</li>
+<li>结构化设计：根据模块独立性准则、软件结构优
+化准则将数据流图转换为软件的体系结构，用软件结构图来建立系统的物理模型，实现系统的
+概要设计。</li>
+<li>结构化程序设计：使用3种基本控制结构构造程序，任何程序都可以由顺序、选择和重复3种基本控制结构构造。</li>
+</ul>
+<p>结构化方法总的指导思想是自顶向下、逐层分解，它的基本原则是功能的分解与抽象。它是软件工程中最早出现的开发方法，特别适合于数据处理领域的问题，但是不适合解决大规模的、特别复杂的项目，且难以适应需求的变化。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>数据库篇</title>
+      <link>/notes/ruan-she/data-base/</link>
+      <pubDate>Sat, 22 Apr 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/ruan-she/data-base/</guid>
+      <description><![CDATA[<h1 id="数据库体系结构" data-numberify>数据库体系结构<a class="anchor ms-1" href="#数据库体系结构"></a></h1>
+<p>数据描述有两种形式：</p>
+<ul>
+<li>逻辑描述：指程序员或用户用以操作的数据形式，是抽象的概念化数据。</li>
+<li>物理描述：指数据在存储设备上的存储方式，物理数据是实际存放在存储设备上的数据。</li>
+</ul>
+
+<h2 id="三级模式结构" data-numberify>三级模式结构<a class="anchor ms-1" href="#三级模式结构"></a></h2>
+<p>实际上有许多不同的数据库产品，但它们的体系结构基本上都具有相同的特征，采用“三级模式和两级映像”：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>面向对象篇</title>
+      <link>/notes/ruan-she/object-oriented/</link>
+      <pubDate>Tue, 18 Apr 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/ruan-she/object-oriented/</guid>
+      <description><![CDATA[<h1 id="面向对象基本概念" data-numberify>面向对象基本概念<a class="anchor ms-1" href="#面向对象基本概念"></a></h1>
+<p><strong>面向对象</strong>（Object-Oriented，00） = <strong>对象</strong>（Object）+ <strong>分类</strong>（Classification）+ <strong>继承</strong>（Inheritance）+ <strong>通过消息的通信</strong>（Communication with Messages）</p>]]></description>
+    </item>
+    
+    <item>
+      <title>知识产权篇</title>
+      <link>/notes/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/</link>
+      <pubDate>Sat, 15 Apr 2023 12:29:35 +0800</pubDate>
+      <guid>/notes/ruan-she/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/</guid>
+      <description><![CDATA[<h1 id="著作权" data-numberify>著作权<a class="anchor ms-1" href="#著作权"></a></h1>
+<p>著作权（也称为版权）：是指作者对其创作的作品享有的人身权和财产权。</p>
+<p>人身权包括：</p>
+<ul>
+<li>发表权</li>
+<li>署名权</li>
+<li>修改权</li>
+<li>保护作品完整权</li>
+</ul>
+<p>财产权包括：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>操作系统篇</title>
+      <link>/notes/ruan-she/operating-system/</link>
+      <pubDate>Wed, 12 Apr 2023 16:28:00 +0800</pubDate>
+      <guid>/notes/ruan-she/operating-system/</guid>
+      <description><![CDATA[<h1 id="概述" data-numberify>概述<a class="anchor ms-1" href="#概述"></a></h1>
+<p>计算机系统由两部分组成：</p>
+<ul>
+<li><strong>硬件</strong></li>
+<li><strong>软件</strong></li>
+</ul>
+<p>通常把未配置软件的计算机称为裸机。</p>
+<p>操作系统（Operating System）目的是为了填补人与机器之间的鸿沟，即建立用户与计算机之间的接口，而为裸机配置的一种系统软件。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>数据结构篇</title>
+      <link>/notes/ruan-she/data-structure/</link>
+      <pubDate>Sat, 08 Apr 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/ruan-she/data-structure/</guid>
+      <description><![CDATA[<h1 id="复杂度" data-numberify>复杂度<a class="anchor ms-1" href="#复杂度"></a></h1>
+<p>算法时间复杂度以算法中基本操附重复执行的次数（简称为频度）作为算法的时间度量。一般不必要精确计算出算法的时间复杂度，只要大致计算出相应的数量级即可，使用大$O$表示法表示（空间复杂度也是）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>程序设计语言篇</title>
+      <link>/notes/ruan-she/programming-language/</link>
+      <pubDate>Thu, 30 Mar 2023 19:58:41 +0800</pubDate>
+      <guid>/notes/ruan-she/programming-language/</guid>
+      <description><![CDATA[<h1 id="低级和高级语言" data-numberify>低级和高级语言<a class="anchor ms-1" href="#低级和高级语言"></a></h1>
+<p>程序设计语言根据硬件是否能识别区分为两类：</p>
+<ul>
+<li><strong>低级语言</strong>：二进制机器指令、汇编语言。</li>
+<li><strong>高级语言</strong>：面向各类应用的程序设计语言，更加接近自然语言。需要通过编译器或解释器（翻译）来让机器执行。</li>
+</ul>
+<hr>
+
+<h1 id="编译和解释" data-numberify>编译和解释<a class="anchor ms-1" href="#编译和解释"></a></h1>
+<p>程序设计语言按照翻译的方式可分为：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>计算机系统篇</title>
+      <link>/notes/ruan-she/computer-system/</link>
+      <pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/ruan-she/computer-system/</guid>
+      <description><![CDATA[<h1 id="计算机的基本单位" data-numberify>计算机的基本单位<a class="anchor ms-1" href="#计算机的基本单位"></a></h1>
+<table>
+<tr>
+    <td>位（比特）<br>最小数据单位</td>
+    <td><b>bit、b</b></td>
+    <td></td>
+</tr>
+<tr>
+    <td>字节<br>最小存储单位</td>
+    <td>byte、B</td>
+    <td>1B = 8b</td>
+</tr>
+<tr>
+    <td>千字节</td>
+    <td>KB</td>
+    <td>1KB = 1024B</td>
+</tr>
+<tr>
+    <td>兆字节</td>
+    <td>MB</td>
+    <td>1MB = 1024KB</td>
+</tr>
+<tr>
+    <td>吉字节</td>
+    <td>GB</td>
+    <td>1GB = 1024MB</td>
+</tr>
+<tr>
+    <td>太字节</td>
+    <td>TB</td>
+    <td>1TB = 1024GB</td>
+</tr>
+</table>
+<hr>
+
+<h1 id="计算机系统" data-numberify>计算机系统<a class="anchor ms-1" href="#计算机系统"></a></h1>
+<p>计算机系统由<u>硬件</u>和<u>软件</u>组成。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Swagger（Knife4j） API 文档</title>
+      <link>/notes/spring/springboot/swagger_knife4j/</link>
+      <pubDate>Tue, 21 Mar 2023 14:10:06 +0000</pubDate>
+      <guid>/notes/spring/springboot/swagger_knife4j/</guid>
+      <description><![CDATA[<h1 id="导入依赖" data-numberify>导入依赖<a class="anchor ms-1" href="#导入依赖"></a></h1>
+<p>Knife4j的依赖坐标如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>knife4j-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="nt">&lt;version&gt;</span>3.0.2<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><hr>
+
+<h1 id="配置类" data-numberify>配置类<a class="anchor ms-1" href="#配置类"></a></h1>
+<p>编写（或修改）配置类：</p>]]></description>
+    </item>
+    
+    <item>
       <title>瑞吉外卖项目实战</title>
       <link>/posts/reggie-note/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
@@ -52,6 +1299,135 @@
       <description><![CDATA[<h1 id="项目笔记" data-numberify>项目笔记<a class="anchor ms-1" href="#项目笔记"></a></h1>
 <p>项目笔记仓库：<a href="https://gitee.com/linner_cheng/reggie_note" target="_blank" rel="noopener noreferrer">https://gitee.com/linner_cheng/reggie_note<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
 <p>B站视频：<a href="https://www.bilibili.com/video/BV13a411q753/?p=190&amp;spm_id_from=333.1007.top_right_bar_window_history.content.click" target="_blank" rel="noopener noreferrer">黑马程序员Java项目实战《瑞吉外卖》<i class="fas fa-external-link-square-alt ms-1"></i></a></p>]]></description>
+    </item>
+    
+    <item>
+      <title>Sharding Jdbc</title>
+      <link>/notes/spring/springboot/sharding-jdbc/</link>
+      <pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/sharding-jdbc/</guid>
+      <description><![CDATA[<h1 id="介绍" data-numberify>介绍<a class="anchor ms-1" href="#介绍"></a></h1>
+<p>Sharding Jdbc是一个用于实现数据库读写分离的框架。</p>
+<hr>
+
+<h1 id="依赖" data-numberify>依赖<a class="anchor ms-1" href="#依赖"></a></h1>
+<p>Sharding Jdbc依赖坐标：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Redis基础</title>
+      <link>/notes/spring/springboot/redis-base/</link>
+      <pubDate>Sat, 11 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/redis-base/</guid>
+      <description><![CDATA[<h1 id="数据类型" data-numberify>数据类型<a class="anchor ms-1" href="#数据类型"></a></h1>
+<p>Redis存储的是key-value结构的数据，其中key是字符串类型，value有5种常用的数据类型：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>MyBatisPlus</title>
+      <link>/notes/spring/springboot/mybatisplus/</link>
+      <pubDate>Tue, 28 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/mybatisplus/</guid>
+      <description><![CDATA[<h1 id="简介" data-numberify>简介<a class="anchor ms-1" href="#简介"></a></h1>
+<p>MybatisPlus（简称MP）是基于MyBatis框架基础上开发的增强型工具（依然可以使用MyBatis里的工具），旨在简化开发、提供效率。更多详情请访问<a href="https://mp.baomidou.com/" target="_blank" rel="noopener noreferrer">MyBatisPlus官网<i class="fas fa-external-link-square-alt ms-1"></i></a>（官网有两个地址，<a href="https://mp.baomidou.com/" target="_blank" rel="noopener noreferrer">https://mp.baomidou.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>或<a href="https://mybatis.plus" target="_blank" rel="noopener noreferrer">https://mybatis.plus<i class="fas fa-external-link-square-alt ms-1"></i></a>）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Maven 高级</title>
+      <link>/notes/spring/springboot/maven-senior/</link>
+      <pubDate>Mon, 27 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/maven-senior/</guid>
+      <description><![CDATA[<h1 id="多模块开发" data-numberify>多模块开发<a class="anchor ms-1" href="#多模块开发"></a></h1>
+<p>多模块开发有以下两种：</p>
+<ul>
+<li>按照功能拆分。</li>
+<li>按照模块拆分。</li>
+</ul>
+<p>例如，将项目中的DAO类拆分出来作为一个独立的模块。然后使用Maven将该模块作为依赖导入项目中。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>SpringBoot 基础</title>
+      <link>/notes/spring/springboot/base/</link>
+      <pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/base/</guid>
+      <description><![CDATA[<h1 id="简介" data-numberify>简介<a class="anchor ms-1" href="#简介"></a></h1>
+<p><code>SpringBoot</code> 是由 <code>Pivotal</code> 团队提供的全新框架，其设计目的是用来简化 <code>Spring</code> 应用的初始搭建以及开发过程。</p>
+<p>SpringBoot开发分为如下几步：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>SpringMVC 基础</title>
+      <link>/notes/spring/springmvc/base/</link>
+      <pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springmvc/base/</guid>
+      <description><![CDATA[<h1 id="简介" data-numberify>简介<a class="anchor ms-1" href="#简介"></a></h1>
+<p>SpringMVC是Spring下的一个用于Web表现层开发的技术。相比Servlet，SpringMVC更加高效快捷。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Java 反射</title>
+      <link>/notes/java/reflect/</link>
+      <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/java/reflect/</guid>
+      <description><![CDATA[<h1 id="反射" data-numberify>反射<a class="anchor ms-1" href="#反射"></a></h1>
+<p>反射是Java中一种用于动态获取类或对象的信息以及动态调用对象方法的功能机制。在运行状态中，对于任意一个类，使用反射可以获取这个类的所有属性和方法；对于任意一个对象，使用反射能够调用它的任意属性和方法。利用反射可以无视对象的修饰符，调用类里面的内容。利用反射可以跟配置文件结合起来使用，把要创建的对象信息和方法写在配置文件中。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Spring Framework</title>
+      <link>/notes/spring/springframework/</link>
+      <pubDate>Sun, 16 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springframework/</guid>
+      <description><![CDATA[<h1 id="spring-framewor-简介" data-numberify>Spring Framewor 简介<a class="anchor ms-1" href="#spring-framewor-简介"></a></h1>
+<blockquote>
+<p>Spring5.0已经全面支持JDK8，建议JDK使用1.8版本。</p>
+</blockquote>
+<p>Spring Framework是Spring家族中其他框架的底层基础。</p>
+
+<h2 id="spring-framewor-架构" data-numberify>Spring Framewor 架构<a class="anchor ms-1" href="#spring-framewor-架构"></a></h2>
+<p>Spring Framework的发展经历了很多版本的变更，每个版本都有相应的调整。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Ajax 前后端交互</title>
+      <link>/notes/spring/java-web/ajax-interaction/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/ajax-interaction/</guid>
+      <description><![CDATA[<h1 id="ajax" data-numberify>Ajax<a class="anchor ms-1" href="#ajax"></a></h1>
+<p><code>AJAX</code> (Asynchronous JavaScript And XML)，其含义为异步的 JavaScript 和 XML。其中 <code>JavaScript</code> 表明该技术和前端相关；<code>XML</code> 是指以此进行数据交换。</p>
+<p>AJAX 作用有以下两方面：</p>
+<ol>
+<li><strong>与服务器进行数据交换</strong>：通过AJAX可以给服务器发送请求，服务器将数据直接响应回给浏览器。</li>
+<li><strong>异步交互</strong>：可以在不重新加载整个页面的情况下，与服务器交换数据并更新部分网页的技术，如：搜索联想、用户名是否可用校验等等。
+<ul>
+<li>同步：浏览器页面在发送请求给服务器，在服务器处理请求的过程中，浏览器页面不能做其他的操作。只能等到服务器响应结束后，浏览器页面才能继续做其他的操作。</li>
+<li>异步：浏览器页面发送请求给服务器，在服务器处理请求的过程中，浏览器页面还可以做其他的操作。</li>
+</ul>
+</li>
+</ol>
+
+<h2 id="ajax-简单使用" data-numberify>Ajax 简单使用<a class="anchor ms-1" href="#ajax-简单使用"></a></h2>
+<p>服务端：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Filter 过滤器</title>
+      <link>/notes/spring/java-web/filter/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/filter/</guid>
+      <description><![CDATA[<h1 id="filter-概述" data-numberify>Filter 概述<a class="anchor ms-1" href="#filter-概述"></a></h1>
+<p>Filter 表示过滤器，是 JavaWeb 三大组件(Servlet、Filter、Listener)之一。</p>
+<p>过滤器可以把对资源的请求拦截下来，从而实现一些特殊的功能。设置 Filter 会在访问资源之前会先经过 Filter，将资源拦截，从而实现权限控制、统一编码处理、敏感字符处理等功能。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>会话跟踪技术 Cookie 和 Session</title>
+      <link>/notes/spring/java-web/cookie-session/</link>
+      <pubDate>Fri, 23 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/cookie-session/</guid>
+      <description><![CDATA[<h1 id="会话跟踪技术" data-numberify>会话跟踪技术<a class="anchor ms-1" href="#会话跟踪技术"></a></h1>
+<p>会话是指一个终端用户与交互系统进行通讯的过程，例如从浏览器发出请求到服务端响应数据给前端这个过程即为一个会话。</p>]]></description>
     </item>
     
     <item>
@@ -75,6 +1451,62 @@
     </item>
     
     <item>
+      <title>HttpServlet 与 Tomcat</title>
+      <link>/notes/spring/java-web/http-servlet/</link>
+      <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/http-servlet/</guid>
+      <description><![CDATA[<h1 id="httpservlet-简介" data-numberify>HttpServlet 简介<a class="anchor ms-1" href="#httpservlet-简介"></a></h1>
+<p>HttpServlet是对HTTP协议封装的Servlet实现类。</p>
+<p>Servlet的体系结构：</p>
+<p><picture><img class="img-fluid " alt="" src="/notes/spring/java-web/http-servlet/1627240593506.png" loading="lazy" width="970" height="294" />
+</picture>
+
+</p>
+<p>在开发中，关注更多的是<code>Servlet.service()</code>方法。而每实现一个Servlet就必须实现Servlet接口，重写接口中的5个方法。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Servlet 与 Tomcat</title>
+      <link>/notes/spring/java-web/servlet/</link>
+      <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/servlet/</guid>
+      <description><![CDATA[<h1 id="servlet-简介" data-numberify>Servlet 简介<a class="anchor ms-1" href="#servlet-简介"></a></h1>
+<p>Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。</p>
+<hr>
+
+<h1 id="servlet-基本使用" data-numberify>Servlet 基本使用<a class="anchor ms-1" href="#servlet-基本使用"></a></h1>
+<ol>
+<li>
+<p>创建Maven Web项目后，导入Servlet依赖坐标和Tomcat插件：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Tomcat</title>
+      <link>/notes/spring/java-web/tomcat-base/</link>
+      <pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/tomcat-base/</guid>
+      <description><![CDATA[<h1 id="tomcat基本使用" data-numberify>Tomcat基本使用<a class="anchor ms-1" href="#tomcat基本使用"></a></h1>
+
+<h2 id="tomcat安装" data-numberify>Tomcat安装<a class="anchor ms-1" href="#tomcat安装"></a></h2>
+<p>访问<a href="https://tomcat.apache.org/" target="_blank" rel="noopener noreferrer">Tomcat官网<i class="fas fa-external-link-square-alt ms-1"></i></a>下载。Tomcat是绿色版，直接解压即可。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>MyBatis</title>
+      <link>/notes/spring/java-web/mybatis-base/</link>
+      <pubDate>Tue, 06 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/mybatis-base/</guid>
+      <description><![CDATA[<h1 id="mybatis-介绍" data-numberify>MyBatis 介绍<a class="anchor ms-1" href="#mybatis-介绍"></a></h1>
+<p>MyBatis 是一款优秀的持久层框架，用于简化 JDBC 开发。</p>
+<blockquote>
+<p><strong>持久层：</strong></p>
+<ul>
+<li>
+<p>是负责将数据到保存到数据库的那一层代码。即，操作数据库的Java代码为持久层。</p>
+<p>而Mybatis就是对JDBC代码进行了封装。</p>]]></description>
+    </item>
+    
+    <item>
       <title>集合论</title>
       <link>/posts/set-theory/</link>
       <pubDate>Fri, 02 Sep 2022 12:43:41 +0800</pubDate>
@@ -87,6 +1519,25 @@
 </ul>
 </blockquote>
 <p><strong>集合</strong>（set）是由 <u>指定范围</u>内的<u>满足给定条件的所有对象</u>聚集在一起构成的，指定范围内的每一个对象称为这个集合的<strong>元素</strong>（element）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Druid 数据库连接池</title>
+      <link>/notes/spring/java-web/druid/</link>
+      <pubDate>Sun, 14 Aug 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/druid/</guid>
+      <description><![CDATA[<h1 id="数据库连接池" data-numberify>数据库连接池<a class="anchor ms-1" href="#数据库连接池"></a></h1>
+<p>数据库连接池是个容器, 负责分配, 管理数据库连接 (Connection).</p>
+<p>数据库连接池允许应用程序重复使用一个现有的数据库连接, 而不是再重新建立一个. 从而减少资源浪费.</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Maven 基础</title>
+      <link>/notes/spring/java-web/maven-base/</link>
+      <pubDate>Sun, 14 Aug 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/maven-base/</guid>
+      <description><![CDATA[<h1 id="maven-简介" data-numberify>Maven 简介<a class="anchor ms-1" href="#maven-简介"></a></h1>
+<p>Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档.</p>]]></description>
     </item>
     
     <item>
@@ -106,6 +1557,16 @@
 <li><code>authorized_keys</code>: 信任的公钥.</li>
 </ul>
 <p>只需要将<code>id_rsa.pub</code>里的内容以 (<code>ssh-rsa</code>开头的一行内容) 复制到客户端的<code>authorized_keys</code>的目录下即可.</p>]]></description>
+    </item>
+    
+    <item>
+      <title>JDBC</title>
+      <link>/notes/spring/java-web/jdbc/</link>
+      <pubDate>Fri, 12 Aug 2022 14:46:53 +0000</pubDate>
+      <guid>/notes/spring/java-web/jdbc/</guid>
+      <description><![CDATA[<h1 id="jdbc-简介" data-numberify>JDBC 简介<a class="anchor ms-1" href="#jdbc-简介"></a></h1>
+<p>JDBC (Java DataBase Connectivity, Java 数据库连接) 是使用Java语言操作关系型数据库的一套 API.</p>
+<p>JDBC其实是SUN公司制订的一套操作数据库的标准接口. JDBC中定义了所有操作关系型数据库的规则. 由各自的数据库厂商给出实现类 (驱动jar包).</p>]]></description>
     </item>
     
     <item>

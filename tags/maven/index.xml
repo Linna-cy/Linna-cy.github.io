@@ -10,6 +10,144 @@
 </copyright>
     <lastBuildDate>Fri, 04 Aug 2023 08:40:11 +0000</lastBuildDate><atom:link href="/tags/maven/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Spring AMQP</title>
+      <link>/notes/spring/springcloud/communications/spring-amqp/</link>
+      <pubDate>Fri, 04 Aug 2023 08:40:11 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/spring-amqp/</guid>
+      <description><![CDATA[<p>AMQP（Advanced Message Queuing Protocol）是用于在应用程序之间传递业务消息的开放标准。该协议与语言和平台无关，更符合微服务中独立性的要求。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>RabbitMQ</title>
+      <link>/notes/spring/springcloud/communications/rabbit-mq/</link>
+      <pubDate>Thu, 03 Aug 2023 08:10:45 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/rabbit-mq/</guid>
+      <description><![CDATA[<p>RabbitMQ官网：<a href="https://www.rabbitmq.com/" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方文档：<a href="https://rabbitmq.com/documentation.html" target="_blank" rel="noopener noreferrer">https://rabbitmq.com/documentation.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<p>官方Demo：<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/getstarted.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
+<hr>
+
+<h1 id="部署-rabbitmq" data-numberify>部署 RabbitMQ<a class="anchor ms-1" href="#部署-rabbitmq"></a></h1>
+<p>使用Docker来部署RabbitMQ只需要两个步骤：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>通讯方式</title>
+      <link>/notes/spring/springcloud/communications/introduction/</link>
+      <pubDate>Thu, 03 Aug 2023 07:34:34 +0000</pubDate>
+      <guid>/notes/spring/springcloud/communications/introduction/</guid>
+      <description><![CDATA[<p>微服务间通讯有两种方式：</p>
+<ul>
+<li>同步通讯：实时响应。</li>
+<li>异步通讯：不需要马上回复。</li>
+</ul>
+<p>两种方式各有优劣，同步通讯可以立即得到响应，但是却不能跟多个服务同时通讯。异步通讯可以同时与多个服务通讯，但是往往响应会有所延迟。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Nacos 部署</title>
+      <link>/notes/spring/springcloud/nacos-deploy/</link>
+      <pubDate>Mon, 24 Jul 2023 02:58:36 +0800</pubDate>
+      <guid>/notes/spring/springcloud/nacos-deploy/</guid>
+      <description><![CDATA[<h1 id="本地部署" data-numberify>本地部署<a class="anchor ms-1" href="#本地部署"></a></h1>
+<p>Nacos是一个开源项目，已经在Github上开源。在本地搭建Nacos需要访问<a href="https://github.com/alibaba/nacos" target="_blank" rel="noopener noreferrer">Nacos项目仓库<i class="fas fa-external-link-square-alt ms-1"></i></a>，你可以选择将该项目<code>clone</code>到本地自己打包后部署，也可以选择直接访问<a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener noreferrer">Nacos的Releases页面<i class="fas fa-external-link-square-alt ms-1"></i></a>下载已经打包好的项目压缩文件进行部署。你也可以访问<a href="https://nacos.io/zh-cn/" target="_blank" rel="noopener noreferrer">Nacos官网<i class="fas fa-external-link-square-alt ms-1"></i></a>查看如何部署。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Eureka</title>
+      <link>/notes/spring/springcloud/eureka/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/eureka/</guid>
+      <description><![CDATA[<h1 id="eureka-服务注册中心" data-numberify>Eureka 服务注册中心<a class="anchor ms-1" href="#eureka-服务注册中心"></a></h1>
+<p>Eureka架构下将服务分为以下两个角色：</p>
+<ul>
+<li>注册中心（Eureka Server，服务端）。</li>
+<li>客户端（Eureka Client）。</li>
+</ul>
+<p>Eureka会将客户端（即服务）的信息进行注册，让客户端可以通过Eureka注册中心获取服务信息并进行调用。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Feign</title>
+      <link>/notes/spring/springcloud/feign/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/feign/</guid>
+      <description><![CDATA[<p>尽管使用了注册中心来解决URL的硬编码等问题，但是如今使用<code>RestTemplate</code>还是存在以下问题：</p>
+<ul>
+<li>代码可读性差，编程体验不统一；</li>
+<li>参数复杂URL难以维护。</li>
+</ul>
+<p>Feign是一个声明式的HTTP客户端，作用于服务消费者，在服务消费者中为服务提供者创建一个HTTP远程调用。官方地址：<a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener noreferrer">https://github.com/OpenFeign/feign<i class="fas fa-external-link-square-alt ms-1"></i></a>。其作用就是帮助我们优雅的实现HTTP请求的发送，解决上面提到的问题。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gateway</title>
+      <link>/notes/spring/springcloud/gateway/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/gateway/</guid>
+      <description><![CDATA[<h1 id="网关" data-numberify>网关<a class="anchor ms-1" href="#网关"></a></h1>
+<p>网关是所有微服务的统一入口。网关的核心功能特性：</p>
+<ul>
+<li><strong>请求路由</strong>：一切请求都必须先经过网关，但网关不处理业务，而是根据某种规则，把请求转发到某个微服务，这个过程叫做路由。当路由的目标服务有多个时，还需要做<strong>负载均衡</strong>。</li>
+<li><strong>权限控制</strong>：网关作为微服务入口，需要校验用户是是否有请求资格，如果没有则进行拦截。</li>
+<li><strong>限流</strong>：当请求流量过高时，在网关中按照下流的微服务能够接受的速度来放行请求，避免服务压力过大。</li>
+</ul>
+<p>在SpringCloud中网关的实现包括两种：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Nacos</title>
+      <link>/notes/spring/springcloud/nacos/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/nacos/</guid>
+      <description><![CDATA[<h1 id="部署-nacos-server" data-numberify>部署 Nacos Server<a class="anchor ms-1" href="#部署-nacos-server"></a></h1>
+<p>安装和配置好Nacos后，在<code>nacos</code>的<code>bin</code>目录中使用脚本启动：</p>
+<ul>
+<li>
+<p>Windows：</p>
+<p>单机启动：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">startup.cmd -m standalone
+</span></span></code></pre></div></li>
+<li>
+<p>Linux：</p>
+<p>单机启动：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">sh startup.sh -m standalone
+</span></span></code></pre></div></li>
+</ul>
+<p>在浏览器中使用对应的IP和端口访问，如<code>http://localhost:8848/nacos</code>。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>RestTemplate</title>
+      <link>/notes/spring/springcloud/remote-call/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/remote-call/</guid>
+      <description><![CDATA[<h1 id="微服务远程调用" data-numberify>微服务远程调用<a class="anchor ms-1" href="#微服务远程调用"></a></h1>
+<p>在微服务架构中，不同微服务都应该有自己独立的数据库以减少服务之间的冗余。而不同的服务之间可能需要共享数据。但拆分后的服务，它们的数据库是相互独立的，一个服务不可能去调用另一个服务的数据库，所以服务之间的信息共享成为一个问题。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Spring 环境和配置</title>
+      <link>/notes/spring/springcloud/config/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/config/</guid>
+      <description><![CDATA[<p>微服务需要根据业务模块拆分，做到单一职责，不要重复开发相同业务。</p>
+
+<h1 id="父工程" data-numberify>父工程<a class="anchor ms-1" href="#父工程"></a></h1>
+<p>微服务是一种分布式开发，要将一个项目拆分为若干个服务，所以会有很多个服务模块。而要统一管理这些服务模块，可以创建一个父工程来管理。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>微服务简介</title>
+      <link>/notes/spring/springcloud/introduction/</link>
+      <pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate>
+      <guid>/notes/spring/springcloud/introduction/</guid>
+      <description><![CDATA[<h1 id="微服务架构" data-numberify>微服务架构<a class="anchor ms-1" href="#微服务架构"></a></h1>
+<p>从前的项目是使用单体架构，单体架构是指<u>将业务的所有功能集中在一个项目中开发，打成一个包部署</u>。</p>
+<p>单体架构的优点是：</p>]]></description>
+    </item>
+    
+    <item>
       <title>瑞吉外卖项目实战</title>
       <link>/posts/reggie-note/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
@@ -17,6 +155,138 @@
       <description><![CDATA[<h1 id="项目笔记" data-numberify>项目笔记<a class="anchor ms-1" href="#项目笔记"></a></h1>
 <p>项目笔记仓库：<a href="https://gitee.com/linner_cheng/reggie_note" target="_blank" rel="noopener noreferrer">https://gitee.com/linner_cheng/reggie_note<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
 <p>B站视频：<a href="https://www.bilibili.com/video/BV13a411q753/?p=190&amp;spm_id_from=333.1007.top_right_bar_window_history.content.click" target="_blank" rel="noopener noreferrer">黑马程序员Java项目实战《瑞吉外卖》<i class="fas fa-external-link-square-alt ms-1"></i></a></p>]]></description>
+    </item>
+    
+    <item>
+      <title>MyBatisPlus</title>
+      <link>/notes/spring/springboot/mybatisplus/</link>
+      <pubDate>Tue, 28 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/mybatisplus/</guid>
+      <description><![CDATA[<h1 id="简介" data-numberify>简介<a class="anchor ms-1" href="#简介"></a></h1>
+<p>MybatisPlus（简称MP）是基于MyBatis框架基础上开发的增强型工具（依然可以使用MyBatis里的工具），旨在简化开发、提供效率。更多详情请访问<a href="https://mp.baomidou.com/" target="_blank" rel="noopener noreferrer">MyBatisPlus官网<i class="fas fa-external-link-square-alt ms-1"></i></a>（官网有两个地址，<a href="https://mp.baomidou.com/" target="_blank" rel="noopener noreferrer">https://mp.baomidou.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>或<a href="https://mybatis.plus" target="_blank" rel="noopener noreferrer">https://mybatis.plus<i class="fas fa-external-link-square-alt ms-1"></i></a>）。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Maven 高级</title>
+      <link>/notes/spring/springboot/maven-senior/</link>
+      <pubDate>Mon, 27 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/maven-senior/</guid>
+      <description><![CDATA[<h1 id="多模块开发" data-numberify>多模块开发<a class="anchor ms-1" href="#多模块开发"></a></h1>
+<p>多模块开发有以下两种：</p>
+<ul>
+<li>按照功能拆分。</li>
+<li>按照模块拆分。</li>
+</ul>
+<p>例如，将项目中的DAO类拆分出来作为一个独立的模块。然后使用Maven将该模块作为依赖导入项目中。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>SpringBoot 基础</title>
+      <link>/notes/spring/springboot/base/</link>
+      <pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springboot/base/</guid>
+      <description><![CDATA[<h1 id="简介" data-numberify>简介<a class="anchor ms-1" href="#简介"></a></h1>
+<p><code>SpringBoot</code> 是由 <code>Pivotal</code> 团队提供的全新框架，其设计目的是用来简化 <code>Spring</code> 应用的初始搭建以及开发过程。</p>
+<p>SpringBoot开发分为如下几步：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>SpringMVC 基础</title>
+      <link>/notes/spring/springmvc/base/</link>
+      <pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springmvc/base/</guid>
+      <description><![CDATA[<h1 id="简介" data-numberify>简介<a class="anchor ms-1" href="#简介"></a></h1>
+<p>SpringMVC是Spring下的一个用于Web表现层开发的技术。相比Servlet，SpringMVC更加高效快捷。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Spring Framework</title>
+      <link>/notes/spring/springframework/</link>
+      <pubDate>Sun, 16 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/springframework/</guid>
+      <description><![CDATA[<h1 id="spring-framewor-简介" data-numberify>Spring Framewor 简介<a class="anchor ms-1" href="#spring-framewor-简介"></a></h1>
+<blockquote>
+<p>Spring5.0已经全面支持JDK8，建议JDK使用1.8版本。</p>
+</blockquote>
+<p>Spring Framework是Spring家族中其他框架的底层基础。</p>
+
+<h2 id="spring-framewor-架构" data-numberify>Spring Framewor 架构<a class="anchor ms-1" href="#spring-framewor-架构"></a></h2>
+<p>Spring Framework的发展经历了很多版本的变更，每个版本都有相应的调整。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Filter 过滤器</title>
+      <link>/notes/spring/java-web/filter/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/filter/</guid>
+      <description><![CDATA[<h1 id="filter-概述" data-numberify>Filter 概述<a class="anchor ms-1" href="#filter-概述"></a></h1>
+<p>Filter 表示过滤器，是 JavaWeb 三大组件(Servlet、Filter、Listener)之一。</p>
+<p>过滤器可以把对资源的请求拦截下来，从而实现一些特殊的功能。设置 Filter 会在访问资源之前会先经过 Filter，将资源拦截，从而实现权限控制、统一编码处理、敏感字符处理等功能。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>HttpServlet 与 Tomcat</title>
+      <link>/notes/spring/java-web/http-servlet/</link>
+      <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/http-servlet/</guid>
+      <description><![CDATA[<h1 id="httpservlet-简介" data-numberify>HttpServlet 简介<a class="anchor ms-1" href="#httpservlet-简介"></a></h1>
+<p>HttpServlet是对HTTP协议封装的Servlet实现类。</p>
+<p>Servlet的体系结构：</p>
+<p><picture><img class="img-fluid " alt="" src="/notes/spring/java-web/http-servlet/1627240593506.png" loading="lazy" width="970" height="294" />
+</picture>
+
+</p>
+<p>在开发中，关注更多的是<code>Servlet.service()</code>方法。而每实现一个Servlet就必须实现Servlet接口，重写接口中的5个方法。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Servlet 与 Tomcat</title>
+      <link>/notes/spring/java-web/servlet/</link>
+      <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/servlet/</guid>
+      <description><![CDATA[<h1 id="servlet-简介" data-numberify>Servlet 简介<a class="anchor ms-1" href="#servlet-简介"></a></h1>
+<p>Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。</p>
+<hr>
+
+<h1 id="servlet-基本使用" data-numberify>Servlet 基本使用<a class="anchor ms-1" href="#servlet-基本使用"></a></h1>
+<ol>
+<li>
+<p>创建Maven Web项目后，导入Servlet依赖坐标和Tomcat插件：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Tomcat</title>
+      <link>/notes/spring/java-web/tomcat-base/</link>
+      <pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/tomcat-base/</guid>
+      <description><![CDATA[<h1 id="tomcat基本使用" data-numberify>Tomcat基本使用<a class="anchor ms-1" href="#tomcat基本使用"></a></h1>
+
+<h2 id="tomcat安装" data-numberify>Tomcat安装<a class="anchor ms-1" href="#tomcat安装"></a></h2>
+<p>访问<a href="https://tomcat.apache.org/" target="_blank" rel="noopener noreferrer">Tomcat官网<i class="fas fa-external-link-square-alt ms-1"></i></a>下载。Tomcat是绿色版，直接解压即可。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>MyBatis</title>
+      <link>/notes/spring/java-web/mybatis-base/</link>
+      <pubDate>Tue, 06 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/mybatis-base/</guid>
+      <description><![CDATA[<h1 id="mybatis-介绍" data-numberify>MyBatis 介绍<a class="anchor ms-1" href="#mybatis-介绍"></a></h1>
+<p>MyBatis 是一款优秀的持久层框架，用于简化 JDBC 开发。</p>
+<blockquote>
+<p><strong>持久层：</strong></p>
+<ul>
+<li>
+<p>是负责将数据到保存到数据库的那一层代码。即，操作数据库的Java代码为持久层。</p>
+<p>而Mybatis就是对JDBC代码进行了封装。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Maven 基础</title>
+      <link>/notes/spring/java-web/maven-base/</link>
+      <pubDate>Sun, 14 Aug 2022 00:00:00 +0000</pubDate>
+      <guid>/notes/spring/java-web/maven-base/</guid>
+      <description><![CDATA[<h1 id="maven-简介" data-numberify>Maven 简介<a class="anchor ms-1" href="#maven-简介"></a></h1>
+<p>Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档.</p>]]></description>
     </item>
     
   </channel>

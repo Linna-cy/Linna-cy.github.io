@@ -9,6 +9,140 @@
     <copyright>Copyright © 2020-2026 Razon Yang. All Rights Reserved.
 </copyright>
     <lastBuildDate>Tue, 02 Jul 2024 14:49:41 +0000</lastBuildDate><atom:link href="/tags/gin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gin Cookie 和 Session</title>
+      <link>/notes/golang/gin/cookie-and-session/</link>
+      <pubDate>Tue, 02 Jul 2024 14:49:41 +0000</pubDate>
+      <guid>/notes/golang/gin/cookie-and-session/</guid>
+      <description><![CDATA[<h1 id="cookie" data-numberify>Cookie<a class="anchor ms-1" href="#cookie"></a></h1>
+<p>在 Gin 中，使用 Cookie 涉及到两个方法，<code>Context.Cookie()</code> 和 <code>Context.SetCookie()</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">SetCookie</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">	</span><span class="c1">// 设置 Cookie</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">	</span><span class="nx">c</span><span class="p">.</span><span class="nf">SetCookie</span><span class="p">(</span><span class="s">&#34;gin-cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;test&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;/&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;localhost&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">	</span><span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">		</span><span class="s">&#34;code&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">		</span><span class="s">&#34;data&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">	</span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">GetCookie</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">	</span><span class="c1">// 获取 Cookie</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nf">Cookie</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">		</span><span class="nx">c</span><span class="p">.</span><span class="nf">Status</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">		</span><span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">			</span><span class="s">&#34;code&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">			</span><span class="s">&#34;data&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">		</span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">	</span><span class="nx">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nf">Default</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">	</span><span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="nx">SetCookie</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">	</span><span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="nx">GetCookie</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">		</span><span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>其中：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 中间件</title>
+      <link>/notes/golang/gin/middlewares/</link>
+      <pubDate>Sun, 30 Jun 2024 07:12:14 +0000</pubDate>
+      <guid>/notes/golang/gin/middlewares/</guid>
+      <description><![CDATA[<p>Gin 中间件的配置方式有许多种，大致为：</p>
+<ol>
+<li>在 <code>Handle()</code>、<code>Any()</code>、<code>Match()</code>、<code>GET()</code> 等基本路由方法中配置 <code>HandlerFunc</code>。</li>
+<li>在 <code>RouterGroup</code> 的 <code>Group()</code> 方法中配置 <code>HandlerFunc</code>。</li>
+<li>使用 <code>Use()</code> 方法配置 <code>HandlerFunc</code>。</li>
+</ol>
+<hr>
+
+<h1 id="特定请求的中间件" data-numberify>特定请求的中间件<a class="anchor ms-1" href="#特定请求的中间件"></a></h1>
+<p>为特定请求配置中间件，可以直接在请求路由的 <code>HandlerFunc</code> 参数中配置。例如：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 路由</title>
+      <link>/notes/golang/gin/routers/</link>
+      <pubDate>Sun, 30 Jun 2024 05:42:11 +0000</pubDate>
+      <guid>/notes/golang/gin/routers/</guid>
+      <description><![CDATA[<p>Gin 中许多类型都可以认为它是一个路由（<code>IRoutes</code>）类型，这包括了 <code>RouterGroup</code>、<code>Engine</code>等。并且 <code>IRoutes</code> 接口中定义的方法都会有一个 <code>IRoutes</code> 类型的返回值，使得 Gin Routers 可以支持链式调用，让代码更加简洁。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 获取请求</title>
+      <link>/notes/golang/gin/request/</link>
+      <pubDate>Sat, 29 Jun 2024 17:03:06 +0000</pubDate>
+      <guid>/notes/golang/gin/request/</guid>
+      <description><![CDATA[<p>Gin 请求在 <a href="../introduction#gin-%e8%af%b7%e6%b1%82">Gin 介绍</a> 中做了简单的介绍。</p>
+<p>Gin 请求与 <code>RouterGroup</code> 和 <code>IRoutes</code> 息息相关。<code>IRoutes</code>是一个接口类型，它定义了一系列用于配置路由处理的方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">  </span><span class="c1">// 用于配置路由中间件</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">	</span><span class="nf">Use</span><span class="p">(</span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="c1">// 路由处理方法</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">	</span><span class="nf">Handle</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">	</span><span class="nf">Any</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">	</span><span class="nf">GET</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">	</span><span class="nf">POST</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">	</span><span class="nf">DELETE</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">	</span><span class="nf">PATCH</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">	</span><span class="nf">PUT</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">	</span><span class="nf">OPTIONS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">	</span><span class="nf">HEAD</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">	</span><span class="nf">Match</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">  </span><span class="c1">// 静态文件处理</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">	</span><span class="nf">StaticFile</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">	</span><span class="nf">StaticFileFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">	</span><span class="nf">Static</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">	</span><span class="nf">StaticFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>而 <code>RouterGroup</code> 是 <code>IRoutes</code> 的一个实现。</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin 响应数据</title>
+      <link>/notes/golang/gin/response/</link>
+      <pubDate>Sat, 29 Jun 2024 07:48:18 +0000</pubDate>
+      <guid>/notes/golang/gin/response/</guid>
+      <description><![CDATA[<p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 <code>gin.Context</code> 类型。<code>gin.Context</code> 类型的作用有：</p>
+<ul>
+<li>获取请求数据，包括请求头、Query 参数、Form 数据、Path 参数、请求体等。</li>
+<li>响应管理，包括设置 HTTP 状态码、编写响应体、设置响应头等。</li>
+<li>中间件支持。<code>Context</code> 可以携带当前处理函数的信息传递到下一个处理函数，直到达到最终的处理函数。在中间件中可以使用 <code>Context</code> 读取、修改 <code>Context</code> 的内容或终止请求处理流程。</li>
+<li>Cookie 操作。</li>
+<li>读写请求和响应体的原始字节流，以此来处理自定义协议或二进制数据传输。</li>
+<li>错误处理。可以记录错误并中断请求处理流程。</li>
+</ul>
+<p>响应数据示例：</p>]]></description>
+    </item>
+    
+    <item>
+      <title>Gin</title>
+      <link>/notes/golang/gin/introduction/</link>
+      <pubDate>Sat, 29 Jun 2024 07:15:50 +0000</pubDate>
+      <guid>/notes/golang/gin/introduction/</guid>
+      <description><![CDATA[<p>Gin 是一个用 Golang 编写的 Web 框架。具有速度快、内存占用小等特点。</p>
+<hr>
+
+<h1 id="使用-gin" data-numberify>使用 Gin<a class="anchor ms-1" href="#使用-gin"></a></h1>
+<ol>
+<li>下载并安装 Gin：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ go get -u github.com/gin-gonic/gin
+</span></span></code></pre></div><ol start="2">
+<li>引入 Gin：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="s">&#34;github.com/gin-gonic/gin&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>如果需要使用诸如 <code>http.StatusOK</code> 之类的 HTTP 状态码常量，可以引入 <code>net/http</code> 包：</p>]]></description>
+    </item>
+    
   </channel>
 </rss>
 
