@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Linux on Roam Tech-verse | Roamverse Technical Blog</title><link>/tags/linux/</link><description>Recent content in Linux on Roam Tech-verse | Roamverse Technical Blog</description><generator>Hugo</generator><language>zh-hans</language><copyright>Copyright © 2020-2026 Razon Yang. All Rights Reserved.</copyright><lastBuildDate>Tue, 13 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 终端中文编码设置</title><link>/posts/linux-terminal-coding/</link><pubDate>Tue, 13 Sep 2022 00:00:00 +0000</pubDate><guid>/posts/linux-terminal-coding/</guid><description><![CDATA[<h1 id="ubuntu" data-numberify>Ubuntu<a class="anchor ms-1" href="#ubuntu"></a></h1>
 <p>安装中文支持：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">apt-get install language-pack-zh-hans -y
-</span></span></code></pre></div><p>查看系统语言包：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">locale -a
-</span></span></code></pre></div><p>修改<code>~/.bashrc</code>，加入：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
-</span></span></code></pre></div><p>修改<code>/etc/default/locale</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
-</span></span></code></pre></div>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">apt-get install language-pack-zh-hans -y</span></span></code></pre></div>
+<p>查看系统语言包：</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">locale -a</span></span></code></pre></div>
+<p>修改<code>~/.bashrc</code>，加入：</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8</span></span></code></pre></div>
+<p>修改<code>/etc/default/locale</code>：</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span></span></span></code></pre></div>
+
 <h1 id="debian" data-numberify>Debian<a class="anchor ms-1" href="#debian"></a></h1>
 <p>安装<code>locales</code>：</p>]]></description></item><item><title>SSH 公钥配置</title><link>/posts/ssh-public-key/</link><pubDate>Sat, 13 Aug 2022 00:00:00 +0000</pubDate><guid>/posts/ssh-public-key/</guid><description><![CDATA[<p>创建<code>.ssh</code>目录并生成公钥:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh-keygen -t rsa
-</span></span></code></pre></div><p>所有选项全部回车, 使用默认选项即可.</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh-keygen -t rsa</span></span></code></pre></div>
+<p>所有选项全部回车, 使用默认选项即可.</p>
 <p>然后切换到用户目录下的<code>.ssh</code>目录:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> ~/.ssh
-</span></span></code></pre></div><p>该目录下默认有三个文件:</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> ~/.ssh</span></span></code></pre></div>
+<p>该目录下默认有三个文件:</p>
 <ul>
 <li><code>id_rsa</code>: 用户私钥, 不要复制发送给任何人.</li>
 <li><code>id_rsa.pub</code>: 公钥, 将里面内容发送给客户端.</li>
@@ -24,33 +48,69 @@
 <p>只需要将<code>id_rsa.pub</code>里的内容以 (<code>ssh-rsa</code>开头的一行内容) 复制到客户端的<code>authorized_keys</code>的目录下即可.</p>]]></description></item><item><title>Code Server 部署</title><link>/posts/code-server-deploy/</link><pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><guid>/posts/code-server-deploy/</guid><description><![CDATA[<ol>
 <li>
 <p>下载code-server：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz
-</span></span></code></pre></div><p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面" target="_blank" rel="noopener noreferrer">code-server GitHub 页面<i class="fas fa-external-link-square-alt ms-1"></i></a>获取下载连接。</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz</span></span></code></pre></div>
+<p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面" target="_blank" rel="noopener noreferrer">code-server GitHub 页面<i class="fas fa-external-link-square-alt ms-1"></i></a>获取下载连接。</p>
 </li>
 <li>
 <p>解压：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz
-</span></span></code></pre></div></li>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz</span></span></code></pre></div>
+</li>
 <li>
-<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>]]></description></item><item><title>搭建 frp 服务</title><link>/posts/frp-deploy/</link><pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><guid>/posts/frp-deploy/</guid><description><![CDATA[<ol>
+<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">mv code-server-4.5.1-linux-amd64 /opt/code-server</span></span></code></pre></div>
+</li>
+<li>
+<p>创建软链到<code>/usr/bin</code>目录下：</p>]]></description></item><item><title>搭建 frp 服务</title><link>/posts/frp-deploy/</link><pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><guid>/posts/frp-deploy/</guid><description><![CDATA[<ol>
 <li>
 <p>下载frp：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz
-</span></span></code></pre></div><p>或者访问<a href="https://github.com/fatedier/frp/" title="frp项目" target="_blank" rel="noopener noreferrer">frp项目<i class="fas fa-external-link-square-alt ms-1"></i></a>获取自己需要的版本。</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz</span></span></code></pre></div>
+<p>或者访问<a href="https://github.com/fatedier/frp/" title="frp项目" target="_blank" rel="noopener noreferrer">frp项目<i class="fas fa-external-link-square-alt ms-1"></i></a>获取自己需要的版本。</p>
 </li>
 <li>
 <p>解压：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf frp_0.44.0_linux_amd64.tar.gz
-</span></span></code></pre></div></li>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf frp_0.44.0_linux_amd64.tar.gz</span></span></code></pre></div>
+</li>
 <li>
 <p>进入目录后，配置<code>frps.ini</code>和<code>frpc.ini</code>：</p>]]></description></item><item><title>Ubuntu 安装 Oh my zsh</title><link>/posts/ubuntu-omz/</link><pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/ubuntu-omz/</guid><description><![CDATA[<p>oh-my-zsh主页： <a href="https://ohmyz.sh/" title="https://ohmyz.sh/" target="_blank" rel="noopener noreferrer">https://ohmyz.sh/<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
 
 <h1 id="安装并设置zsh" data-numberify>安装并设置zsh<a class="anchor ms-1" href="#安装并设置zsh"></a></h1>
 <p>安装zsh：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt install zsh
-</span></span></code></pre></div><p>查看系统中所有的shell：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat /etc/shells
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># /etc/shells: valid login shells
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt install zsh</span></span></code></pre></div>
+<p>查看系统中所有的shell：</p>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat /etc/shells</span></span></code></pre></div>
+
+
+
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># /etc/shells: valid login shells
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">/bin/sh
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">/bin/bash
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">/usr/bin/bash
@@ -61,5 +121,5 @@
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl">/usr/bin/tmux
 </span></span><span class="line"><span class="ln">10</span><span class="cl">/usr/bin/screen
 </span></span><span class="line"><span class="ln">11</span><span class="cl">/bin/zsh
-</span></span><span class="line"><span class="ln">12</span><span class="cl">/usr/bin/zsh
-</span></span></code></pre></div><p>将zsh设置为默认的shell：</p>]]></description></item>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">/usr/bin/zsh</span></span></code></pre></div>
+<p>将zsh设置为默认的shell：</p>]]></description></item>
