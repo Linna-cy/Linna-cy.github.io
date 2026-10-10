@@ -6,6 +6,14 @@ const { Toolbar } = window.markmap;
 const transformer = new Transformer([]);
 isHandling = false;
 
+function createSvgIcon(svgStr) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgStr, "image/svg+xml");
+    return doc.querySelector("svg");
+}
+
+const fullscreenIcon = createSvgIcon('<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 1024 1024" width="20" height="20"><path d="M181 357.5V181.2h176.4c14.3 0 25.9-11.6 25.9-25.9v-31.1c0-14.3-11.6-25.9-25.9-25.9H118c-11 0-20 9-20 20v239.4c0 14.3 11.6 25.9 25.9 25.9H155c14.4-.1 26-11.7 26-26.1m487.6-176.3H845v176.4c0 14.3 11.6 25.9 25.9 25.9H902c14.3 0 25.9-11.6 25.9-25.9V118.2c0-11-9-20-20-20H668.6c-14.3 0-25.9 11.6-25.9 25.9v31.1c0 14.3 11.6 26 25.9 26m-311.2 664H181V668.8c0-14.3-11.6-25.9-25.9-25.9H124c-14.3 0-25.9 11.6-25.9 25.9v239.4c0 11 9 20 20 20h239.4c14.3 0 25.9-11.6 25.9-25.9v-31.1c-.1-14.4-11.7-26-26-26M845 668.8v176.4H668.6c-14.3 0-25.9 11.6-25.9 25.9v31.1c0 14.3 11.6 25.9 25.9 25.9H908c11 0 20-9 20-20V668.8c0-14.3-11.6-25.9-25.9-25.9H871c-14.4 0-26 11.6-26 25.9" fill="currentColor" fill-rule="evenodd"/></svg>');
+
 async function renderAllMarkmap() {
     const containers = document.querySelectorAll('.markmap');
     for (const wrapDiv of containers) {
@@ -22,7 +30,6 @@ async function renderAllMarkmap() {
             console.error("markmap解析失败，root为空");
             continue;
         }
-        console.log(root)
         const mm = await Markmap.create(svgEl, {}, root);
         markmapInstances.set(wrapDiv, mm);
 
@@ -34,7 +41,7 @@ async function renderAllMarkmap() {
         toolbar.register({
             id: 'fullscreen',
             title: '全屏预览导图', // hover提示
-            content: '⛶',
+            content: fullscreenIcon,
             onClick: () => {
                 // 如果正在处理，直接返回，防止重复执行
                 if (isHandling) return;
