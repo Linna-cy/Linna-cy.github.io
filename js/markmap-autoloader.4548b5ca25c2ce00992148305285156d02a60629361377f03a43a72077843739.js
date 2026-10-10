@@ -4,6 +4,7 @@ const { Markmap } = window.markmap;
 const { Toolbar } = window.markmap;
 // 传入空数组禁用自带的math插件（同时包括其他自带插件），保留$符号，让外部的math渲染生效
 const transformer = new Transformer([]);
+isHandling = false;
 
 async function renderAllMarkmap() {
     const containers = document.querySelectorAll('.markmap');
@@ -35,6 +36,10 @@ async function renderAllMarkmap() {
             title: '全屏预览导图', // hover提示
             content: '⛶',
             onClick: () => {
+                // 如果正在处理，直接返回，防止重复执行
+                if (isHandling) return;
+                isHandling = true; // 上锁
+
                 if (!document.fullscreenElement) {
                     // 让导图容器进入全屏
                     wrapDiv.requestFullscreen().catch(err => {
@@ -48,6 +53,23 @@ async function renderAllMarkmap() {
                     wrapDiv.style.border = '';
                     document.exitFullscreen();
                 }
+
+                // 延迟解锁，等fullscreenchange事件触发完毕再放开锁
+                setTimeout(() => {
+                    isHandling = false;
+                }, 50);
+            }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            // 如果是我们代码主动触发的，上锁状态，直接跳过
+            if (isHandling) return;
+
+            // 👉 只有ESC、浏览器退出等【外部方式】退出全屏，才走到这里
+            if (!document.fullscreenElement) {
+                // 恢复样式
+                svgEl.style.height = '';
+                wrapDiv.style.border = '';
             }
         });
 
