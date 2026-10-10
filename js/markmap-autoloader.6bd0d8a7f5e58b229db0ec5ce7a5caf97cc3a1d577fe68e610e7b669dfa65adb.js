@@ -55,6 +55,7 @@ async function renderAllMarkmap() {
                     wrapDiv.style.setProperty('border', 'none', 'important');
                     // 防止全屏后高度变小
                     svgEl.style.setProperty('height', '100vh', 'important');
+                    mm.fit();
                 } else {
                     svgEl.style.height = '';
                     wrapDiv.style.border = '';
@@ -84,6 +85,46 @@ async function renderAllMarkmap() {
         toolbar.setItems([...Toolbar.defaultItems, 'fullscreen']);
         // 挂载到外层wrapDiv（position:relative容器）
         wrapDiv.appendChild(toolbarEl);
+
+        // 增加tabindex，使svg可以捕获keydown键盘事件
+        svgEl.setAttribute('tabindex', '-1');
+        const zoomInFactor = 1.2;
+        const zoomOutFactor = 0.8;
+        // 缩放快捷键
+        svgEl.addEventListener('keydown', (evt) => {
+            if (!document.body.contains(svgEl)) return;
+            // Mac用metaKey(Cmd)，Windows用altKey
+            const isMacMod = evt.metaKey;
+            const isWinMod = evt.altKey;
+            if (!isMacMod && !isWinMod) return;
+
+            const gDom = svgEl.querySelector('g');
+            const sel = d3.select(svgEl);
+            const t = d3.zoomTransform(gDom);
+
+            // 放大：+ / =
+            if (evt.key === '+' || evt.key === '=') {
+                evt.preventDefault();
+                const newT = t.scale(zoomInFactor);
+                mm.zoom.transform(sel, newT);
+            }
+            // 缩小：-
+            else if (evt.key === '-') {
+                evt.preventDefault();
+                const newT = t.scale(zoomOutFactor);
+                mm.zoom.transform(sel, newT);
+            }
+            // 重置：0
+            else if (evt.key === '0') {
+                evt.preventDefault();
+                mm.fit();
+            }
+        });
+        // 自动聚焦
+        svgEl.addEventListener('mouseenter', () => {
+            svgEl.focus();
+        });
+
 
         if (features?.styles) markmap.loadCSS(features.styles);
         if (features?.scripts) markmap.loadJS(features.scripts, { getMarkmap: () => window.markmap });
