@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Roam Tech-verse | Roamverse Technical Blog</title><link>/</link><description>Recent content on Roam Tech-verse | Roamverse Technical Blog</description><generator>Hugo</generator><language>zh-hans</language><copyright>Copyright © 2020-2026 Razon Yang. All Rights Reserved.</copyright><lastBuildDate>Sat, 03 Oct 2026 07:30:02 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Gin Cookie 和 Session</title><link>/notes/golang/gin/cookie-and-session/</link><pubDate>Tue, 02 Jul 2024 14:49:41 +0000</pubDate><guid>/notes/golang/gin/cookie-and-session/</guid><description><![CDATA[<h1 id="cookie" data-numberify>Cookie<a class="anchor ms-1" href="#cookie"></a></h1>
 <p>在 Gin 中，使用 Cookie 涉及到两个方法，<code>Context.Cookie()</code> 和 <code>Context.SetCookie()</code>：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">SetCookie</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">SetCookie</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">	</span><span class="c1">// 设置 Cookie</span><span class="w">
 </span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">	</span><span class="nx">c</span><span class="p">.</span><span class="nf">SetCookie</span><span class="p">(</span><span class="s">&#34;gin-cookie&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;test&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;/&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;localhost&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">	</span><span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span><span class="w">
@@ -33,8 +29,8 @@
 </span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">		</span><span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span></span></span></code></pre></div>
-<p>其中：</p>]]></description></item><item><title>Gin 中间件</title><link>/notes/golang/gin/middlewares/</link><pubDate>Sun, 30 Jun 2024 07:12:14 +0000</pubDate><guid>/notes/golang/gin/middlewares/</guid><description><![CDATA[<p>Gin 中间件的配置方式有许多种，大致为：</p>
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>其中：</p>]]></description></item><item><title>Gin 中间件</title><link>/notes/golang/gin/middlewares/</link><pubDate>Sun, 30 Jun 2024 07:12:14 +0000</pubDate><guid>/notes/golang/gin/middlewares/</guid><description><![CDATA[<p>Gin 中间件的配置方式有许多种，大致为：</p>
 <ol>
 <li>在 <code>Handle()</code>、<code>Any()</code>、<code>Match()</code>、<code>GET()</code> 等基本路由方法中配置 <code>HandlerFunc</code>。</li>
 <li>在 <code>RouterGroup</code> 的 <code>Group()</code> 方法中配置 <code>HandlerFunc</code>。</li>
@@ -45,11 +41,7 @@
 <h1 id="特定请求的中间件" data-numberify>特定请求的中间件<a class="anchor ms-1" href="#特定请求的中间件"></a></h1>
 <p>为特定请求配置中间件，可以直接在请求路由的 <code>HandlerFunc</code> 参数中配置。例如：</p>]]></description></item><item><title>Gin 路由</title><link>/notes/golang/gin/routers/</link><pubDate>Sun, 30 Jun 2024 05:42:11 +0000</pubDate><guid>/notes/golang/gin/routers/</guid><description><![CDATA[<p>Gin 中许多类型都可以认为它是一个路由（<code>IRoutes</code>）类型，这包括了 <code>RouterGroup</code>、<code>Engine</code>等。并且 <code>IRoutes</code> 接口中定义的方法都会有一个 <code>IRoutes</code> 类型的返回值，使得 Gin Routers 可以支持链式调用，让代码更加简洁。</p>]]></description></item><item><title>Gin 获取请求</title><link>/notes/golang/gin/request/</link><pubDate>Sat, 29 Jun 2024 17:03:06 +0000</pubDate><guid>/notes/golang/gin/request/</guid><description><![CDATA[<p>Gin 请求在 <a href="../introduction#gin-%e8%af%b7%e6%b1%82">Gin 介绍</a> 中做了简单的介绍。</p>
 <p>Gin 请求与 <code>RouterGroup</code> 和 <code>IRoutes</code> 息息相关。<code>IRoutes</code>是一个接口类型，它定义了一系列用于配置路由处理的方法：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">  </span><span class="c1">// 用于配置路由中间件</span><span class="w">
 </span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">	</span><span class="nf">Use</span><span class="p">(</span><span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
 </span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">
@@ -70,8 +62,8 @@
 </span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">	</span><span class="nf">StaticFileFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
 </span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">	</span><span class="nf">Static</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
 </span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">	</span><span class="nf">StaticFS</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">FileSystem</span><span class="p">)</span><span class="w"> </span><span class="nx">IRoutes</span><span class="w">
-</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span></span></span></code></pre></div>
-<p>而 <code>RouterGroup</code> 是 <code>IRoutes</code> 的一个实现。</p>]]></description></item><item><title>Gin 响应数据</title><link>/notes/golang/gin/response/</link><pubDate>Sat, 29 Jun 2024 07:48:18 +0000</pubDate><guid>/notes/golang/gin/response/</guid><description><![CDATA[<p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 <code>gin.Context</code> 类型。<code>gin.Context</code> 类型的作用有：</p>
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>而 <code>RouterGroup</code> 是 <code>IRoutes</code> 的一个实现。</p>]]></description></item><item><title>Gin 响应数据</title><link>/notes/golang/gin/response/</link><pubDate>Sat, 29 Jun 2024 07:48:18 +0000</pubDate><guid>/notes/golang/gin/response/</guid><description><![CDATA[<p>Gin 支持各种响应数据类型：JSON、XML、HTML、YAML、Text 等等。响应数据需要使用到 <code>gin.Context</code> 类型。<code>gin.Context</code> 类型的作用有：</p>
 <ul>
 <li>获取请求数据，包括请求头、Query 参数、Form 数据、Path 参数、请求体等。</li>
 <li>响应管理，包括设置 HTTP 状态码、编写响应体、设置响应头等。</li>
@@ -87,20 +79,12 @@
 <ol>
 <li>下载并安装 Gin：</li>
 </ol>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ go get -u github.com/gin-gonic/gin</span></span></code></pre></div>
-<ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ go get -u github.com/gin-gonic/gin
+</span></span></code></pre></div><ol start="2">
 <li>引入 Gin：</li>
 </ol>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="s">&#34;github.com/gin-gonic/gin&#34;</span></span></span></code></pre></div>
-<p>如果需要使用诸如 <code>http.StatusOK</code> 之类的 HTTP 状态码常量，可以引入 <code>net/http</code> 包：</p>]]></description></item><item><title>创建 Go Module</title><link>/notes/golang/create-module/</link><pubDate>Sat, 08 Jun 2024 06:27:21 +0000</pubDate><guid>/notes/golang/create-module/</guid><description><![CDATA[<h1 id="go-path" data-numberify>Go Path<a class="anchor ms-1" href="#go-path"></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="s">&#34;github.com/gin-gonic/gin&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>如果需要使用诸如 <code>http.StatusOK</code> 之类的 HTTP 状态码常量，可以引入 <code>net/http</code> 包：</p>]]></description></item><item><title>创建 Go Module</title><link>/notes/golang/create-module/</link><pubDate>Sat, 08 Jun 2024 06:27:21 +0000</pubDate><guid>/notes/golang/create-module/</guid><description><![CDATA[<h1 id="go-path" data-numberify>Go Path<a class="anchor ms-1" href="#go-path"></a></h1>
 <p>在 Golang 1.11 之前，Go 采用的是手动依赖管理，也就是使用 Go Path 的方式管理依赖。</p>
 <p>使用 Go Path 会有以下问题：</p>
 <ol>
@@ -186,23 +170,14 @@
 <hr>
 
 <h1 id="安装-element-ui" data-numberify>安装 Element-UI<a class="anchor ms-1" href="#安装-element-ui"></a></h1>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">npm i element-ui</span></span></code></pre></div>
-<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">npm i element-ui
+</span></span></code></pre></div><hr>
 
 <h1 id="引入并应用-element-ui" data-numberify>引入并应用 Element-UI<a class="anchor ms-1" href="#引入并应用-element-ui"></a></h1>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">import</span> <span class="nx">ElementUI</span> <span class="nx">from</span> <span class="s1">&#39;element-ui&#39;</span><span class="p">;</span> <span class="c1">// 引入 Element-UI
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">import</span> <span class="nx">ElementUI</span> <span class="nx">from</span> <span class="s1">&#39;element-ui&#39;</span><span class="p">;</span> <span class="c1">// 引入 Element-UI
 </span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="kr">import</span> <span class="s1">&#39;element-ui/lib/theme-chalk/index.css&#39;</span><span class="p">;</span>  <span class="c1">// 引入 Element-UI 的全部样式
 </span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">ElementUI</span><span class="p">);</span> <span class="c1">// 应用 Element-UI
-</span></span></span></code></pre></div>
-<p>直接使用以上方式引入Element-UI，引入的是Element-UI中所有的组件以及它们的样式和交互。这会使页面的体积变得十分庞大。</p>]]></description></item><item><title>Vue Router 两种工作模式</title><link>/notes/vue/routers/two-modes/</link><pubDate>Thu, 28 Sep 2023 14:09:10 +0800</pubDate><guid>/notes/vue/routers/two-modes/</guid><description><![CDATA[<p>Vue Router中有两种工作模式，它们分别是：</p>
+</span></span></span></code></pre></div><p>直接使用以上方式引入Element-UI，引入的是Element-UI中所有的组件以及它们的样式和交互。这会使页面的体积变得十分庞大。</p>]]></description></item><item><title>Vue Router 两种工作模式</title><link>/notes/vue/routers/two-modes/</link><pubDate>Thu, 28 Sep 2023 14:09:10 +0800</pubDate><guid>/notes/vue/routers/two-modes/</guid><description><![CDATA[<p>Vue Router中有两种工作模式，它们分别是：</p>
 <ul>
 <li>
 <p><code>hash</code>模式：使用URL的<code>hash</code>来模拟一个完整的URL。</p>
@@ -229,11 +204,7 @@
 <li>
 <p>在父组件中使用<code>v-on</code>绑定自定义事件，并定义回调。</p>
 <p>例如给一个<code>user-info</code>绑定自定义事件：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">&lt;!-- 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">&lt;!-- 
 </span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c">  App.vue
 </span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c"> --&gt;</span>
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">
@@ -263,8 +234,8 @@
 </span></span><span class="line"><span class="ln">28</span><span class="cl">      <span class="p">},</span>
 </span></span><span class="line"><span class="ln">29</span><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="ln">30</span><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span></span></span></code></pre></div>
-</li>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div></li>
 <li>
 <p>然后在子组件中，触发该自定义事件。</p>]]></description></item><item><title>WebStorage 浏览器本地存储</title><link>/posts/web-storage/</link><pubDate>Mon, 18 Sep 2023 23:39:38 +0000</pubDate><guid>/posts/web-storage/</guid><description>&lt;p>WebStorage是指浏览器自带的本地存储。WebStorage存储内容大小一般支持5MB左右（不同浏览器的存储大小可能不一样）。&lt;/p>
 &lt;p>浏览器通过以下两种属性来实现本地存储：&lt;/p></description></item><item><title>Vue 组件样式作用域</title><link>/notes/vue/components/scoped/</link><pubDate>Mon, 18 Sep 2023 02:18:25 +0000</pubDate><guid>/notes/vue/components/scoped/</guid><description><![CDATA[<h1 id="样式冲突" data-numberify>样式冲突<a class="anchor ms-1" href="#样式冲突"></a></h1>
@@ -281,11 +252,7 @@
 <p>使用<code>props</code>配置项，可以让该组件的标签在被使用时，通过组件标签属性将值传入组件中。</p>]]></description></item><item><title>Vue 获取页面元素及延迟执行</title><link>/notes/vue/components/ref-and-nexttick/</link><pubDate>Mon, 18 Sep 2023 01:16:55 +0000</pubDate><guid>/notes/vue/components/ref-and-nexttick/</guid><description><![CDATA[<h1 id="ref-属性" data-numberify>ref 属性<a class="anchor ms-1" href="#ref-属性"></a></h1>
 <p>在Vue的模板中可以通过为元素或子组件添加<code>ref</code>属性（如<code>ref=&quot;elementRefValue&quot;</code>）来告诉Vue实例（或组件实例）要获取该元素。例如：</p>]]></description></item><item><title>Vue 项目开发</title><link>/notes/vue/components/projects/</link><pubDate>Sat, 16 Sep 2023 07:47:27 +0000</pubDate><guid>/notes/vue/components/projects/</guid><description><![CDATA[<h1 id="单文件组件" data-numberify>单文件组件<a class="anchor ms-1" href="#单文件组件"></a></h1>
 <p>Vue单文件组件是指使用由Vue定义的<code>.vue</code>格式的文件。<code>.vue</code>文件模板如下：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">&lt;!-- Vue 只能包含以下三种标签 --&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">&lt;!-- Vue 只能包含以下三种标签 --&gt;</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c">&lt;!-- 组件的结构 --&gt;</span>
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
@@ -302,8 +269,8 @@
 </span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c">&lt;!-- 组件的样式 --&gt;</span>
 </span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="ln">17</span><span class="cl">  <span class="c">/* ... */</span>
-</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span></span></span></code></pre></div>
-<p>其中：</p>]]></description></item><item><title>Vue 组件</title><link>/notes/vue/components/introduction/</link><pubDate>Thu, 14 Sep 2023 06:33:39 +0000</pubDate><guid>/notes/vue/components/introduction/</guid><description><![CDATA[<p>组件是指实现应用中<u>局部功能代码</u>（<code>html</code>、<code>css</code>、<code>js</code>等）和<u>资源</u>（图片、音频、视频等）的<u>集合</u>。</p>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>其中：</p>]]></description></item><item><title>Vue 组件</title><link>/notes/vue/components/introduction/</link><pubDate>Thu, 14 Sep 2023 06:33:39 +0000</pubDate><guid>/notes/vue/components/introduction/</guid><description><![CDATA[<p>组件是指实现应用中<u>局部功能代码</u>（<code>html</code>、<code>css</code>、<code>js</code>等）和<u>资源</u>（图片、音频、视频等）的<u>集合</u>。</p>
 <p>传统的Web应用存在以下缺点：</p>
 <ul>
 <li>依赖关系混乱，不易于维护。</li>
@@ -338,20 +305,12 @@
 <p>在Node.js中，第三方模块又称为<strong>包</strong>。第三方模块与包的概念相同，仅仅在称呼上有差异。包是由第三方个人或团队开发出来的，免费供所有人使用。</p>]]></description></item><item><title>Node.js 模块化</title><link>/notes/node-js/modularization/</link><pubDate>Mon, 07 Aug 2023 14:23:19 +0000</pubDate><guid>/notes/node-js/modularization/</guid><description><![CDATA[<h1 id="模块化概念" data-numberify>模块化概念<a class="anchor ms-1" href="#模块化概念"></a></h1>
 <p>模块化是指解决一个复杂问题时，自顶向下逐层把系统划分成若干模块的过程。对于整个系统来说，模块是可组合、可分解和可更换的单元。</p>]]></description></item><item><title>Node.js HTTP 模块</title><link>/notes/node-js/http-module/</link><pubDate>Mon, 07 Aug 2023 08:05:53 +0000</pubDate><guid>/notes/node-js/http-module/</guid><description><![CDATA[<p><code>http</code>模块是Node.js官方提供的、用于创建Web服务器的模块。通过<code>http</code>模块提供的<code>http.createServer()</code>方法，就能像Web服务器一样对外提供Web资源服务。</p>]]></description></item><item><title>Node.js 事件循环</title><link>/notes/node-js/event/</link><pubDate>Sun, 06 Aug 2023 14:46:07 +0000</pubDate><guid>/notes/node-js/event/</guid><description>&lt;p>Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。&lt;/p>
 &lt;p>Node.js 几乎每一个 API 都是支持回调函数的。&lt;/p></description></item><item><title>Node.js 文件系统模块</title><link>/notes/node-js/fs/</link><pubDate>Sun, 06 Aug 2023 07:35:26 +0000</pubDate><guid>/notes/node-js/fs/</guid><description><![CDATA[<p>使用<code>fs</code>模块，首先需要导入：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span></span></span></code></pre></div>
-<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><hr>
 
 <h1 id="读取文件" data-numberify>读取文件<a class="anchor ms-1" href="#读取文件"></a></h1>
 <p>下方是一个通过<code>fs.readFile()</code>读取文件的示例：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 1. 导入fs模块，来操作文件
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 1. 导入fs模块，来操作文件
 </span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="cm">/**
 </span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="cm"> * 2. 调用 fs.readFile() 方法读取文件
@@ -369,8 +328,8 @@
 </span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;-------------&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="c1">// 2.2 打印成功的结果
 </span></span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dataStr</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">})</span></span></span></code></pre></div>
-<p><code>fs.readFile()</code>用于异步读取文件。当<code>fs.readFile()</code>读取到文件之后，会将信息传递给<code>err</code>和<code>dataStr</code>对象。<code>err</code>对象可用于读取成功与否的判断，并且记录了读取失败时的信息；<code>dataStr</code>对象记录了读取到的文件内容。</p>]]></description></item><item><title>Node.js 入门</title><link>/notes/node-js/introduction/</link><pubDate>Sun, 06 Aug 2023 06:48:14 +0000</pubDate><guid>/notes/node-js/introduction/</guid><description>&lt;p>Node.js是一个基于Chrome V8引擎的JavaScript运行环境。&lt;/p>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p><code>fs.readFile()</code>用于异步读取文件。当<code>fs.readFile()</code>读取到文件之后，会将信息传递给<code>err</code>和<code>dataStr</code>对象。<code>err</code>对象可用于读取成功与否的判断，并且记录了读取失败时的信息；<code>dataStr</code>对象记录了读取到的文件内容。</p>]]></description></item><item><title>Node.js 入门</title><link>/notes/node-js/introduction/</link><pubDate>Sun, 06 Aug 2023 06:48:14 +0000</pubDate><guid>/notes/node-js/introduction/</guid><description>&lt;p>Node.js是一个基于Chrome V8引擎的JavaScript运行环境。&lt;/p>
 &lt;p>浏览器可以当作是JavaScript的前端运行环境；Node.js可以看作是JavaScript的后端运行环境。但是在Node.js中无法调用DOM和BOM等浏览器内置API。&lt;/p></description></item><item><title>NVM 安装</title><link>/posts/nvm-install/</link><pubDate>Sun, 06 Aug 2023 05:31:54 +0000</pubDate><guid>/posts/nvm-install/</guid><description><![CDATA[<h1 id="debian-安装-nvm" data-numberify>Debian 安装 NVM<a class="anchor ms-1" href="#debian-安装-nvm"></a></h1>
 <p>NVM（Node Version Manager）是一个用于管理 Node.js 版本的工具。它允许你在同一台机器上同时安装和切换不同的 Node.js 版本，以便于在不同项目中使用特定的 Node.js 版本。</p>]]></description></item><item><title>Spring AMQP</title><link>/notes/spring/springcloud/communications/spring-amqp/</link><pubDate>Fri, 04 Aug 2023 08:40:11 +0000</pubDate><guid>/notes/spring/springcloud/communications/spring-amqp/</guid><description>&lt;p>AMQP（Advanced Message Queuing Protocol）是用于在应用程序之间传递业务消息的开放标准。该协议与语言和平台无关，更符合微服务中独立性的要求。&lt;/p></description></item><item><title>RabbitMQ</title><link>/notes/spring/springcloud/communications/rabbit-mq/</link><pubDate>Thu, 03 Aug 2023 08:10:45 +0000</pubDate><guid>/notes/spring/springcloud/communications/rabbit-mq/</guid><description><![CDATA[<p>RabbitMQ官网：<a href="https://www.rabbitmq.com/" target="_blank" rel="noopener noreferrer">https://www.rabbitmq.com/<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
 <p>官方文档：<a href="https://rabbitmq.com/documentation.html" target="_blank" rel="noopener noreferrer">https://rabbitmq.com/documentation.html<i class="fas fa-external-link-square-alt ms-1"></i></a>。</p>
@@ -437,21 +396,13 @@
 <li>
 <p>Windows：</p>
 <p>单机启动：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">startup.cmd -m standalone</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">startup.cmd -m standalone
+</span></span></code></pre></div></li>
 <li>
 <p>Linux：</p>
 <p>单机启动：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">sh startup.sh -m standalone</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">sh startup.sh -m standalone
+</span></span></code></pre></div></li>
 </ul>
 <p>在浏览器中使用对应的IP和端口访问，如<code>http://localhost:8848/nacos</code>。</p>]]></description></item><item><title>RestTemplate</title><link>/notes/spring/springcloud/remote-call/</link><pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate><guid>/notes/spring/springcloud/remote-call/</guid><description><![CDATA[<h1 id="微服务远程调用" data-numberify>微服务远程调用<a class="anchor ms-1" href="#微服务远程调用"></a></h1>
 <p>在微服务架构中，不同微服务都应该有自己独立的数据库以减少服务之间的冗余。而不同的服务之间可能需要共享数据。但拆分后的服务，它们的数据库是相互独立的，一个服务不可能去调用另一个服务的数据库，所以服务之间的信息共享成为一个问题。</p>]]></description></item><item><title>Spring 环境和配置</title><link>/notes/spring/springcloud/config/</link><pubDate>Mon, 26 Jun 2023 11:46:12 +0800</pubDate><guid>/notes/spring/springcloud/config/</guid><description><![CDATA[<p>微服务需要根据业务模块拆分，做到单一职责，不要重复开发相同业务。</p>
@@ -585,16 +536,12 @@
 <h1 id="计算机系统" data-numberify>计算机系统<a class="anchor ms-1" href="#计算机系统"></a></h1>
 <p>计算机系统由<u>硬件</u>和<u>软件</u>组成。</p>]]></description></item><item><title>Swagger（Knife4j） API 文档</title><link>/notes/spring/springboot/swagger_knife4j/</link><pubDate>Tue, 21 Mar 2023 14:10:06 +0000</pubDate><guid>/notes/spring/springboot/swagger_knife4j/</guid><description><![CDATA[<h1 id="导入依赖" data-numberify>导入依赖<a class="anchor ms-1" href="#导入依赖"></a></h1>
 <p>Knife4j的依赖坐标如下：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">&lt;dependency&gt;</span>
 </span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
 </span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>knife4j-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
 </span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="nt">&lt;version&gt;</span>3.0.2<span class="nt">&lt;/version&gt;</span>
-</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="nt">&lt;/dependency&gt;</span></span></span></code></pre></div>
-<hr>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><hr>
 
 <h1 id="配置类" data-numberify>配置类<a class="anchor ms-1" href="#配置类"></a></h1>
 <p>编写（或修改）配置类：</p>]]></description></item><item><title>瑞吉外卖项目实战</title><link>/posts/reggie-note/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>/posts/reggie-note/</guid><description><![CDATA[<h1 id="项目笔记" data-numberify>项目笔记<a class="anchor ms-1" href="#项目笔记"></a></h1>
@@ -642,31 +589,15 @@
 <p>过滤器可以把对资源的请求拦截下来，从而实现一些特殊的功能。设置 Filter 会在访问资源之前会先经过 Filter，将资源拦截，从而实现权限控制、统一编码处理、敏感字符处理等功能。</p>]]></description></item><item><title>会话跟踪技术 Cookie 和 Session</title><link>/notes/spring/java-web/cookie-session/</link><pubDate>Fri, 23 Sep 2022 00:00:00 +0000</pubDate><guid>/notes/spring/java-web/cookie-session/</guid><description><![CDATA[<h1 id="会话跟踪技术" data-numberify>会话跟踪技术<a class="anchor ms-1" href="#会话跟踪技术"></a></h1>
 <p>会话是指一个终端用户与交互系统进行通讯的过程，例如从浏览器发出请求到服务端响应数据给前端这个过程即为一个会话。</p>]]></description></item><item><title>Linux 终端中文编码设置</title><link>/posts/linux-terminal-coding/</link><pubDate>Tue, 13 Sep 2022 00:00:00 +0000</pubDate><guid>/posts/linux-terminal-coding/</guid><description><![CDATA[<h1 id="ubuntu" data-numberify>Ubuntu<a class="anchor ms-1" href="#ubuntu"></a></h1>
 <p>安装中文支持：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">apt-get install language-pack-zh-hans -y</span></span></code></pre></div>
-<p>查看系统语言包：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">locale -a</span></span></code></pre></div>
-<p>修改<code>~/.bashrc</code>，加入：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8</span></span></code></pre></div>
-<p>修改<code>/etc/default/locale</code>：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span></span></span></code></pre></div>
-
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">apt-get install language-pack-zh-hans -y
+</span></span></code></pre></div><p>查看系统语言包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">locale -a
+</span></span></code></pre></div><p>修改<code>~/.bashrc</code>，加入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span></code></pre></div><p>修改<code>/etc/default/locale</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span></code></pre></div>
 <h1 id="debian" data-numberify>Debian<a class="anchor ms-1" href="#debian"></a></h1>
 <p>安装<code>locales</code>：</p>]]></description></item><item><title>HttpServlet 与 Tomcat</title><link>/notes/spring/java-web/http-servlet/</link><pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate><guid>/notes/spring/java-web/http-servlet/</guid><description><![CDATA[<h1 id="httpservlet-简介" data-numberify>HttpServlet 简介<a class="anchor ms-1" href="#httpservlet-简介"></a></h1>
 <p>HttpServlet是对HTTP协议封装的Servlet实现类。</p>
@@ -703,19 +634,11 @@
 <p>数据库连接池是个容器, 负责分配, 管理数据库连接 (Connection).</p>
 <p>数据库连接池允许应用程序重复使用一个现有的数据库连接, 而不是再重新建立一个. 从而减少资源浪费.</p>]]></description></item><item><title>Maven 基础</title><link>/notes/spring/java-web/maven-base/</link><pubDate>Sun, 14 Aug 2022 00:00:00 +0000</pubDate><guid>/notes/spring/java-web/maven-base/</guid><description><![CDATA[<h1 id="maven-简介" data-numberify>Maven 简介<a class="anchor ms-1" href="#maven-简介"></a></h1>
 <p>Apache Maven是专门用于管理和构建Java项目的工具, 它基于项目对象模型 (POM) 的概念, 通过一小段描述信息来管理项目的构建, 报告和文档.</p>]]></description></item><item><title>SSH 公钥配置</title><link>/posts/ssh-public-key/</link><pubDate>Sat, 13 Aug 2022 00:00:00 +0000</pubDate><guid>/posts/ssh-public-key/</guid><description><![CDATA[<p>创建<code>.ssh</code>目录并生成公钥:</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh-keygen -t rsa</span></span></code></pre></div>
-<p>所有选项全部回车, 使用默认选项即可.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh-keygen -t rsa
+</span></span></code></pre></div><p>所有选项全部回车, 使用默认选项即可.</p>
 <p>然后切换到用户目录下的<code>.ssh</code>目录:</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> ~/.ssh</span></span></code></pre></div>
-<p>该目录下默认有三个文件:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> ~/.ssh
+</span></span></code></pre></div><p>该目录下默认有三个文件:</p>
 <ul>
 <li><code>id_rsa</code>: 用户私钥, 不要复制发送给任何人.</li>
 <li><code>id_rsa.pub</code>: 公钥, 将里面内容发送给客户端.</li>
@@ -726,48 +649,24 @@
 <p>JDBC其实是SUN公司制订的一套操作数据库的标准接口. JDBC中定义了所有操作关系型数据库的规则. 由各自的数据库厂商给出实现类 (驱动jar包).</p>]]></description></item><item><title>Code Server 部署</title><link>/posts/code-server-deploy/</link><pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><guid>/posts/code-server-deploy/</guid><description><![CDATA[<ol>
 <li>
 <p>下载code-server：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz</span></span></code></pre></div>
-<p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面" target="_blank" rel="noopener noreferrer">code-server GitHub 页面<i class="fas fa-external-link-square-alt ms-1"></i></a>获取下载连接。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/coder/code-server/releases/download/v4.5.1/code-server-4.5.1-linux-amd64.tar.gz
+</span></span></code></pre></div><p>可以访问<a href="https://github.com/coder/code-server" title="code-server GitHub 页面" target="_blank" rel="noopener noreferrer">code-server GitHub 页面<i class="fas fa-external-link-square-alt ms-1"></i></a>获取下载连接。</p>
 </li>
 <li>
 <p>解压：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf code-server-4.5.1-linux-amd64.tar.gz
+</span></span></code></pre></div></li>
 <li>
-<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">mv code-server-4.5.1-linux-amd64 /opt/code-server</span></span></code></pre></div>
-</li>
-<li>
-<p>创建软链到<code>/usr/bin</code>目录下：</p>]]></description></item><item><title>搭建 frp 服务</title><link>/posts/frp-deploy/</link><pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><guid>/posts/frp-deploy/</guid><description><![CDATA[<ol>
+<p>将解压后的文件移动到<code>/opt</code>目录下，并重命名：</p>]]></description></item><item><title>搭建 frp 服务</title><link>/posts/frp-deploy/</link><pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><guid>/posts/frp-deploy/</guid><description><![CDATA[<ol>
 <li>
 <p>下载frp：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz</span></span></code></pre></div>
-<p>或者访问<a href="https://github.com/fatedier/frp/" title="frp项目" target="_blank" rel="noopener noreferrer">frp项目<i class="fas fa-external-link-square-alt ms-1"></i></a>获取自己需要的版本。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz
+</span></span></code></pre></div><p>或者访问<a href="https://github.com/fatedier/frp/" title="frp项目" target="_blank" rel="noopener noreferrer">frp项目<i class="fas fa-external-link-square-alt ms-1"></i></a>获取自己需要的版本。</p>
 </li>
 <li>
 <p>解压：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf frp_0.44.0_linux_amd64.tar.gz</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tar -zxvf frp_0.44.0_linux_amd64.tar.gz
+</span></span></code></pre></div></li>
 <li>
 <p>进入目录后，配置<code>frps.ini</code>和<code>frpc.ini</code>：</p>]]></description></item><item><title>经典查找算法</title><link>/posts/search-algorithm-base/</link><pubDate>Sun, 27 Feb 2022 14:44:00 +0000</pubDate><guid>/posts/search-algorithm-base/</guid><description><![CDATA[<h1 id="二分查找" data-numberify>二分查找<a class="anchor ms-1" href="#二分查找"></a></h1>
 <p>二分查找又叫折半查找，是在有序列表的基础上进行查找，每次查找可以筛掉一半的元素。</p>
@@ -778,64 +677,29 @@
 <ol>
 <li>
 <p>首先更新本地存储库索引：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt update</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt update
+</span></span></code></pre></div></li>
 <li>
 <p>从 APT 存储库安装 MySQL：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt install MySQL-server -y</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt install MySQL-server -y
+</span></span></code></pre></div></li>
 <li>
 <p>查看 MySQL 版本，验证是否安装成功：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">mysql --version</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">mysql --version
+</span></span></code></pre></div></li>
 <li>
 <p>检查 MySQL 是否正在运行：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">systemctl status mysql.service</span></span></code></pre></div>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">systemctl status mysql.service
+</span></span></code></pre></div></li>
 </ol>
-<p>如果服务未运行：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo systemctl start mysql</span></span></code></pre></div>
-<hr>
-<p>MySQL 安装完成后需要更改密码。</p>]]></description></item><item><title>Ubuntu 安装 Oh my zsh</title><link>/posts/ubuntu-omz/</link><pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/ubuntu-omz/</guid><description><![CDATA[<p>oh-my-zsh主页： <a href="https://ohmyz.sh/" title="https://ohmyz.sh/" target="_blank" rel="noopener noreferrer">https://ohmyz.sh/<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
+<p>如果服务未运行：</p>]]></description></item><item><title>Ubuntu 安装 Oh my zsh</title><link>/posts/ubuntu-omz/</link><pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/ubuntu-omz/</guid><description><![CDATA[<p>oh-my-zsh主页： <a href="https://ohmyz.sh/" title="https://ohmyz.sh/" target="_blank" rel="noopener noreferrer">https://ohmyz.sh/<i class="fas fa-external-link-square-alt ms-1"></i></a></p>
 
 <h1 id="安装并设置zsh" data-numberify>安装并设置zsh<a class="anchor ms-1" href="#安装并设置zsh"></a></h1>
 <p>安装zsh：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt install zsh</span></span></code></pre></div>
-<p>查看系统中所有的shell：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat /etc/shells</span></span></code></pre></div>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># /etc/shells: valid login shells
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo apt install zsh
+</span></span></code></pre></div><p>查看系统中所有的shell：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat /etc/shells
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># /etc/shells: valid login shells
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">/bin/sh
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">/bin/bash
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">/usr/bin/bash
@@ -846,18 +710,14 @@
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl">/usr/bin/tmux
 </span></span><span class="line"><span class="ln">10</span><span class="cl">/usr/bin/screen
 </span></span><span class="line"><span class="ln">11</span><span class="cl">/bin/zsh
-</span></span><span class="line"><span class="ln">12</span><span class="cl">/usr/bin/zsh</span></span></code></pre></div>
-<p>将zsh设置为默认的shell：</p>]]></description></item><item><title>命题逻辑</title><link>/posts/proposition-logic/</link><pubDate>Sun, 23 Jan 2022 02:03:41 +0800</pubDate><guid>/posts/proposition-logic/</guid><description><![CDATA[<h1 id="命题的定义" data-numberify>命题的定义<a class="anchor ms-1" href="#命题的定义"></a></h1>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">/usr/bin/zsh
+</span></span></code></pre></div><p>将zsh设置为默认的shell：</p>]]></description></item><item><title>命题逻辑</title><link>/posts/proposition-logic/</link><pubDate>Sun, 23 Jan 2022 02:03:41 +0800</pubDate><guid>/posts/proposition-logic/</guid><description><![CDATA[<h1 id="命题的定义" data-numberify>命题的定义<a class="anchor ms-1" href="#命题的定义"></a></h1>
 <p>具有<u>确切真值的陈述句</u>称为<strong>命题</strong>（<strong>proposition</strong>）。命题可以取一个 “值”，称为<strong>真值</strong>。真值只有 “真”（用 “T” or “1” 表示，即 True）和 “假”（用 “F” or “0” 表示，即 False）。</p>]]></description></item><item><title>经典字符串匹配</title><link>/posts/string-pattern-algorithm-base/</link><pubDate>Fri, 21 Jan 2022 00:15:00 +0000</pubDate><guid>/posts/string-pattern-algorithm-base/</guid><description><![CDATA[<h1 id="经典字符串匹配" data-numberify>经典字符串匹配<a class="anchor ms-1" href="#经典字符串匹配"></a></h1>
 
 <h1 id="bf暴力匹配算法" data-numberify>BF暴力匹配算法<a class="anchor ms-1" href="#bf暴力匹配算法"></a></h1>
 <p>暴力匹配，即Brute Force，简称BF算法。BF算法是一种简单朴素的模式匹配算法，常用于在一个主串S内查找一个子串T的出现位置。</p>]]></description></item><item><title>两数交换算法</title><link>/posts/2num-exchange-algorithm/</link><pubDate>Sun, 16 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/2num-exchange-algorithm/</guid><description><![CDATA[<h1 id="临时变量" data-numberify>临时变量<a class="anchor ms-1" href="#临时变量"></a></h1>
 <p>通过建立一个临时变量来实现两数交换：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="n">tmp</span> <span class="o">=</span> <span class="n">x</span>
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
@@ -866,17 +726,13 @@
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">swap</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></span></span></code></pre></div>
-<p>缺点：</p>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">swap</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span></code></pre></div><p>缺点：</p>
 <p>需要消耗额外的内存。</p>]]></description></item><item><title>Python 基础</title><link>/posts/python-base/</link><pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/python-base/</guid><description><![CDATA[<h1 id="python-语法" data-numberify>Python 语法<a class="anchor ms-1" href="#python-语法"></a></h1>
 
 <h2 id="注释" data-numberify>注释<a class="anchor ms-1" href="#注释"></a></h2>
 <p>Python 的注释风格：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 行注释</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 行注释</span>
 </span></span><span class="line"><span class="ln">2</span><span class="cl">
 </span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="s1">&#39;&#39;&#39;
 </span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="s1">块注释1
@@ -884,8 +740,8 @@
 </span></span><span class="line"><span class="ln">6</span><span class="cl">
 </span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="s2">&#34;&#34;&#34;
 </span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="s2">块注释2
-</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="s2">&#34;&#34;&#34;</span></span></span></code></pre></div>
-<p>注释中的内容将不会被执行。</p>
+</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><p>注释中的内容将不会被执行。</p>
 <hr>
 
 <h2 id="标识符" data-numberify>标识符<a class="anchor ms-1" href="#标识符"></a></h2>
@@ -896,14 +752,11 @@
 <ul>
 <li>
 <p>正则表达式可以拼接。</p>]]></description></item><item><title>vbs 后台运行 bat</title><link>/posts/vbs-run-bat/</link><pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/vbs-run-bat/</guid><description><![CDATA[<p>假设有三个 bat 程序需要后台运行（称为 <code>A.bat</code>、<code>B.bat</code>、<code>C.bat</code>）：</p>
-
-
-
-    
-    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Set ws = CreateObject(&#34;Wscript.Shell&#34;)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Set ws = CreateObject(&#34;Wscript.Shell&#34;)
 </span></span><span class="line"><span class="ln">2</span><span class="cl">ws.run &#34;cmd /c A.bat&#34;,0
 </span></span><span class="line"><span class="ln">3</span><span class="cl">ws.run &#34;cmd /c B.bat&#34;,0
-</span></span><span class="line"><span class="ln">4</span><span class="cl">ws.run &#34;cmd /c C.bat&#34;,0</span></span></code></pre></div>]]></description></item><item><title>经典排序算法</title><link>/posts/sorting-algorithm-base/</link><pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/sorting-algorithm-base/</guid><description><![CDATA[<h1 id="冒泡排序" data-numberify>冒泡排序<a class="anchor ms-1" href="#冒泡排序"></a></h1>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">ws.run &#34;cmd /c C.bat&#34;,0
+</span></span></code></pre></div>]]></description></item><item><title>经典排序算法</title><link>/posts/sorting-algorithm-base/</link><pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/sorting-algorithm-base/</guid><description><![CDATA[<h1 id="冒泡排序" data-numberify>冒泡排序<a class="anchor ms-1" href="#冒泡排序"></a></h1>
 <p>冒泡排序（Bubble Sort）是一种简单直观的排序算法。</p>
 <p>这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。</p>]]></description></item><item><title>SQL 语句</title><link>/posts/sql-language/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>/posts/sql-language/</guid><description><![CDATA[<h1 id="基本概念" data-numberify>基本概念<a class="anchor ms-1" href="#基本概念"></a></h1>
 <p><strong>SQL</strong>（<strong>Structured Query Language</strong>，发音为 sequal）是一种专门用来与数据库沟通的语言。通过 SQL，用户可以对数据库进行各种操作。</p>]]></description></item>
