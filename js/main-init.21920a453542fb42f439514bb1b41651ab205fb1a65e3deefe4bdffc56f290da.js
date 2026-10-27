@@ -1,8 +1,8 @@
 (() => {
-  // ns-hugo-params:/root/my-blog/themes/hugo-theme-bootstrap/assets/js/local-storage/index.ts
+  // ns-hugo-params:/root/src/themes/hugo-theme-bootstrap/assets/js/local-storage/index.ts
   var local_storage_default = { baseURL: "/" };
 
-  // ns-hugo-imp:/root/my-blog/themes/hugo-theme-bootstrap/assets/js/local-storage/index.ts
+  // ns-hugo-imp:/root/src/themes/hugo-theme-bootstrap/assets/js/local-storage/index.ts
   var PathLocalStorage = class {
     constructor(baseURL) {
       this.baseURL = baseURL;
